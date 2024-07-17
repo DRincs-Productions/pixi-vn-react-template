@@ -1,7 +1,7 @@
 {
   "hosting": {
     "site": "pixi-vn-react-template",
-    "public": ".vitepress/dist",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
