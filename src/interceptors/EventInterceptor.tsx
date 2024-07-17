@@ -21,7 +21,7 @@ export default function EventInterceptor() {
             window.removeEventListener("popstate", onpopstate);
             window.removeEventListener('keydown', onkeydown);
         };
-    }, [hideInterface]);
+    }, []);
 
     function onpopstate() {
         window.history.forward();

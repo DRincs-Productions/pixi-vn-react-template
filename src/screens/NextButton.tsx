@@ -1,3 +1,4 @@
+import { GameStepManager } from '@drincs/pixi-vn';
 import { StepLabelProps } from '@drincs/pixi-vn/dist/override';
 import { Button } from '@mui/joy';
 import { motion } from "framer-motion";
@@ -5,7 +6,7 @@ import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { canGoNextState } from '../atoms/canGoNextState';
+import { hideNextButtonState } from '../atoms/hideNextButtonState';
 import { nextStepLoadingState } from '../atoms/nextStepLoadingState';
 import { skipEnabledState } from '../atoms/skipEnabledState';
 import { useMyNavigate } from '../utility/useMyNavigate';
@@ -15,7 +16,7 @@ export default function NextButton({ nextOnClick }: {
 }) {
     const [skip, setSkip] = useRecoilState(skipEnabledState)
     const nextStepLoading = useRecoilValue(nextStepLoadingState)
-    const canGoNext = useRecoilValue(canGoNextState)
+    const hideNextButton = useRecoilValue(hideNextButtonState)
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useMyNavigate();
     const { t } = useTranslation(["translation"]);
@@ -29,7 +30,7 @@ export default function NextButton({ nextOnClick }: {
 
     function onkeydown(event: KeyboardEvent) {
         if (event.code == 'Enter' || event.code == 'Space') {
-            if (!canGoNext) {
+            if (!GameStepManager.canGoNext) {
                 return;
             }
             nextOnClick({
@@ -79,7 +80,7 @@ export default function NextButton({ nextOnClick }: {
                 }
             }}
             initial={"closed"}
-            animate={canGoNext ? "closed" : "open"}
+            animate={hideNextButton ? "closed" : "open"}
             exit={"closed"}
         >
             {t("next")}

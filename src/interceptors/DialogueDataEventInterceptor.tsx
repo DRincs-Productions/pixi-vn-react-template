@@ -2,17 +2,17 @@ import { CharacterBaseModel, GameStepManager, getCharacterById, getChoiceMenuOpt
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { canGoNextState } from '../atoms/canGoNextState';
 import { choiceMenuState } from '../atoms/choiceMenuState';
 import { dialogDataState } from '../atoms/dialogDataState';
 import { hideInterfaceState } from '../atoms/hideInterfaceState';
+import { hideNextButtonState } from '../atoms/hideNextButtonState';
 import { reloadInterfaceDataEventState } from '../atoms/reloadInterfaceDataEventState';
 
 export default function DialogueDataEventInterceptor() {
     const reloadInterfaceDataEvent = useRecoilValue(reloadInterfaceDataEventState);
     const { t } = useTranslation(["translation"]);
     const hideInterface = useRecoilValue(hideInterfaceState)
-    const setNextStepButtonHidden = useSetRecoilState(canGoNextState)
+    const hideNextButton = useSetRecoilState(hideNextButtonState)
     const [{ text, character }, setDialogData] = useRecoilState(dialogDataState)
     const [{ menu }, setMenu] = useRecoilState(choiceMenuState)
 
@@ -43,7 +43,7 @@ export default function DialogueDataEventInterceptor() {
     }, [reloadInterfaceDataEvent])
 
     useEffect(() => {
-        setNextStepButtonHidden(hideInterface || !(GameStepManager.canGoNext))
+        hideNextButton(hideInterface || !(GameStepManager.canGoNext))
     }, [menu, hideInterface])
 
     useEffect(() => {
