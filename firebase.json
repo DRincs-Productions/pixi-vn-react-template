@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "pixi-vn-react-template",
+    "public": ".vitepress/dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
