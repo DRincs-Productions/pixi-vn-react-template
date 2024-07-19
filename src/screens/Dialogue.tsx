@@ -64,7 +64,7 @@ export default function Dialogue({ nextOnClick }: {
         <>
             <Box
                 sx={{
-                    height: '90%',
+                    height: '95%',
                     width: '100%',
                     position: "absolute",
                     left: 0,

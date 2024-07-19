@@ -2,7 +2,7 @@ import { atom, selector } from "recoil";
 
 const dialogueCardImageWidthAtomState = atom<number>({
     key: 'dialogueCardImageWidthAtomState',
-    default: localStorage.getItem("dialogue_card_image_width") ? parseInt(localStorage.getItem("dialogue_card_image_width") as string) : 30,
+    default: localStorage.getItem("dialogue_card_image_width") ? parseInt(localStorage.getItem("dialogue_card_image_width") as string) : 16,
 });
 
 export const dialogueCardImageWidthState = selector<number>({

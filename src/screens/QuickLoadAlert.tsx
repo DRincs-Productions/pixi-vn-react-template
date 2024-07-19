@@ -1,8 +1,10 @@
+import { getSaveJson } from '@drincs/pixi-vn';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { Button, Typography } from '@mui/joy';
 import { useSnackbar } from 'notistack';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { openLoadAlertState } from '../atoms/openLoadAlertState';
 import { quickSaveState } from '../atoms/quickSaveState';
 import { reloadInterfaceDataEventState } from '../atoms/reloadInterfaceDataEventState';
@@ -15,8 +17,26 @@ export default function QuickLoadAlert() {
     const notifyLoadEvent = useSetRecoilState(reloadInterfaceDataEventState);
     const [open, setOpen] = useRecoilState(openLoadAlertState);
     const { t } = useTranslation(["translation"]);
-    const quickSave = useRecoilValue(quickSaveState)
+    const [quickSave, setQuickSave] = useRecoilState(quickSaveState)
     const { enqueueSnackbar } = useSnackbar();
+
+    useEffect(() => {
+        window.addEventListener('keydown', onkeydown);
+        return () => {
+            window.removeEventListener('keydown', onkeydown);
+        };
+    }, []);
+
+    function onkeydown(event: KeyboardEvent) {
+        if (event.code == 'KeyS' && event.shiftKey) {
+            let save = getSaveJson()
+            setQuickSave(save)
+            enqueueSnackbar(t("success_save"), { variant: 'success' })
+        }
+        else if (event.code == 'KeyL' && event.shiftKey) {
+            setOpen((prev) => !prev)
+        }
+    }
 
     return (
         <ModalDialogCustom

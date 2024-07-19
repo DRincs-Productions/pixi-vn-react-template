@@ -27,6 +27,8 @@ export default function SliderResizer(props: SliderProps) {
             <Slider
                 key={key}
                 orientation={orientation}
+                valueLabelDisplay="auto"
+                valueLabelFormat={(index) => index + "%"}
                 sx={{
                     cursor: orientation === "vertical" ? "row-resize" : "col-resize",
                     position: "static",

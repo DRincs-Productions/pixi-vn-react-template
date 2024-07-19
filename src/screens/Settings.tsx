@@ -154,6 +154,16 @@ export default function Settings() {
                                     >
                                         <SaveIcon />
                                         <Typography level="title-md">{t("quick_save_restricted")}</Typography>
+                                        <Typography
+                                            sx={{
+                                                position: 'absolute',
+                                                top: 10,
+                                                right: 10,
+                                            }}
+                                            level="body-md"
+                                        >
+                                            Shift+S
+                                        </Typography>
                                     </SettingButton>
                                     <SettingButton
                                         onClick={() => setOpenLoadAlert(true)}
@@ -161,6 +171,16 @@ export default function Settings() {
                                     >
                                         <FileUploadIcon />
                                         <Typography level="title-md">{t("quick_load_restricted")}</Typography>
+                                        <Typography
+                                            sx={{
+                                                position: 'absolute',
+                                                top: 10,
+                                                right: 10,
+                                            }}
+                                            level="body-md"
+                                        >
+                                            Shift+L
+                                        </Typography>
                                     </SettingButton>
                                     <SettingButton
                                         checked={hideInterface}
@@ -168,15 +188,16 @@ export default function Settings() {
                                     >
                                         <HdrAutoIcon />
                                         <Typography level="title-md">{t("hide_interface")}</Typography>
-                                        <Box
+                                        <Typography
                                             sx={{
                                                 position: 'absolute',
                                                 top: 10,
                                                 right: 10,
                                             }}
+                                            level="body-md"
                                         >
-                                            <Typography level="body-lg">V</Typography>
-                                        </Box>
+                                            Shift+V
+                                        </Typography>
                                     </SettingButton>
                                     <SettingButton
                                         onClick={() => {
@@ -186,15 +207,16 @@ export default function Settings() {
                                     >
                                         <HistoryIcon />
                                         <Typography level="title-md">{t("history")}</Typography>
-                                        <Box
+                                        <Typography
                                             sx={{
                                                 position: 'absolute',
                                                 top: 10,
                                                 right: 10,
                                             }}
+                                            level="body-md"
                                         >
-                                            <Typography level="body-lg">H</Typography>
-                                        </Box>
+                                            Shift+H
+                                        </Typography>
                                     </SettingButton>
                                     <SettingButton
                                         checked={skip}
@@ -202,6 +224,16 @@ export default function Settings() {
                                     >
                                         <FastForwardIcon />
                                         <Typography level="title-md">{t("skip")}</Typography>
+                                        <Typography
+                                            sx={{
+                                                position: 'absolute',
+                                                top: 10,
+                                                right: 10,
+                                            }}
+                                            level="body-md"
+                                        >
+                                            Press Space
+                                        </Typography>
                                     </SettingButton>
                                     <SettingButton
                                         checked={auto}

@@ -33,7 +33,7 @@ export default function EventInterceptor() {
                 setHideInterface(false)
             }
         }
-        else if (event.code == 'KeyV') {
+        else if (event.code == 'KeyV' && event.shiftKey) {
             setHideInterface((prev) => !prev)
         }
     }

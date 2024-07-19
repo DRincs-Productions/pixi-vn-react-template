@@ -25,7 +25,7 @@ export default function History() {
     }, []);
 
     function onkeydown(event: KeyboardEvent) {
-        if (event.code == 'KeyH') {
+        if (event.code == 'KeyH' && event.shiftKey) {
             setOpen((prev) => !prev)
         }
     }

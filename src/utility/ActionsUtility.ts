@@ -38,11 +38,6 @@ export function goBack(navigate: (path: string) => void, afterBack?: () => void)
     afterBack && afterBack()
 }
 
-export function addQuickSave() {
-    const jsonString = getSaveJson()
-    localStorage.setItem("quickSave", jsonString)
-}
-
 export function loadQuickSave(data: string | null, navigate: (path: string) => void, afterLoad?: () => void) {
     if (data) {
         loadSaveJson(data, navigate);
