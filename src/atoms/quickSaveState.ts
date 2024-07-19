@@ -2,7 +2,7 @@ import { atom, selector } from "recoil";
 
 const quickSaveAtomState = atom<string | null>({
     key: 'quickSaveAtomState',
-    default: localStorage.getItem("quickSave"),
+    default: localStorage.getItem("quick_save"),
 });
 
 export const quickSaveState = selector<string | null>({
@@ -12,10 +12,10 @@ export const quickSaveState = selector<string | null>({
     },
     set: ({ set }, value) => {
         if (typeof value === "string") {
-            localStorage.setItem("quickSave", value)
+            localStorage.setItem("quick_save", value)
         }
         else {
-            localStorage.removeItem("quickSave")
+            localStorage.removeItem("quick_save")
         }
         set(quickSaveAtomState, value)
     },

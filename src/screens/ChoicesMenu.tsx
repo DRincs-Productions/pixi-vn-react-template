@@ -1,4 +1,4 @@
-import { ChoiceMenuOption, ChoiceMenuOptionClose, clearChoiceMenuOptions, GameStepManager, GameWindowManager } from '@drincs/pixi-vn';
+import { ChoiceMenuOption, ChoiceMenuOptionClose, clearChoiceMenuOptions, GameStepManager } from '@drincs/pixi-vn';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import { Box, Grid } from '@mui/joy';
 import { motion, Variants } from "framer-motion";
@@ -7,22 +7,22 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { choiceMenuState } from '../atoms/choiceMenuState';
+import { dialogueCardHeightState } from '../atoms/dialogueCardHeightState';
 import { reloadInterfaceDataEventState } from '../atoms/reloadInterfaceDataEventState';
 import ChoiceButton from '../components/ChoiceButton';
 import { useMyNavigate } from '../utility/useMyNavigate';
 
 type IProps = {
-    marginButton: number,
     fullscreen?: boolean,
 }
 
 export default function ChoicesMenu(props: IProps) {
     const {
-        marginButton,
         fullscreen = true,
     } = props;
     const [loading, setLoading] = useState(false)
-    const height = GameWindowManager.screenHeight - marginButton
+    const marginButton = useRecoilValue(dialogueCardHeightState)
+    const height = 100 - marginButton
     const { t } = useTranslation(["translation"]);
     const navigate = useMyNavigate();
     const { menu, hidden } = useRecoilValue(choiceMenuState)
@@ -102,7 +102,8 @@ export default function ChoicesMenu(props: IProps) {
                 top: 0,
                 left: 0,
                 right: 0,
-                height: fullscreen ? "100%" : height,
+                height: fullscreen ? "100%" : `${height}%`,
+                pointerEvents: "auto",
             }}
             component={motion.div}
             initial="closed"
@@ -118,7 +119,7 @@ export default function ChoicesMenu(props: IProps) {
                 spacing={2}
                 sx={{
                     overflow: 'auto',
-                    height: fullscreen ? "100%" : height,
+                    height: "100%",
                     gap: 1,
                     width: '100%',
                 }}
