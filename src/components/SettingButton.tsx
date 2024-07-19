@@ -1,7 +1,8 @@
 import { Card, CardContent, CardProps, Checkbox, useTheme } from "@mui/joy";
 
-export default function SettingButton({ children, checked, sx, onChange, ...rest }: {
+export default function SettingButton({ children, checked, disabled, sx, onChange, ...rest }: {
     checked?: boolean;
+    disabled?: boolean;
 } & CardProps) {
     return (
         <Card
@@ -23,6 +24,7 @@ export default function SettingButton({ children, checked, sx, onChange, ...rest
                 color="neutral"
                 onChange={onChange}
                 sx={{ mt: -2 }}
+                disabled={disabled}
                 slotProps={{
                     action: {
                         sx: {

@@ -12,6 +12,7 @@ import Dialogue from './screens/Dialogue';
 import History from './screens/History';
 import MainMenu from './screens/MainMenu';
 import QuickActions from './screens/QuickActions';
+import QuickLoadAlert from './screens/QuickLoadAlert';
 
 export default function AppRoutes() {
     const notifyReloadInterfaceDataEvent = useSetRecoilState(reloadInterfaceDataEventState);
@@ -47,6 +48,7 @@ export default function AppRoutes() {
             <Route key={"game"} path={"/game"}
                 element={<>
                     <History />
+                    <QuickLoadAlert />
                     <QuickActions />
                     <DialogueDataEventInterceptor />
                     <Dialogue

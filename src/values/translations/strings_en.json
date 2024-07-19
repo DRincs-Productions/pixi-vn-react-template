@@ -38,5 +38,7 @@
 		, "text_speed" : "Text Speed"
 		, "text_speed_description" : "Choose the speed of the text."
 		, "hide_interface" : "Hide Interface"
+		, "success_save" : "Save successful"
+		, "success_load" : "Load successful"
 	}
 }

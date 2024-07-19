@@ -12,6 +12,7 @@ import ModeNightIcon from '@mui/icons-material/ModeNight';
 import SaveIcon from '@mui/icons-material/Save';
 import WbIncandescentIcon from '@mui/icons-material/WbIncandescent';
 import { Box, Button, DialogContent, DialogTitle, Divider, Drawer, FormControl, FormHelperText, FormLabel, IconButton, ModalClose, RadioGroup, Sheet, Slider, Stack, ToggleButtonGroup, Tooltip, Typography, useColorScheme } from "@mui/joy";
+import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { HuePicker } from 'react-color';
 import { useTranslation } from 'react-i18next';
@@ -20,12 +21,15 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { autoEnabledState } from '../atoms/autoEnabledState';
 import { hideInterfaceState } from '../atoms/hideInterfaceState';
 import { openHistoryState } from '../atoms/openHistoryState';
+import { openLoadAlertState } from '../atoms/openLoadAlertState';
 import { openSettingsState } from '../atoms/openSettingsState';
+import { reloadInterfaceDataEventState } from '../atoms/reloadInterfaceDataEventState';
 import { skipEnabledState } from '../atoms/skipEnabledState';
 import { typewriterDelayState } from '../atoms/typewriterDelayState';
 import ModalDialogCustom from '../components/ModalDialog';
 import SettingButton from '../components/SettingButton';
 import { useEditColorProvider } from '../providers/ThemeProvider';
+import { addQuickSave, loadGameSave, saveGame } from '../utility/ActionsUtility';
 import { useMyNavigate } from '../utility/useMyNavigate';
 
 export default function Settings() {
@@ -42,7 +46,10 @@ export default function Settings() {
     const [skip, setSkip] = useRecoilState(skipEnabledState)
     const [auto, setAuto] = useRecoilState(autoEnabledState)
     const setOpenHistory = useSetRecoilState(openHistoryState);
+    const setOpenLoadAlert = useSetRecoilState(openLoadAlertState);
     const [hideInterface, setHideInterface] = useRecoilState(hideInterfaceState);
+    const notifyLoadEvent = useSetRecoilState(reloadInterfaceDataEventState);
+    const { enqueueSnackbar } = useSnackbar();
 
     useEffect(() => {
         window.addEventListener('keydown', onkeydown);
@@ -120,19 +127,34 @@ export default function Settings() {
                                         gap: 1.5,
                                     }}
                                 >
-                                    <SettingButton>
+                                    <SettingButton
+                                        onClick={saveGame}
+                                    >
                                         <SaveIcon />
                                         <Typography level="title-md">{t("save")}</Typography>
                                     </SettingButton>
-                                    <SettingButton>
+                                    <SettingButton
+                                        onClick={() => loadGameSave(navigate, () => {
+                                            notifyLoadEvent((prev) => prev + 1)
+                                            enqueueSnackbar(t("success_load"), { variant: 'success' })
+                                        })}
+                                    >
                                         <FileUploadIcon />
                                         <Typography level="title-md">{t("load")}</Typography>
                                     </SettingButton>
-                                    <SettingButton>
+                                    <SettingButton
+                                        onClick={() => {
+                                            addQuickSave()
+                                            enqueueSnackbar(t("success_save"), { variant: 'success' })
+                                        }}
+                                    >
                                         <SaveIcon />
                                         <Typography level="title-md">{t("quick_save_restricted")}</Typography>
                                     </SettingButton>
-                                    <SettingButton>
+                                    <SettingButton
+                                        onClick={() => setOpenLoadAlert(true)}
+                                        disabled={!localStorage.getItem("quickSave")}
+                                    >
                                         <FileUploadIcon />
                                         <Typography level="title-md">{t("quick_load_restricted")}</Typography>
                                     </SettingButton>
