@@ -13,6 +13,7 @@ import ModeNightIcon from '@mui/icons-material/ModeNight';
 import SaveIcon from '@mui/icons-material/Save';
 import WbIncandescentIcon from '@mui/icons-material/WbIncandescent';
 import { Box, Button, DialogContent, DialogTitle, Divider, Drawer, FormControl, FormHelperText, FormLabel, IconButton, ModalClose, RadioGroup, Sheet, Slider, Stack, ToggleButtonGroup, Tooltip, Typography, useColorScheme } from "@mui/joy";
+import { Theme, useMediaQuery } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { HuePicker } from 'react-color';
@@ -53,6 +54,7 @@ export default function Settings() {
     const notifyLoadEvent = useSetRecoilState(reloadInterfaceDataEventState);
     const [quickSave, setQuickSave] = useRecoilState(quickSaveState)
     const { enqueueSnackbar } = useSnackbar();
+    const lgScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
     useEffect(() => {
         window.addEventListener('keydown', onkeydown);
@@ -92,7 +94,7 @@ export default function Settings() {
     return (
         <>
             <Drawer
-                size="md"
+                size={lgScreen ? 'lg' : 'md'}
                 variant="plain"
                 open={open}
                 onClose={() => setOpen(false)}

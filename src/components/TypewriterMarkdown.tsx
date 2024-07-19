@@ -49,6 +49,7 @@ export default function TypewriterMarkdown({ text, delay = 0, ...rest }: { text:
     return (
         <Typography
             component={motion.div}
+            key={text}
             variants={sentenceVariants}
             initial="hidden"
             animate="visible"
