@@ -1,3 +1,4 @@
+import { getSaveJson } from '@drincs/pixi-vn';
 import { Stack } from '@mui/joy';
 import { AnimatePresence, motion } from "framer-motion";
 import { useSnackbar } from 'notistack';
@@ -9,10 +10,11 @@ import { hideInterfaceState } from '../atoms/hideInterfaceState';
 import { openHistoryState } from '../atoms/openHistoryState';
 import { openLoadAlertState } from '../atoms/openLoadAlertState';
 import { openSettingsState } from '../atoms/openSettingsState';
+import { quickSaveState } from '../atoms/quickSaveState';
 import { reloadInterfaceDataEventState } from '../atoms/reloadInterfaceDataEventState';
 import { skipEnabledState } from '../atoms/skipEnabledState';
 import TextMenuButton from '../components/TextMenuButton';
-import { addQuickSave, goBack, loadGameSave, saveGame } from '../utility/ActionsUtility';
+import { goBack, loadGameSave, saveGame } from '../utility/ActionsUtility';
 import { useMyNavigate } from '../utility/useMyNavigate';
 
 export default function QuickActions() {
@@ -26,6 +28,7 @@ export default function QuickActions() {
     const [skip, setSkip] = useRecoilState(skipEnabledState)
     const [auto, setAuto] = useRecoilState(autoEnabledState)
     const canGoBack = useRecoilValue(canGoBackState)
+    const [quickSave, setQuickSave] = useRecoilState(quickSaveState)
     const { enqueueSnackbar } = useSnackbar();
 
     return (
@@ -103,7 +106,8 @@ export default function QuickActions() {
                 </TextMenuButton>
                 <TextMenuButton
                     onClick={() => {
-                        addQuickSave()
+                        let save = getSaveJson()
+                        setQuickSave(save)
                         enqueueSnackbar(t("success_save"), { variant: 'success' })
                     }}
                     sx={{ pointerEvents: !hideInterface ? "auto" : "none" }}
@@ -112,7 +116,7 @@ export default function QuickActions() {
                 </TextMenuButton>
                 <TextMenuButton
                     onClick={() => setOpenLoadAlert(true)}
-                    disabled={!localStorage.getItem("quickSave")}
+                    disabled={!quickSave}
                     sx={{ pointerEvents: !hideInterface ? "auto" : "none" }}
                 >
                     {t("quick_load_restricted")}

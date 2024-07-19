@@ -2,8 +2,9 @@ import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { Button, Typography } from '@mui/joy';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { openLoadAlertState } from '../atoms/openLoadAlertState';
+import { quickSaveState } from '../atoms/quickSaveState';
 import { reloadInterfaceDataEventState } from '../atoms/reloadInterfaceDataEventState';
 import ModalDialogCustom from '../components/ModalDialog';
 import { loadQuickSave } from '../utility/ActionsUtility';
@@ -14,6 +15,7 @@ export default function QuickLoadAlert() {
     const notifyLoadEvent = useSetRecoilState(reloadInterfaceDataEventState);
     const [open, setOpen] = useRecoilState(openLoadAlertState);
     const { t } = useTranslation(["translation"]);
+    const quickSave = useRecoilValue(quickSaveState)
     const { enqueueSnackbar } = useSnackbar();
 
     return (
@@ -32,7 +34,7 @@ export default function QuickLoadAlert() {
                     color='primary'
                     variant="outlined"
                     onClick={() => {
-                        loadQuickSave(navigate, () => {
+                        loadQuickSave(quickSave, navigate, () => {
                             notifyLoadEvent((prev) => prev + 1)
                             enqueueSnackbar(t("success_load"), { variant: 'success' })
                         })

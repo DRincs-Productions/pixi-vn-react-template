@@ -43,10 +43,9 @@ export function addQuickSave() {
     localStorage.setItem("quickSave", jsonString)
 }
 
-export function loadQuickSave(navigate: (path: string) => void, afterLoad?: () => void) {
-    const jsonString = localStorage.getItem("quickSave")
-    if (jsonString) {
-        loadSaveJson(jsonString, navigate);
+export function loadQuickSave(data: string | null, navigate: (path: string) => void, afterLoad?: () => void) {
+    if (data) {
+        loadSaveJson(data, navigate);
         afterLoad && afterLoad();
     }
 }

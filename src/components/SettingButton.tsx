@@ -1,6 +1,6 @@
 import { Card, CardContent, CardProps, Checkbox, useTheme } from "@mui/joy";
 
-export default function SettingButton({ children, checked, disabled, sx, onChange, ...rest }: {
+export default function SettingButton({ children, checked, disabled, sx, onChange, onClick, ...rest }: {
     checked?: boolean;
     disabled?: boolean;
 } & CardProps) {
@@ -8,7 +8,8 @@ export default function SettingButton({ children, checked, disabled, sx, onChang
         <Card
             sx={{
                 boxShadow: 'none',
-                '&:hover': { bgcolor: 'background.level1' },
+                '&:hover': disabled ? undefined : { bgcolor: 'background.level1' },
+                backgroundColor: disabled ? useTheme().palette.neutral[100] : undefined,
                 ...sx,
             }}
             {...rest}
@@ -22,7 +23,7 @@ export default function SettingButton({ children, checked, disabled, sx, onChang
                 checked={true}
                 variant="outlined"
                 color="neutral"
-                onChange={onChange}
+                onChange={onChange || onClick}
                 sx={{ mt: -2 }}
                 disabled={disabled}
                 slotProps={{
@@ -30,7 +31,7 @@ export default function SettingButton({ children, checked, disabled, sx, onChang
                         sx: {
                             borderWidth: checked ? 2 : undefined,
                             borderColor: checked ? useTheme().palette.primary.outlinedBorder : undefined,
-                            '&:hover': {
+                            '&:hover': disabled ? undefined : {
                                 bgcolor: 'transparent',
                             },
                         },

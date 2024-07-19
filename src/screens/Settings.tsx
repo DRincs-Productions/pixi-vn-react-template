@@ -1,3 +1,4 @@
+import { getSaveJson } from '@drincs/pixi-vn';
 import AutoModeIcon from '@mui/icons-material/AutoMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
@@ -23,13 +24,14 @@ import { hideInterfaceState } from '../atoms/hideInterfaceState';
 import { openHistoryState } from '../atoms/openHistoryState';
 import { openLoadAlertState } from '../atoms/openLoadAlertState';
 import { openSettingsState } from '../atoms/openSettingsState';
+import { quickSaveState } from '../atoms/quickSaveState';
 import { reloadInterfaceDataEventState } from '../atoms/reloadInterfaceDataEventState';
 import { skipEnabledState } from '../atoms/skipEnabledState';
 import { typewriterDelayState } from '../atoms/typewriterDelayState';
 import ModalDialogCustom from '../components/ModalDialog';
 import SettingButton from '../components/SettingButton';
 import { useEditColorProvider } from '../providers/ThemeProvider';
-import { addQuickSave, loadGameSave, saveGame } from '../utility/ActionsUtility';
+import { loadGameSave, saveGame } from '../utility/ActionsUtility';
 import { useMyNavigate } from '../utility/useMyNavigate';
 
 export default function Settings() {
@@ -49,6 +51,7 @@ export default function Settings() {
     const setOpenLoadAlert = useSetRecoilState(openLoadAlertState);
     const [hideInterface, setHideInterface] = useRecoilState(hideInterfaceState);
     const notifyLoadEvent = useSetRecoilState(reloadInterfaceDataEventState);
+    const [quickSave, setQuickSave] = useRecoilState(quickSaveState)
     const { enqueueSnackbar } = useSnackbar();
 
     useEffect(() => {
@@ -144,7 +147,8 @@ export default function Settings() {
                                     </SettingButton>
                                     <SettingButton
                                         onClick={() => {
-                                            addQuickSave()
+                                            let save = getSaveJson()
+                                            setQuickSave(save)
                                             enqueueSnackbar(t("success_save"), { variant: 'success' })
                                         }}
                                     >
@@ -153,7 +157,7 @@ export default function Settings() {
                                     </SettingButton>
                                     <SettingButton
                                         onClick={() => setOpenLoadAlert(true)}
-                                        disabled={!localStorage.getItem("quickSave")}
+                                        disabled={!quickSave}
                                     >
                                         <FileUploadIcon />
                                         <Typography level="title-md">{t("quick_load_restricted")}</Typography>
