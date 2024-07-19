@@ -1,5 +1,6 @@
 import { getSaveJson } from '@drincs/pixi-vn';
-import { Stack } from '@mui/joy';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { IconButton, Stack, useTheme } from '@mui/joy';
 import { AnimatePresence, motion } from "framer-motion";
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
@@ -24,7 +25,7 @@ export default function QuickActions() {
     const notifyLoadEvent = useSetRecoilState(reloadInterfaceDataEventState);
     const setOpenLoadAlert = useSetRecoilState(openLoadAlertState);
     const { t } = useTranslation(["translation"]);
-    const hideInterface = useRecoilValue(hideInterfaceState)
+    const [hideInterface, setHideInterface] = useRecoilState(hideInterfaceState);
     const [skip, setSkip] = useRecoilState(skipEnabledState)
     const [auto, setAuto] = useRecoilState(autoEnabledState)
     const canGoBack = useRecoilValue(canGoBackState)
@@ -128,6 +129,37 @@ export default function QuickActions() {
                     {t("settings_restricted")}
                 </TextMenuButton>
             </Stack >
+            <IconButton
+                onClick={() => setHideInterface((prev) => !prev)}
+                sx={{
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                    pointerEvents: hideInterface ? "auto" : "none",
+                }}
+                component={motion.div}
+                variants={{
+                    open: {
+                        opacity: 1,
+                        x: 0,
+                    },
+                    closed: {
+                        opacity: 0,
+                        x: 8,
+                    }
+                }}
+                initial={"closed"}
+                animate={!hideInterface ? "closed" : "open"}
+                exit={"closed"}
+                transition={{ type: "tween" }}
+            >
+                <VisibilityOffIcon
+                    sx={{
+                        pointerEvents: hideInterface ? "auto" : "none",
+                        color: useTheme().palette.neutral[500],
+                    }}
+                />
+            </IconButton>
         </AnimatePresence>
     );
 }
