@@ -12,6 +12,7 @@ export default function SettingButton({ children, checked, disabled, sx, onChang
                 backgroundColor: disabled ? useTheme().palette.neutral[100] : undefined,
                 ...sx,
             }}
+            onClick={disabled ? undefined : onClick}
             {...rest}
         >
             <CardContent>
@@ -23,7 +24,7 @@ export default function SettingButton({ children, checked, disabled, sx, onChang
                 checked={true}
                 variant="outlined"
                 color="neutral"
-                onChange={onChange || onClick}
+                onChange={onChange}
                 sx={{ mt: -2 }}
                 disabled={disabled}
                 slotProps={{
