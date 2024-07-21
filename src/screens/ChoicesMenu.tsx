@@ -28,6 +28,25 @@ export default function ChoicesMenu(props: IProps) {
     const { menu, hidden } = useRecoilValue(choiceMenuState)
     const notifyReloadInterfaceDataEvent = useSetRecoilState(reloadInterfaceDataEventState);
     const { enqueueSnackbar } = useSnackbar();
+    const gridVariants: Variants = {
+        open: {
+            clipPath: "inset(0% 0% 0% 0% round 10px)",
+            transition: {
+                type: "spring",
+                bounce: 0,
+                duration: 0.7,
+                staggerChildren: 0.05
+            },
+        },
+        closed: {
+            clipPath: "inset(10% 50% 90% 50% round 10px)",
+            transition: {
+                type: "spring",
+                bounce: 0,
+                duration: 0.3
+            },
+        }
+    };
     const itemVariants: Variants = {
         open: {
             opacity: 1,
@@ -103,13 +122,8 @@ export default function ChoicesMenu(props: IProps) {
                 left: 0,
                 right: 0,
                 height: fullscreen ? "100%" : `${height}%`,
-                pointerEvents: "auto",
+                pointerEvents: hidden ? "none" : "auto",
             }}
-            component={motion.div}
-            initial="closed"
-            animate={hidden ? "openclosed" : "open"}
-            exit="closed"
-            className="menu"
         >
             <Grid
                 container
@@ -124,25 +138,7 @@ export default function ChoicesMenu(props: IProps) {
                     width: '100%',
                 }}
                 component={motion.div}
-                variants={{
-                    open: {
-                        clipPath: "inset(0% 0% 0% 0% round 10px)",
-                        transition: {
-                            type: "spring",
-                            bounce: 0,
-                            duration: 0.7,
-                            staggerChildren: 0.05
-                        }
-                    },
-                    closed: {
-                        clipPath: "inset(10% 50% 90% 50% round 10px)",
-                        transition: {
-                            type: "spring",
-                            bounce: 0,
-                            duration: 0.3
-                        }
-                    }
-                }}
+                variants={gridVariants}
             >
                 {menu?.map((item, index) => {
                     return (

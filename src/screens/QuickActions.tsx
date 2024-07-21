@@ -135,17 +135,18 @@ export default function QuickActions() {
                     position: "absolute",
                     top: 0,
                     right: 0,
-                    pointerEvents: hideInterface ? "auto" : "none",
                 }}
                 component={motion.div}
                 variants={{
                     open: {
                         opacity: 1,
                         x: 0,
+                        pointerEvents: "auto",
                     },
                     closed: {
                         opacity: 0,
                         x: 8,
+                        pointerEvents: "none",
                     }
                 }}
                 initial={"closed"}
@@ -155,7 +156,6 @@ export default function QuickActions() {
             >
                 <VisibilityOffIcon
                     sx={{
-                        pointerEvents: hideInterface ? "auto" : "none",
                         color: useTheme().palette.neutral[500],
                     }}
                 />

@@ -11,6 +11,7 @@ import HistoryIcon from '@mui/icons-material/History';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import ModeNightIcon from '@mui/icons-material/ModeNight';
 import SaveIcon from '@mui/icons-material/Save';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import WbIncandescentIcon from '@mui/icons-material/WbIncandescent';
 import { Box, Button, DialogContent, DialogTitle, Divider, Drawer, FormControl, FormHelperText, FormLabel, IconButton, ModalClose, RadioGroup, Sheet, Slider, Stack, ToggleButtonGroup, Tooltip, Typography, useColorScheme } from "@mui/joy";
 import { Theme, useMediaQuery } from '@mui/material';
@@ -54,7 +55,7 @@ export default function Settings() {
     const notifyLoadEvent = useSetRecoilState(reloadInterfaceDataEventState);
     const [quickSave, setQuickSave] = useRecoilState(quickSaveState)
     const { enqueueSnackbar } = useSnackbar();
-    const lgScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
+    const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
     useEffect(() => {
         window.addEventListener('keydown', onkeydown);
@@ -94,10 +95,16 @@ export default function Settings() {
     return (
         <>
             <Drawer
-                size={lgScreen ? 'lg' : 'md'}
+                // size={'lg'}
                 variant="plain"
                 open={open}
                 onClose={() => setOpen(false)}
+                sx={{
+                    '& .MuiDrawer-content': {
+                        width: smScreen ? '100%' : 600,
+                        maxWidth: '100%',
+                    },
+                }}
                 slotProps={{
                     content: {
                         sx: {
@@ -188,7 +195,7 @@ export default function Settings() {
                                         checked={hideInterface}
                                         onClick={() => setHideInterface((prev) => !prev)}
                                     >
-                                        <HdrAutoIcon />
+                                        <VisibilityOffIcon />
                                         <Typography level="title-md">{t("hide_interface")}</Typography>
                                         <Typography
                                             sx={{
@@ -255,7 +262,7 @@ export default function Settings() {
                                 {t("auto_forward_time")}
                             </FormLabel>
                             <FormHelperText sx={{ typography: 'body-sm' }}>
-                                {t("auto_forward_time_description")}
+                                {t("auto_forward_time_description", { autoName: t("auto_forward_time_restricted") })}
                             </FormHelperText>
                         </Box>
                         <Box
@@ -280,6 +287,8 @@ export default function Settings() {
                                 valueLabelDisplay="on"
                                 max={10}
                                 min={1}
+                                disabled={!auto}
+                                valueLabelFormat={(index) => index + "s"}
                                 onChange={(_, value) => {
                                     if (value)
                                         setAutoTime(value as number)
@@ -316,6 +325,11 @@ export default function Settings() {
                                 valueLabelDisplay="on"
                                 max={200}
                                 min={0}
+                                valueLabelFormat={(index) => {
+                                    if (index === 0) return t('off')
+                                    return `${index}ms`
+                                }}
+
                                 onChange={(_, value) => {
                                     setTypewriterDelay(value as number || 0)
                                 }}

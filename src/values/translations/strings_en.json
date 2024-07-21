@@ -5,7 +5,7 @@
 		, "dialogues" : "Dialogues"
 		, "auto_forward_time" : "Auto Forward Time"
 		, "auto_forward_time_restricted" : "Auto"
-		, "auto_forward_time_description" : "Choose the time in seconds before the dialogue auto-forwards."
+		, "auto_forward_time_description" : "Choose the time in seconds before the dialogue auto-forwards. (You can edit this value if \"{{autoName}}\" is enabled)"
 		, "display" : "Display"
 		, "fullscreen" : "Fullscreen"
 		, "fullscreen_description" : "Toggle fullscreen mode."
@@ -36,9 +36,10 @@
 		, "search" : "Search"
 		, "next" : "Next"
 		, "text_speed" : "Text Speed"
-		, "text_speed_description" : "Choose the speed of the text."
+		, "text_speed_description" : "Choose the speed of the typewriter effect. If is set to 0 ( off ) the text will appear instantly."
 		, "hide_interface" : "Hide Interface"
 		, "success_save" : "Save successful"
 		, "success_load" : "Load successful"
+		, "off" : "Off"
 	}
 }
