@@ -1,4 +1,4 @@
-import { Typography, TypographyProps } from "@mui/joy";
+import { Typography, TypographyProps, useTheme } from "@mui/joy";
 import { motion, Variants } from "framer-motion";
 import { useMemo } from "react";
 import Markdown from "react-markdown";
@@ -78,7 +78,11 @@ export default function TypewriterMarkdown({ text, delay = 0, ...rest }: { text:
                             letterVariants={letterVariants}
                             dadElement={(children) => <motion.a
                                 href={href}
-                                style={style}
+                                target="_blank"
+                                style={{
+                                    ...style,
+                                    color: useTheme().palette.primary[500],
+                                }}
                                 variants={letterVariants}
                             >
                                 {children}
@@ -91,7 +95,11 @@ export default function TypewriterMarkdown({ text, delay = 0, ...rest }: { text:
                             children={children}
                             letterVariants={letterVariants}
                             dadElement={(children) => <motion.code
-                                style={style}
+                                style={{
+                                    ...style,
+                                    backgroundColor: useTheme().palette.neutral[600],
+                                    color: useTheme().palette.neutral[200],
+                                }}
                                 variants={letterVariants}
                             >
                                 {children}
@@ -104,7 +112,10 @@ export default function TypewriterMarkdown({ text, delay = 0, ...rest }: { text:
                             children={children}
                             letterVariants={letterVariants}
                             dadElement={(children) => <motion.ul
-                                style={style}
+                                style={{
+                                    ...style,
+                                    margin: 0,
+                                }}
                                 variants={letterVariants}
                             >
                                 {children}
@@ -214,7 +225,10 @@ export default function TypewriterMarkdown({ text, delay = 0, ...rest }: { text:
                             children={children}
                             letterVariants={letterVariants}
                             dadElement={(children) => <motion.h1
-                                style={style}
+                                style={{
+                                    ...style,
+                                    margin: 0,
+                                }}
                                 variants={letterVariants}
                             >
                                 {children}
@@ -227,7 +241,10 @@ export default function TypewriterMarkdown({ text, delay = 0, ...rest }: { text:
                             children={children}
                             letterVariants={letterVariants}
                             dadElement={(children) => <motion.h2
-                                style={style}
+                                style={{
+                                    ...style,
+                                    margin: 0,
+                                }}
                                 variants={letterVariants}
                             >
                                 {children}
@@ -240,7 +257,10 @@ export default function TypewriterMarkdown({ text, delay = 0, ...rest }: { text:
                             children={children}
                             letterVariants={letterVariants}
                             dadElement={(children) => <motion.h3
-                                style={style}
+                                style={{
+                                    ...style,
+                                    margin: 0,
+                                }}
                                 variants={letterVariants}
                             >
                                 {children}
@@ -253,7 +273,10 @@ export default function TypewriterMarkdown({ text, delay = 0, ...rest }: { text:
                             children={children}
                             letterVariants={letterVariants}
                             dadElement={(children) => <motion.h4
-                                style={style}
+                                style={{
+                                    ...style,
+                                    margin: 0,
+                                }}
                                 variants={letterVariants}
                             >
                                 {children}

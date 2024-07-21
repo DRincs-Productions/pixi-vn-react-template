@@ -259,44 +259,6 @@ export default function Settings() {
                         </Typography>
                         <Box>
                             <FormLabel sx={{ typography: 'title-sm' }}>
-                                {t("auto_forward_time")}
-                            </FormLabel>
-                            <FormHelperText sx={{ typography: 'body-sm' }}>
-                                {t("auto_forward_time_description", { autoName: t("auto_forward_time_restricted") })}
-                            </FormHelperText>
-                        </Box>
-                        <Box
-                            sx={{
-                                paddingX: 3,
-                            }}
-                        >
-                            <Slider
-                                defaultValue={autoTime}
-                                getAriaValueText={(value) => `${value}s`}
-                                step={1}
-                                marks={[
-                                    {
-                                        value: 1,
-                                        label: '1s',
-                                    },
-                                    {
-                                        value: 10,
-                                        label: '10s',
-                                    },
-                                ]}
-                                valueLabelDisplay="on"
-                                max={10}
-                                min={1}
-                                disabled={!auto}
-                                valueLabelFormat={(index) => index + "s"}
-                                onChange={(_, value) => {
-                                    if (value)
-                                        setAutoTime(value as number)
-                                }}
-                            />
-                        </Box>
-                        <Box>
-                            <FormLabel sx={{ typography: 'title-sm' }}>
                                 {t("text_speed")}
                             </FormLabel>
                             <FormHelperText sx={{ typography: 'body-sm' }}>
@@ -332,6 +294,44 @@ export default function Settings() {
 
                                 onChange={(_, value) => {
                                     setTypewriterDelay(value as number || 0)
+                                }}
+                            />
+                        </Box>
+                        <Box>
+                            <FormLabel sx={{ typography: 'title-sm' }}>
+                                {t("auto_forward_time")}
+                            </FormLabel>
+                            <FormHelperText sx={{ typography: 'body-sm' }}>
+                                {t("auto_forward_time_description", { autoName: t("auto_forward_time_restricted") })}
+                            </FormHelperText>
+                        </Box>
+                        <Box
+                            sx={{
+                                paddingX: 3,
+                            }}
+                        >
+                            <Slider
+                                defaultValue={autoTime}
+                                getAriaValueText={(value) => `${value}s`}
+                                step={1}
+                                marks={[
+                                    {
+                                        value: 1,
+                                        label: '1s',
+                                    },
+                                    {
+                                        value: 10,
+                                        label: '10s',
+                                    },
+                                ]}
+                                valueLabelDisplay="on"
+                                max={10}
+                                min={1}
+                                disabled={!auto}
+                                valueLabelFormat={(index) => index + "s"}
+                                onChange={(_, value) => {
+                                    if (value)
+                                        setAutoTime(value as number)
                                 }}
                             />
                         </Box>
