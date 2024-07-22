@@ -6,6 +6,7 @@ import CardContent from '@mui/joy/CardContent';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
 import { AnimatePresence, motion, Variants } from "framer-motion";
+import { useRef } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { dialogDataState } from '../atoms/dialogDataState';
 import { dialogueCardHeightState } from '../atoms/dialogueCardHeightState';
@@ -60,6 +61,7 @@ export default function Dialogue({ nextOnClick }: {
             pointerEvents: "none",
         }
     }
+    const paragraphRef = useRef<HTMLDivElement>(null);
 
     return (
         <>
@@ -199,6 +201,7 @@ export default function Dialogue({ nextOnClick }: {
                                         </Typography>}
                                     </AnimatePresence>
                                     <Sheet
+                                        ref={paragraphRef}
                                         sx={{
                                             bgcolor: 'background.level1',
                                             borderRadius: 'sm',
@@ -217,6 +220,12 @@ export default function Dialogue({ nextOnClick }: {
                                             delay={typewriterDelay}
                                             onAnimationStart={() => setTypewriterIsAnimated(true)}
                                             onAnimationComplete={() => setTypewriterIsAnimated(false)}
+                                            scroll={typewriterDelay ? (offsetTop: number) => {
+                                                if (paragraphRef.current) {
+                                                    let scrollTop = (offsetTop - (paragraphRef.current.clientHeight / 2))
+                                                    paragraphRef.current.scrollTo({ top: scrollTop, behavior: "auto" })
+                                                }
+                                            } : undefined}
                                         />
                                     </Sheet>
                                 </CardContent>
