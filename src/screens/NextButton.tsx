@@ -1,4 +1,3 @@
-import { GameStepManager } from '@drincs/pixi-vn';
 import { StepLabelProps } from '@drincs/pixi-vn/dist/override';
 import { Button } from '@mui/joy';
 import { motion } from "framer-motion";
@@ -21,26 +20,29 @@ export default function NextButton({ nextOnClick }: {
     const navigate = useMyNavigate();
     const { t } = useTranslation(["translation"]);
     useEffect(() => {
-        window.addEventListener('keydown', onkeydown);
+        window.addEventListener("keypress", onkeypress);
+        window.addEventListener("keyup", onkeyup);
 
         return () => {
-            window.removeEventListener('keydown', onkeydown);
+            window.removeEventListener("keypress", onkeypress);
+            window.removeEventListener("keyup", onkeyup);
         };
     }, []);
 
-    function onkeydown(event: KeyboardEvent) {
-        if (event.code == 'Enter' || event.code == 'Space') {
-            if (!GameStepManager.canGoNext) {
-                return;
-            }
+    function onkeypress(event: KeyboardEvent) {
+        if ((event.code == 'Enter' || event.code == 'Space')) {
+            setSkip(true)
+        }
+    }
+
+    function onkeyup(event: KeyboardEvent) {
+        if ((event.code == 'Enter' || event.code == 'Space')) {
+            setSkip(false)
             nextOnClick({
                 t,
                 navigate,
                 notify: (message, variant) => enqueueSnackbar(message, { variant }),
             })
-            if (skip) {
-                setSkip(false)
-            }
         }
     }
 
