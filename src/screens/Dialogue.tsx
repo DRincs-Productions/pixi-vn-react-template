@@ -6,11 +6,12 @@ import CardContent from '@mui/joy/CardContent';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
 import { AnimatePresence, motion, Variants } from "framer-motion";
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { dialogDataState } from '../atoms/dialogDataState';
 import { dialogueCardHeightState } from '../atoms/dialogueCardHeightState';
 import { dialogueCardImageWidthState } from '../atoms/dialogueCardImageWidthState';
 import { typewriterDelayState } from '../atoms/typewriterDelayState';
+import { typewriterIsAnimatedState } from '../atoms/typewriterIsAnimatedState';
 import SliderResizer from '../components/SliderResizer';
 import TypewriterMarkdown from '../components/TypewriterMarkdown';
 import ChoicesMenu from './ChoicesMenu';
@@ -23,11 +24,11 @@ export default function Dialogue({ nextOnClick }: {
     const [cardImageWidth, setCardImageWidth] = useRecoilState(dialogueCardImageWidthState)
     const typewriterDelay = useRecoilValue(typewriterDelayState)
     const { text, character, hidden } = useRecoilValue(dialogDataState)
+    const setTypewriterIsAnimated = useSetRecoilState(typewriterIsAnimatedState)
     const cardVarians: Variants = {
         open: {
             opacity: 1,
             y: 0,
-            // pointerEvents: "auto",
         },
         closed: {
             opacity: 0,
@@ -214,6 +215,8 @@ export default function Dialogue({ nextOnClick }: {
                                         <TypewriterMarkdown
                                             text={text || ""}
                                             delay={typewriterDelay}
+                                            onAnimationStart={() => setTypewriterIsAnimated(true)}
+                                            onAnimationComplete={() => setTypewriterIsAnimated(false)}
                                         />
                                     </Sheet>
                                 </CardContent>

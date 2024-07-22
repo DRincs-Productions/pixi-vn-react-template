@@ -302,7 +302,7 @@ export default function Settings() {
                                 {t("auto_forward_time")}
                             </FormLabel>
                             <FormHelperText sx={{ typography: 'body-sm' }}>
-                                {t("auto_forward_time_description", { autoName: t("auto_forward_time_restricted") })}
+                                {t("auto_forward_time_description", { autoName: t("auto_forward_time_restricted"), textSpeedName: t("text_speed") })}
                             </FormHelperText>
                         </Box>
                         <Box

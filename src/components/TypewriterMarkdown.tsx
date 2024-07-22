@@ -1,4 +1,4 @@
-import { Typography, TypographyProps, useTheme } from "@mui/joy";
+import { useTheme } from "@mui/joy";
 import { motion, Variants } from "framer-motion";
 import { useMemo } from "react";
 import Markdown from "react-markdown";
@@ -36,7 +36,12 @@ function TypewriterMarkdownInternal({ children, letterVariants, dadElement }: {
     return dadElement(children)
 };
 
-export default function TypewriterMarkdown({ text, delay = 0, ...rest }: { text: string; delay?: number; } & TypographyProps) {
+export default function TypewriterMarkdown({ text, delay = 0, onAnimationComplete, onAnimationStart }: {
+    text: string
+    delay?: number
+    onAnimationComplete?: () => void
+    onAnimationStart?: () => void
+}) {
     const sentenceVariants: Variants = {
         hidden: {},
         visible: { opacity: 1, transition: { staggerChildren: delay / 1000 } },
@@ -47,13 +52,13 @@ export default function TypewriterMarkdown({ text, delay = 0, ...rest }: { text:
     }), [delay]);
 
     return (
-        <Typography
-            component={motion.div}
+        <motion.div
             key={text}
             variants={sentenceVariants}
             initial="hidden"
-            animate="visible"
-            {...rest}
+            animate={"visible"}
+            onAnimationStart={onAnimationStart}
+            onAnimationComplete={onAnimationComplete}
         >
             <Markdown
                 remarkPlugins={[remarkGfm]}
@@ -288,6 +293,6 @@ export default function TypewriterMarkdown({ text, delay = 0, ...rest }: { text:
             >
                 {text}
             </Markdown>
-        </Typography>
+        </motion.div>
     )
 };

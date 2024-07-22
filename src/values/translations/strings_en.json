@@ -5,7 +5,7 @@
 		, "dialogues" : "Dialogues"
 		, "auto_forward_time" : "Auto Forward Time"
 		, "auto_forward_time_restricted" : "Auto"
-		, "auto_forward_time_description" : "Choose the time in seconds before the dialogue auto-forwards. (You can edit this value if \"{{autoName}}\" is enabled)"
+		, "auto_forward_time_description" : "Choose the time in seconds before the dialogue auto-forwards. If \"{{textSpeedName}}\" is enabled, the auto-forward will be executed after the typewriter effect is completed. (You can edit this value if \"{{autoName}}\" is enabled)"
 		, "display" : "Display"
 		, "fullscreen" : "Fullscreen"
 		, "fullscreen_description" : "Toggle fullscreen mode."
