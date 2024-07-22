@@ -31,7 +31,7 @@ export default function SkipAutoInterceptor({ nextOnClick }: {
                     setRecheckSkip((p) => p + 1)
                 })
             }
-        }, 500);
+        }, 400);
 
         return () => {
             clearTimeout(timeout)
