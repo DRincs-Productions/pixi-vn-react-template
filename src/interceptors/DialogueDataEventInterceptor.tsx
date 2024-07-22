@@ -27,7 +27,7 @@ export default function DialogueDataEventInterceptor() {
             }
         }
         try {
-            if (dial !== text || newCharacter !== character) {
+            if (dial?.text !== text || newCharacter !== character) {
                 setDialogData({
                     text: newText,
                     character: newCharacter,
