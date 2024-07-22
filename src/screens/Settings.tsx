@@ -21,7 +21,7 @@ import { HuePicker } from 'react-color';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { autoEnabledState } from '../atoms/autoEnabledState';
+import { autoInfoState } from '../atoms/autoInfoState';
 import { hideInterfaceState } from '../atoms/hideInterfaceState';
 import { openHistoryState } from '../atoms/openHistoryState';
 import { openLoadAlertState } from '../atoms/openLoadAlertState';
@@ -43,12 +43,11 @@ export default function Settings() {
     const navigate = useMyNavigate();
     const location = useLocation();
     const [openYouSure, setOpenYouSure] = useState(false)
-    const [autoTime, setAutoTime] = useState(localStorage.getItem('auto_forward_second') ? parseInt(localStorage.getItem('auto_forward_second')!) : 1)
     const [typewriterDelay, setTypewriterDelay] = useRecoilState(typewriterDelayState)
     const [fullScreenEnabled, setFullScreenEnabled] = useState(false)
     const { t } = useTranslation(["translation"]);
     const [skip, setSkip] = useRecoilState(skipEnabledState)
-    const [auto, setAuto] = useRecoilState(autoEnabledState)
+    const [auto, setAuto] = useRecoilState(autoInfoState)
     const setOpenHistory = useSetRecoilState(openHistoryState);
     const setOpenLoadAlert = useSetRecoilState(openLoadAlertState);
     const [hideInterface, setHideInterface] = useRecoilState(hideInterfaceState);
@@ -69,28 +68,6 @@ export default function Settings() {
             setOpen((prev) => !prev)
         }
     }
-
-    useEffect(() => {
-        // Debouncing
-        const setAuto = setTimeout(() => {
-            localStorage.setItem('auto_forward_second', autoTime.toString())
-        }, 500)
-
-        return () => {
-            clearTimeout(setAuto)
-        }
-    }, [autoTime])
-
-    useEffect(() => {
-        // Debouncing
-        const setTypewriter = setTimeout(() => {
-            localStorage.setItem('typewriter_delay_millisecond', typewriterDelay.toString())
-        }, 500)
-
-        return () => {
-            clearTimeout(setTypewriter)
-        }
-    }, [typewriterDelay])
 
     return (
         <>
@@ -245,8 +222,11 @@ export default function Settings() {
                                         </Typography>
                                     </SettingButton>
                                     <SettingButton
-                                        checked={auto}
-                                        onClick={() => setAuto((prev) => !prev)}
+                                        checked={auto.enabled}
+                                        onClick={() => setAuto((prev) => ({
+                                            ...prev,
+                                            enabled: !prev.enabled
+                                        }))}
                                     >
                                         <HdrAutoIcon />
                                         <Typography level="title-md">{t("auto_forward_time_restricted")}</Typography>
@@ -277,7 +257,7 @@ export default function Settings() {
                                 marks={[
                                     {
                                         value: 0,
-                                        label: '0ms',
+                                        label: 'Off',
                                     },
                                     {
                                         value: 200,
@@ -311,7 +291,7 @@ export default function Settings() {
                             }}
                         >
                             <Slider
-                                defaultValue={autoTime}
+                                defaultValue={auto.time}
                                 getAriaValueText={(value) => `${value}s`}
                                 step={1}
                                 marks={[
@@ -331,7 +311,10 @@ export default function Settings() {
                                 valueLabelFormat={(index) => index + "s"}
                                 onChange={(_, value) => {
                                     if (value)
-                                        setAutoTime(value as number)
+                                        setAuto((prev) => ({
+                                            ...prev,
+                                            time: value as number
+                                        }))
                                 }}
                             />
                         </Box>

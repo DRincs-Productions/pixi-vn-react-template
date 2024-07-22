@@ -3,7 +3,7 @@ import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRecoilValue } from 'recoil';
-import { autoEnabledState } from '../atoms/autoEnabledState';
+import { autoInfoState } from '../atoms/autoInfoState';
 import { skipEnabledState } from '../atoms/skipEnabledState';
 import { typewriterIsAnimatedState } from '../atoms/typewriterIsAnimatedState';
 import { useMyNavigate } from '../utility/useMyNavigate';
@@ -14,7 +14,7 @@ export default function SkipAutoInterceptor({ nextOnClick }: {
     const navigate = useMyNavigate();
     const { t } = useTranslation(["translation"]);
     const skipEnabled = useRecoilValue(skipEnabledState)
-    const autoEnabled = useRecoilValue(autoEnabledState)
+    const autoInfo = useRecoilValue(autoInfoState)
     const typewriterIsAnimated = useRecoilValue(typewriterIsAnimatedState)
     const [recheckSkip, setRecheckSkip] = useState<number>(0)
     const { enqueueSnackbar } = useSnackbar();
@@ -42,13 +42,12 @@ export default function SkipAutoInterceptor({ nextOnClick }: {
         if (skipEnabled) {
             return
         }
-        if (autoEnabled && !typewriterIsAnimated) {
-            let autoForwardSecond = localStorage.getItem('auto_forward_second')
-            if (autoForwardSecond) {
-                let millisecond = parseInt(autoForwardSecond) * 1000
+        if (autoInfo.enabled && !typewriterIsAnimated) {
+            if (autoInfo.time) {
+                let millisecond = autoInfo.time * 1000
                 // Debouncing
                 let timeout = setTimeout(() => {
-                    if (autoEnabled && !skipEnabled) {
+                    if (autoInfo.enabled && !skipEnabled) {
                         nextOnClick({
                             t,
                             navigate,
@@ -62,7 +61,7 @@ export default function SkipAutoInterceptor({ nextOnClick }: {
                 }
             }
         }
-    }, [autoEnabled, typewriterIsAnimated, skipEnabled])
+    }, [autoInfo, typewriterIsAnimated, skipEnabled])
 
     return null
 }

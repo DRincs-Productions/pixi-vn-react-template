@@ -139,6 +139,7 @@ export default function ChoicesMenu(props: IProps) {
                 }}
                 component={motion.div}
                 variants={gridVariants}
+                animate={hidden ? "closed" : "open"}
             >
                 {menu?.map((item, index) => {
                     return (

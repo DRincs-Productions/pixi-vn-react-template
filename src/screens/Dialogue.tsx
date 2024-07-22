@@ -5,7 +5,7 @@ import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { useRef } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { dialogDataState } from '../atoms/dialogDataState';
@@ -110,131 +110,127 @@ export default function Dialogue({ nextOnClick }: {
                         bottom: 0,
                     }}
                 >
-                    <AnimatePresence>
-                        <Box
+                    <Box
+                        sx={{
+                            position: "absolute",
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            height: "100%",
+                        }}
+                        component={motion.div}
+                        variants={cardVarians}
+                        initial={"closed"}
+                        animate={hidden ? "closed" : "open"}
+                        exit={"closed"}
+                        transition={{ type: "tween" }}
+                    >
+                        <Card
+                            key={"dialogue-card"}
+                            orientation="horizontal"
                             sx={{
-                                position: "absolute",
-                                left: 0,
-                                right: 0,
-                                top: 0,
+                                overflow: 'auto',
+                                gap: 1,
+                                padding: 0,
                                 height: "100%",
                             }}
-                            component={motion.div}
-                            variants={cardVarians}
-                            initial={"closed"}
-                            animate={hidden ? "closed" : "open"}
-                            exit={"closed"}
-                            transition={{ type: "tween" }}
                         >
-                            <Card
-                                key={"dialogue-card"}
-                                orientation="horizontal"
+                            {character && <AspectRatio
+                                flex
+                                ratio="1"
+                                maxHeight={"20%"}
                                 sx={{
-                                    overflow: 'auto',
-                                    gap: 1,
-                                    padding: 0,
                                     height: "100%",
+                                    minWidth: `${cardImageWidth}%`,
                                 }}
+                                component={motion.div}
+                                variants={cardElementVarians}
+                                initial={"closed"}
+                                animate={character?.icon ? "open" : "closed"}
+                                exit={"closed"}
+                                transition={{ type: "tween" }}
                             >
-                                {character && <AspectRatio
-                                    flex
-                                    ratio="1"
-                                    maxHeight={"20%"}
+                                <img
+                                    src={character?.icon}
+                                    loading="lazy"
+                                    alt=""
+                                />
+                            </AspectRatio>}
+                            {character && <Box
+                                component={motion.div}
+                                variants={cardImageVarians}
+                                initial={"closed"}
+                                animate={character?.icon ? "open" : "closed"}
+                                exit={"closed"}
+                                transition={{ type: "tween" }}
+                            >
+                                <SliderResizer
+                                    orientation="horizontal"
+                                    max={100}
+                                    min={0}
+                                    value={cardImageWidth}
+                                    onChange={(_, value) => {
+                                        if (typeof value === "number") {
+                                            if (value > 75) {
+                                                value = 75
+                                            }
+                                            if (value < 5) {
+                                                value = 5
+                                            }
+                                            setCardImageWidth(value)
+                                        }
+                                    }}
+                                />
+                            </Box>}
+                            <CardContent>
+                                {character && character.name && <Typography
+                                    fontSize="xl"
+                                    fontWeight="lg"
                                     sx={{
-                                        height: "100%",
-                                        minWidth: `${cardImageWidth}%`,
+                                        color: character.color,
                                     }}
                                     component={motion.div}
                                     variants={cardElementVarians}
                                     initial={"closed"}
-                                    animate={character?.icon ? "open" : "closed"}
+                                    animate={character.name ? "open" : "closed"}
                                     exit={"closed"}
-                                    transition={{ type: "tween" }}
                                 >
-                                    <img
-                                        src={character?.icon}
-                                        loading="lazy"
-                                        alt=""
-                                    />
-                                </AspectRatio>}
-                                {character && <Box
-                                    component={motion.div}
-                                    variants={cardImageVarians}
-                                    initial={"closed"}
-                                    animate={character?.icon ? "open" : "closed"}
-                                    exit={"closed"}
-                                    transition={{ type: "tween" }}
+                                    {character.name + (character.surname ? " " + character.surname : "")}
+                                </Typography>}
+                                <Sheet
+                                    ref={paragraphRef}
+                                    sx={{
+                                        bgcolor: 'background.level1',
+                                        borderRadius: 'sm',
+                                        p: 1.5,
+                                        minHeight: 10,
+                                        display: 'flex',
+                                        flex: 1,
+                                        overflow: 'auto',
+                                        height: "100%",
+                                        marginRight: 2,
+                                        marginBottom: 2,
+                                    }}
                                 >
-                                    <SliderResizer
-                                        orientation="horizontal"
-                                        max={100}
-                                        min={0}
-                                        value={cardImageWidth}
-                                        onChange={(_, value) => {
-                                            if (typeof value === "number") {
-                                                if (value > 75) {
-                                                    value = 75
-                                                }
-                                                if (value < 5) {
-                                                    value = 5
-                                                }
-                                                setCardImageWidth(value)
+                                    <TypewriterMarkdown
+                                        text={text || ""}
+                                        delay={typewriterDelay}
+                                        onAnimationStart={() => setTypewriterIsAnimated(true)}
+                                        onAnimationComplete={() => setTypewriterIsAnimated(false)}
+                                        scroll={typewriterDelay ? (offsetTop: number) => {
+                                            if (paragraphRef.current) {
+                                                let scrollTop = (offsetTop - (paragraphRef.current.clientHeight / 2))
+                                                paragraphRef.current.scrollTo({ top: scrollTop, behavior: "auto" })
                                             }
-                                        }}
+                                        } : undefined}
                                     />
-                                </Box>}
-                                <CardContent>
-                                    <AnimatePresence>
-                                        {character && character.name && <Typography
-                                            fontSize="xl"
-                                            fontWeight="lg"
-                                            sx={{
-                                                color: character.color,
-                                            }}
-                                            component={motion.div}
-                                            variants={cardElementVarians}
-                                            initial={"closed"}
-                                            animate={character.name ? "open" : "closed"}
-                                            exit={"closed"}
-                                        >
-                                            {character.name + (character.surname ? " " + character.surname : "")}
-                                        </Typography>}
-                                    </AnimatePresence>
-                                    <Sheet
-                                        ref={paragraphRef}
-                                        sx={{
-                                            bgcolor: 'background.level1',
-                                            borderRadius: 'sm',
-                                            p: 1.5,
-                                            minHeight: 10,
-                                            display: 'flex',
-                                            flex: 1,
-                                            overflow: 'auto',
-                                            height: "100%",
-                                            marginRight: 2,
-                                            marginBottom: 2,
-                                        }}
-                                    >
-                                        <TypewriterMarkdown
-                                            text={text || ""}
-                                            delay={typewriterDelay}
-                                            onAnimationStart={() => setTypewriterIsAnimated(true)}
-                                            onAnimationComplete={() => setTypewriterIsAnimated(false)}
-                                            scroll={typewriterDelay ? (offsetTop: number) => {
-                                                if (paragraphRef.current) {
-                                                    let scrollTop = (offsetTop - (paragraphRef.current.clientHeight / 2))
-                                                    paragraphRef.current.scrollTo({ top: scrollTop, behavior: "auto" })
-                                                }
-                                            } : undefined}
-                                        />
-                                    </Sheet>
-                                </CardContent>
-                            </Card>
-                        </Box>
-                        <NextButton
-                            nextOnClick={nextOnClick}
-                        />
-                    </AnimatePresence>
+                                </Sheet>
+                            </CardContent>
+                        </Card>
+                    </Box>
+                    <NextButton
+                        nextOnClick={nextOnClick}
+                    />
                 </Box>
             </Box>
         </>
