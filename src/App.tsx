@@ -7,8 +7,7 @@ export default function App() {
     return (
         <ErrorBoundary fallback={<div>Something went wrong</div>}>
             <Suspense
-                fallback={<LoadingPage>
-                </LoadingPage>}
+                fallback={<LoadingPage />}
             >
                 <Home />
             </Suspense>

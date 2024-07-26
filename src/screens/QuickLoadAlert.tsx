@@ -54,7 +54,7 @@ export default function QuickLoadAlert() {
                     color='primary'
                     variant="outlined"
                     onClick={() => {
-                        loadQuickSave(quickSave, navigate, () => {
+                        loadQuickSave(quickSave, navigate).then(() => {
                             notifyLoadEvent((prev) => prev + 1)
                             enqueueSnackbar(t("success_load"), { variant: 'success' })
                         })

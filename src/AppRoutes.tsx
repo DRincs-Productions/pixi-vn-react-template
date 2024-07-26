@@ -8,6 +8,7 @@ import DialogueDataEventInterceptor from './interceptors/DialogueDataEventInterc
 import SkipAutoInterceptor from './interceptors/SkipAutoInterceptor';
 import Dialogue from './screens/Dialogue';
 import History from './screens/History';
+import LoadingPage from './screens/LoadingPage';
 import MainMenu from './screens/MainMenu';
 import QuickActions from './screens/QuickActions';
 import QuickLoadAlert from './screens/QuickLoadAlert';
@@ -42,6 +43,7 @@ export default function AppRoutes() {
     return (
         <Routes>
             <Route key={"main_menu"} path={"/"} element={<MainMenu />} />
+            <Route key={"main_menu"} path={"/loading"} element={<LoadingPage />} />
             <Route key={"game"} path={"/game"}
                 element={<>
                     <History />

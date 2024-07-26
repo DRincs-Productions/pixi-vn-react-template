@@ -64,7 +64,7 @@ export default function QuickActions() {
                 transition={{ type: "tween" }}
             >
                 <TextMenuButton
-                    onClick={() => goBack(navigate, () => { notifyLoadEvent((prev) => prev + 1) })}
+                    onClick={() => goBack(navigate).then(() => notifyLoadEvent((prev) => prev + 1))}
                     disabled={!canGoBack}
                     sx={{ pointerEvents: !hideInterface ? "auto" : "none" }}
                 >

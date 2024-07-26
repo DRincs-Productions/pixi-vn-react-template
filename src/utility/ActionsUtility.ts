@@ -23,9 +23,14 @@ export function loadGameSave(navigate: (path: string) => void, afterLoad?: () =>
             const reader = new FileReader();
             reader.onload = (e) => {
                 const jsonString = e.target?.result as string;
+                navigate("/loading")
                 // load the save data from the JSON string
-                loadSaveJson(jsonString, navigate);
-                afterLoad && afterLoad();
+                loadSaveJson(jsonString, navigate)
+                    .then(() => {
+                        afterLoad && afterLoad();
+                    }).catch(() => {
+                        navigate("/game")
+                    })
             };
             reader.readAsText(file);
         }
@@ -33,15 +38,16 @@ export function loadGameSave(navigate: (path: string) => void, afterLoad?: () =>
     input.click();
 }
 
-export function goBack(navigate: (path: string) => void, afterBack?: () => void) {
-    GameStepManager.goBack(navigate)
-    afterBack && afterBack()
+export async function goBack(navigate: (path: string) => void) {
+    await GameStepManager.goBack(navigate)
 }
 
-export function loadQuickSave(data: string | null, navigate: (path: string) => void, afterLoad?: () => void) {
+export async function loadQuickSave(data: string | null, navigate: (path: string) => void) {
     if (data) {
-        loadSaveJson(data, navigate);
-        afterLoad && afterLoad();
+        navigate("/loading")
+        return loadSaveJson(data, navigate).catch(() => {
+            navigate("/game")
+        })
     }
 }
 
@@ -52,11 +58,15 @@ export function addRefreshSave() {
     }
 }
 
-export function loadRefreshSave(navigate: (path: string) => void, afterLoad?: () => void) {
+export async function loadRefreshSave(navigate: (path: string) => void) {
     const jsonString = localStorage.getItem("refreshSave")
     if (jsonString) {
-        loadSaveJson(jsonString, navigate);
-        afterLoad && afterLoad();
-        localStorage.removeItem("refreshSave")
+        navigate("/loading")
+        return loadSaveJson(jsonString, navigate)
+            .then(() => {
+                localStorage.removeItem("refreshSave")
+            }).catch(() => {
+                navigate("/game")
+            })
     }
 }

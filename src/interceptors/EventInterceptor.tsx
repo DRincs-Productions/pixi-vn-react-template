@@ -11,7 +11,7 @@ export default function EventInterceptor() {
     const navigate = useMyNavigate();
 
     useEffect(() => {
-        loadRefreshSave(navigate, () => notifyLoadEvent((prev) => prev + 1))
+        loadRefreshSave(navigate).then(() => notifyLoadEvent((prev) => prev + 1))
         window.addEventListener("beforeunload", addRefreshSave);
         window.addEventListener("popstate", onpopstate);
         window.addEventListener('keydown', onkeydown);

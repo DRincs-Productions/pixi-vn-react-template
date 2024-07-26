@@ -152,7 +152,10 @@ export default function Settings() {
                                         </Typography>
                                     </SettingButton>
                                     <SettingButton
-                                        onClick={() => setOpenLoadAlert(true)}
+                                        onClick={() => {
+                                            setOpenLoadAlert(true)
+                                            setOpen(false)
+                                        }}
                                         disabled={!quickSave}
                                     >
                                         <FileUploadIcon />
