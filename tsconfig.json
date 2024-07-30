@@ -27,6 +27,6 @@
       "module": "NodeNext"
     }
   },
-  "include": ["src"],
+  "include": ["src", "src-electron"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
