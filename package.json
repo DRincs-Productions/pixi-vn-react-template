@@ -10,10 +10,10 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "start:electron": "electron-forge start",
-    "package:electron": "electron-forge package",
-    "make:electron": "electron-forge make",
-    "publish:electron": "electron-forge publish"
+    "electron:start": "electron-forge start",
+    "electron:package": "electron-forge package",
+    "electron:make": "electron-forge make",
+    "electron:publish": "electron-forge publish"
   },
   "dependencies": {
     "@drincs/pixi-vn": "^0.6.5",
