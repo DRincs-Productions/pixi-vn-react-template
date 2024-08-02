@@ -70,6 +70,15 @@ see on `out` folder the distribution.
 
 you can setting the distribution in the `forge.config.cts` file.
 
+```bash
+# Windows
+npm run electron:make -- --platform win32
+# Linux
+npm run electron:make -- --platform linux
+# MacOS
+npm run electron:make -- --platform darwin
+```
+
 ### Windows Distribution
 
 You must install both Mono and Wine on non-Windows
@@ -80,10 +89,18 @@ You must add `author` in the `package.json` file.
 {
   "author": {
     "name": "Your Name",
-    "email": "you.mail@mail.com",
+    "email": "you.mail@mail.com"
   }
   // ...
 }
+```
+
+### From Windows to Windows
+
+```bash
+npm i @rollup/rollup-win32-x64-msvc
+npm i @esbuild/win32-x64
+npm run electron:make -- --platform win32
 ```
 
 ### From Linux to Windows
