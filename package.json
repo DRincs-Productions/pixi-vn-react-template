@@ -2,6 +2,7 @@
   "name": "my-app",
   "description": "My App Description",
   "version": "0.1.0",
+  "license": "MIT",
   "type": "module",
   "main": ".vite/build/main.js",
   "scripts": {

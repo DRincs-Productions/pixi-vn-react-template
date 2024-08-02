@@ -12,7 +12,15 @@ const config: ForgeConfig = {
     asar: true,
   },
   rebuildConfig: {},
-  makers: [new MakerSquirrel({}), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})],
+  makers: [
+    // The `MakerSquirrel` maker is only supported on Windows
+    new MakerSquirrel({}),
+    // The `MakerZIP` maker is only supported on macOS
+    new MakerZIP({}, ['darwin']),
+    // The `MakerRpm` and `MakerDeb` makers are only supported on Linux
+    new MakerRpm({}),
+    new MakerDeb({})
+  ],
   plugins: [
     new VitePlugin({
       // `build` can specify multiple entry builds, which can be Main process, Preload scripts, Worker process, etc.

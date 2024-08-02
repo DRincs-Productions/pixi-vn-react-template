@@ -59,3 +59,51 @@ Text libraries:
 
 * [i18next](https://www.i18next.com/): A library that gives the possibility to manage multiple translations in the application.
 * [Reacr Markdown](https://www.npmjs.com/package/react-markdown): A library that allows you to render markdown in React components.
+
+## Distribution
+
+https://www.electronforge.io/config/makers
+
+To create a distribution of the game, you can use the following commands:
+
+```bash
+npm run electron:make -- --platform darwin
+```
+
+see on `out` folder the distribution.
+
+you can setting the distribution in the `forge.config.cts` file.
+
+### Windows Distribution
+
+You must install both Mono and Wine on non-Windows
+
+You must add `author` in the `package.json` file.
+
+```json
+{
+  "author": {
+    "name": "Your Name",
+    "email": "you.mail@mail.com",
+  }
+  // ...
+}
+```
+
+### From Linux to Windows
+
+```bash
+sudo apt install wine
+sudo apt install mono-complete
+sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install wine32
+npm run electron:make -- --platform win32
+```
+
+## Linux Distribution
+
+### Fom Linux to Linux
+
+```bash
+sudo apt install rpm dpkg fakeroot
+npm run electron:make -- --platform linux
+```
