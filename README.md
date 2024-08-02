@@ -66,10 +66,6 @@ https://www.electronforge.io/config/makers
 
 To create a distribution of the game, you can use the following commands:
 
-```bash
-npm run electron:make -- --platform darwin
-```
-
 see on `out` folder the distribution.
 
 you can setting the distribution in the `forge.config.cts` file.
@@ -106,4 +102,13 @@ npm run electron:make -- --platform win32
 ```bash
 sudo apt install rpm dpkg fakeroot
 npm run electron:make -- --platform linux
+```
+
+## MacOS Distribution
+
+### From Linux to MacOS
+
+```bash
+sudo apt install zip
+npm run electron:make -- --platform darwin
 ```
