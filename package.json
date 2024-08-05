@@ -1,6 +1,6 @@
 {
-  "name": "your-app",
-  "private": true,
+  "name": "my-app",
+  "description": "My App Description",
   "version": "0.1.0",
   "type": "module",
   "scripts": {
@@ -47,5 +47,16 @@
     "typescript": "^5.5.4",
     "vite": "^5.3.5",
     "vite-plugin-pwa": "^0.20.1"
-  }
+  },
+  "keywords": [
+    "game",
+    "js",
+    "novel",
+    "pixi",
+    "pixi-js",
+    "pixi-vn",
+    "visual",
+    "visual-novel",
+    "vn"
+  ]
 }

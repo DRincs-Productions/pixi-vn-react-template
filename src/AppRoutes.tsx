@@ -58,6 +58,7 @@ export default function AppRoutes() {
                     />
                 </>}
             />
+            <Route path="*" element={<MainMenu />} />
         </Routes>
     )
 }

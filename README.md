@@ -16,15 +16,45 @@ The history modal is a list of all the dialogues and choices that have been disp
 
 The settings modal allows you to change the text speed, go to full screen, edit theme colors, and change go to main menu. The settings for the audio have not been added nor the libraries to manage it, but I recommend adding them.
 
-## How can I use this template to create a new project?
+## How to use
 
-If you have GitHub account, you can use this template to create a new repository. To do this, click on the "Use this template" button located at the top of the repository.
+Before starting, you need to have Node.js installed on your computer. If you don't have it, you can download it [here](https://nodejs.org/).
 
-![image](https://github.com/user-attachments/assets/fc77dd71-1fa5-4532-a1d2-31eb83ffedec)
+### Installation
 
-If you don't have a GitHub account, you can download the repository as a zip file. To do this, click on the "Code" button located at the top of the repository and then click on "Download ZIP".
+First, is necessary install the dependencies. To do this, open a terminal in the root folder of the project and run the following command:
 
-![image](https://github.com/user-attachments/assets/2e72d6cf-c1c6-441e-875d-1779b4f27d36)
+```bash
+npm install
+```
+
+### Start the web application
+
+To start the web application, run the following command:
+
+```bash
+npm start
+```
+
+This command will start the development server. Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
+
+#### Debugging
+
+If you use Visual Studio Code, you can use the debug configuration that comes with the template. To do this, go to the debug section and select the `Launch Chrome` configuration.
+
+## Building and distribution
+
+### Web application
+
+To build the project, run the following command:
+
+```bash
+npm run build
+```
+
+This command will create a `dist` folder with the files necessary to run the application. You can deploy this folder to a web server.
+
+You can read more about the possibilities of hosting in the [Pixi’VN documentation](https://pixi-vn.web.app/advanced/distribution.html#hosting).
 
 ## Keyboard shortcuts (hotkeys)
 

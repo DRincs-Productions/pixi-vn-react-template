@@ -65,8 +65,12 @@ export async function loadRefreshSave(navigate: (path: string) => void) {
         return loadSaveJson(jsonString, navigate)
             .then(() => {
                 localStorage.removeItem("refreshSave")
-            }).catch(() => {
-                navigate("/game")
             })
+            .catch(() => {
+                navigate("/")
+            })
+    }
+    else {
+        navigate("/")
     }
 }
