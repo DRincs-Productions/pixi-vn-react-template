@@ -23,4 +23,7 @@ module.exports = {
     "destructuring": "all",
     "ignoreReadBeforeAssign": true
   }],
+  packagerConfig: {
+    icon: 'src-electron/icons/icon' // no file extension required
+  }
 }

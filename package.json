@@ -1,6 +1,10 @@
 {
   "name": "my-app",
   "description": "My App Description",
+  "author": {
+    "name": "Your Name",
+    "email": "you.mail@mail.com"
+  },
   "version": "0.1.0",
   "license": "MIT",
   "type": "module",

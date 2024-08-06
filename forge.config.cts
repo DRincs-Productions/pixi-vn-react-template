@@ -14,18 +14,23 @@ const config: ForgeConfig = {
   rebuildConfig: {},
   makers: [
     // The `MakerSquirrel` maker is only supported on Windows
-    new MakerSquirrel({}),
+    new MakerSquirrel({
+      setupIcon: "src-electron/icons/icon.ico",
+      setupExe: "game.exe",
+    }),
     // The `MakerZIP` maker is only supported on macOS
     new MakerZIP({}, ['darwin']),
     // The `MakerRpm` and `MakerDeb` makers are only supported on Linux
     new MakerRpm({
       options: {
         categories: ["Game"],
+        icon: "src-electron/icons/icon.png",
       }
     }),
     new MakerDeb({
       options: {
         categories: ["Game"],
+        icon: "src-electron/icons/icon.png",
       }
     })
   ],

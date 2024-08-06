@@ -127,24 +127,11 @@ Below is a more detailed explanation of the steps to take. (Not having an Apple 
 
 ### Windows Distribution
 
-For the distribution of the application on Windows, you must add `author` in the `package.json` file, and install both Mono and Wine on non-Windows.
-
-```json
-{
-  "author": {
-    "name": "Your Name",
-    "email": "you.mail@mail.com"
-  }
-  // ...
-}
-```
-
 ### From Windows to Windows
 
 You can run the following commands to generate the distribution package.
 
 ```bash
-npm i @esbuild/win32-x64
 npm run electron:make -- --platform win32
 ```
 
@@ -204,3 +191,7 @@ You can run the following commands to generate the distribution package.
 sudo apt install zip
 npm run electron:make -- --platform darwin
 ```
+
+## Custom App Icons
+
+Read the [Electron Forge documentation](https://www.electronforge.io/guides/create-and-add-icons).
