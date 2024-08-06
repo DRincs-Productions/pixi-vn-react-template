@@ -1,5 +1,5 @@
 import { SnackbarProvider } from 'notistack';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { useI18n } from './i18n';
 import MyThemeProvider from './providers/ThemeProvider';
@@ -12,7 +12,7 @@ export default function Imports(props: Iprops) {
     useI18n()
 
     return (
-        <BrowserRouter>
+        <HashRouter>
             <RecoilRoot>
                 <MyThemeProvider>
                     <SnackbarProvider
@@ -25,6 +25,6 @@ export default function Imports(props: Iprops) {
                     </SnackbarProvider>
                 </MyThemeProvider>
             </RecoilRoot>
-        </BrowserRouter>
+        </HashRouter>
     );
 }
