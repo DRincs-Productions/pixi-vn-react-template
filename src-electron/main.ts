@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
+import "../forge.env.d.ts";
 
 // I followed this guide for "type": "module" in Electron: https://github.com/electron/forge/issues/3502
 
