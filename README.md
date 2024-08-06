@@ -106,7 +106,21 @@ Text libraries:
 
 ## Distribution
 
-https://www.electronforge.io/config/makers
+### Web application distribution
+
+To build the project, run the following command:
+
+```bash
+npm run build
+```
+
+This command will create a `dist` folder with the files necessary to run the application. You can deploy this folder to a web server.
+
+You can read more about the possibilities of hosting in the [Pixi’VN documentation](https://pixi-vn.web.app/advanced/distribution.html#hosting).
+
+### Desktop application distribution
+
+<https://www.electronforge.io/config/makers>
 
 To create a distribution of the game, you can use the following commands:
 
