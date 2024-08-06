@@ -19,6 +19,9 @@ export default defineConfig({
         short_name: 'my-app',
         description: 'My App Description',
         theme_color: '#ffffff',
+        start_url: "/",
+        display: "fullscreen",
+        orientation: "portrait",
         icons: [
           {
             src: 'pwa-192x192.png',

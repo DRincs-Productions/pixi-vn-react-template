@@ -13,13 +13,6 @@
             "webRoot": "${workspaceFolder}",
         },
         {
-            "name": "Launch Edge localhost 5173",
-            "request": "launch",
-            "type": "msedge",
-            "url": "http://localhost:5173",
-            "webRoot": "${workspaceFolder}",
-        },
-        {
             "name": "Launch Desktop Program",
             "type": "node",
             "request": "launch",
@@ -34,6 +27,6 @@
             ],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal"
-          }
+        }
     ]
 }
