@@ -56,19 +56,9 @@ This command will start the Electron application. The application will open in a
 
 If you use Visual Studio Code, you can use the debug configuration that comes with the template. To do this, go to the debug section and select the `Launch Desktop Program` configuration.
 
-## Building and distribution
+### Mobile development
 
-### Web application
-
-To build the project, run the following command:
-
-```bash
-npm run build
-```
-
-This command will create a `dist` folder with the files necessary to run the application. You can deploy this folder to a web server.
-
-You can read more about the possibilities of hosting in the [Pixi’VN documentation](https://pixi-vn.web.app/advanced/distribution.html#hosting).
+This project gives the possibility to introduce the Ionic Framework to develop a mobile application. To do this I recommend following [this tutorial](https://pixi-vn.web.app/distribution%E2%80%90mobile.html).
 
 ## Keyboard shortcuts (hotkeys)
 
@@ -120,13 +110,9 @@ You can read more about the possibilities of hosting in the [Pixi’VN documenta
 
 ### Desktop application distribution
 
-<https://www.electronforge.io/config/makers>
+To generate packages to install desktop devices we will use [Electron Forge Maker](https://www.electronforge.io/config/makers). Add more distribution settings to the `forge.config.cts` file.
 
-To create a distribution of the game, you can use the following commands:
-
-see on `out` folder the distribution.
-
-you can setting the distribution in the `forge.config.cts` file.
+Basically it can run the following commands, installing the necessary libraries. You can reparse the generated packages from the `out` folder.
 
 ```bash
 # Windows
@@ -137,9 +123,11 @@ npm run electron:make -- --platform linux
 npm run electron:make -- --platform darwin
 ```
 
+Below is a more detailed explanation of the steps to take. (Not having an Apple Mac, I was unable to test this process)
+
 ### Windows Distribution
 
-You must add `author` in the `package.json` file.
+For the distribution of the application on Windows, you must add `author` in the `package.json` file, and install both Mono and Wine on non-Windows.
 
 ```json
 {
@@ -151,17 +139,18 @@ You must add `author` in the `package.json` file.
 }
 ```
 
-You must install both Mono and Wine on non-Windows.
-
 ### From Windows to Windows
 
+You can run the following commands to generate the distribution package.
+
 ```bash
-npm i @rollup/rollup-win32-x64-msvc
 npm i @esbuild/win32-x64
 npm run electron:make -- --platform win32
 ```
 
 ### From Linux to Windows
+
+You can run the following commands to generate the distribution package.
 
 ```bash
 sudo apt install wine
@@ -172,7 +161,25 @@ npm run electron:make -- --platform win32
 
 ## Linux Distribution
 
+### From Windows to Linux
+
+You can run the following commands to generate the distribution package.
+
+```bash
+npm run electron:make -- --platform linux
+```
+
+If you get the following error `the maker declared that it cannot run on win32.` then you will need to [install WSL](https://learn.microsoft.com/en-us/windows/wsl/install) and after that run the following command.
+
+```bash
+bash
+npm run electron:make -- --platform linux
+exit
+```
+
 ### Fom Linux to Linux
+
+You can run the following commands to generate the distribution package.
 
 ```bash
 sudo apt install rpm dpkg fakeroot
@@ -181,7 +188,17 @@ npm run electron:make -- --platform linux
 
 ## MacOS Distribution
 
+### From Windows to MacOS
+
+You can run the following commands to generate the distribution package.
+
+```bash
+npm run electron:make -- --platform darwin
+```
+
 ### From Linux to MacOS
+
+You can run the following commands to generate the distribution package.
 
 ```bash
 sudo apt install zip

@@ -18,8 +18,16 @@ const config: ForgeConfig = {
     // The `MakerZIP` maker is only supported on macOS
     new MakerZIP({}, ['darwin']),
     // The `MakerRpm` and `MakerDeb` makers are only supported on Linux
-    new MakerRpm({}),
-    new MakerDeb({})
+    new MakerRpm({
+      options: {
+        categories: ["Game"],
+      }
+    }),
+    new MakerDeb({
+      options: {
+        categories: ["Game"],
+      }
+    })
   ],
   plugins: [
     new VitePlugin({
