@@ -38,9 +38,23 @@ npm start
 
 This command will start the development server. Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
 
-#### Debugging
+#### Debugging the web application
 
 If you use Visual Studio Code, you can use the debug configuration that comes with the template. To do this, go to the debug section and select the `Launch Chrome` configuration.
+
+### Start the Desktop Program (Electron)
+
+To start the Electron application, run the following command:
+
+```bash
+npm run electron:start
+```
+
+This command will start the Electron application. The application will open in a window on your computer.
+
+#### Debugging the Desktop Program
+
+If you use Visual Studio Code, you can use the debug configuration that comes with the template. To do this, go to the debug section and select the `Launch Desktop Program` configuration.
 
 ## Building and distribution
 
@@ -111,8 +125,6 @@ npm run electron:make -- --platform darwin
 
 ### Windows Distribution
 
-You must install both Mono and Wine on non-Windows
-
 You must add `author` in the `package.json` file.
 
 ```json
@@ -124,6 +136,8 @@ You must add `author` in the `package.json` file.
   // ...
 }
 ```
+
+You must install both Mono and Wine on non-Windows.
 
 ### From Windows to Windows
 
