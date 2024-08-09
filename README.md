@@ -42,20 +42,6 @@ This command will start the development server. Open [http://localhost:5173](htt
 
 If you use Visual Studio Code, you can use the debug configuration that comes with the template. To do this, go to the debug section and select the `Launch Chrome` configuration.
 
-## Building and distribution
-
-### Web application
-
-To build the project, run the following command:
-
-```bash
-npm run build
-```
-
-This command will create a `dist` folder with the files necessary to run the application. You can deploy this folder to a web server.
-
-You can read more about the possibilities of hosting in the [Pixi’VN documentation](https://pixi-vn.web.app/advanced/distribution.html#hosting).
-
 ## Keyboard shortcuts (hotkeys)
 
 * `Space` or `Enter`: Continue the dialogue.
@@ -89,3 +75,17 @@ Text libraries:
 
 * [i18next](https://www.i18next.com/): A library that gives the possibility to manage multiple translations in the application.
 * [Reacr Markdown](https://www.npmjs.com/package/react-markdown): A library that allows you to render markdown in React components.
+
+## Distribution
+
+### Web application
+
+To build the project, run the following command:
+
+```bash
+npm run build
+```
+
+This command will create a `dist` folder with the files necessary to run the application. You can deploy this folder to a web server.
+
+You can read more about the possibilities of hosting in the [Pixi’VN documentation](https://pixi-vn.web.app/advanced/distribution.html#hosting).
