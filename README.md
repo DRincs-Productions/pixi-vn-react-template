@@ -127,15 +127,16 @@ Below is a more detailed explanation of the steps to take. (Not having an Apple 
 
 ### Windows Distribution
 
-### From Windows to Windows
+#### From Windows to Windows
 
 You can run the following commands to generate the distribution package.
 
 ```bash
+npm i @rollup/rollup-win32-x64-msvc
 npm run electron:make -- --platform win32
 ```
 
-### From Linux to Windows
+#### From Linux to Windows
 
 You can run the following commands to generate the distribution package.
 
@@ -146,13 +147,14 @@ sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install
 npm run electron:make -- --platform win32
 ```
 
-## Linux Distribution
+### Linux Distribution
 
-### From Windows to Linux
+#### From Windows to Linux
 
 You can run the following commands to generate the distribution package.
 
 ```bash
+npm i @rollup/rollup-win32-x64-msvc
 npm run electron:make -- --platform linux
 ```
 
@@ -164,7 +166,7 @@ npm run electron:make -- --platform linux
 exit
 ```
 
-### Fom Linux to Linux
+#### Fom Linux to Linux
 
 You can run the following commands to generate the distribution package.
 
@@ -173,17 +175,18 @@ sudo apt install rpm dpkg fakeroot
 npm run electron:make -- --platform linux
 ```
 
-## MacOS Distribution
+### MacOS Distribution
 
-### From Windows to MacOS
+#### From Windows to MacOS
 
 You can run the following commands to generate the distribution package.
 
 ```bash
+npm i @rollup/rollup-win32-x64-msvc
 npm run electron:make -- --platform darwin
 ```
 
-### From Linux to MacOS
+#### From Linux to MacOS
 
 You can run the following commands to generate the distribution package.
 

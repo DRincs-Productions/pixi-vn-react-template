@@ -1,4 +1,4 @@
-import { GameWindowManager } from '@drincs/pixi-vn'
+import { GameStepManager, GameWindowManager } from '@drincs/pixi-vn'
 import { createRoot } from 'react-dom/client'
 import App from './App'
 import './index.css'
@@ -25,3 +25,7 @@ GameWindowManager.initialize(body, 1920, 1080, {
         <App />
     )
 })
+
+GameStepManager.gameEnd = async (props) => {
+    props.navigate("/")
+}
