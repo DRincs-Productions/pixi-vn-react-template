@@ -1,6 +1,6 @@
-# Pixi'VN template (React + Vite + MUI joy)
+# Pixi’VN template (React + Vite + MUI joy)
 
-This is a template for creating visual novels in React. It uses the Pixi'VN library and Vite as a build tool.
+This is a template for creating visual novels in React. It uses the Pixi’VN library and Vite as a build tool.
 This Template contains basic functionality inspired by the widespread Visual Noval engine Ren'Py.
 
 ## Overview
@@ -58,7 +58,7 @@ This template uses the following libraries:
 
 Core libraries:
 
-* [Pixi'VN](https://www.npmjs.com/package/@drincs/pixi-vn): A visual novel library for PixiJS.
+* [Pixi’VN](https://www.npmjs.com/package/@drincs/pixi-vn): A visual novel library for PixiJS.
 * [Vite](https://vitejs.dev/): A build tool that aims to provide a faster and leaner development experience for modern web projects.
 * [Vite Checker](https://www.npmjs.com/package/vite-plugin-checker): A Vite plugin that checks TypeScript types and ESLint on each build.
 * [PWA Vite Plugin](https://vite-pwa-org.netlify.app): A Vite plugin that provides PWA support. This allows the possibility of installing the game as a Progressive Web App.
