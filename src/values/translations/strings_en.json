@@ -1,45 +1,46 @@
 {
 	"translation": {
-		"settings": "Settings"
-		, "settings_restricted" : "Prefs"
-		, "dialogues" : "Dialogues"
-		, "auto_forward_time" : "Auto Forward Time"
-		, "auto_forward_time_restricted" : "Auto"
-		, "auto_forward_time_description" : "Choose the time in seconds before the dialogue auto-forwards. If \"{{textSpeedName}}\" is enabled, the auto-forward will be executed after the typewriter effect is completed. (You can edit this value if \"{{autoName}}\" is enabled)"
-		, "display" : "Display"
-		, "fullscreen" : "Fullscreen"
-		, "fullscreen_description" : "Toggle fullscreen mode."
-		, "exit_fullscreen" : "Exit Fullscreen"
-		, "enter_fullscreen" : "Enter Fullscreen"
-		, "theme_mode" : "Theme Mode"
-		, "theme_mode_description" : "Choose between light, dark, or system theme mode."
-		, "primary_color" : "Primary Color"
-		, "primary_color_description" : "Choose the primary color for the theme."
-		, "solid_color" : "Solid Color"
-		, "solid_color_description" : "Choose the solid color for the theme. It can be black or white and will be contrasting with the primary color. So if the primary color is dark, the solid color will be white, and a the other way around."
-		, "example" : "Example"
-		, "return_main_menu" : "Return to Main Menu"
-		, "attention" : "Attention"
-		, "exit" : "Exit"
-		, "cancel" : "Cancel"
-		, "you_sure_to_return_main_menu" : "Are you sure you want to return to the main menu? All unsaved progress will be lost."
-		, "back" : "Back"
-		, "history" : "History"
-		, "skip" : "Skip"
-		, "save" : "Save"
-		, "load" : "Load"
-		, "quick_save_restricted" : "Q.Save"
-		, "quick_load_restricted" : "Q.Load"
-		, "confirm" : "Confirm"
-		, "you_sure_to_quick_load" : "Are you sure you want to load the quick save? All unsaved progress will be lost."
-		, "start" : "Start"
-		, "search" : "Search"
-		, "next" : "Next"
-		, "text_speed" : "Text Speed"
-		, "text_speed_description" : "Choose the speed of the typewriter effect. If is set to 0 ( off ) the text will appear instantly."
-		, "hide_interface" : "Hide Interface"
-		, "success_save" : "Save successful"
-		, "success_load" : "Load successful"
-		, "off" : "Off"
+		"allert_error_occurred": "An error occurred, please report it to the developer",
+		"attention": "Attention",
+		"auto_forward_time": "Auto Forward Time",
+		"auto_forward_time_description": "Choose the time in seconds before the dialogue auto-forwards. If \"{{textSpeedName}}\" is enabled, the auto-forward will be executed after the typewriter effect is completed. (You can edit this value if \"{{autoName}}\" is enabled)",
+		"auto_forward_time_restricted": "Auto",
+		"back": "Back",
+		"cancel": "Cancel",
+		"confirm": "Confirm",
+		"dialogues": "Dialogues",
+		"display": "Display",
+		"enter_fullscreen": "Enter Fullscreen",
+		"example": "Example",
+		"exit": "Exit",
+		"exit_fullscreen": "Exit Fullscreen",
+		"fullscreen": "Fullscreen",
+		"fullscreen_description": "Toggle fullscreen mode.",
+		"hide_interface": "Hide Interface",
+		"history": "History",
+		"load": "Load",
+		"next": "Next",
+		"off": "Off",
+		"primary_color": "Primary Color",
+		"primary_color_description": "Choose the primary color for the theme.",
+		"quick_load_restricted": "Q.Load",
+		"quick_save_restricted": "Q.Save",
+		"return_main_menu": "Return to Main Menu",
+		"save": "Save",
+		"search": "Search",
+		"settings": "Settings",
+		"settings_restricted": "Prefs",
+		"skip": "Skip",
+		"solid_color": "Solid Color",
+		"solid_color_description": "Choose the solid color for the theme. It can be black or white and will be contrasting with the primary color. So if the primary color is dark, the solid color will be white, and a the other way around.",
+		"start": "Start",
+		"success_load": "Load successful",
+		"success_save": "Save successful",
+		"text_speed": "Text Speed",
+		"text_speed_description": "Choose the speed of the typewriter effect. If is set to 0 ( off ) the text will appear instantly.",
+		"theme_mode": "Theme Mode",
+		"theme_mode_description": "Choose between light, dark, or system theme mode.",
+		"you_sure_to_quick_load": "Are you sure you want to load the quick save? All unsaved progress will be lost.",
+		"you_sure_to_return_main_menu": "Are you sure you want to return to the main menu? All unsaved progress will be lost."
 	}
 }

@@ -5,10 +5,10 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { autoInfoState } from '../atoms/autoInfoState';
 import { dialogDataState } from '../atoms/dialogDataState';
 import { hideInterfaceState } from '../atoms/hideInterfaceState';
-import { reloadInterfaceDataEventState } from '../atoms/reloadInterfaceDataEventState';
+import { reloadInterfaceDataEventAtom } from '../atoms/reloadInterfaceDataEventAtom';
 
 export default function DialogueDataEventInterceptor() {
-    const reloadInterfaceDataEvent = useRecoilValue(reloadInterfaceDataEventState);
+    const reloadInterfaceDataEvent = useRecoilValue(reloadInterfaceDataEventAtom);
     const { t } = useTranslation(["translation"]);
     const hideInterface = useRecoilValue(hideInterfaceState)
     const updateAuto = useSetRecoilState(autoInfoState)

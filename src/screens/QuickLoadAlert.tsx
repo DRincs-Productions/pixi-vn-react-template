@@ -7,14 +7,14 @@ import { useTranslation } from 'react-i18next';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { openLoadAlertState } from '../atoms/openLoadAlertState';
 import { quickSaveState } from '../atoms/quickSaveState';
-import { reloadInterfaceDataEventState } from '../atoms/reloadInterfaceDataEventState';
+import { reloadInterfaceDataEventAtom } from '../atoms/reloadInterfaceDataEventAtom';
 import ModalDialogCustom from '../components/ModalDialog';
 import { loadQuickSave } from '../utility/ActionsUtility';
 import { useMyNavigate } from '../utility/useMyNavigate';
 
 export default function QuickLoadAlert() {
     const navigate = useMyNavigate();
-    const notifyLoadEvent = useSetRecoilState(reloadInterfaceDataEventState);
+    const notifyLoadEvent = useSetRecoilState(reloadInterfaceDataEventAtom);
     const [open, setOpen] = useRecoilState(openLoadAlertState);
     const { t } = useTranslation(["translation"]);
     const [quickSave, setQuickSave] = useRecoilState(quickSaveState)
