@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { choiceMenuState } from '../atoms/choiceMenuState';
 import { dialogueCardHeightState } from '../atoms/dialogueCardHeightState';
-import { reloadInterfaceDataEventState } from '../atoms/reloadInterfaceDataEventState';
+import { reloadInterfaceDataEventAtom } from '../atoms/reloadInterfaceDataEventAtom';
 import ChoiceButton from '../components/ChoiceButton';
 import { useMyNavigate } from '../utility/useMyNavigate';
 
@@ -26,7 +26,7 @@ export default function ChoicesMenu(props: IProps) {
     const { t } = useTranslation(["translation"]);
     const navigate = useMyNavigate();
     const { menu, hidden } = useRecoilValue(choiceMenuState)
-    const notifyReloadInterfaceDataEvent = useSetRecoilState(reloadInterfaceDataEventState);
+    const notifyReloadInterfaceDataEvent = useSetRecoilState(reloadInterfaceDataEventAtom);
     const { enqueueSnackbar } = useSnackbar();
     const gridVariants: Variants = {
         open: {

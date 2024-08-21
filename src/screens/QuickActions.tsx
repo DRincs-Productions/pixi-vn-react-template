@@ -12,7 +12,7 @@ import { openHistoryState } from '../atoms/openHistoryState';
 import { openLoadAlertState } from '../atoms/openLoadAlertState';
 import { openSettingsState } from '../atoms/openSettingsState';
 import { quickSaveState } from '../atoms/quickSaveState';
-import { reloadInterfaceDataEventState } from '../atoms/reloadInterfaceDataEventState';
+import { reloadInterfaceDataEventAtom } from '../atoms/reloadInterfaceDataEventAtom';
 import { skipEnabledState } from '../atoms/skipEnabledState';
 import TextMenuButton from '../components/TextMenuButton';
 import { goBack, loadGameSave, saveGame } from '../utility/ActionsUtility';
@@ -22,7 +22,7 @@ export default function QuickActions() {
     const setOpenSettings = useSetRecoilState(openSettingsState);
     const setOpenHistory = useSetRecoilState(openHistoryState);
     const navigate = useMyNavigate();
-    const notifyLoadEvent = useSetRecoilState(reloadInterfaceDataEventState);
+    const notifyLoadEvent = useSetRecoilState(reloadInterfaceDataEventAtom);
     const setOpenLoadAlert = useSetRecoilState(openLoadAlertState);
     const { t } = useTranslation(["translation"]);
     const [hideInterface, setHideInterface] = useRecoilState(hideInterfaceState);

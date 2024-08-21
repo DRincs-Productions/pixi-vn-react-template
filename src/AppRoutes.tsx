@@ -3,7 +3,7 @@ import { StepLabelProps } from '@drincs/pixi-vn/dist/override';
 import { Route, Routes } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { nextStepLoadingState } from './atoms/nextStepLoadingState';
-import { reloadInterfaceDataEventState } from './atoms/reloadInterfaceDataEventState';
+import { reloadInterfaceDataEventAtom } from './atoms/reloadInterfaceDataEventAtom';
 import DialogueDataEventInterceptor from './interceptors/DialogueDataEventInterceptor';
 import SkipAutoInterceptor from './interceptors/SkipAutoInterceptor';
 import Dialogue from './screens/Dialogue';
@@ -14,7 +14,7 @@ import QuickActions from './screens/QuickActions';
 import QuickLoadAlert from './screens/QuickLoadAlert';
 
 export default function AppRoutes() {
-    const notifyReloadInterfaceDataEvent = useSetRecoilState(reloadInterfaceDataEventState);
+    const notifyReloadInterfaceDataEvent = useSetRecoilState(reloadInterfaceDataEventAtom);
     const setNextStepLoading = useSetRecoilState(nextStepLoadingState);
     async function nextOnClick(props: StepLabelProps): Promise<void> {
         setNextStepLoading(true);
