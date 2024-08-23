@@ -21,7 +21,7 @@
     "electron:publish": "electron-forge publish"
   },
   "dependencies": {
-    "@drincs/pixi-vn": "^0.7.0",
+    "@drincs/pixi-vn": "^0.7.1",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^5.16.7",
