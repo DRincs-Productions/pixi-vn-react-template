@@ -7,7 +7,7 @@ This Template contains basic functionality inspired by the widespread Visual Nov
 
 The first page that appears is the main menu. From there, you can start the game, load a saved game, or go to the settings.
 
-The game page is in `/game` route. It contains the text box, character avatar, and canvas for the background image. The text box displays the text of the current dialogue. The character avatar displays the character speaking the dialogue. The background image is the background of the scene.
+The game page is in `/narration` route. It contains the text box, character avatar, and canvas for the background image. The text box displays the text of the current dialogue. The character avatar displays the character speaking the dialogue. The background image is the background of the scene.
 When a choice has to be made, the choices are displayed at the top of the screen.
 
 When you are in the game page, you can access with many features through a list of buttons located at the bottom. In this list you can save the game, load a saved game, skip the dialogue, auto play the dialogue, access to the history modal, and access to the settings modal.

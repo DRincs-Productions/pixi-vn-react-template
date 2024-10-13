@@ -21,7 +21,8 @@ export const useI18n = () => {
                     escapeValue: false,
                 },
                 resources: {
-                    en: strings_en
+                    en: strings_en,
+                    // Add more languages here
                 }
             });
     }

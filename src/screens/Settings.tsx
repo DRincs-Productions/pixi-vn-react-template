@@ -1,9 +1,10 @@
-import { getSaveJson } from '@drincs/pixi-vn';
 import AutoModeIcon from '@mui/icons-material/AutoMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import DownloadIcon from '@mui/icons-material/Download';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import HdrAutoIcon from '@mui/icons-material/HdrAuto';
@@ -11,49 +12,60 @@ import HistoryIcon from '@mui/icons-material/History';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import ModeNightIcon from '@mui/icons-material/ModeNight';
 import SaveIcon from '@mui/icons-material/Save';
+import SaveAsIcon from '@mui/icons-material/SaveAs';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import WbIncandescentIcon from '@mui/icons-material/WbIncandescent';
 import { Box, Button, DialogContent, DialogTitle, Divider, Drawer, FormControl, FormHelperText, FormLabel, IconButton, ModalClose, RadioGroup, Sheet, Slider, Stack, ToggleButtonGroup, Tooltip, Typography, useColorScheme } from "@mui/joy";
-import { Theme, useMediaQuery } from '@mui/material';
+import { Theme, useColorScheme as useColorSchemeMaterial, useMediaQuery } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
-import { HuePicker } from 'react-color';
+import { Hue, useColor } from "react-color-palette";
+import "react-color-palette/css";
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { autoInfoState } from '../atoms/autoInfoState';
 import { hideInterfaceState } from '../atoms/hideInterfaceState';
-import { openHistoryState } from '../atoms/openHistoryState';
-import { openLoadAlertState } from '../atoms/openLoadAlertState';
+import { openGameSaveScreenState } from '../atoms/openGameSaveScreenState';
+import { openHistoryScreenState } from '../atoms/openHistoryScreenState';
 import { openSettingsState } from '../atoms/openSettingsState';
-import { quickSaveState } from '../atoms/quickSaveState';
-import { reloadInterfaceDataEventAtom } from '../atoms/reloadInterfaceDataEventAtom';
+import { saveLoadAlertState } from '../atoms/saveLoadAlertState';
 import { skipEnabledState } from '../atoms/skipEnabledState';
 import { typewriterDelayState } from '../atoms/typewriterDelayState';
 import ModalDialogCustom from '../components/ModalDialog';
 import SettingButton from '../components/SettingButton';
 import { useEditColorProvider } from '../providers/ThemeProvider';
-import { gameEnd, loadGameSave, saveGame } from '../utility/ActionsUtility';
-import { useMyNavigate } from '../utility/useMyNavigate';
+import { INTERFACE_DATA_USE_QUEY_KEY } from '../use_query/useQueryInterface';
+import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from '../use_query/useQueryLastSave';
+import { SAVES_USE_QUEY_KEY } from '../use_query/useQuerySaves';
+import { gameEnd } from '../utilities/actions-utility';
+import { useMyNavigate } from '../utilities/navigate-utility';
+import { downloadGameSave, loadGameSaveFromFile, putSaveIntoIndexDB } from '../utilities/save-utility';
 
 export default function Settings() {
     const [open, setOpen] = useRecoilState(openSettingsState);
     const { mode, setMode } = useColorScheme();
+    const { setMode: setModeMaterial } = useColorSchemeMaterial();
     const { primaryColor, setPrimaryColor, setSolidColor, solidColor } = useEditColorProvider()
+    const [tempColor, setTempColor] = useColor(primaryColor);
     const navigate = useMyNavigate();
     const location = useLocation();
     const [openYouSure, setOpenYouSure] = useState(false)
     const [typewriterDelay, setTypewriterDelay] = useRecoilState(typewriterDelayState)
     const [fullScreenEnabled, setFullScreenEnabled] = useState(false)
-    const { t } = useTranslation(["translation"]);
+    const { t } = useTranslation(["interface"]);
     const [skip, setSkip] = useRecoilState(skipEnabledState)
     const [auto, setAuto] = useRecoilState(autoInfoState)
-    const setOpenHistory = useSetRecoilState(openHistoryState);
-    const setOpenLoadAlert = useSetRecoilState(openLoadAlertState);
+    const setOpenHistory = useSetRecoilState(openHistoryScreenState);
+    const setOpenLoadAlert = useSetRecoilState(saveLoadAlertState);
     const [hideInterface, setHideInterface] = useRecoilState(hideInterfaceState);
-    const notifyLoadEvent = useSetRecoilState(reloadInterfaceDataEventAtom);
-    const [quickSave, setQuickSave] = useRecoilState(quickSaveState)
+    const openSaveScreen = useSetRecoilState(openGameSaveScreenState);
+    const queryClient = useQueryClient()
     const { enqueueSnackbar } = useSnackbar();
+    const {
+        data: lastSave = null,
+    } = useQueryLastSave()
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
     useEffect(() => {
@@ -62,6 +74,17 @@ export default function Settings() {
             window.removeEventListener('keydown', onkeydown);
         };
     }, []);
+
+    useEffect(() => {
+        // Debouncing
+        let timeout = setTimeout(() => {
+            setPrimaryColor(tempColor.hex)
+        }, 50);
+
+        return () => {
+            clearTimeout(timeout)
+        }
+    }, [tempColor]);
 
     function onkeydown(event: KeyboardEvent) {
         if (event.code == 'Escape') {
@@ -117,97 +140,6 @@ export default function Settings() {
                                     }}
                                 >
                                     <SettingButton
-                                        onClick={saveGame}
-                                    >
-                                        <SaveIcon />
-                                        <Typography level="title-md">{t("save")}</Typography>
-                                    </SettingButton>
-                                    <SettingButton
-                                        onClick={() => loadGameSave(navigate, () => {
-                                            notifyLoadEvent((prev) => prev + 1)
-                                            enqueueSnackbar(t("success_load"), { variant: 'success' })
-                                        })}
-                                    >
-                                        <FileUploadIcon />
-                                        <Typography level="title-md">{t("load")}</Typography>
-                                    </SettingButton>
-                                    <SettingButton
-                                        onClick={() => {
-                                            let save = getSaveJson()
-                                            setQuickSave(save)
-                                            enqueueSnackbar(t("success_save"), { variant: 'success' })
-                                        }}
-                                    >
-                                        <SaveIcon />
-                                        <Typography level="title-md">{t("quick_save_restricted")}</Typography>
-                                        <Typography
-                                            sx={{
-                                                position: 'absolute',
-                                                top: 10,
-                                                right: 10,
-                                            }}
-                                            level="body-md"
-                                        >
-                                            Shift+S
-                                        </Typography>
-                                    </SettingButton>
-                                    <SettingButton
-                                        onClick={() => {
-                                            setOpenLoadAlert(true)
-                                            setOpen(false)
-                                        }}
-                                        disabled={!quickSave}
-                                    >
-                                        <FileUploadIcon />
-                                        <Typography level="title-md">{t("quick_load_restricted")}</Typography>
-                                        <Typography
-                                            sx={{
-                                                position: 'absolute',
-                                                top: 10,
-                                                right: 10,
-                                            }}
-                                            level="body-md"
-                                        >
-                                            Shift+L
-                                        </Typography>
-                                    </SettingButton>
-                                    <SettingButton
-                                        checked={hideInterface}
-                                        onClick={() => setHideInterface((prev) => !prev)}
-                                    >
-                                        <VisibilityOffIcon />
-                                        <Typography level="title-md">{t("hide_interface")}</Typography>
-                                        <Typography
-                                            sx={{
-                                                position: 'absolute',
-                                                top: 10,
-                                                right: 10,
-                                            }}
-                                            level="body-md"
-                                        >
-                                            Shift+V
-                                        </Typography>
-                                    </SettingButton>
-                                    <SettingButton
-                                        onClick={() => {
-                                            setOpenHistory(true)
-                                            setOpen(false)
-                                        }}
-                                    >
-                                        <HistoryIcon />
-                                        <Typography level="title-md">{t("history")}</Typography>
-                                        <Typography
-                                            sx={{
-                                                position: 'absolute',
-                                                top: 10,
-                                                right: 10,
-                                            }}
-                                            level="body-md"
-                                        >
-                                            Shift+H
-                                        </Typography>
-                                    </SettingButton>
-                                    <SettingButton
                                         checked={skip}
                                         onClick={() => setSkip((prev) => !prev)}
                                     >
@@ -233,6 +165,113 @@ export default function Settings() {
                                     >
                                         <HdrAutoIcon />
                                         <Typography level="title-md">{t("auto_forward_time_restricted")}</Typography>
+                                    </SettingButton>
+                                    <SettingButton
+                                        onClick={() => {
+                                            setOpenHistory(true)
+                                            setOpen(false)
+                                        }}
+                                    >
+                                        <HistoryIcon />
+                                        <Typography level="title-md">{t("history")}</Typography>
+                                        <Typography
+                                            sx={{
+                                                position: 'absolute',
+                                                top: 10,
+                                                right: 10,
+                                            }}
+                                            level="body-md"
+                                        >
+                                            Shift+H
+                                        </Typography>
+                                    </SettingButton>
+                                    <SettingButton
+                                        onClick={() => {
+                                            putSaveIntoIndexDB()
+                                                .then((save) => {
+                                                    queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
+                                                    queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
+                                                    enqueueSnackbar(t("success_save"), { variant: 'success' })
+                                                })
+                                                .catch(() => {
+                                                    enqueueSnackbar(t("fail_save"), { variant: 'error' })
+                                                })
+                                        }}
+                                    >
+                                        <SaveAsIcon />
+                                        <Typography level="title-md">{t("quick_save")}</Typography>
+                                        <Typography
+                                            sx={{
+                                                position: 'absolute',
+                                                top: 10,
+                                                right: 10,
+                                            }}
+                                            level="body-md"
+                                        >
+                                            Shift+S
+                                        </Typography>
+                                    </SettingButton>
+                                    <SettingButton
+                                        onClick={() => {
+                                            lastSave && setOpenLoadAlert({ open: true, data: lastSave, type: 'load' })
+                                            setOpen(false)
+                                        }}
+                                        disabled={!lastSave}
+                                    >
+                                        <FileUploadIcon />
+                                        <Typography level="title-md">{t("load_last_save")}</Typography>
+                                        <Typography
+                                            sx={{
+                                                position: 'absolute',
+                                                top: 10,
+                                                right: 10,
+                                            }}
+                                            level="body-md"
+                                        >
+                                            Shift+L
+                                        </Typography>
+                                    </SettingButton>
+                                    <SettingButton
+                                        onClick={() => {
+                                            openSaveScreen(true)
+                                            setOpen(false)
+                                        }}
+                                    >
+                                        <SaveIcon />
+                                        <Typography level="title-md">{t(`${t("save")}/${t("load")}`)}</Typography>
+                                    </SettingButton>
+                                    <SettingButton
+                                        onClick={() => downloadGameSave()}
+                                    >
+                                        <DownloadIcon />
+                                        <Typography level="title-md">{t("save_to_file")}</Typography>
+                                    </SettingButton>
+                                    <SettingButton
+                                        onClick={() => loadGameSaveFromFile(navigate, () => {
+                                            queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] })
+                                            enqueueSnackbar(t("success_load"), { variant: 'success' })
+                                            setOpen(false)
+                                        })}
+                                    >
+                                        <FolderOpenIcon />
+                                        <Typography level="title-md">{t("load_from_file")}</Typography>
+                                    </SettingButton>
+                                    <SettingButton
+                                        checked={hideInterface}
+                                        onClick={() => setHideInterface((prev) => !prev)}
+                                    >
+                                        <VisibilityOffIcon />
+                                        <Typography level="title-md">{t("hide_interface")}</Typography>
+                                        <Typography
+                                            sx={{
+                                                position: 'absolute',
+                                                top: 10,
+                                                right: 10,
+                                            }}
+                                            level="body-md"
+                                        >
+                                            Shift+V
+                                        </Typography>
                                     </SettingButton>
                                 </Box>
                             </RadioGroup>
@@ -260,7 +299,7 @@ export default function Settings() {
                                 marks={[
                                     {
                                         value: 0,
-                                        label: 'Off',
+                                        label: t('off'),
                                     },
                                     {
                                         value: 200,
@@ -359,8 +398,10 @@ export default function Settings() {
                         <ToggleButtonGroup
                             value={mode}
                             onChange={(_, newValue) => {
-                                if (newValue)
+                                if (newValue) {
                                     setMode(newValue)
+                                    setModeMaterial(newValue)
+                                }
                             }}
                         >
                             <Tooltip title="Light Mode">
@@ -393,17 +434,9 @@ export default function Settings() {
                                 paddingX: 3,
                             }}
                         >
-                            <HuePicker
-                                width='99%'
-                                color={primaryColor}
-                                onChange={(color) => setPrimaryColor(color.hex)}
-                                styles={{
-                                    default: {
-                                        picker: {
-                                            minHeight: '15px',
-                                        },
-                                    },
-                                }}
+                            <Hue
+                                color={tempColor}
+                                onChange={(color) => setTempColor(color)}
                             />
                         </Box>
 
