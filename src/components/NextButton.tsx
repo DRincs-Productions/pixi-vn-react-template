@@ -5,20 +5,23 @@ import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { hideNextButtonState } from '../atoms/hideNextButtonState';
+import { hideInterfaceState } from '../atoms/hideInterfaceState';
 import { nextStepLoadingState } from '../atoms/nextStepLoadingState';
 import { skipEnabledState } from '../atoms/skipEnabledState';
-import { useMyNavigate } from '../utility/useMyNavigate';
+import { useQueryCanGoNext } from '../use_query/useQueryInterface';
+import { useMyNavigate } from '../utilities/navigate-utility';
 
 export default function NextButton({ nextOnClick }: {
     nextOnClick: (props: StepLabelProps) => void,
 }) {
     const [skip, setSkip] = useRecoilState(skipEnabledState)
     const nextStepLoading = useRecoilValue(nextStepLoadingState)
-    const hideNextButton = useRecoilValue(hideNextButtonState)
+    const { data: canGoNext = false } = useQueryCanGoNext()
+    const hideNextButton = useRecoilValue(hideInterfaceState) || !canGoNext
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useMyNavigate();
-    const { t } = useTranslation(["translation"]);
+    const { t } = useTranslation(["interface"]);
+    const { t: tNarration } = useTranslation(["narration"]);
     useEffect(() => {
         window.addEventListener("keypress", onkeypress);
         window.addEventListener("keyup", onkeyup);
@@ -39,7 +42,7 @@ export default function NextButton({ nextOnClick }: {
         if ((event.code == 'Enter' || event.code == 'Space')) {
             setSkip(false)
             nextOnClick({
-                t,
+                t: tNarration,
                 navigate,
                 notify: (message, variant) => enqueueSnackbar(message, { variant }),
             })
@@ -65,7 +68,7 @@ export default function NextButton({ nextOnClick }: {
                     setSkip(false)
                 }
                 nextOnClick({
-                    t,
+                    t: tNarration,
                     navigate,
                     notify: (message, variant) => enqueueSnackbar(message, { variant }),
                 })

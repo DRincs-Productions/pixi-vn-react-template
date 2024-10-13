@@ -1,36 +1,39 @@
-import { getSaveJson } from '@drincs/pixi-vn';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { IconButton, Stack, useTheme } from '@mui/joy';
+import { useQueryClient } from '@tanstack/react-query';
 import { motion } from "framer-motion";
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { autoInfoState } from '../atoms/autoInfoState';
-import { canGoBackState } from '../atoms/canGoBackState';
 import { hideInterfaceState } from '../atoms/hideInterfaceState';
-import { openHistoryState } from '../atoms/openHistoryState';
-import { openLoadAlertState } from '../atoms/openLoadAlertState';
+import { openGameSaveScreenState } from '../atoms/openGameSaveScreenState';
+import { openHistoryScreenState } from '../atoms/openHistoryScreenState';
 import { openSettingsState } from '../atoms/openSettingsState';
-import { quickSaveState } from '../atoms/quickSaveState';
-import { reloadInterfaceDataEventAtom } from '../atoms/reloadInterfaceDataEventAtom';
+import { saveLoadAlertState } from '../atoms/saveLoadAlertState';
 import { skipEnabledState } from '../atoms/skipEnabledState';
 import TextMenuButton from '../components/TextMenuButton';
-import { goBack, loadGameSave, saveGame } from '../utility/ActionsUtility';
-import { useMyNavigate } from '../utility/useMyNavigate';
+import { INTERFACE_DATA_USE_QUEY_KEY, useQueryCanGoBack } from '../use_query/useQueryInterface';
+import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from '../use_query/useQueryLastSave';
+import { SAVES_USE_QUEY_KEY } from '../use_query/useQuerySaves';
+import { goBack } from '../utilities/actions-utility';
+import { useMyNavigate } from '../utilities/navigate-utility';
+import { putSaveIntoIndexDB } from '../utilities/save-utility';
 
-export default function QuickActions() {
+export default function QuickTools() {
     const setOpenSettings = useSetRecoilState(openSettingsState);
-    const setOpenHistory = useSetRecoilState(openHistoryState);
+    const setOpenHistory = useSetRecoilState(openHistoryScreenState);
+    const openSaveScreen = useSetRecoilState(openGameSaveScreenState);
     const navigate = useMyNavigate();
-    const notifyLoadEvent = useSetRecoilState(reloadInterfaceDataEventAtom);
-    const setOpenLoadAlert = useSetRecoilState(openLoadAlertState);
-    const { t } = useTranslation(["translation"]);
+    const setOpenLoadAlert = useSetRecoilState(saveLoadAlertState);
+    const { t } = useTranslation(["interface"]);
     const [hideInterface, setHideInterface] = useRecoilState(hideInterfaceState);
     const [skip, setSkip] = useRecoilState(skipEnabledState)
     const [auto, setAuto] = useRecoilState(autoInfoState)
-    const canGoBack = useRecoilValue(canGoBackState)
-    const [quickSave, setQuickSave] = useRecoilState(quickSaveState)
     const { enqueueSnackbar } = useSnackbar();
+    const queryClient = useQueryClient()
+    const { data: lastSave = null } = useQueryLastSave()
+    const { data: canGoBack = null } = useQueryCanGoBack()
 
     return (
         <>
@@ -64,7 +67,7 @@ export default function QuickActions() {
                 transition={{ type: "tween" }}
             >
                 <TextMenuButton
-                    onClick={() => goBack(navigate).then(() => notifyLoadEvent((prev) => prev + 1))}
+                    onClick={() => goBack(navigate).then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))}
                     disabled={!canGoBack}
                     sx={{ pointerEvents: !hideInterface ? "auto" : "none" }}
                 >
@@ -94,36 +97,33 @@ export default function QuickActions() {
                     {t("auto_forward_time_restricted")}
                 </TextMenuButton>
                 <TextMenuButton
-                    onClick={saveGame}
+                    onClick={() => openSaveScreen(true)}
                     sx={{ pointerEvents: !hideInterface ? "auto" : "none" }}
                 >
-                    {t("save")}
-                </TextMenuButton>
-                <TextMenuButton
-                    onClick={() => loadGameSave(navigate, () => {
-                        notifyLoadEvent((prev) => prev + 1)
-                        enqueueSnackbar(t("success_load"), { variant: 'success' })
-                    })}
-                    sx={{ pointerEvents: !hideInterface ? "auto" : "none" }}
-                >
-                    {t("load")}
+                    {t(`${t("save")}/${t("load")}`)}
                 </TextMenuButton>
                 <TextMenuButton
                     onClick={() => {
-                        let save = getSaveJson()
-                        setQuickSave(save)
-                        enqueueSnackbar(t("success_save"), { variant: 'success' })
+                        putSaveIntoIndexDB()
+                            .then((save) => {
+                                queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
+                                queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
+                                enqueueSnackbar(t("success_save"), { variant: 'success' })
+                            })
+                            .catch(() => {
+                                enqueueSnackbar(t("fail_save"), { variant: 'error' })
+                            })
                     }}
                     sx={{ pointerEvents: !hideInterface ? "auto" : "none" }}
                 >
                     {t("quick_save_restricted")}
                 </TextMenuButton>
                 <TextMenuButton
-                    onClick={() => setOpenLoadAlert(true)}
-                    disabled={!quickSave}
+                    onClick={() => lastSave && setOpenLoadAlert({ open: true, data: lastSave, type: 'load' })}
+                    disabled={!lastSave}
                     sx={{ pointerEvents: !hideInterface ? "auto" : "none" }}
                 >
-                    {t("quick_load_restricted")}
+                    {t("load_last_save_restricted")}
                 </TextMenuButton>
                 <TextMenuButton
                     onClick={() => setOpenSettings(true)}

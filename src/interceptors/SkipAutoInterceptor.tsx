@@ -6,13 +6,13 @@ import { useRecoilValue } from 'recoil';
 import { autoInfoState } from '../atoms/autoInfoState';
 import { skipEnabledState } from '../atoms/skipEnabledState';
 import { typewriterIsAnimatedState } from '../atoms/typewriterIsAnimatedState';
-import { useMyNavigate } from '../utility/useMyNavigate';
+import { useMyNavigate } from '../utilities/navigate-utility';
 
 export default function SkipAutoInterceptor({ nextOnClick }: {
     nextOnClick: (props: StepLabelProps) => Promise<void>,
 }) {
     const navigate = useMyNavigate();
-    const { t } = useTranslation(["translation"]);
+    const { t: tNarration } = useTranslation(["narration"]);
     const skipEnabled = useRecoilValue(skipEnabledState)
     const autoInfo = useRecoilValue(autoInfoState)
     const typewriterIsAnimated = useRecoilValue(typewriterIsAnimatedState)
@@ -24,7 +24,7 @@ export default function SkipAutoInterceptor({ nextOnClick }: {
         let timeout = setTimeout(() => {
             if (skipEnabled) {
                 nextOnClick({
-                    t,
+                    t: tNarration,
                     navigate,
                     notify: (message, variant) => enqueueSnackbar(message, { variant }),
                 }).then(() => {
@@ -49,7 +49,7 @@ export default function SkipAutoInterceptor({ nextOnClick }: {
                 let timeout = setTimeout(() => {
                     if (autoInfo.enabled && !skipEnabled) {
                         nextOnClick({
-                            t,
+                            t: tNarration,
                             navigate,
                             notify: (message, variant) => enqueueSnackbar(message, { variant }),
                         })
