@@ -1,5 +1,6 @@
-import { addImage, clearAllGameDatas, GameStepManager, GameWindowManager, pixivnTestStartLabel } from '@drincs/pixi-vn';
+import { addImage, canvas, clearAllGameDatas, narration, pixivnTestStartLabel } from '@drincs/pixi-vn';
 import Stack from '@mui/joy/Stack';
+import { useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
@@ -7,18 +8,19 @@ import { useTranslation } from 'react-i18next';
 import { useSetRecoilState } from 'recoil';
 import { hideInterfaceState } from '../atoms/hideInterfaceState';
 import { openSettingsState } from '../atoms/openSettingsState';
-import { reloadInterfaceDataEventAtom } from '../atoms/reloadInterfaceDataEventAtom';
 import MenuButton from '../components/MenuButton';
-import { loadGameSave } from '../utility/ActionsUtility';
-import { useMyNavigate } from '../utility/useMyNavigate';
+import { INTERFACE_DATA_USE_QUEY_KEY } from '../use_query/useQueryInterface';
+import { useMyNavigate } from '../utilities/navigate-utility';
+import { loadGameSaveFromFile } from '../utilities/save-utility';
 
 export default function MainMenu() {
     const navigate = useMyNavigate();
     const setOpenSettings = useSetRecoilState(openSettingsState);
-    const notifyReloadInterfaceDataEvent = useSetRecoilState(reloadInterfaceDataEventAtom);
     const setHideInterface = useSetRecoilState(hideInterfaceState);
     const { enqueueSnackbar } = useSnackbar();
-    const { t } = useTranslation(["translation"]);
+    const { t } = useTranslation(["interface"]);
+    const { t: tNarration } = useTranslation(["narration"]);
+    const queryClient = useQueryClient()
 
     useEffect(() => {
         setHideInterface(false)
@@ -45,15 +47,13 @@ export default function MainMenu() {
         >
             <MenuButton
                 onClick={() => {
-                    GameWindowManager.removeAll()
-                    navigate("/game")
-                    GameStepManager.callLabel(pixivnTestStartLabel, {
+                    canvas.removeAll()
+                    navigate("/narration")
+                    narration.callLabel(pixivnTestStartLabel, {
                         navigate: navigate,
-                        t: t,
+                        t: tNarration,
                         notify: (message, variant) => enqueueSnackbar(message, { variant }),
-                    }).then(() => {
-                        notifyReloadInterfaceDataEvent((prev) => prev + 1)
-                    })
+                    }).then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))
                 }}
                 transitionDelay={0.1}
             >
@@ -61,7 +61,7 @@ export default function MainMenu() {
             </MenuButton>
             <MenuButton
                 onClick={() => {
-                    loadGameSave(navigate, () => notifyReloadInterfaceDataEvent((prev) => prev + 1))
+                    loadGameSaveFromFile(navigate, () => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))
                 }}
                 transitionDelay={0.2}
             >

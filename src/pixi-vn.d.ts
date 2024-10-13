@@ -26,4 +26,11 @@ declare module '@drincs/pixi-vn/dist/override' {
         notify: (message: string, variant: VariantType) => void
         [key: string]: any
     }
+    interface CharacterInterface {
+        name: string
+        surname?: string
+        age?: number
+        icon?: string
+        color?: string
+    }
 }

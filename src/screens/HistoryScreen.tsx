@@ -1,21 +1,24 @@
 import { CharacterBaseModel, getCharacterById, narration } from '@drincs/pixi-vn';
 import CheckIcon from '@mui/icons-material/Check';
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import { Box, Chip, Input, Stack, Typography } from "@mui/joy";
+import { Box, Chip, Input, Stack, Theme, Typography } from "@mui/joy";
 import Avatar from '@mui/joy/Avatar';
+import { useMediaQuery } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Markdown from 'react-markdown';
 import { useRecoilState } from 'recoil';
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
-import { openHistoryState } from '../atoms/openHistoryState';
+import { openHistoryScreenState } from '../atoms/openHistoryScreenState';
 import ModalDialogCustom from '../components/ModalDialog';
 
-export default function History() {
-    const [open, setOpen] = useRecoilState(openHistoryState);
+export default function HistoryScreen() {
+    const [open, setOpen] = useRecoilState(openHistoryScreenState);
     const [searchString, setSearchString] = useState("")
-    const { t } = useTranslation(["translation"]);
+    const { t } = useTranslation(["interface"]);
+    const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
+    const { t: tNarration } = useTranslation(["narration"]);
 
     useEffect(() => {
         window.addEventListener('keydown', onkeydown);
@@ -34,6 +37,7 @@ export default function History() {
         <ModalDialogCustom
             open={open}
             setOpen={setOpen}
+            layout={(smScreen ? "fullscreen" : "center")}
             head={<Stack
                 sx={{
                     width: "100%",
@@ -54,7 +58,7 @@ export default function History() {
             </Stack>}
             minWidth="80%"
             sx={{
-                maxHeight: "80%",
+                minHeight: "50%",
             }}
         >
             <Box
@@ -71,12 +75,13 @@ export default function History() {
                 <Stack spacing={2} justifyContent="flex-end">
                     {narration.narrativeHistory
                         .map((step) => {
-                            let character = step.dialoge?.character ? getCharacterById(step.dialoge?.character) ?? new CharacterBaseModel(step.dialoge?.character, { name: t(step.dialoge?.character) }) : undefined
+                            let character = step.dialoge?.character ? getCharacterById(step.dialoge?.character) ?? new CharacterBaseModel(step.dialoge?.character, { name: tNarration(step.dialoge?.character) }) : undefined
                             return {
                                 character: character?.name ? character.name + (character.surname ? " " + character.surname : "") : undefined,
                                 text: step.dialoge?.text || "",
                                 icon: character?.icon,
                                 choices: step.choices,
+                                inputValue: step.inputValue,
                             }
                         })
                         .filter((data) => {
@@ -114,6 +119,9 @@ export default function History() {
                                 >
                                     <Box sx={{ flex: 1 }}>
                                         {data.choices && data.choices.map((choice, index) => {
+                                            if (choice.hidden) {
+                                                return null
+                                            }
                                             if (choice.isResponse) {
                                                 return <Chip
                                                     key={"choices-success" + index}
@@ -130,6 +138,12 @@ export default function History() {
                                                 {choice.text}
                                             </Chip>
                                         })}
+                                        {data.inputValue && <Chip
+                                            key={"choices-success" + index}
+                                            color="neutral"
+                                        >
+                                            {data.inputValue.toString()}
+                                        </Chip>}
                                     </Box>
                                 </Stack>
                             </React.Fragment>

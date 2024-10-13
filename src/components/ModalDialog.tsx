@@ -1,15 +1,16 @@
 import { DialogActions, DialogContent, Divider, ModalClose } from '@mui/joy';
 import Modal from '@mui/joy/Modal';
-import ModalDialog, { ModalDialogProps } from '@mui/joy/ModalDialog';
+import { default as ModalDialogJoy, ModalDialogProps } from '@mui/joy/ModalDialog';
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from 'react';
 
-interface ModalDialogCustomProps extends ModalDialogProps {
+export interface ModalDialogCustomProps extends ModalDialogProps {
     open: boolean;
     setOpen: (open: boolean) => void;
     children?: React.ReactNode;
     head?: string | React.ReactNode;
     actions?: React.ReactNode;
+    canBeIgnored?: boolean;
 }
 
 export default function ModalDialogCustom(props: ModalDialogCustomProps) {
@@ -20,6 +21,7 @@ export default function ModalDialogCustom(props: ModalDialogCustomProps) {
         , actions
         , head
         , sx
+        , canBeIgnored = true
         , ...rest
     } = props;
     const [internalOpen, setInternalOpen] = useState(open)
@@ -41,7 +43,7 @@ export default function ModalDialogCustom(props: ModalDialogCustomProps) {
             <Modal
                 keepMounted
                 open={internalOpen}
-                onClose={() => setOpen(false)}
+                onClose={() => canBeIgnored && setOpen(false)}
                 component={motion.div}
                 variants={{
                     open: {
@@ -62,7 +64,7 @@ export default function ModalDialogCustom(props: ModalDialogCustomProps) {
                     duration: 0.4,
                 }}
             >
-                <ModalDialog
+                <ModalDialogJoy
                     sx={{
                         ...sx,
                     }}
@@ -85,16 +87,16 @@ export default function ModalDialogCustom(props: ModalDialogCustomProps) {
                     }}
                     {...rest}
                 >
-                    <ModalClose />
+                    {canBeIgnored && <ModalClose />}
                     {head}
-                    <Divider />
+                    {head && <Divider />}
                     <DialogContent>
                         {children}
                     </DialogContent>
                     {actions && <DialogActions>
                         {actions}
                     </DialogActions>}
-                </ModalDialog>
+                </ModalDialogJoy>
             </Modal>
         </AnimatePresence>
     );

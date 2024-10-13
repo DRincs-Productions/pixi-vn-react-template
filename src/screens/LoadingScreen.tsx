@@ -1,7 +1,7 @@
 import { Box, CircularProgress } from "@mui/joy";
 import { motion } from "framer-motion";
 
-export default function LoadingPage() {
+export default function LoadingScreen() {
     return (
         <Box
             sx={{
