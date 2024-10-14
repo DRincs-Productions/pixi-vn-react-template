@@ -86,8 +86,9 @@ export default function SaveLoadAlert() {
                                 openGameSaveScreen(false)
                                 return true
                             })
-                            .catch(() => {
+                            .catch((e) => {
                                 enqueueSnackbar(t("fail_load"), { variant: 'error' })
+                                console.error(e)
                                 return false
                             })
                     case "delete":
@@ -98,8 +99,9 @@ export default function SaveLoadAlert() {
                                 enqueueSnackbar(t("success_delete"), { variant: 'success' })
                                 return true
                             })
-                            .catch(() => {
+                            .catch((e) => {
                                 enqueueSnackbar(t("fail_delete"), { variant: 'error' })
+                                console.error(e)
                                 return false
                             })
                     case "save":
@@ -111,8 +113,9 @@ export default function SaveLoadAlert() {
                                 enqueueSnackbar(t("success_save"), { variant: 'success' })
                                 return true
                             })
-                            .catch(() => {
+                            .catch((e) => {
                                 enqueueSnackbar(t("fail_save"), { variant: 'error' })
+                                console.error(e)
                                 return false
                             })
                 }
