@@ -21,7 +21,7 @@ export default function ModalConfirmation(props: ModalConfirmationProps) {
         , startDecorator
         , ...rest
     } = props
-    const { t } = useTranslation(["interface"]);
+    const { t } = useTranslation(["ui"]);
     const [loadingConfirm, setLoadingConfirm] = useState<boolean>(false)
 
     return (

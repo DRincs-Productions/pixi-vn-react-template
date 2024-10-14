@@ -50,7 +50,7 @@ If you use Visual Studio Code, you can use the debug configuration that comes wi
 * `Shift` + `L`: Quick load the game.
 * `Shift` + `H`: Open the history modal.
 * `Esc`: Open the settings modal.
-* `Shift` + `V`: Hide the Interface (Show only the canvas).
+* `Shift` + `V`: Hide the UI (Show only the canvas).
 
 ## Used libraries
 

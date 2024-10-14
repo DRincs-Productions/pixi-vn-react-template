@@ -21,7 +21,7 @@ export default function MainMenu() {
     const setHideInterface = useSetRecoilState(hideInterfaceState);
     const setGameSaveScreen = useSetRecoilState(openGameSaveScreenState);
     const { enqueueSnackbar } = useSnackbar();
-    const { t } = useTranslation(["interface"]);
+    const { t } = useTranslation(["ui"]);
     const { t: tNarration } = useTranslation(["narration"]);
     const queryClient = useQueryClient()
     const { data: lastSave = null, isLoading } = useQueryLastSave()

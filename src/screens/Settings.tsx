@@ -54,7 +54,7 @@ export default function Settings() {
     const [openYouSure, setOpenYouSure] = useState(false)
     const [typewriterDelay, setTypewriterDelay] = useRecoilState(typewriterDelayState)
     const [fullScreenEnabled, setFullScreenEnabled] = useState(false)
-    const { t } = useTranslation(["interface"]);
+    const { t } = useTranslation(["ui"]);
     const [skip, setSkip] = useRecoilState(skipEnabledState)
     const [auto, setAuto] = useRecoilState(autoInfoState)
     const setOpenHistory = useSetRecoilState(openHistoryScreenState);
@@ -261,7 +261,7 @@ export default function Settings() {
                                         onClick={() => setHideInterface((prev) => !prev)}
                                     >
                                         <VisibilityOffIcon />
-                                        <Typography level="title-md">{t("hide_interface")}</Typography>
+                                        <Typography level="title-md">{t("hide_ui")}</Typography>
                                         <Typography
                                             sx={{
                                                 position: 'absolute',

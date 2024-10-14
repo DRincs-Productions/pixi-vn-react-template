@@ -26,7 +26,7 @@ export default function QuickTools() {
     const openSaveScreen = useSetRecoilState(openGameSaveScreenState);
     const navigate = useMyNavigate();
     const setOpenLoadAlert = useSetRecoilState(saveLoadAlertState);
-    const { t } = useTranslation(["interface"]);
+    const { t } = useTranslation(["ui"]);
     const [hideInterface, setHideInterface] = useRecoilState(hideInterfaceState);
     const [skip, setSkip] = useRecoilState(skipEnabledState)
     const [auto, setAuto] = useRecoilState(autoInfoState)
