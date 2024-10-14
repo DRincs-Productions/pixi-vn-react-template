@@ -16,7 +16,7 @@ import ModalDialogCustom from '../components/ModalDialog';
 export default function HistoryScreen() {
     const [open, setOpen] = useRecoilState(openHistoryScreenState);
     const [searchString, setSearchString] = useState("")
-    const { t } = useTranslation(["interface"]);
+    const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
     const { t: tNarration } = useTranslation(["narration"]);
 

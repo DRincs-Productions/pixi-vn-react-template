@@ -17,7 +17,7 @@ import { deleteSaveFromIndexDB, loadSave, putSaveIntoIndexDB } from '../../utili
 export default function SaveLoadAlert() {
     const navigate = useMyNavigate();
     const [alertData, setAlertData] = useRecoilState(saveLoadAlertState);
-    const { t } = useTranslation(["interface"]);
+    const { t } = useTranslation(["ui"]);
     const { enqueueSnackbar } = useSnackbar();
     const queryClient = useQueryClient()
     const [tempSaveName, setTempSaveName] = useState<string>("")

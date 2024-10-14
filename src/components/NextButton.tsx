@@ -20,7 +20,7 @@ export default function NextButton({ nextOnClick }: {
     const hideNextButton = useRecoilValue(hideInterfaceState) || !canGoNext
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useMyNavigate();
-    const { t } = useTranslation(["interface"]);
+    const { t } = useTranslation(["ui"]);
     const { t: tNarration } = useTranslation(["narration"]);
     useEffect(() => {
         window.addEventListener("keypress", onkeypress);

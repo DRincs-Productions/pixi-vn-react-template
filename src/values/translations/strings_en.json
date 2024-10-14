@@ -1,5 +1,5 @@
 {
-	"interface": {
+	"ui": {
 		"allert_error_occurred": "An error occurred, please report it to the developer",
 		"attention": "Attention",
 		"auto_forward_time": "Auto Forward Time",
@@ -21,7 +21,7 @@
 		"fail_save": "Save failed",
 		"fullscreen": "Fullscreen",
 		"fullscreen_description": "Toggle fullscreen mode.",
-		"hide_interface": "Hide Interface",
+		"hide_ui": "Hide UI",
 		"history": "History",
 		"load": "Load",
 		"load_from_file": "Load from File",

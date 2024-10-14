@@ -68,7 +68,7 @@ This project gives the possibility to introduce the Ionic Framework to develop a
 * `Shift` + `L`: Quick load the game.
 * `Shift` + `H`: Open the history modal.
 * `Esc`: Open the settings modal.
-* `Shift` + `V`: Hide the Interface (Show only the canvas).
+* `Shift` + `V`: Hide the UI (Show only the canvas).
 
 ## Used libraries
 

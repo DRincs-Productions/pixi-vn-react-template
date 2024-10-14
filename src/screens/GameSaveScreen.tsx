@@ -23,7 +23,7 @@ import { downloadGameSave, loadGameSaveFromFile } from '../utilities/save-utilit
 
 export default function GameSaveScreen() {
     const [open, setOpen] = useRecoilState(openGameSaveScreenState);
-    const { t } = useTranslation(["interface"]);
+    const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
     const setOpenLoadAlert = useSetRecoilState(saveLoadAlertState);
     const [page, setPage] = useRecoilState(saveScreenPageState);
@@ -128,7 +128,7 @@ function GameSaveSlot({ saveId, onDelete, onLoad, onOverwriteSave, onSave }: {
     onOverwriteSave: (data: GameSaveData) => Promise<void> | void,
     onLoad: (saveData: GameSaveData) => Promise<void> | void,
 }) {
-    const { t } = useTranslation(["interface"]);
+    const { t } = useTranslation(["ui"]);
     const {
         isLoading,
         data: saveData,

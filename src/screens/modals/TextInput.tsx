@@ -15,7 +15,7 @@ export default function TextInput() {
     const open = (!useRecoilValue(typewriterIsAnimatedState)) && isRequired
     const [tempValue, setTempValue] = useState();
     const queryClient = useQueryClient()
-    const { t } = useTranslation(["interface"]);
+    const { t } = useTranslation(["ui"]);
 
     return (
         <ModalDialogCustom
