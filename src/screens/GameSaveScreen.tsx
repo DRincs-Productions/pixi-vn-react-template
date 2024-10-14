@@ -8,6 +8,7 @@ import { Pagination, Tooltip, useMediaQuery } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { openGameSaveScreenState } from '../atoms/openGameSaveScreenState';
 import { saveLoadAlertState } from '../atoms/saveLoadAlertState';
@@ -29,6 +30,7 @@ export default function GameSaveScreen() {
     const navigate = useMyNavigate();
     const { enqueueSnackbar } = useSnackbar();
     const queryClient = useQueryClient()
+    let location = useLocation();
 
     return (
         <ModalDialogCustom
@@ -68,6 +70,7 @@ export default function GameSaveScreen() {
                     <IconButton
                         size="lg"
                         onClick={() => { downloadGameSave() }}
+                        disabled={location.pathname == "/"}
                     >
                         <DownloadIcon fontSize="large" />
                     </IconButton>
@@ -131,6 +134,7 @@ function GameSaveSlot({ saveId, onDelete, onLoad, onOverwriteSave, onSave }: {
         data: saveData,
         isError,
     } = useQuerySaves({ id: saveId })
+    let location = useLocation();
 
     if (isLoading) {
         return (
@@ -160,6 +164,7 @@ function GameSaveSlot({ saveId, onDelete, onLoad, onOverwriteSave, onSave }: {
                         width: "100%",
                     }}
                     onClick={onSave}
+                    disabled={location.pathname == "/"}
                 >
                     <SaveAsIcon sx={{ fontSize: '3rem', opacity: 0.2 }} />
                 </IconButton>

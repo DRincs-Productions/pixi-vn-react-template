@@ -7,20 +7,24 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSetRecoilState } from 'recoil';
 import { hideInterfaceState } from '../atoms/hideInterfaceState';
+import { openGameSaveScreenState } from '../atoms/openGameSaveScreenState';
 import { openSettingsState } from '../atoms/openSettingsState';
 import MenuButton from '../components/MenuButton';
 import { INTERFACE_DATA_USE_QUEY_KEY } from '../use_query/useQueryInterface';
+import useQueryLastSave from '../use_query/useQueryLastSave';
 import { useMyNavigate } from '../utilities/navigate-utility';
-import { loadGameSaveFromFile } from '../utilities/save-utility';
+import { loadSave } from '../utilities/save-utility';
 
 export default function MainMenu() {
     const navigate = useMyNavigate();
     const setOpenSettings = useSetRecoilState(openSettingsState);
     const setHideInterface = useSetRecoilState(hideInterfaceState);
+    const setGameSaveScreen = useSetRecoilState(openGameSaveScreenState);
     const { enqueueSnackbar } = useSnackbar();
     const { t } = useTranslation(["interface"]);
     const { t: tNarration } = useTranslation(["narration"]);
     const queryClient = useQueryClient()
+    const { data: lastSave = null, isLoading } = useQueryLastSave()
 
     useEffect(() => {
         setHideInterface(false)
@@ -47,6 +51,24 @@ export default function MainMenu() {
         >
             <MenuButton
                 onClick={() => {
+                    if (!lastSave) {
+                        return
+                    }
+                    loadSave(lastSave, navigate)
+                        .then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))
+                        .catch((e) => {
+                            enqueueSnackbar(t("fail_load"), { variant: 'error' })
+                            console.error(e)
+                        })
+                }}
+                transitionDelay={0.1}
+                loading={isLoading}
+                disabled={!isLoading && !lastSave}
+            >
+                {t("continue")}
+            </MenuButton>
+            <MenuButton
+                onClick={() => {
                     canvas.removeAll()
                     navigate("/narration")
                     narration.callLabel(pixivnTestStartLabel, {
@@ -55,21 +77,19 @@ export default function MainMenu() {
                         notify: (message, variant) => enqueueSnackbar(message, { variant }),
                     }).then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))
                 }}
-                transitionDelay={0.1}
+                transitionDelay={0.2}
             >
                 {t("start")}
             </MenuButton>
             <MenuButton
-                onClick={() => {
-                    loadGameSaveFromFile(navigate, () => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))
-                }}
-                transitionDelay={0.2}
+                onClick={() => setGameSaveScreen(true)}
+                transitionDelay={0.3}
             >
                 {t("load")}
             </MenuButton>
             <MenuButton
-                onClick={() => { setOpenSettings(true) }}
-                transitionDelay={0.3}
+                onClick={() => setOpenSettings(true)}
+                transitionDelay={0.4}
             >
                 {t("settings")}
             </MenuButton>
