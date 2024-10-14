@@ -1,3 +1,5 @@
+import { Box } from '@mui/joy';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Routes from './AppRoutes';
 import ApImports from './Imports';
 import EventInterceptor from './interceptors/EventInterceptor';
@@ -13,6 +15,13 @@ export default function Home() {
             <GameSaveScreen />
             <SaveLoadAlert />
             <EventInterceptor />
+            <Box
+                sx={{
+                    pointerEvents: "auto",
+                }}
+            >
+                <ReactQueryDevtools initialIsOpen={false} />
+            </Box>
         </ApImports>
     )
 }
