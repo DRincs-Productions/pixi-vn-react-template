@@ -64,12 +64,14 @@ Core libraries:
 * [PWA Vite Plugin](https://vite-pwa-org.netlify.app): A Vite plugin that provides PWA support. This allows the possibility of installing the game as a Progressive Web App.
 * [Recoil](https://recoiljs.org/): A state management library for React.
 * [React Router](https://reactrouter.com/): A library that provides routing for React applications.
+* [Tanstack Query](https://tanstack.com/tanstack-query/): A library that provides a set of tools for getting, caching, and updating game data.
 
 UI libraries:
 
 * [Mui Joy](https://mui.com/joy-ui/getting-started/): A React UI framework that provides a set of components and styles for building a website.
 * [Framer Motion](https://www.framer.com/motion/): A simple yet powerful motion library for React.
 * [Notistack](https://iamhosseindhv.com/notistack): A library that provides snackbar notifications for React.
+* [React Color Palette](https://www.npmjs.com/package/react-color-palette): A library that provides a color picker for React.
 
 Text libraries:
 
