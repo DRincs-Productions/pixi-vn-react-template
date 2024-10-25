@@ -4,6 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Route, Routes } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { nextStepLoadingState } from './atoms/nextStepLoadingState';
+import NextButton from './components/NextButton';
 import SkipAutoInterceptor from './interceptors/SkipAutoInterceptor';
 import HistoryScreen from './screens/HistoryScreen';
 import LoadingScreen from './screens/LoadingScreen';
@@ -49,13 +50,14 @@ export default function AppRoutes() {
                 element={<>
                     <HistoryScreen />
                     <QuickTools />
-                    <NarrationScreen
-                        nextOnClick={nextOnClick}
-                    />
+                    <NarrationScreen />
                     <SkipAutoInterceptor
                         nextOnClick={nextOnClick}
                     />
                     <TextInput />
+                    <NextButton
+                        nextOnClick={nextOnClick}
+                    />
                 </>}
             />
             <Route path="*" element={<MainMenu />} />

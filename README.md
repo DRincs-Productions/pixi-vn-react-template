@@ -83,6 +83,9 @@ Core libraries:
 * [Recoil](https://recoiljs.org/): A state management library for React.
 * [React Router](https://reactrouter.com/): A library that provides routing for React applications.
 * [Tanstack Query](https://tanstack.com/tanstack-query/): A library that provides a set of tools for getting, caching, and updating game data.
+  <img width="44" alt="image" src="https://github.com/user-attachments/assets/bf70dddc-68c0-48f4-9c41-74c22f54e3d1">
+  You can use the following button to show Tanstack Query interactions with the game. (the button will be automatically hidden when released)
+
 
 UI libraries:
 
