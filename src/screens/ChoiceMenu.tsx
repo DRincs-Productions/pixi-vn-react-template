@@ -13,14 +13,9 @@ import ChoiceButton from '../components/ChoiceButton';
 import { INTERFACE_DATA_USE_QUEY_KEY, useQueryChoiceMenuOptions } from '../use_query/useQueryInterface';
 import { useMyNavigate } from '../utilities/navigate-utility';
 
-type IProps = {
+export default function ChoiceMenu({ fullscreen = true }: {
     fullscreen?: boolean,
-}
-
-export default function ChoiceMenu(props: IProps) {
-    const {
-        fullscreen = true,
-    } = props;
+}) {
     const [loading, setLoading] = useState(false)
     const marginButton = useRecoilValue(dialogueCardHeightState)
     const height = 100 - marginButton

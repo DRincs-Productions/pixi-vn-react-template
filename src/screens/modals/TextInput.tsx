@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useRecoilValue } from 'recoil';
 import { typewriterIsAnimatedState } from '../../atoms/typewriterIsAnimatedState';
 import ModalDialogCustom from '../../components/ModalDialog';
-import TypewriterMarkdown from '../../components/TypewriterMarkdown';
+import Typewriter from '../../components/Typewriter';
 import { INTERFACE_DATA_USE_QUEY_KEY, useQueryDialogue, useQueryInputValue } from '../../use_query/useQueryInterface';
 
 export default function TextInput() {
@@ -53,7 +53,7 @@ export default function TextInput() {
                 />
             </>}
         >
-            {text && <TypewriterMarkdown
+            {text && <Typewriter
                 text={text}
             />}
         </ModalDialogCustom>
