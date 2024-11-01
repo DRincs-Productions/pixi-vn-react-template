@@ -57,7 +57,7 @@ export default function NextButton({ nextOnClick }: {
             loading={nextStepLoading}
             sx={{
                 position: "absolute",
-                bottom: -10,
+                bottom: 0,
                 right: 0,
                 width: { xs: 70, sm: 100, md: 150 },
                 border: 3,
