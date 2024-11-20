@@ -96,3 +96,38 @@ npm run build
 This command will create a `dist` folder with the files necessary to run the application. You can deploy this folder to a web server.
 
 You can read more about the possibilities of hosting in the [Pixi’VN documentation](https://pixi-vn.web.app/advanced/distribution.html#hosting).
+
+## Prerequisites
+
+### Windows
+
+### MacOS
+
+### Setting Up Linux
+
+https://v1.tauri.app/v1/guides/getting-started/prerequisites/#setting-up-linux
+
+sudo apt update
+sudo apt install libwebkit2gtk-4.0-dev
+
+npm run tauri dev
+
+#### WSL2
+
+It's funny googling something and someone talking about me in their question.
+I needed to build something in WSL as well so here is how I did it.
+
+1) Ensure you have WSL 2 installed. Use wsl --list -v to check. If you don't, I suggest first setting default wsl version to 2 and then uninstalling the distro and reinstalling it. Backup important files
+2) After installing tauri pre-requisitues, follow https://penner.me/getting-tauri-working-in-wsl (installing graphics libraries)
+
+sudo apt install pkg-config \
+  libdbus-1-dev \
+  libgtk-3-dev \
+  libsoup2.4-dev \
+  libjavascriptcoregtk-4.0-dev \
+  libwebkit2gtk-4.0-dev -y
+echo "export DISPLAY=:0" >> ~/.bashrc
+
+restart wsl
+
+You may also need vcxsrv installed as I can see the UI on my PC which has it installed and not my laptop which does not have it installed.
