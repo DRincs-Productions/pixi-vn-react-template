@@ -27,7 +27,7 @@ export async function putSaveIntoIndexDB(info: Partial<GameSaveData> & { id?: nu
         image: image,
         ...info,
     }
-    if (!item.id) {
+    if (item.id === undefined) {
         let lastSave = await getLastRowFromIndexDB<GameSaveData & { id: number }>(INDEXED_DB_SAVE_TABLE)
         if (lastSave) {
             item.id = lastSave.id + 1
