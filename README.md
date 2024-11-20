@@ -131,3 +131,8 @@ echo "export DISPLAY=:0" >> ~/.bashrc
 restart wsl
 
 You may also need vcxsrv installed as I can see the UI on my PC which has it installed and not my laptop which does not have it installed.
+
+## Cargo update
+
+cd src-tauri/
+cargo update
