@@ -2,6 +2,7 @@
     "recommendations": [
         "ms-vscode.vscode-typescript-next",
         "dbaeumer.vscode-eslint",
-        "antiantisepticeye.vscode-color-picker"
+        "antiantisepticeye.vscode-color-picker",
+        "pflannery.vscode-versionlens"
     ]
 }

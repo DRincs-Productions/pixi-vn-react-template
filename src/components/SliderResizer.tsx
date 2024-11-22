@@ -1,5 +1,5 @@
 import { Slider, SliderProps, Stack, useTheme } from "@mui/joy";
-import { AnimationProps, motion } from "framer-motion";
+import { AnimationProps, motion } from "motion/react";
 
 interface SliderResizerProps extends SliderProps, AnimationProps { }
 

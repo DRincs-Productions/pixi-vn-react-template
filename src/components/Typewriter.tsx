@@ -1,5 +1,5 @@
 import { useTheme } from "@mui/joy";
-import { motion, Variants } from "framer-motion";
+import { motion, Variants } from "motion/react";
 import { useMemo, useRef } from "react";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";

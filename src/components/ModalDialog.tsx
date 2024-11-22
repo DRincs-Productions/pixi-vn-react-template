@@ -1,7 +1,7 @@
 import { DialogActions, DialogContent, Divider, ModalClose } from '@mui/joy';
 import Modal from '@mui/joy/Modal';
 import { default as ModalDialogJoy, ModalDialogProps } from '@mui/joy/ModalDialog';
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from 'react';
 
 export interface ModalDialogCustomProps extends ModalDialogProps {

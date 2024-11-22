@@ -1,6 +1,6 @@
 import { StepLabelProps } from '@drincs/pixi-vn/dist/override';
 import { Button } from '@mui/joy';
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';

@@ -1,5 +1,5 @@
 import { Button, ButtonProps, ButtonTypeMap } from "@mui/joy";
-import { motion, Variants } from "framer-motion";
+import { motion, Variants } from "motion/react";
 
 interface MenuButtonProps extends ButtonProps<ButtonTypeMap['defaultComponent'], {
     component?: React.ElementType;
