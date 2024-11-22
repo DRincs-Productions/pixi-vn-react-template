@@ -4,7 +4,7 @@ import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
-import { motion, Variants } from "framer-motion";
+import { motion, Variants } from "motion/react";
 import { useRef } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { dialogueCardHeightState } from '../atoms/dialogueCardHeightState';

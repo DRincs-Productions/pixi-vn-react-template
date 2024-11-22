@@ -74,7 +74,7 @@ Core libraries:
 UI libraries:
 
 * [Mui Joy](https://mui.com/joy-ui/getting-started/): A React UI framework that provides a set of components and styles for building a website.
-* [Framer Motion](https://www.framer.com/motion/): A simple yet powerful motion library for React.
+* [Framer Motion](https://motion.dev/): A simple yet powerful motion library for React.
 * [Notistack](https://iamhosseindhv.com/notistack): A library that provides snackbar notifications for React.
 * [React Color Palette](https://www.npmjs.com/package/react-color-palette): A library that provides a color picker for React.
 

@@ -1,5 +1,5 @@
 import { Box, CircularProgress } from "@mui/joy";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 export default function LoadingScreen() {
     return (

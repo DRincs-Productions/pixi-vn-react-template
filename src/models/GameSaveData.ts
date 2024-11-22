@@ -1,4 +1,4 @@
-import { ISaveData as PiviVNSaveData } from "@drincs/pixi-vn"
+import { SaveData as PiviVNSaveData } from "@drincs/pixi-vn"
 
 export default interface GameSaveData {
     saveData: PiviVNSaveData
