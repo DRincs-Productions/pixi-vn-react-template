@@ -2,7 +2,7 @@ import { ChoiceMenuOption, ChoiceMenuOptionClose, narration } from '@drincs/pixi
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import { Box, Grid } from '@mui/joy';
 import { useQueryClient } from '@tanstack/react-query';
-import { motion, Variants } from "framer-motion";
+import { motion, Variants } from "motion/react";
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
