@@ -405,19 +405,25 @@ export default function Settings() {
                             }}
                         >
                             <Tooltip title="Light Mode">
-                                <IconButton value="light">
-                                    <LightModeIcon />
-                                </IconButton>
+                                <span>
+                                    <IconButton value="light">
+                                        <LightModeIcon />
+                                    </IconButton>
+                                </span>
                             </Tooltip>
                             <Tooltip title="System Mode">
-                                <IconButton value="system">
-                                    <AutoModeIcon />
-                                </IconButton>
+                                <span>
+                                    <IconButton value="system">
+                                        <AutoModeIcon />
+                                    </IconButton>
+                                </span>
                             </Tooltip>
                             <Tooltip title="Dark Mode">
-                                <IconButton value="dark">
-                                    <DarkModeIcon />
-                                </IconButton>
+                                <span>
+                                    <IconButton value="dark">
+                                        <DarkModeIcon />
+                                    </IconButton>
+                                </span>
                             </Tooltip>
                         </ToggleButtonGroup>
 
@@ -456,14 +462,18 @@ export default function Settings() {
                             }}
                         >
                             <Tooltip title="White">
-                                <IconButton value="white">
-                                    <WbIncandescentIcon />
-                                </IconButton>
+                                <span>
+                                    <IconButton value="white">
+                                        <WbIncandescentIcon />
+                                    </IconButton>
+                                </span>
                             </Tooltip>
                             <Tooltip title="Black">
-                                <IconButton value="black">
-                                    <ModeNightIcon />
-                                </IconButton>
+                                <span>
+                                    <IconButton value="black">
+                                        <ModeNightIcon />
+                                    </IconButton>
+                                </span>
                             </Tooltip>
                         </ToggleButtonGroup>
                         <ToggleButtonGroup

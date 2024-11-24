@@ -42,7 +42,7 @@ This command will start the development server. Open [http://localhost:5173](htt
 
 #### Debugging
 
-If you use Visual Studio Code, you can use the debug configuration that comes with the template. To do this, go to the debug section and select the `Launch Chrome` configuration.
+If you are using Visual Studio Code, you can use the debug configuration provided with the template. To do this, after launching `npm start`, go to the debug section and select the `Launch Chrome` configuration.
 
 ## Keyboard shortcuts (hotkeys)
 
@@ -60,7 +60,7 @@ This template uses the following libraries:
 
 Core libraries:
 
-* [Pixi’VN](https://www.npmjs.com/package/@drincs/pixi-vn): A visual novel library for PixiJS.
+* [Pixi’VN](https://www.npmjs.com/package/@drincs/pixi-vn): A visual novel library.
 * [Vite](https://vitejs.dev/): A build tool that aims to provide a faster and leaner development experience for modern web projects.
 * [Vite Checker](https://www.npmjs.com/package/vite-plugin-checker): A Vite plugin that checks TypeScript types and ESLint on each build.
 * [PWA Vite Plugin](https://vite-pwa-org.netlify.app): A Vite plugin that provides PWA support. This allows the possibility of installing the game as a Progressive Web App.

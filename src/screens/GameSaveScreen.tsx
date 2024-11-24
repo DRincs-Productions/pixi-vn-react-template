@@ -55,25 +55,29 @@ export default function GameSaveScreen() {
                 }}
             >
                 <Tooltip title={t("load_from_file")}>
-                    <IconButton
-                        size="lg"
-                        onClick={() => loadGameSaveFromFile(navigate, () => {
-                            queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] })
-                            enqueueSnackbar(t("success_load"), { variant: 'success' })
-                            setOpen(false)
-                        })}
-                    >
-                        <FolderOpenIcon fontSize="large" />
-                    </IconButton>
+                    <span>
+                        <IconButton
+                            size="lg"
+                            onClick={() => loadGameSaveFromFile(navigate, () => {
+                                queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] })
+                                enqueueSnackbar(t("success_load"), { variant: 'success' })
+                                setOpen(false)
+                            })}
+                        >
+                            <FolderOpenIcon fontSize="large" />
+                        </IconButton>
+                    </span>
                 </Tooltip>
                 <Tooltip title={t("save_to_file")}>
-                    <IconButton
-                        size="lg"
-                        onClick={() => { downloadGameSave() }}
-                        disabled={location.pathname == "/"}
-                    >
-                        <DownloadIcon fontSize="large" />
-                    </IconButton>
+                    <span>
+                        <IconButton
+                            size="lg"
+                            onClick={() => { downloadGameSave() }}
+                            disabled={location.pathname == "/"}
+                        >
+                            <DownloadIcon fontSize="large" />
+                        </IconButton>
+                    </span>
                 </Tooltip>
             </Stack>
             <Grid
@@ -102,7 +106,7 @@ export default function GameSaveScreen() {
                 })}
             </Grid>
             <Pagination
-                count={Infinity}
+                count={999}
                 siblingCount={smScreen ? 2 : 7}
                 page={page + 1}
                 onChange={(_event, value) => setPage(value - 1)}
