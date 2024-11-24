@@ -58,6 +58,20 @@ This command will start the development server. Open [http://localhost:5173](htt
 
 If you are using Visual Studio Code, you can use the debug configuration provided with the template. To do this, after launching `npm start`, go to the debug section and select the `Launch Chrome` configuration.
 
+### Start the Desktop Program (Tauri)
+
+To start the Tauri application, run the following command:
+
+```bash
+npm run tauri dev
+```
+
+This command will start the Tauri application. The application will open in a window on your computer.
+
+#### Debugging the Desktop Program
+
+If you use Visual Studio Code, you can use the debug configuration that comes with the template. To do this, go to the debug section and select the `Tauri Development Debug` or `Tauri Production Debug` configuration.
+
 ### Recommended Visual Studio Code extensions
 
 * [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode): Provides Tauri commands and debugging support.
