@@ -54,7 +54,7 @@ npm start
 
 This command will start the development server. Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
 
-#### Debugging
+#### Debugging the web application
 
 If you are using Visual Studio Code, you can use the debug configuration provided with the template. To do this, after launching `npm start`, go to the debug section and select the `Launch Chrome` configuration.
 
