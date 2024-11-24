@@ -60,6 +60,9 @@ If you are using Visual Studio Code, you can use the debug configuration provide
 
 ### Recommended Visual Studio Code extensions
 
+* [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode): Provides Tauri commands and debugging support.
+* [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer): Provides Rust language support.
+* [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb): Provides LLDB debugging support.
 * [JavaScript and TypeScript Nightly](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-next): Provides JavaScript and TypeScript nightlies.
 * [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint): Integrates ESLint into VS Code.
 * [vscode-color-picker](https://marketplace.visualstudio.com/items?itemName=antiantisepticeye.vscode-color-picker): A color picker for Visual Studio Code.
