@@ -30,6 +30,12 @@ By default, the project is named `my-app` and the title of the game is `My App`.
 
 You can change the icon of the game by replacing the images in the `public` folder.
 
+After that, you need to run the following command to change tauri icons.
+  
+```bash
+npm run tauri icon public/pwa-512x512.png
+```
+
 ### Installation
 
 First, is necessary install the dependencies. To do this, open a terminal in the root folder of the project and run the following command:
