@@ -22,6 +22,14 @@ The settings modal allows you to change the text speed, go to full screen, edit 
 
 Before starting, you need to have Node.js installed on your computer. If you don't have it, you can download it [here](https://nodejs.org/).
 
+### Change the project name
+
+By default, the project is named `my-app` and the title of the game is `My App`. You can search for all occurrences of `my-app` and `My App` in the project and replace them with the name of your game.
+
+### Change the icon
+
+You can change the icon of the game by replacing the images in the `public` folder.
+
 ### Installation
 
 First, is necessary install the dependencies. To do this, open a terminal in the root folder of the project and run the following command:
@@ -70,11 +78,10 @@ Core libraries:
   <img width="44" alt="image" src="https://github.com/user-attachments/assets/bf70dddc-68c0-48f4-9c41-74c22f54e3d1">
   You can use the following button to show Tanstack Query interactions with the game. (the button will be automatically hidden when released)
 
-
 UI libraries:
 
 * [Mui Joy](https://mui.com/joy-ui/getting-started/): A React UI framework that provides a set of components and styles for building a website.
-* [Framer Motion](https://motion.dev/): A simple yet powerful motion library for React.
+* [Motion](https://motion.dev/): A simple yet powerful motion library for React.
 * [Notistack](https://iamhosseindhv.com/notistack): A library that provides snackbar notifications for React.
 * [React Color Palette](https://www.npmjs.com/package/react-color-palette): A library that provides a color picker for React.
 
