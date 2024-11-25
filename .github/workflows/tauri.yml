@@ -73,6 +73,7 @@ jobs:
           echo 'y' | sdkmanager --update --sdk_root=$ANDROID_HOME
           echo 'y' | sdkmanager --sdk_root=$ANDROID_HOME --install "ndk;21.4.7075529"
           rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+          export NDK_HOME = ${{ steps.setup-ndk.outputs.ndk-path }}
 
       - name: setup node
         uses: actions/setup-node@v4
@@ -100,8 +101,6 @@ jobs:
         run: |
           npm run tauri android init
           npm run tauri icon public/pwa-512x512.png
-        env:
-          NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
 
       - uses: tauri-apps/tauri-action@v0
         env:
