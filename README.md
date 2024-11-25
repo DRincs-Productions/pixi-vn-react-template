@@ -86,6 +86,28 @@ If you use Visual Studio Code, you can use the debug configuration that comes wi
 
 Read more about the possibilities of debugging in the [Tauri documentation](https://v2.tauri.app/develop/debug/vscode/).
 
+## Start the Android application (Tauri)
+
+**Prerequisites**: Before starting the Tauri application, you need read the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites) and install [rust](https://v2.tauri.app/start/prerequisites/#rust). And you need to have the [Android SDK installed on your computer](https://v2.tauri.app/start/prerequisites/#android).
+
+To start the Tauri application, run the following command:
+
+```bash
+npm run tauri android dev
+```
+
+This command will start the Tauri application. The application will open in an emulator or on your Android device.
+
+### Start the iOS application (Tauri)
+
+**Prerequisites**: Before starting the Tauri application, you need read the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites) and install [rust](https://v2.tauri.app/start/prerequisites/#rust). And you need to have the [Xcode installed on your computer](https://v2.tauri.app/start/prerequisites/#ios).
+
+To start the Tauri application, run the following command:
+
+```bash
+npm run tauri ios dev
+```
+
 ## Keyboard shortcuts (hotkeys)
 
 * `Space` or `Enter`: Continue the dialogue.
