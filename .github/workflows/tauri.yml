@@ -56,6 +56,18 @@ jobs:
         if: matrix.name == 'Android' # This must match the platform value defined above.
         uses: android-actions/setup-android@v3
 
+      - name: Setup Android NDK
+        if: matrix.name == 'Android' # This must match the platform value defined above.
+        uses: nttld/setup-ndk@v1
+        id: setup-ndk
+        with:
+          ndk-version: r21e
+          add-to-path: false
+      - run: ./build.sh
+        if: matrix.name == 'Android' # This must match the platform value defined above.
+        env:
+          NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+
       - name: install android SDK (android only)
         if: matrix.name == 'Android' # This must match the platform value defined above.
         run: |
@@ -65,7 +77,6 @@ jobs:
           echo 'y' | sdkmanager --update --sdk_root=$ANDROID_HOME
           echo 'y' | sdkmanager --sdk_root=$ANDROID_HOME --install "ndk;21.4.7075529"
           rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
-          export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk)"
 
       - name: setup node
         uses: actions/setup-node@v4
