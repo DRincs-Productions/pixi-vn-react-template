@@ -40,11 +40,16 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
+      - name: Set up JDK 17
+        if: matrix.name == 'Android' # This must match the platform value defined above.
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
       - name: Setup Android SDK
         if: matrix.name == 'Android' # This must match the platform value defined above.
         uses: android-actions/setup-android@v3
-        with:
-          packages: ''
 
       - name: install android SDK (android only)
         if: matrix.name == 'Android' # This must match the platform value defined above.
