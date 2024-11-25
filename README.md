@@ -60,7 +60,7 @@ If you are using Visual Studio Code, you can use the debug configuration provide
 
 ### Start the Desktop Program (Tauri)
 
-Before starting the Tauri application, you need read the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites).
+Before starting the Tauri application, you need read the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites) and install [rust](https://v2.tauri.app/start/prerequisites/#rust).
 
 To start the Tauri application, run the following command:
 
