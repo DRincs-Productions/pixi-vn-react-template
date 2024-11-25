@@ -15,15 +15,20 @@ jobs:
       matrix:
         include:
           - platform: 'macos-latest' # for Arm based macs (M1 and above).
+            name: 'macOS Arm'
             args: '--target aarch64-apple-darwin'
           - platform: 'macos-latest' # for Intel based macs.
+            name: 'macOS Intel'
             args: '--target x86_64-apple-darwin'
           - platform: 'ubuntu-22.04'
+            name: 'Linux'
             args: ''
           - platform: 'windows-latest'
+            name: 'Windows'
             args: ''
-          - platform: 'android-latest'
-            args: ''
+          - platform: 'ubuntu-22.04'
+            name: 'Android'
+            args: 'android build -- --aab'
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -36,7 +41,7 @@ jobs:
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
       - name: install android SDK (android only)
-        if: matrix.platform == 'android-latest' # This must match the platform value defined above.
+        if: matrix.name == 'Android' # This must match the platform value defined above.
         run: |
           wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
           unzip commandlinetools-linux-7583922_latest.zip -d $HOME/Android
@@ -68,8 +73,10 @@ jobs:
         run: npm install # this for npm, for yarn use `yarn install`
 
       - name: init android tauri
-        if: matrix.platform == 'android-latest' # This must match the platform value defined above.
-        run: npm run tauri android init
+        if: matrix.name == 'Android' # This must match the platform value defined above.
+        run: |
+          npm run tauri android init
+          npm run tauri icon public/pwa-512x512.png
 
       - uses: tauri-apps/tauri-action@v0
         env:
