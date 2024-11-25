@@ -39,13 +39,12 @@ jobs:
         if: matrix.platform == 'android-latest' # This must match the platform value defined above.
         run: |
           wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
-          unzip commandlinetools-linux-7583922_latest.zip -d $HOME/android-sdk
-          export ANDROID_SDK_ROOT=$HOME/android-sdk
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/bin:$PATH
-          echo 'y' | sdkmanager --update --sdk_root=$ANDROID_SDK_ROOT
-          echo 'y' | sdkmanager --sdk_root=$ANDROID_SDK_ROOT --install "ndk;21.4.7075529"
+          unzip commandlinetools-linux-7583922_latest.zip -d $HOME/Android
+          export ANDROID_HOME="$HOME/Android/Sdk"
+          echo 'y' | sdkmanager --update --sdk_root=$ANDROID_HOME
+          echo 'y' | sdkmanager --sdk_root=$ANDROID_HOME --install "ndk;21.4.7075529"
           rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
-          export NDK_HOME="$ANDROID_SDK_ROOT/ndk/21.4.7075529"
+          export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk)"
 
       - name: setup node
         uses: actions/setup-node@v4
