@@ -22,6 +22,16 @@ The settings modal allows you to change the text speed, go to full screen, edit 
 
 Before starting, you need to have Node.js installed on your computer. If you don't have it, you can download it [here](https://nodejs.org/).
 
+### Recommended Visual Studio Code extensions
+
+* [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode): Provides Tauri commands and debugging support.
+* [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer): Provides Rust language support.
+* [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb): Provides LLDB debugging support.
+* [JavaScript and TypeScript Nightly](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-next): Provides JavaScript and TypeScript nightlies.
+* [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint): Integrates ESLint into VS Code.
+* [vscode-color-picker](https://marketplace.visualstudio.com/items?itemName=antiantisepticeye.vscode-color-picker): A color picker for Visual Studio Code.
+* [Version Lens](https://marketplace.visualstudio.com/items?itemName=pflannery.vscode-versionlens): Shows the latest version for each package using code lens.
+
 ### Change the project name
 
 By default, the project is named `my-app` and the title of the game is `My App`. You can search for all occurrences of `my-app` and `My App` in the project and replace them with the name of your game.
@@ -75,16 +85,6 @@ This command will start the Tauri application. The application will open in a wi
 If you use Visual Studio Code, you can use the debug configuration that comes with the template. To do this, go to the debug section and select the `Tauri Development Debug` or `Tauri Production Debug` configuration.
 
 Read more about the possibilities of debugging in the [Tauri documentation](https://v2.tauri.app/develop/debug/vscode/).
-
-### Recommended Visual Studio Code extensions
-
-* [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode): Provides Tauri commands and debugging support.
-* [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer): Provides Rust language support.
-* [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb): Provides LLDB debugging support.
-* [JavaScript and TypeScript Nightly](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-next): Provides JavaScript and TypeScript nightlies.
-* [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint): Integrates ESLint into VS Code.
-* [vscode-color-picker](https://marketplace.visualstudio.com/items?itemName=antiantisepticeye.vscode-color-picker): A color picker for Visual Studio Code.
-* [Version Lens](https://marketplace.visualstudio.com/items?itemName=pflannery.vscode-versionlens): Shows the latest version for each package using code lens.
 
 ## Keyboard shortcuts (hotkeys)
 
