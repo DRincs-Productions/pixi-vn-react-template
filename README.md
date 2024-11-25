@@ -70,7 +70,7 @@ If you are using Visual Studio Code, you can use the debug configuration provide
 
 ### Start the Desktop Program (Tauri)
 
-Before starting the Tauri application, you need read the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites) and install [rust](https://v2.tauri.app/start/prerequisites/#rust).
+**Prerequisites**: Before starting the Tauri application, you need read the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites) and install [rust](https://v2.tauri.app/start/prerequisites/#rust). Restart your pc.
 
 To start the Tauri application, run the following command:
 
@@ -138,9 +138,22 @@ This command will create a `dist` folder with the files necessary to run the app
 
 You can read more about the possibilities of hosting in the [Pixi’VN documentation](https://pixi-vn.web.app/advanced/distribution.html#hosting).
 
-## Prerequisites
-
 ### Windows
+
+**Prerequisites**:
+
+* Before building the Windows application, you need install the same [Start the Desktop Program](#start-the-desktop-program-tauri) prerequisites.
+* If you are using Linux or MacOS, you need to install the [Install NSIS](https://v2.tauri.app/distribute/windows-installer/#install-nsis) and [Install LLVM and the LLD Linker](https://v2.tauri.app/distribute/windows-installer/#install-llvm-and-the-lld-linker).
+* Install the [Windows Rust target](https://v2.tauri.app/distribute/windows-installer/#install-the-windows-rust-target).
+* Install [cargo-xwin](https://v2.tauri.app/distribute/windows-installer/#install-cargo-xwin).
+
+To build the Windows application, run the following command:
+
+```bash
+npm run tauri build -- --runner cargo-xwin --target x86_64-pc-windows-msvc
+```
+
+For more information, read the [Tauri documentation](https://v2.tauri.app/distribute/#windows).
 
 ### MacOS
 
