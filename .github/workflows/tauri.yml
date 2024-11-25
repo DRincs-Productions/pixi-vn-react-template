@@ -63,10 +63,6 @@ jobs:
         with:
           ndk-version: r21e
           add-to-path: false
-      - run: ./build.sh
-        if: matrix.name == 'Android' # This must match the platform value defined above.
-        env:
-          NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
 
       - name: install android SDK (android only)
         if: matrix.name == 'Android' # This must match the platform value defined above.
@@ -104,6 +100,8 @@ jobs:
         run: |
           npm run tauri android init
           npm run tauri icon public/pwa-512x512.png
+        env:
+          NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
 
       - uses: tauri-apps/tauri-action@v0
         env:
