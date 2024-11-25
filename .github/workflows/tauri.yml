@@ -43,7 +43,7 @@ jobs:
       - name: install android SDK (android only)
         if: matrix.name == 'Android' # This must match the platform value defined above.
         run: |
-          sudo apt-get install android-sdk
+          sudo apt-get install -y android-sdk
           wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
           unzip commandlinetools-linux-7583922_latest.zip -d $HOME/Android
           export ANDROID_HOME="$HOME/Android/Sdk"
