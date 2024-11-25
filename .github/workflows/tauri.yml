@@ -16,19 +16,24 @@ jobs:
         include:
           - platform: 'macos-latest' # for Arm based macs (M1 and above).
             name: 'macOS Arm'
+            tauriScript: 'npm run tauri' # or yarn
             args: '--target aarch64-apple-darwin'
           - platform: 'macos-latest' # for Intel based macs.
             name: 'macOS Intel'
+            tauriScript: 'npm run tauri' # or yarn
             args: '--target x86_64-apple-darwin'
           - platform: 'ubuntu-22.04'
             name: 'Linux'
+            tauriScript: 'npm run tauri' # or yarn
             args: ''
           - platform: 'windows-latest'
             name: 'Windows'
+            tauriScript: 'npm run tauri' # or yarn
             args: ''
           - platform: 'ubuntu-22.04'
             name: 'Android'
-            args: 'android build -- --aab'
+            tauriScript: 'npm run tauri android' # or yarn
+            args: '--aab'
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -99,4 +104,5 @@ jobs:
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: true
           prerelease: false
+          tauriScript: ${{ matrix.tauriScript }}
           args: ${{ matrix.args }}
