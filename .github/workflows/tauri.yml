@@ -71,10 +71,6 @@ jobs:
           unzip commandlinetools-linux-7583922_latest.zip -d $HOME/Android
           export ANDROID_HOME="$HOME/Android/Sdk"
           echo 'y' | sdkmanager --update --sdk_root=$ANDROID_HOME
-          export NDK_HOME="$ANDROID_NDK_HOME"
-        env:
-          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
-
         # echo 'y' | sdkmanager --sdk_root=$ANDROID_HOME --install "ndk;21.4.7075529"
         # rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
         # export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk)"
@@ -103,8 +99,11 @@ jobs:
       - name: init android tauri
         if: matrix.name == 'Android' # This must match the platform value defined above.
         run: |
-          npm run tauri android init
           npm run tauri icon public/pwa-512x512.png
+          export NDK_HOME="$ANDROID_NDK_HOME"
+          npm run tauri android init
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
 
       - uses: tauri-apps/tauri-action@v0
         env:
