@@ -114,6 +114,7 @@ jobs:
           npm run tauri icon public/pwa-512x512.png
           npm run tauri ios init
           xcode-select --install
+          softwareupdate --install -a
 
       - uses: tauri-apps/tauri-action@v0
         env:
