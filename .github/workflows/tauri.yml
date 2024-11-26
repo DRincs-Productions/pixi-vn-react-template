@@ -64,7 +64,7 @@ jobs:
         uses: nttld/setup-ndk@v1.5.0
         id: setup-ndk
         with:
-          ndk-version: '21.4.7075529'
+          ndk-version: r27c
           add-to-path: false
 
       - name: install android SDK and NDK (android only)
