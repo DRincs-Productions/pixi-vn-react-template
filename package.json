@@ -1,6 +1,6 @@
 {
-  "name": "0package-name0",
-  "description": "0description0",
+  "name": "my-app-package-name",
+  "description": "my-app-description",
   "version": "0.1.0",
   "type": "module",
   "scripts": {

@@ -17,9 +17,9 @@ export default defineConfig({
       // and the maskable icon using: https://progressier.com/maskable-icons-editor
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: '0project-name0',
-        short_name: '0package-name0',
-        description: '0description0',
+        name: 'my-app-project-name',
+        short_name: 'my-app-package-name',
+        description: 'my-app-description',
         theme_color: '#ffffff',
         start_url: "/",
         display: "fullscreen",
