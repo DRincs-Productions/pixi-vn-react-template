@@ -56,8 +56,7 @@ jobs:
         if: matrix.name == 'Android' # This must match the platform value defined above.
         uses: android-actions/setup-android@v3
 
-      - name: Setup Android NDK (android only)
-        if: matrix.name == 'Android' # This must match the platform value defined above.
+      - name: Setup Android NDK (for android)
         uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
