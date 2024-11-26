@@ -1826,7 +1826,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "my-app"
+name = "0package-name0"
 version = "0.1.0"
 dependencies = [
  "serde",
