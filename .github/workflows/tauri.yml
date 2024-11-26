@@ -34,6 +34,10 @@ jobs:
             name: 'Android'
             tauriScript: 'npm run tauri android' # or yarn
             args: '--aab'
+          - platform: 'macos-latest' # for Intel based macs.
+            name: 'iOS'
+            tauriScript: 'npm run tauri ios' # or yarn
+            args: '--open'
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -57,10 +61,10 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Setup Android NDK (for android)
-        uses: nttld/setup-ndk@v1
+        uses: nttld/setup-ndk@v1.5.0
         id: setup-ndk
         with:
-          ndk-version: r21e
+          ndk-version: '21.4.7075529'
           add-to-path: false
 
       - name: install android SDK and NDK (android only)
@@ -103,6 +107,12 @@ jobs:
           npm run tauri android init
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+
+      - name: init ios tauri
+        if: matrix.name == 'iOS' # This must match the platform value defined above.
+        run: |
+          npm run tauri icon public/pwa-512x512.png
+          npm run tauri ios init
 
       - uses: tauri-apps/tauri-action@v0
         env:
