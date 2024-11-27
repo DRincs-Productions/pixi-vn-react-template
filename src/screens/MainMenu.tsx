@@ -1,4 +1,4 @@
-import { addImage, canvas, clearAllGameDatas, narration, pixivnTestStartLabel } from '@drincs/pixi-vn';
+import { addImage, canvas, clearAllGameDatas, narration } from '@drincs/pixi-vn';
 import Stack from '@mui/joy/Stack';
 import { useQueryClient } from '@tanstack/react-query';
 import { motion } from "motion/react";
@@ -10,6 +10,7 @@ import { hideInterfaceState } from '../atoms/hideInterfaceState';
 import { openGameSaveScreenState } from '../atoms/openGameSaveScreenState';
 import { openSettingsState } from '../atoms/openSettingsState';
 import MenuButton from '../components/MenuButton';
+import startLabel from '../labels/startLabel';
 import { INTERFACE_DATA_USE_QUEY_KEY } from '../use_query/useQueryInterface';
 import useQueryLastSave from '../use_query/useQueryLastSave';
 import { useMyNavigate } from '../utilities/navigate-utility';
@@ -71,7 +72,7 @@ export default function MainMenu() {
                 onClick={() => {
                     canvas.removeAll()
                     navigate("/narration")
-                    narration.callLabel(pixivnTestStartLabel, {
+                    narration.callLabel(startLabel, {
                         navigate: navigate,
                         t: tNarration,
                         notify: (message, variant) => enqueueSnackbar(message, { variant }),
