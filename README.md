@@ -144,68 +144,17 @@ Text libraries:
 
 ## Distribution
 
-### Web application
+Generating releases manually for all devices is not an easy process, because it requires installing many programs and for iOS applications you need a mac. Precisely for this reason it is not recommended. (You can get more information on how to manually generate releases here)
 
-To build the project, run the following command:
+Tauri gives the possibility to use GitHub Actions to generate releases autonomously. **What is GitHub Actions?** To explain it so that everyone can understand it, GitHub to automate repetitive processes that you would have to do manually, by having "machines" with the OS you prefer for a certain period of time. with .yml files you can set a list of commands that will have to perform after a certain event.
 
-```bash
-npm run build
-```
-
-This command will create a `dist` folder with the files necessary to run the application. You can deploy this folder to a web server.
-
-You can read more about the possibilities of hosting in the [Pixi’VN documentation](https://pixi-vn.web.app/advanced/distribution.html#hosting).
-
-### Windows
-
-**Prerequisites**:
-
-* Before building the Windows application, you need install the same [Start the Desktop Program](#start-the-desktop-program-tauri) prerequisites.
-* If you are using Linux or MacOS, you need to install the [Install NSIS](https://v2.tauri.app/distribute/windows-installer/#install-nsis) and [Install LLVM and the LLD Linker](https://v2.tauri.app/distribute/windows-installer/#install-llvm-and-the-lld-linker).
-* Install the [Windows Rust target](https://v2.tauri.app/distribute/windows-installer/#install-the-windows-rust-target).
-* Install [cargo-xwin](https://v2.tauri.app/distribute/windows-installer/#install-cargo-xwin).
-
-To build the Windows application, run the following command:
+This template has inside it the file /.github/workflows/tauri.yml which has the purpose of creating a release not inside the installation packages for all OS. To activate this procedure you need to have your own project on GitHub and create a tag on git that starts with the letter "v". For example:
 
 ```bash
-npm run tauri build -- --runner cargo-xwin --target x86_64-pc-windows-msvc
+git tag v1.0.0
+git push origin v1.0.0
 ```
 
-For more information, read the [Tauri documentation](https://v2.tauri.app/distribute/#windows).
+In the Actions section of your Repo you can view the status of this procedure.
 
-### MacOS
-
-### Setting Up Linux
-
-https://v1.tauri.app/v1/guides/getting-started/prerequisites/#setting-up-linux
-
-sudo apt update
-sudo apt install libwebkit2gtk-4.0-dev
-
-npm run tauri dev
-
-#### WSL2
-
-It's funny googling something and someone talking about me in their question.
-I needed to build something in WSL as well so here is how I did it.
-
-1) Ensure you have WSL 2 installed. Use wsl --list -v to check. If you don't, I suggest first setting default wsl version to 2 and then uninstalling the distro and reinstalling it. Backup important files
-2) After installing tauri pre-requisitues, follow https://penner.me/getting-tauri-working-in-wsl (installing graphics libraries)
-
-sudo apt install pkg-config \
-  libdbus-1-dev \
-  libgtk-3-dev \
-  libsoup2.4-dev \
-  libjavascriptcoregtk-4.0-dev \
-  libwebkit2gtk-4.0-dev -y
-echo "export DISPLAY=:0" >> ~/.bashrc
-
-restart wsl
-
-You may also need vcxsrv installed as I can see the UI on my PC which has it installed and not my laptop which does not have it installed.
-
-## Cargo update
-
-cd src-tauri/
-cargo update
-
+At its end a Release will be created. Read more about the GitHub Releases [here](https://docs.github.com/en/repositories/releasing-projects-on-github/viewing-your-repositorys-releases-and-tags)
