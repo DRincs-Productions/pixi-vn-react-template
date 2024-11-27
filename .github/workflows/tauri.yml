@@ -30,14 +30,14 @@ jobs:
             name: 'Windows'
             tauriScript: 'npm run tauri' # or yarn
             args: ''
-          - platform: 'ubuntu-22.04'
-            name: 'Android'
-            tauriScript: 'npm run tauri android' # or yarn
-            args: '--aab'
-          - platform: 'macos-latest' # for Intel based macs.
-            name: 'iOS'
-            tauriScript: 'npm run tauri ios' # or yarn
-            args: '--open'
+          # - platform: 'ubuntu-22.04'
+          #   name: 'Android'
+          #   tauriScript: 'npm run tauri android' # or yarn
+          #   args: '--aab'
+          # - platform: 'macos-latest' # for Intel based macs.
+          #   name: 'iOS'
+          #   tauriScript: 'npm run tauri ios' # or yarn
+          #   args: '--open'
 
     runs-on: ${{ matrix.platform }}
     steps:
