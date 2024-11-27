@@ -24,6 +24,9 @@ Before starting, you need to have Node.js installed on your computer. If you don
 
 ### Recommended Visual Studio Code extensions
 
+* [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode): Provides Tauri commands and debugging support.
+* [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer): Provides Rust language support.
+* [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb): Provides LLDB debugging support.
 * [JavaScript and TypeScript Nightly](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-next): Provides JavaScript and TypeScript nightlies.
 * [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint): Integrates ESLint into VS Code.
 * [vscode-color-picker](https://marketplace.visualstudio.com/items?itemName=antiantisepticeye.vscode-color-picker): A color picker for Visual Studio Code.
@@ -32,6 +35,12 @@ Before starting, you need to have Node.js installed on your computer. If you don
 ### Change the icon
 
 You can change the icon of the game by replacing the images in the `public` folder.
+
+After that, you need to run the following command to change tauri icons.
+  
+```bash
+npm run tauri icon public/pwa-512x512.png
+```
 
 ### Installation
 
@@ -49,11 +58,51 @@ To start the web application, run the following command:
 npm start
 ```
 
-This command will start the development server. Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
+This command will start the development server. Open [http://localhost:1420](http://localhost:1420) to view it in the browser.
 
 #### Debugging the web application
 
 If you are using Visual Studio Code, you can use the debug configuration provided with the template. To do this, after launching `npm start`, go to the debug section and select the `Launch Chrome` configuration.
+
+### Start the Desktop Program (Tauri)
+
+**Prerequisites**: Before starting the Tauri application, you need read the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites) and install [rust](https://v2.tauri.app/start/prerequisites/#rust). Restart your pc.
+
+To start the Tauri application, run the following command:
+
+```bash
+npm run tauri dev
+```
+
+This command will start the Tauri application. The application will open in a window on your computer.
+
+#### Debugging the Desktop Program
+
+If you use Visual Studio Code, you can use the debug configuration that comes with the template. To do this, go to the debug section and select the `Tauri Development Debug` or `Tauri Production Debug` configuration.
+
+Read more about the possibilities of debugging in the [Tauri documentation](https://v2.tauri.app/develop/debug/vscode/).
+
+## Start the Android application (Tauri)
+
+**Prerequisites**: Before starting the Tauri application, you need read the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites) and install [rust](https://v2.tauri.app/start/prerequisites/#rust). And you need to have the [Android SDK installed on your computer](https://v2.tauri.app/start/prerequisites/#android).
+
+To start the Tauri application, run the following command:
+
+```bash
+npm run tauri android dev
+```
+
+This command will start the Tauri application. The application will open in an emulator or on your Android device.
+
+### Start the iOS application (Tauri)
+
+**Prerequisites**: Before starting the Tauri application, you need read the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites) and install [rust](https://v2.tauri.app/start/prerequisites/#rust). And you need to have the [Xcode installed on your computer](https://v2.tauri.app/start/prerequisites/#ios).
+
+To start the Tauri application, run the following command:
+
+```bash
+npm run tauri ios dev
+```
 
 ## Keyboard shortcuts (hotkeys)
 
@@ -106,3 +155,7 @@ npm run build
 This command will create a `dist` folder with the files necessary to run the application. You can deploy this folder to a web server.
 
 You can read more about the possibilities of hosting in the [Pixi’VN documentation](https://pixi-vn.web.app/advanced/distribution.html#hosting).
+
+### Desktop application
+
+You can read more about the possibilities of distribution in the [Pixi’VN documentation](https://pixi-vn.web.app/advanced/distribution-desktop-mobile.html).

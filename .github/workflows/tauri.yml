@@ -1,0 +1,129 @@
+# https://tauri.app/distribute/pipelines/github/
+name: Tauri CI
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish-tauri:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'macos-latest' # for Arm based macs (M1 and above).
+            name: 'macOS Arm'
+            tauriScript: 'npm run tauri' # or yarn
+            args: '--target aarch64-apple-darwin'
+          - platform: 'macos-latest' # for Intel based macs.
+            name: 'macOS Intel'
+            tauriScript: 'npm run tauri' # or yarn
+            args: '--target x86_64-apple-darwin'
+          - platform: 'ubuntu-22.04'
+            name: 'Linux'
+            tauriScript: 'npm run tauri' # or yarn
+            args: ''
+          - platform: 'windows-latest'
+            name: 'Windows'
+            tauriScript: 'npm run tauri' # or yarn
+            args: ''
+          # - platform: 'ubuntu-22.04'
+          #   name: 'Android'
+          #   tauriScript: 'npm run tauri android' # or yarn
+          #   args: '--aab'
+          # - platform: 'macos-latest' # for Intel based macs.
+          #   name: 'iOS'
+          #   tauriScript: 'npm run tauri ios' # or yarn
+          #   args: '--open'
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - name: Set up JDK 17
+        if: matrix.name == 'Android' # This must match the platform value defined above.
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Android SDK Manager (android only)
+        if: matrix.name == 'Android' # This must match the platform value defined above.
+        uses: android-actions/setup-android@v3
+
+      - name: Setup Android NDK (for android)
+        uses: nttld/setup-ndk@v1.5.0
+        id: setup-ndk
+        with:
+          ndk-version: r27c
+          add-to-path: false
+
+      - name: install android SDK and NDK (android only)
+        if: matrix.name == 'Android' # This must match the platform value defined above.
+        run: |
+          wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
+          unzip commandlinetools-linux-7583922_latest.zip -d $HOME/Android
+          export ANDROID_HOME="$HOME/Android/Sdk"
+          echo 'y' | sdkmanager --update --sdk_root=$ANDROID_HOME
+        # echo 'y' | sdkmanager --sdk_root=$ANDROID_HOME --install "ndk;21.4.7075529"
+        # rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
+        # export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk)"
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: 'npm' # or 'yarn'
+
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
+        with:
+          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: install frontend dependencies
+        # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
+        run: npm install # this for npm, for yarn use `yarn install`
+
+      - name: init android tauri
+        if: matrix.name == 'Android' # This must match the platform value defined above.
+        run: |
+          npm run tauri icon public/pwa-512x512.png
+          export NDK_HOME="$ANDROID_NDK_HOME"
+          npm run tauri android init
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+
+      - name: init ios tauri
+        if: matrix.name == 'iOS' # This must match the platform value defined above.
+        run: |
+          npm run tauri icon public/pwa-512x512.png
+          npm run tauri ios init
+          softwareupdate --install -a
+
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+        with:
+          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
+          releaseName: 'App v__VERSION__'
+          releaseBody: 'See the assets to download this version and install.'
+          releaseDraft: true
+          prerelease: false
+          tauriScript: ${{ matrix.tauriScript }}
+          args: ${{ matrix.args }}
