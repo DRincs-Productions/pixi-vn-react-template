@@ -144,17 +144,19 @@ Text libraries:
 
 ## Distribution
 
-Generating releases manually for all devices is not an easy process, because it requires installing many programs and for iOS applications you need a mac. Precisely for this reason it is not recommended. (You can get more information on how to manually generate releases here)
+Generating releases manually for all devices is not an easy process, because it requires installing many programs and for iOS applications you need a mac. Precisely for this reason it is not recommended. (You can get more information on how to manually generate releases [here](https://v2.tauri.app/distribute/))
 
-Tauri gives the possibility to use GitHub Actions to generate releases autonomously. **What is GitHub Actions?** To explain it so that everyone can understand it, GitHub to automate repetitive processes that you would have to do manually, by having "machines" with the OS you prefer for a certain period of time. with .yml files you can set a list of commands that will have to perform after a certain event.
+Tauri gives the possibility to use GitHub Actions to generate releases autonomously. **What is GitHub Actions?** To explain it so that everyone can understand it, GitHub to automate repetitive processes that you would have to do manually, by having "machines" with the OS you prefer for a certain period of time. with `.yml` files you can set a list of commands that will have to perform after a certain event.
 
-This template has inside it the file /.github/workflows/tauri.yml which has the purpose of creating a release not inside the installation packages for all OS. To activate this procedure you need to have your own project on GitHub and create a tag on git that starts with the letter "v". For example:
+This template has inside it the file `/.github/workflows/tauri.yml` which has the purpose of creating a release not inside the installation packages for all OS. To activate this procedure you need to have your own project on GitHub and create a tag on git that starts with the letter "v". For example:
 
 ```bash
 git tag v1.0.0
 git push origin v1.0.0
 ```
 
-In the Actions section of your Repo you can view the status of this procedure.
+In the Actions section of your Repository you can view the status of this procedure.
 
 At its end a Release will be created. Read more about the GitHub Releases [here](https://docs.github.com/en/repositories/releasing-projects-on-github/viewing-your-repositorys-releases-and-tags)
+
+Currently the mobile release with GitHub Actions is in development you can get more information [here](https://github.com/tauri-apps/tauri-action/pull/924).
