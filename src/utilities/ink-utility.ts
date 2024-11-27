@@ -3,7 +3,7 @@ import { importInkText, onInkHashtagScript, onInkTranslate, onReplaceTextAfterTr
 import startLabel from '../ink_labels/start.ink?raw';
 
 export async function importAllInkLabels() {
-    await importInkText(startLabel)
+    await importInkText([startLabel])
 }
 
 export function initializeInk({ navigate, t }: {
