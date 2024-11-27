@@ -1,9 +1,8 @@
 import { lazy, Suspense } from "react";
-import { ErrorBoundary } from "react-error-boundary";
 import LoadingScreen from "./screens/LoadingScreen";
 import { initializeIndexedDB } from "./utilities/indexedDB-utility";
 
-export default function App() {
+export default function HomeLazy() {
     const Home = lazy(async () => {
         let promileAll = Promise.all([
             initializeIndexedDB(),
@@ -12,12 +11,10 @@ export default function App() {
         return import('./Home')
     })
     return (
-        <ErrorBoundary fallback={<div>Something went wrong</div>}>
-            <Suspense
-                fallback={<LoadingScreen />}
-            >
-                <Home />
-            </Suspense>
-        </ErrorBoundary >
+        <Suspense
+            fallback={<LoadingScreen />}
+        >
+            <Home />
+        </Suspense>
     )
 }
