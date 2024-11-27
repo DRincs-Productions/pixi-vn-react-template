@@ -6,10 +6,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Chrome localhost 5173",
+            "name": "Launch Chrome localhost 1420",
             "request": "launch",
             "type": "chrome",
-            "url": "http://localhost:5173",
+            "url": "http://localhost:1420",
             "webRoot": "${workspaceFolder}",
         },
         {

@@ -58,7 +58,7 @@ To start the web application, run the following command:
 npm start
 ```
 
-This command will start the development server. Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
+This command will start the development server. Open [http://localhost:1420](http://localhost:1420) to view it in the browser.
 
 #### Debugging the web application
 
