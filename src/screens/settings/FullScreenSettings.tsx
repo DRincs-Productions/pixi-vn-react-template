@@ -1,12 +1,20 @@
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import { Box, Button, FormHelperText, FormLabel } from "@mui/joy";
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import useQueryIsFullModeScreen, { IS_FULL_SCREEN_MODE_USE_QUEY_KEY } from '../../use_query/useQueryIsFullModeScreen';
 
 export default function FullScreenSettings() {
-    const [fullScreenEnabled, setFullScreenEnabled] = useState(false)
+    const { data: isFullScreenMode } = useQueryIsFullModeScreen()
+    const [loading, setLoading] = useState(false)
+    const queryClient = useQueryClient()
     const { t } = useTranslation(["ui"]);
+
+    if (document.fullscreenEnabled === false) {
+        return null
+    }
 
     return (
         <>
@@ -19,18 +27,23 @@ export default function FullScreenSettings() {
                 </FormHelperText>
             </Box>
             <Button
+                loading={loading}
                 onClick={() => {
-                    if (fullScreenEnabled) {
-                        document.exitFullscreen()
-                        setFullScreenEnabled(false)
+                    setLoading(true)
+                    let promise: Promise<void>
+                    if (isFullScreenMode) {
+                        promise = document.exitFullscreen()
                     } else {
-                        document.documentElement.requestFullscreen()
-                        setFullScreenEnabled(true)
+                        promise = document.documentElement.requestFullscreen()
                     }
+                    promise.finally(() => {
+                        setLoading(false)
+                        queryClient.invalidateQueries({ queryKey: [IS_FULL_SCREEN_MODE_USE_QUEY_KEY] })
+                    })
                 }}
-                startDecorator={fullScreenEnabled ? <FullscreenExitIcon /> : <FullscreenIcon />}
+                startDecorator={isFullScreenMode ? <FullscreenExitIcon /> : <FullscreenIcon />}
             >
-                {fullScreenEnabled ? t('exit_fullscreen') : t('enter_fullscreen')}
+                {isFullScreenMode ? t('exit_fullscreen') : t('enter_fullscreen')}
             </Button>
         </>
     );

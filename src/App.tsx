@@ -11,7 +11,7 @@ export default function App() {
             importAllInkLabels(),
         ])
         await promileAll
-        return import('./Home')
+        return await import('./Home')
     })
 
     return (

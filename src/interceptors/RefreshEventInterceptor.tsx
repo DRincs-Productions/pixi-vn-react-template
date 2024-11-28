@@ -10,14 +10,10 @@ export default function RefreshSaveEventInterceptor() {
 
     useEffect(() => {
         loadRefreshSave(navigate).then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))
-        window.addEventListener("beforeunload", async () => {
-            await addRefreshSave()
-        });
+        window.addEventListener("beforeunload", addRefreshSave);
 
         return () => {
-            window.removeEventListener("beforeunload", async () => {
-                await addRefreshSave()
-            });
+            window.removeEventListener("beforeunload", addRefreshSave);
         };
     }, []);
 
