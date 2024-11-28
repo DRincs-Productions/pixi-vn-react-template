@@ -111,7 +111,6 @@ export async function loadRefreshSave(navigate: (path: string) => void) {
     if (jsonString) {
         navigate("/loading")
         let data: GameSaveData = JSON.parse(jsonString)
-        await new Promise((resolve) => setTimeout(resolve, 1000))
 
         return loadSave(data, navigate)
             .then(() => {
