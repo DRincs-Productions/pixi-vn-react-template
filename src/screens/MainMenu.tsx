@@ -1,4 +1,4 @@
-import { addImage, canvas, clearAllGameDatas, narration } from '@drincs/pixi-vn';
+import { addImage, canvas, narration } from '@drincs/pixi-vn';
 import Stack from '@mui/joy/Stack';
 import { useQueryClient } from '@tanstack/react-query';
 import { motion } from "motion/react";
@@ -28,9 +28,12 @@ export default function MainMenu() {
 
     useEffect(() => {
         setHideInterface(false)
-        clearAllGameDatas()
         let bg = addImage("background_main_menu", "https://andreannaking.com/wp-content/uploads/2021/12/Download-Beautiful-Nature-Landscape-Hd-Wallpaper-Full-HD-Wallpapers.jpg")
         bg.load()
+
+        return () => {
+            canvas.remove("background_main_menu")
+        }
     })
 
     return (
