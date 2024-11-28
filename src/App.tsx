@@ -9,7 +9,7 @@ export default function App() {
             initializeIndexedDB(),
         ])
         await promileAll
-        return import('./Home')
+        return await import('./Home')
     })
 
     return (
