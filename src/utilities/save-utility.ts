@@ -111,6 +111,7 @@ export async function loadRefreshSave(navigate: (path: string) => void) {
     if (jsonString) {
         navigate("/loading")
         let data: GameSaveData = JSON.parse(jsonString)
+
         return loadSave(data, navigate)
             .then(() => {
                 localStorage.removeItem("refreshSave")

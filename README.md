@@ -22,6 +22,17 @@ The settings modal allows you to change the text speed, go to full screen, edit 
 
 Before starting, you need to have Node.js installed on your computer. If you don't have it, you can download it [here](https://nodejs.org/).
 
+### Recommended Visual Studio Code extensions
+
+* [JavaScript and TypeScript Nightly](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-next): Provides JavaScript and TypeScript nightlies.
+* [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint): Integrates ESLint into VS Code.
+* [vscode-color-picker](https://marketplace.visualstudio.com/items?itemName=antiantisepticeye.vscode-color-picker): A color picker for Visual Studio Code.
+* [Version Lens](https://marketplace.visualstudio.com/items?itemName=pflannery.vscode-versionlens): Shows the latest version for each package using code lens.
+
+### Change the icon
+
+You can change the icon of the game by replacing the images in the `public` folder.
+
 ### Installation
 
 First, is necessary install the dependencies. To do this, open a terminal in the root folder of the project and run the following command:
@@ -40,9 +51,9 @@ npm start
 
 This command will start the development server. Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
 
-#### Debugging
+#### Debugging the web application
 
-If you use Visual Studio Code, you can use the debug configuration that comes with the template. To do this, go to the debug section and select the `Launch Chrome` configuration.
+If you are using Visual Studio Code, you can use the debug configuration provided with the template. To do this, after launching `npm start`, go to the debug section and select the `Launch Chrome` configuration.
 
 ## Keyboard shortcuts (hotkeys)
 
@@ -60,7 +71,7 @@ This template uses the following libraries:
 
 Core libraries:
 
-* [Pixi’VN](https://www.npmjs.com/package/@drincs/pixi-vn): A visual novel library for PixiJS.
+* [Pixi’VN](https://www.npmjs.com/package/@drincs/pixi-vn): A visual novel library.
 * [Vite](https://vitejs.dev/): A build tool that aims to provide a faster and leaner development experience for modern web projects.
 * [Vite Checker](https://www.npmjs.com/package/vite-plugin-checker): A Vite plugin that checks TypeScript types and ESLint on each build.
 * [PWA Vite Plugin](https://vite-pwa-org.netlify.app): A Vite plugin that provides PWA support. This allows the possibility of installing the game as a Progressive Web App.
@@ -70,11 +81,10 @@ Core libraries:
   <img width="44" alt="image" src="https://github.com/user-attachments/assets/bf70dddc-68c0-48f4-9c41-74c22f54e3d1">
   You can use the following button to show Tanstack Query interactions with the game. (the button will be automatically hidden when released)
 
-
 UI libraries:
 
 * [Mui Joy](https://mui.com/joy-ui/getting-started/): A React UI framework that provides a set of components and styles for building a website.
-* [Framer Motion](https://motion.dev/): A simple yet powerful motion library for React.
+* [Motion](https://motion.dev/): A simple yet powerful motion library for React.
 * [Notistack](https://iamhosseindhv.com/notistack): A library that provides snackbar notifications for React.
 * [React Color Palette](https://www.npmjs.com/package/react-color-palette): A library that provides a color picker for React.
 

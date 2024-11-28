@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import App from './App'
 import './index.css'
 import { gameEnd } from './utilities/actions-utility'
+import './values/characters'
 
 // Canvas setup with PIXI
 const body = document.body

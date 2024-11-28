@@ -1,6 +1,6 @@
 {
-  "name": "my-app",
-  "description": "My App Description",
+  "name": "my-app-package-name",
+  "description": "my-app-description",
   "version": "0.1.0",
   "type": "module",
   "scripts": {
@@ -12,13 +12,13 @@
     "publish": "npm run build && firebase deploy"
   },
   "dependencies": {
-    "@drincs/pixi-vn": "^0.8.9",
+    "@drincs/pixi-vn": "^0.8.12",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
     "@mui/icons-material": "^6.1.8",
     "@mui/joy": "^5.0.0-beta.28",
-    "@tanstack/react-query": "^5.61.0",
-    "i18next": "^23.16.8",
+    "@tanstack/react-query": "^5.61.3",
+    "i18next": "^24.0.0",
     "i18next-browser-languagedetector": "^8.0.0",
     "motion": "^11.11.17",
     "notistack": "^3.0.1",
@@ -28,7 +28,7 @@
     "react-error-boundary": "^4.1.2",
     "react-i18next": "^15.1.1",
     "react-markdown": "^9.0.1",
-    "react-router-dom": "^6.27.0",
+    "react-router-dom": "^7.0.1",
     "recoil": "^0.7.7",
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.0",
@@ -36,7 +36,7 @@
     "vite-plugin-checker": "^0.8.0"
   },
   "devDependencies": {
-    "@tanstack/react-query-devtools": "^5.61.0",
+    "@tanstack/react-query-devtools": "^5.61.3",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@typescript-eslint/eslint-plugin": "^8.15.0",
@@ -45,7 +45,7 @@
     "eslint": "^9.15.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
-    "typescript": "^5.6.3",
+    "typescript": "^5.7.2",
     "vite": "^5.4.11",
     "vite-plugin-pwa": "^0.21.0"
   },

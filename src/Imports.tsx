@@ -5,11 +5,9 @@ import { RecoilRoot } from 'recoil';
 import { useI18n } from './i18n';
 import MyThemeProvider from './providers/ThemeProvider';
 
-type Iprops = {
+export default function Imports({ children }: {
     children: React.ReactNode
-}
-
-export default function Imports(props: Iprops) {
+}) {
     useI18n()
     const queryClient = new QueryClient()
 
@@ -24,7 +22,7 @@ export default function Imports(props: Iprops) {
                                 horizontal: 'left',
                             }}
                         >
-                            {props.children}
+                            {children}
                         </SnackbarProvider>
                     </MyThemeProvider>
                 </QueryClientProvider>
