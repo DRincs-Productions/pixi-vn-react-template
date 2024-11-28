@@ -63,7 +63,7 @@ export default function SkipAutoInterceptor() {
         return () => {
             clearTimeout(timeout)
         }
-    }, [skipEnabled, recheckSkip])
+    }, [skipEnabled, recheckSkip, nextOnClick])
 
     useEffect(() => {
         if (skipEnabled) {
@@ -84,7 +84,7 @@ export default function SkipAutoInterceptor() {
                 }
             }
         }
-    }, [autoInfo, typewriterIsAnimated, skipEnabled])
+    }, [autoInfo, typewriterIsAnimated, skipEnabled, nextOnClick])
 
     return null
 }

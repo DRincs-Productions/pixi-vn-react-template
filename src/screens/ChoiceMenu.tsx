@@ -4,7 +4,7 @@ import { Box, Grid } from '@mui/joy';
 import { useQueryClient } from '@tanstack/react-query';
 import { motion, Variants } from "motion/react";
 import { useSnackbar } from 'notistack';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRecoilValue } from 'recoil';
 import { dialogueCardHeightState } from '../atoms/dialogueCardHeightState';
@@ -53,7 +53,7 @@ export default function ChoiceMenu({ fullscreen = true }: {
         closed: { opacity: 0, y: 20, transition: { duration: 0.2 } }
     };
 
-    function afterSelectChoice(item: ChoiceMenuOptionClose | ChoiceMenuOption<{}>) {
+    const afterSelectChoice = useCallback((item: ChoiceMenuOptionClose | ChoiceMenuOption<{}>) => {
         setLoading(true)
         narration.selectChoice(item, {
             navigate: navigate,
@@ -69,7 +69,7 @@ export default function ChoiceMenu({ fullscreen = true }: {
                 setLoading(false)
                 console.error(e)
             })
-    }
+    }, [enqueueSnackbar, navigate, queryClient, tNarration])
 
     return (
         <Box
