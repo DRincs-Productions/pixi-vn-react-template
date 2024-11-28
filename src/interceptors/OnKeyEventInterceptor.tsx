@@ -70,7 +70,7 @@ export default function EventInterceptor() {
                 }
                 break;
         }
-    }, [location, hideInterface, lastSave])
+    }, [location, hideInterface, lastSave, queryClient, t])
 
     useEffect(() => {
         window.addEventListener('keydown', onkeydown);

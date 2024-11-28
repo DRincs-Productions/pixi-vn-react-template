@@ -63,7 +63,7 @@ export default function NextButton() {
             setSkip(false)
             nextOnClick()
         }
-    }, [])
+    }, [nextOnClick])
 
     useEffect(() => {
         window.addEventListener("keypress", onkeypress);
@@ -73,7 +73,7 @@ export default function NextButton() {
             window.removeEventListener("keypress", onkeypress);
             window.removeEventListener("keyup", onkeyup);
         };
-    }, []);
+    }, [onkeypress, onkeyup]);
 
     return (
         <Button

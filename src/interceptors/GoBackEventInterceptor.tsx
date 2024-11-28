@@ -1,17 +1,17 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 export default function GoBackEventInterceptor() {
+    const onpopstate = useCallback(() => {
+        window.history.forward();
+    }, [])
+
     useEffect(() => {
         window.addEventListener("popstate", onpopstate);
 
         return () => {
             window.removeEventListener("popstate", onpopstate);
         };
-    }, []);
-
-    function onpopstate() {
-        window.history.forward();
-    }
+    }, [onpopstate]);
 
     return null
 }

@@ -32,6 +32,7 @@ export default function SaveLoadSettingButtons() {
 
     return ([
         location.pathname === '/' ? null : <SettingButton
+            key={"quick_save_button"}
             onClick={() => {
                 putSaveIntoIndexDB()
                     .then((save) => {
@@ -59,6 +60,7 @@ export default function SaveLoadSettingButtons() {
             </Typography>
         </SettingButton>,
         <SettingButton
+            key={"load_last_save_button"}
             onClick={() => {
                 lastSave && setOpenLoadAlert({ open: true, data: lastSave, type: 'load' })
                 openSettings(false)
@@ -79,6 +81,7 @@ export default function SaveLoadSettingButtons() {
             </Typography>
         </SettingButton>,
         <SettingButton
+            key={"save_load_button"}
             onClick={() => {
                 openSaveScreen(true)
                 openSettings(false)
@@ -88,6 +91,7 @@ export default function SaveLoadSettingButtons() {
             <Typography level="title-md">{t(`${t("save")}/${t("load")}`)}</Typography>
         </SettingButton>,
         location.pathname === '/' ? null : <SettingButton
+            key={"download_button"}
             onClick={() => downloadGameSave()}
             disabled={location.pathname === '/'}
         >
@@ -95,6 +99,7 @@ export default function SaveLoadSettingButtons() {
             <Typography level="title-md">{t("save_to_file")}</Typography>
         </SettingButton>,
         <SettingButton
+            key={"load_button"}
             onClick={() => loadGameSaveFromFile(navigate, () => {
                 queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] })
                 enqueueSnackbar(t("success_load"), { variant: 'success' })

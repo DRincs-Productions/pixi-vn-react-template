@@ -1,6 +1,6 @@
 import { Box, DialogContent, DialogTitle, Divider, Drawer, FormControl, ModalClose, RadioGroup, Sheet, Typography } from "@mui/joy";
 import { Theme, useMediaQuery } from '@mui/material';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRecoilState } from 'recoil';
 import { openSettingsState } from '../atoms/openSettingsState';
@@ -19,18 +19,18 @@ export default function Settings() {
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
+    const onkeydown = useCallback((event: KeyboardEvent) => {
+        if (event.code == 'Escape') {
+            setOpen((prev) => !prev)
+        }
+    }, []);
+
     useEffect(() => {
         window.addEventListener('keydown', onkeydown);
         return () => {
             window.removeEventListener('keydown', onkeydown);
         };
-    }, []);
-
-    function onkeydown(event: KeyboardEvent) {
-        if (event.code == 'Escape') {
-            setOpen((prev) => !prev)
-        }
-    }
+    }, [onkeydown]);
 
     return (
         <Drawer
