@@ -9,7 +9,7 @@ import { openGameSaveScreenState } from '../../atoms/openGameSaveScreenState';
 import { saveLoadAlertState } from '../../atoms/saveLoadAlertState';
 import ModalConfirmation from '../../components/ModalConfirmation';
 import { INTERFACE_DATA_USE_QUEY_KEY } from '../../use_query/useQueryInterface';
-import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from '../../use_query/useQueryLastSave';
+import { LAST_SAVE_USE_QUEY_KEY } from '../../use_query/useQueryLastSave';
 import { SAVES_USE_QUEY_KEY } from '../../use_query/useQuerySaves';
 import { useMyNavigate } from '../../utilities/navigate-utility';
 import { deleteSaveFromIndexDB, loadSave, putSaveIntoIndexDB } from '../../utilities/save-utility';
@@ -22,44 +22,12 @@ export default function SaveLoadAlert() {
     const queryClient = useQueryClient()
     const [tempSaveName, setTempSaveName] = useState<string>("")
     const openGameSaveScreen = useSetRecoilState(openGameSaveScreenState);
-    const {
-        data: lastSave = null,
-    } = useQueryLastSave()
-
-    useEffect(() => {
-        window.addEventListener('keydown', onkeydown);
-        return () => {
-            window.removeEventListener('keydown', onkeydown);
-        };
-    }, []);
 
     useEffect(() => {
         if (alertData.open && (alertData.type == "save" || alertData.type == "overwrite_save")) {
             setTempSaveName(alertData.deafultName || "")
         }
     }, [alertData])
-
-    function onkeydown(event: KeyboardEvent) {
-        if (event.code == 'KeyS' && event.shiftKey) {
-            putSaveIntoIndexDB()
-                .then((save) => {
-                    queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
-                    queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save)
-                    enqueueSnackbar(t("success_save"), { variant: 'success' })
-                })
-                .catch(() => {
-                    enqueueSnackbar(t("fail_save"), { variant: 'error' })
-                })
-        }
-        else if (event.code == 'KeyL' && event.shiftKey) {
-            setAlertData((prev) => {
-                if (!prev.open || !lastSave) {
-                    return { ...prev, open: false }
-                }
-                return { open: true, data: lastSave, type: 'load' }
-            })
-        }
-    }
 
     return (
         <ModalConfirmation
