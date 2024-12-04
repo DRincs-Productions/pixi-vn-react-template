@@ -12,6 +12,7 @@ import { saveLoadAlertState } from '../atoms/saveLoadAlertState';
 import { saveScreenPageState } from '../atoms/saveScreenPageState';
 import GameSaveSlot from '../components/GameSaveSlot';
 import ModalDialogCustom from '../components/ModalDialog';
+import { MAIN_MENU_ROUTE } from '../constans';
 import { INTERFACE_DATA_USE_QUEY_KEY } from '../use_query/useQueryInterface';
 import { useMyNavigate } from '../utilities/navigate-utility';
 import { downloadGameSave, loadGameSaveFromFile } from '../utilities/save-utility';
@@ -68,7 +69,7 @@ export default function GameSaveScreen() {
                         <IconButton
                             size="lg"
                             onClick={() => { downloadGameSave() }}
-                            disabled={location.pathname == "/"}
+                            disabled={location.pathname == MAIN_MENU_ROUTE}
                         >
                             <DownloadIcon fontSize="large" />
                         </IconButton>

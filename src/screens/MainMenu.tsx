@@ -10,6 +10,7 @@ import { hideInterfaceState } from '../atoms/hideInterfaceState';
 import { openGameSaveScreenState } from '../atoms/openGameSaveScreenState';
 import { openSettingsState } from '../atoms/openSettingsState';
 import MenuButton from '../components/MenuButton';
+import { NARRATION_ROUTE } from '../constans';
 import startLabel from '../labels/startLabel';
 import { INTERFACE_DATA_USE_QUEY_KEY } from '../use_query/useQueryInterface';
 import useQueryLastSave from '../use_query/useQueryLastSave';
@@ -29,7 +30,7 @@ export default function MainMenu() {
 
     useEffect(() => {
         setHideInterface(false)
-        let bg = addImage("background_main_menu", "https://andreannaking.com/wp-content/uploads/2021/12/Download-Beautiful-Nature-Landscape-Hd-Wallpaper-Full-HD-Wallpapers.jpg")
+        let bg = addImage("background_main_menu")
         bg.load()
 
         return () => {
@@ -74,7 +75,7 @@ export default function MainMenu() {
             <MenuButton
                 onClick={() => {
                     canvas.removeAll()
-                    navigate("/narration")
+                    navigate(NARRATION_ROUTE)
                     narration.callLabel(startLabel, {
                         navigate: navigate,
                         t: tNarration,
