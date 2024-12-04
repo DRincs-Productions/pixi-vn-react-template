@@ -6,6 +6,7 @@ import { AspectRatio, IconButton, Skeleton, Stack, useTheme } from "@mui/joy";
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import TypographyShadow from "../components/TypographyShadow";
+import { MAIN_MENU_ROUTE } from '../constans';
 import GameSaveData from '../models/GameSaveData';
 import useQuerySaves from '../use_query/useQuerySaves';
 import { downloadGameSave } from '../utilities/save-utility';
@@ -53,7 +54,7 @@ export default function GameSaveSlot({ saveId, onDelete, onLoad, onOverwriteSave
                         width: "100%",
                     }}
                     onClick={onSave}
-                    disabled={location.pathname == "/"}
+                    disabled={location.pathname == MAIN_MENU_ROUTE}
                 >
                     <SaveAsIcon sx={{ fontSize: '3rem', opacity: 0.2 }} />
                 </IconButton>
