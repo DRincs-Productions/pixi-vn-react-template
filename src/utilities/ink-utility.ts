@@ -1,9 +1,15 @@
 import { getCharacterById } from '@drincs/pixi-vn';
 import { importInkText, onInkHashtagScript, onInkTranslate, onReplaceTextAfterTranslation } from '@drincs/pixi-vn-ink';
-import startLabel from '../ink_labels/start.ink?raw';
 
 export async function importAllInkLabels() {
-    await importInkText([startLabel])
+    const files = import.meta.glob<{ default: string }>('../ink_labels/*.{ink,txt}');
+    const fileEntries = await Promise.all(
+        Object.entries(files).map(async ([path]) => {
+            const fileModule = await import(path + "?raw");
+            return fileModule.default;
+        })
+    );
+    await importInkText(fileEntries)
 }
 
 export function initializeInk({ navigate, t }: {
