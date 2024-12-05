@@ -18,6 +18,44 @@ The history modal is a list of all the dialogues and choices that have been disp
 
 The settings modal allows you to change the text speed, go to full screen, edit theme colors, and change go to main menu. The settings for the audio have not been added nor the libraries to manage it, but I recommend adding them.
 
+### Keyboard shortcuts (hotkeys)
+
+* `Space` or `Enter`: Continue the dialogue.
+* `Keep Space` or `Keep Enter`: Skip the dialogue.
+* `Shift` + `S`: Quick save the game.
+* `Shift` + `L`: Quick load the game.
+* `Shift` + `H`: Open the history modal.
+* `Esc`: Open the settings modal.
+* `Shift` + `V`: Hide the UI (Show only the canvas).
+
+### Used libraries
+
+This template uses the following libraries:
+
+Core libraries:
+
+* [Pixi’VN](https://www.npmjs.com/package/@drincs/pixi-vn): A visual novel library.
+* [Vite](https://vitejs.dev/): A build tool that aims to provide a faster and leaner development experience for modern web projects.
+* [Vite Checker](https://www.npmjs.com/package/vite-plugin-checker): A Vite plugin that checks TypeScript types and ESLint on each build.
+* [PWA Vite Plugin](https://vite-pwa-org.netlify.app): A Vite plugin that provides PWA support. This allows the possibility of installing the game as a Progressive Web App.
+* [Recoil](https://recoiljs.org/): A state management library for React.
+* [React Router](https://reactrouter.com/): A library that provides routing for React applications.
+* [Tanstack Query](https://tanstack.com/tanstack-query/): A library that provides a set of tools for getting, caching, and updating game data.
+  <img width="44" alt="image" src="https://github.com/user-attachments/assets/bf70dddc-68c0-48f4-9c41-74c22f54e3d1">
+  You can use the following button to show Tanstack Query interactions with the game. (the button will be automatically hidden when released)
+
+UI libraries:
+
+* [Mui Joy](https://mui.com/joy-ui/getting-started/): A React UI framework that provides a set of components and styles for building a website.
+* [Motion](https://motion.dev/): A simple yet powerful motion library for React.
+* [Notistack](https://iamhosseindhv.com/notistack): A library that provides snackbar notifications for React.
+* [React Color Palette](https://www.npmjs.com/package/react-color-palette): A library that provides a color picker for React.
+
+Text libraries:
+
+* [i18next](https://www.i18next.com/): A library that gives the possibility to manage multiple translations in the application.
+* [Reacr Markdown](https://www.npmjs.com/package/react-markdown): A library that allows you to render markdown in React components.
+
 ## How to use
 
 Before starting, you need to have Node.js installed on your computer. If you don't have it, you can download it [here](https://nodejs.org/).
@@ -103,44 +141,6 @@ To start the Tauri application, run the following command:
 ```bash
 npm run tauri ios dev
 ```
-
-## Keyboard shortcuts (hotkeys)
-
-* `Space` or `Enter`: Continue the dialogue.
-* `Keep Space` or `Keep Enter`: Skip the dialogue.
-* `Shift` + `S`: Quick save the game.
-* `Shift` + `L`: Quick load the game.
-* `Shift` + `H`: Open the history modal.
-* `Esc`: Open the settings modal.
-* `Shift` + `V`: Hide the UI (Show only the canvas).
-
-## Used libraries
-
-This template uses the following libraries:
-
-Core libraries:
-
-* [Pixi’VN](https://www.npmjs.com/package/@drincs/pixi-vn): A visual novel library.
-* [Vite](https://vitejs.dev/): A build tool that aims to provide a faster and leaner development experience for modern web projects.
-* [Vite Checker](https://www.npmjs.com/package/vite-plugin-checker): A Vite plugin that checks TypeScript types and ESLint on each build.
-* [PWA Vite Plugin](https://vite-pwa-org.netlify.app): A Vite plugin that provides PWA support. This allows the possibility of installing the game as a Progressive Web App.
-* [Recoil](https://recoiljs.org/): A state management library for React.
-* [React Router](https://reactrouter.com/): A library that provides routing for React applications.
-* [Tanstack Query](https://tanstack.com/tanstack-query/): A library that provides a set of tools for getting, caching, and updating game data.
-  <img width="44" alt="image" src="https://github.com/user-attachments/assets/bf70dddc-68c0-48f4-9c41-74c22f54e3d1">
-  You can use the following button to show Tanstack Query interactions with the game. (the button will be automatically hidden when released)
-
-UI libraries:
-
-* [Mui Joy](https://mui.com/joy-ui/getting-started/): A React UI framework that provides a set of components and styles for building a website.
-* [Motion](https://motion.dev/): A simple yet powerful motion library for React.
-* [Notistack](https://iamhosseindhv.com/notistack): A library that provides snackbar notifications for React.
-* [React Color Palette](https://www.npmjs.com/package/react-color-palette): A library that provides a color picker for React.
-
-Text libraries:
-
-* [i18next](https://www.i18next.com/): A library that gives the possibility to manage multiple translations in the application.
-* [Reacr Markdown](https://www.npmjs.com/package/react-markdown): A library that allows you to render markdown in React components.
 
 ## Distribution
 
