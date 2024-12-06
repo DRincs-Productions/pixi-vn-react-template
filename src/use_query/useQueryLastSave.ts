@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getLastSaveFromIndexDB } from "../utilities/save-utility";
+import { getLastSaveFromIndexDB } from "../utils/save-utility";
 
 export const LAST_SAVE_USE_QUEY_KEY = "last_save_use_quey_key";
 

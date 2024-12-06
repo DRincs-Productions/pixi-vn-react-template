@@ -16,8 +16,8 @@ import SettingButton from '../../components/SettingButton';
 import { INTERFACE_DATA_USE_QUEY_KEY } from '../../use_query/useQueryInterface';
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from '../../use_query/useQueryLastSave';
 import { SAVES_USE_QUEY_KEY } from '../../use_query/useQuerySaves';
-import { useMyNavigate } from '../../utilities/navigate-utility';
-import { downloadGameSave, loadGameSaveFromFile, putSaveIntoIndexDB } from '../../utilities/save-utility';
+import { useMyNavigate } from '../../utils/navigate-utility';
+import { downloadGameSave, loadGameSaveFromFile, putSaveIntoIndexDB } from '../../utils/save-utility';
 
 export default function SaveLoadSettingButtons() {
     const navigate = useMyNavigate();

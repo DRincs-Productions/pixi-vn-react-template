@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { initializeInk } from '../utilities/ink-utility';
-import { useMyNavigate } from '../utilities/navigate-utility';
+import { initializeInk } from '../utils/ink-utility';
+import { useMyNavigate } from '../utils/navigate-utility';
 
 export default function InkInitialization() {
     const navigate = useMyNavigate();

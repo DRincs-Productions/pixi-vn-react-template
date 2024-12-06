@@ -9,7 +9,7 @@ import TypographyShadow from "../components/TypographyShadow";
 import { MAIN_MENU_ROUTE } from '../constans';
 import GameSaveData from '../models/GameSaveData';
 import useQuerySaves from '../use_query/useQuerySaves';
-import { downloadGameSave } from '../utilities/save-utility';
+import { downloadGameSave } from '../utils/save-utility';
 
 export default function GameSaveSlot({ saveId, onDelete, onLoad, onOverwriteSave, onSave }: {
     saveId: number,

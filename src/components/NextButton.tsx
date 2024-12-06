@@ -10,7 +10,7 @@ import { hideInterfaceState } from '../atoms/hideInterfaceState';
 import { nextStepLoadingState } from '../atoms/nextStepLoadingState';
 import { skipEnabledState } from '../atoms/skipEnabledState';
 import { INTERFACE_DATA_USE_QUEY_KEY, useQueryCanGoNext } from '../use_query/useQueryInterface';
-import { useMyNavigate } from '../utilities/navigate-utility';
+import { useMyNavigate } from '../utils/navigate-utility';
 
 export default function NextButton() {
     const [skip, setSkip] = useRecoilState(skipEnabledState)

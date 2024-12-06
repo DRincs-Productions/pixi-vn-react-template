@@ -11,7 +11,7 @@ import { dialogueCardHeightState } from '../atoms/dialogueCardHeightState';
 import { hideInterfaceState } from '../atoms/hideInterfaceState';
 import ChoiceButton from '../components/ChoiceButton';
 import { INTERFACE_DATA_USE_QUEY_KEY, useQueryChoiceMenuOptions } from '../use_query/useQueryInterface';
-import { useMyNavigate } from '../utilities/navigate-utility';
+import { useMyNavigate } from '../utils/navigate-utility';
 
 export default function ChoiceMenu({ fullscreen = true }: {
     fullscreen?: boolean,

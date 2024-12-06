@@ -11,8 +11,8 @@ import ModalConfirmation from '../../components/ModalConfirmation';
 import { INTERFACE_DATA_USE_QUEY_KEY } from '../../use_query/useQueryInterface';
 import { LAST_SAVE_USE_QUEY_KEY } from '../../use_query/useQueryLastSave';
 import { SAVES_USE_QUEY_KEY } from '../../use_query/useQuerySaves';
-import { useMyNavigate } from '../../utilities/navigate-utility';
-import { deleteSaveFromIndexDB, loadSave, putSaveIntoIndexDB } from '../../utilities/save-utility';
+import { useMyNavigate } from '../../utils/navigate-utility';
+import { deleteSaveFromIndexDB, loadSave, putSaveIntoIndexDB } from '../../utils/save-utility';
 
 export default function SaveLoadAlert() {
     const navigate = useMyNavigate();

@@ -1,9 +1,9 @@
 import { lazy, Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import LoadingScreen from "./screens/LoadingScreen";
-import { defineAssets } from "./utilities/assets-utility";
-import { initializeIndexedDB } from "./utilities/indexedDB-utility";
-import { importAllInkLabels } from "./utilities/ink-utility";
+import { defineAssets } from "./utils/assets-utility";
+import { initializeIndexedDB } from "./utils/indexedDB-utility";
+import { importAllInkLabels } from "./utils/ink-utility";
 
 export default function App() {
     const Home = lazy(async () => {
