@@ -1,2 +1,2 @@
-INCLUDE ink_labels/start.ink
+INCLUDE ink/start.ink
 -> start

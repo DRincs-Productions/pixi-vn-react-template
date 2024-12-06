@@ -82,9 +82,9 @@ After that, you need to run the following command to change tauri icons.
 npm run tauri icon public/pwa-512x512.png
 ```
 
-### ink_labels folder
+### ink folder
 
-The `ink_labels` folder contains the Ink files that will be used in the game. In this project, all files `.ink`, that are in the `ink_labels` folder, will be included automatically in the `main.ink` file. You can change this behavior by modifying the `src/utilities/ink-utility.ts` file.
+The `ink` folder contains the Ink files that will be used in the game. In this project, all files `.ink`, that are in the `ink` folder, will be included automatically in the `main.ink` file. You can change this behavior by modifying the `src/utilities/ink-utility.ts` file.
 
 ### Writing/testing the narrative with Inky
 
@@ -94,8 +94,8 @@ To use Inky with this template, you can open the `src/main.ink` file in Inky.
 
 ```ink
 // main.ink
-INCLUDE ink_labels/start.ink
-INCLUDE ink_labels/second.ink
+INCLUDE ink/start.ink
+INCLUDE ink/second.ink
 -> start
 ```
 

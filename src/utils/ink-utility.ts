@@ -2,7 +2,7 @@ import { getCharacterById } from '@drincs/pixi-vn';
 import { importInkText, onInkHashtagScript, onInkTranslate, onReplaceTextAfterTranslation } from '@drincs/pixi-vn-ink';
 
 export async function importAllInkLabels() {
-    const files = import.meta.glob<{ default: string }>('../ink_labels/*.{ink,txt}');
+    const files = import.meta.glob<{ default: string }>('../ink/*.{ink,txt}');
     const fileEntries = await Promise.all(
         Object.entries(files).map(async ([path]) => {
             const fileModule = await import(path + "?raw");

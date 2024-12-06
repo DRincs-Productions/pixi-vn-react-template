@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
-import strings_en from '../src/values/translations/strings_en.json';
+import strings_en from '../src/locales/strings_en.json';
 
 const getUserLang = (): string => {
     let userLang: string = navigator.language || "en";
