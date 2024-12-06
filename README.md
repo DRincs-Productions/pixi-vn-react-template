@@ -35,7 +35,7 @@ This template uses the following libraries:
 Core libraries:
 
 * [Pixi’VN](https://www.npmjs.com/package/@drincs/pixi-vn): A visual novel library.
-* [Pixi’VN - Ink Integration](https://www.npmjs.com/package/@drincs/pixi-vn-ink): A library that provides integration with the Ink language.
+* [Pixi’VN - *ink* Integration](https://www.npmjs.com/package/@drincs/pixi-vn-ink): A library that provides integration with the *ink* language.
 * [Vite](https://vitejs.dev/): A build tool that aims to provide a faster and leaner development experience for modern web projects.
 * [Vite Checker](https://www.npmjs.com/package/vite-plugin-checker): A Vite plugin that checks TypeScript types and ESLint on each build.
 * [PWA Vite Plugin](https://vite-pwa-org.netlify.app): A Vite plugin that provides PWA support. This allows the possibility of installing the game as a Progressive Web App.
@@ -82,11 +82,29 @@ After that, you need to run the following command to change tauri icons.
 npm run tauri icon public/pwa-512x512.png
 ```
 
-### ink folder
+## *ink* - Custom hashtag scripts
 
-The `ink` folder contains the Ink files that will be used in the game. In this project, all files `.ink`, that are in the `ink` folder, will be included automatically in the project. You can change this behavior by modifying the `src/utils/ink-utility.ts` file.
+By using the [onInkHashtagScript](https://pixi-vn.web.app/ink/ink-hashtag.html) function, in this template the following features have been added.
 
-### Writing/testing the narrative with Inky
+**Moving between screens**: This feature allows you to navigate between different screens. The syntax is as follows:
+
+`#` + `navigate` + `[route]`
+
+`route`: The route/path to navigate to. Read more about routes in the [Router documentation](https://pixi-vn.web.app/start/interface-navigate.html).
+
+```ink
+#navigate /narration
+```
+
+**Rename the character**: This feature allows you to change the name of the character speaking. The syntax is as follows:
+
+`#` + `rename` + `[character id]` + `[new name]`
+
+### *ink* - ink files in the project
+
+The `ink` folder contains the *ink* files that will be used in the game. In this project, all files `.ink`, that are in the `ink` folder, will be included automatically in the project. You can change this behavior by modifying the `src/utils/ink-utility.ts` file.
+
+### *ink* - Writing/testing the narrative with Inky
 
 To write and test the narrative, you can use the **Inky editor**. Inky is a tool for writing interactive fiction using the Ink language. Of course, the special features introduced by pixi-vn will not be ignored by Inky. You can download it [here](https://www.inklestudios.com/ink/).
 
@@ -99,7 +117,7 @@ INCLUDE ink/second.ink
 -> start
 ```
 
-### Installation
+## Installation
 
 First, is necessary install the dependencies. To do this, open a terminal in the root folder of the project and run the following command:
 
@@ -107,7 +125,7 @@ First, is necessary install the dependencies. To do this, open a terminal in the
 npm install
 ```
 
-### Start the web application
+## Start the web application
 
 To start the web application, run the following command:
 
@@ -117,7 +135,7 @@ npm start
 
 This command will start the development server. Open [http://localhost:1420](http://localhost:1420) to view it in the browser.
 
-#### Debugging the web application
+### Debugging the web application
 
 If you are using Visual Studio Code, you can use the debug configuration provided with the template. To do this, after launching `npm start`, go to the debug section and select the `Launch Chrome` configuration.
 
@@ -160,24 +178,6 @@ To start the Tauri application, run the following command:
 ```bash
 npm run tauri ios dev
 ```
-
-## Custom hashtag scripts
-
-By using the [onInkHashtagScript](https://pixi-vn.web.app/ink/ink-hashtag.html) function, in this template the following features have been added.
-
-**Moving between screens**: This feature allows you to navigate between different screens. The syntax is as follows:
-
-`#` + `navigate` + `[route]`
-
-`route`: The route/path to navigate to. Read more about routes in the [Router documentation](https://pixi-vn.web.app/start/interface-navigate.html).
-
-```ink
-#navigate /narration
-```
-
-**Rename the character**: This feature allows you to change the name of the character speaking. The syntax is as follows:
-
-`#` + `rename` + `[character id]` + `[new name]`
 
 ## Distribution
 
