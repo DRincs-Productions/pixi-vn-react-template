@@ -16,9 +16,9 @@ import TextMenuButton from '../components/TextMenuButton';
 import { INTERFACE_DATA_USE_QUEY_KEY, useQueryCanGoBack } from '../use_query/useQueryInterface';
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from '../use_query/useQueryLastSave';
 import { SAVES_USE_QUEY_KEY } from '../use_query/useQuerySaves';
-import { goBack } from '../utilities/actions-utility';
-import { useMyNavigate } from '../utilities/navigate-utility';
-import { putSaveIntoIndexDB } from '../utilities/save-utility';
+import { goBack } from '../utils/actions-utility';
+import { useMyNavigate } from '../utils/navigate-utility';
+import { putSaveIntoIndexDB } from '../utils/save-utility';
 
 export default function QuickTools() {
     const setOpenSettings = useSetRecoilState(openSettingsState);

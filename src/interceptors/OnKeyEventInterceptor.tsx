@@ -8,7 +8,7 @@ import { hideInterfaceState } from '../atoms/hideInterfaceState';
 import { saveLoadAlertState } from '../atoms/saveLoadAlertState';
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from '../use_query/useQueryLastSave';
 import { SAVES_USE_QUEY_KEY } from '../use_query/useQuerySaves';
-import { putSaveIntoIndexDB } from '../utilities/save-utility';
+import { putSaveIntoIndexDB } from '../utils/save-utility';
 
 export default function EventInterceptor() {
     const [hideInterface, setHideInterface] = useRecoilState(hideInterfaceState);
