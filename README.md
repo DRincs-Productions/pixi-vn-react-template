@@ -139,7 +139,7 @@ This command will start the development server. Open [http://localhost:1420](htt
 
 If you are using Visual Studio Code, you can use the debug configuration provided with the template. To do this, after launching `npm start`, go to the debug section and select the `Launch Chrome` configuration.
 
-### Start the Desktop Program (Tauri)
+## Start the Desktop Program (Tauri)
 
 **Prerequisites**: Before starting the Tauri application, you need read the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites) and install [rust](https://v2.tauri.app/start/prerequisites/#rust). Restart your pc.
 
@@ -151,7 +151,7 @@ npm run tauri dev
 
 This command will start the Tauri application. The application will open in a window on your computer.
 
-#### Debugging the Desktop Program
+### Debugging the Desktop Program
 
 If you use Visual Studio Code, you can use the debug configuration that comes with the template. To do this, go to the debug section and select the `Tauri Development Debug` or `Tauri Production Debug` configuration.
 
@@ -169,7 +169,7 @@ npm run tauri android dev
 
 This command will start the Tauri application. The application will open in an emulator or on your Android device.
 
-### Start the iOS application (Tauri)
+## Start the iOS application (Tauri)
 
 **Prerequisites**: Before starting the Tauri application, you need read the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites) and install [rust](https://v2.tauri.app/start/prerequisites/#rust). And you need to have the [Xcode installed on your computer](https://v2.tauri.app/start/prerequisites/#ios).
 
