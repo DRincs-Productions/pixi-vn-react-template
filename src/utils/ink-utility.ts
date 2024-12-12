@@ -1,11 +1,12 @@
 import { getCharacterById } from '@drincs/pixi-vn';
-import { importInkText, onInkHashtagScript, onInkTranslate, onReplaceTextAfterTranslation } from '@drincs/pixi-vn-ink';
+import { importInkText, onInkHashtagScript, onInkTranslate, onReplaceTextBeforeTranslation } from '@drincs/pixi-vn-ink';
+import { TFunction } from 'i18next';
 
 export async function importAllInkLabels() {
     const files = import.meta.glob<{ default: string }>('../ink/*.{ink,txt}');
     const fileEntries = await Promise.all(
         Object.entries(files).map(async ([path]) => {
-            const fileModule = await import(path + "?raw");
+            const fileModule = await import(/* @vite-ignore */path + "?raw");
             return fileModule.default;
         })
     );
@@ -14,7 +15,7 @@ export async function importAllInkLabels() {
 
 export function initializeInk({ navigate, t }: {
     navigate: (path: string) => void
-    t: (text: string) => string
+    t: TFunction<[string], undefined>
 }) {
     onInkHashtagScript((script, _convertListStringToObj) => {
         if (script.length === 2) {
@@ -32,14 +33,8 @@ export function initializeInk({ navigate, t }: {
         }
         return false
     })
-    onReplaceTextAfterTranslation((key) => {
-        let character = getCharacterById(key)
-        if (character) {
-            return character.name
-        }
-
-        // if return undefined, the system will not replace the character id
-        return undefined
+    onReplaceTextBeforeTranslation((key) => {
+        return `{{${key}}}`
     })
     onInkTranslate((text) => {
         return t(text)

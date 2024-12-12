@@ -70,7 +70,7 @@ Before starting, you need to have Node.js installed on your computer. If you don
 * [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint): Integrates ESLint into VS Code.
 * [vscode-color-picker](https://marketplace.visualstudio.com/items?itemName=antiantisepticeye.vscode-color-picker): A color picker for Visual Studio Code.
 * [Version Lens](https://marketplace.visualstudio.com/items?itemName=pflannery.vscode-versionlens): Shows the latest version for each package using code lens.
-* [Ink](https://marketplace.visualstudio.com/items?itemName=bruno-dias.ink): Syntax highlighting for the Ink language.
+* [ink - Pixi'VN](https://marketplace.visualstudio.com/items?itemName=drincs-productions.pixi-vn-ink-vscode): Syntax highlighting for the Ink language.
 
 ### Change the icon
 
