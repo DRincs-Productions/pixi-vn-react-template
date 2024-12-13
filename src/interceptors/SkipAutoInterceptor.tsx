@@ -9,7 +9,7 @@ import { nextStepLoadingState } from '../atoms/nextStepLoadingState';
 import { skipEnabledState } from '../atoms/skipEnabledState';
 import { typewriterIsAnimatedState } from '../atoms/typewriterIsAnimatedState';
 import { INTERFACE_DATA_USE_QUEY_KEY } from '../use_query/useQueryInterface';
-import { useMyNavigate } from '../utilities/navigate-utility';
+import { useMyNavigate } from '../utils/navigate-utility';
 
 export default function SkipAutoInterceptor() {
     const navigate = useMyNavigate();

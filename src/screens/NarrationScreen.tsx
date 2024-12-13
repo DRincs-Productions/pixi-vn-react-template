@@ -13,7 +13,7 @@ import { hideInterfaceState } from '../atoms/hideInterfaceState';
 import { typewriterDelayState } from '../atoms/typewriterDelayState';
 import { typewriterIsAnimatedState } from '../atoms/typewriterIsAnimatedState';
 import SliderResizer from '../components/SliderResizer';
-import Typewriter from '../components/Typewriter';
+import TypewriterList from '../components/TypewriterList';
 import { useQueryDialogue } from '../use_query/useQueryInterface';
 import ChoiceMenu from './ChoiceMenu';
 
@@ -123,7 +123,7 @@ export default function NarrationScreen() {
                             height: "100%",
                         }}
                     >
-                        {character && <AspectRatio
+                        {character?.icon && <AspectRatio
                             flex
                             ratio="1"
                             maxHeight={"20%"}
@@ -139,7 +139,7 @@ export default function NarrationScreen() {
                             transition={{ type: "tween" }}
                         >
                             <img
-                                src={character?.icon}
+                                src={character.icon}
                                 loading="lazy"
                                 alt=""
                             />
@@ -174,6 +174,7 @@ export default function NarrationScreen() {
                                 fontWeight="lg"
                                 sx={{
                                     color: character.color,
+                                    paddingLeft: 1,
                                 }}
                                 component={motion.div}
                                 variants={cardElementVarians}
@@ -198,7 +199,7 @@ export default function NarrationScreen() {
                                     marginBottom: 2,
                                 }}
                             >
-                                <Typewriter
+                                <TypewriterList
                                     text={text || ""}
                                     delay={typewriterDelay}
                                     onAnimationStart={() => setTypewriterIsAnimated(true)}

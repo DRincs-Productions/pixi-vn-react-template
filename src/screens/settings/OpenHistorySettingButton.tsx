@@ -34,7 +34,7 @@ export default function OpenHistorySettingButton() {
                 }}
                 level="body-md"
             >
-                Shift+H
+                Alt+H
             </Typography>
         </SettingButton>
     );

@@ -91,7 +91,7 @@ export default function HistoryScreen() {
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
 
     const onkeydown = useCallback((event: KeyboardEvent) => {
-        if (event.code == 'KeyH' && event.shiftKey) {
+        if (event.code == 'KeyH' && event.altKey) {
             setOpen((prev) => !prev)
         }
     }, [])

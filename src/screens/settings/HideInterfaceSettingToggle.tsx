@@ -30,7 +30,7 @@ export default function HideInterfaceSettingToggle() {
                 }}
                 level="body-md"
             >
-                Shift+V
+                Alt+V
             </Typography>
         </SettingButton>
     );

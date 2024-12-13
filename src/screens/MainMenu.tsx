@@ -14,8 +14,8 @@ import { NARRATION_ROUTE } from '../constans';
 import startLabel from '../labels/startLabel';
 import { INTERFACE_DATA_USE_QUEY_KEY } from '../use_query/useQueryInterface';
 import useQueryLastSave from '../use_query/useQueryLastSave';
-import { useMyNavigate } from '../utilities/navigate-utility';
-import { loadSave } from '../utilities/save-utility';
+import { useMyNavigate } from '../utils/navigate-utility';
+import { loadSave } from '../utils/save-utility';
 
 export default function MainMenu() {
     const navigate = useMyNavigate();

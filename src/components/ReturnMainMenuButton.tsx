@@ -6,8 +6,8 @@ import { useLocation } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { openSettingsState } from '../atoms/openSettingsState';
 import ModalDialogCustom from '../components/ModalDialog';
-import { gameEnd } from '../utilities/actions-utility';
-import { useMyNavigate } from '../utilities/navigate-utility';
+import { gameEnd } from '../utils/actions-utility';
+import { useMyNavigate } from '../utils/navigate-utility';
 
 export default function ReturnMainMenuButton() {
     const openSettings = useSetRecoilState(openSettingsState);

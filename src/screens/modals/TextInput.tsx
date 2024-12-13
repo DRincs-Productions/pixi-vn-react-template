@@ -11,21 +11,16 @@ import { INTERFACE_DATA_USE_QUEY_KEY, useQueryDialogue, useQueryInputValue } fro
 
 export default function TextInput() {
     const { data: { text } = {} } = useQueryDialogue()
-    const { data: { isRequired, type } = { currentValue: undefined, isRequired: false } } = useQueryInputValue();
+    const { data: { isRequired, type, currentValue } = { currentValue: undefined, isRequired: false } } = useQueryInputValue<string | number>();
     const open = (!useRecoilValue(typewriterIsAnimatedState)) && isRequired
-    const [tempValue, setTempValue] = useState();
+    const [tempValue, setTempValue] = useState<string | number>();
     const queryClient = useQueryClient()
     const { t } = useTranslation(["ui"]);
 
     return (
         <ModalDialogCustom
             open={open}
-            setOpen={(value) => {
-                if (!value) {
-                    narration.inputValue = tempValue
-                    queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] })
-                }
-            }}
+            setOpen={() => { }}
             canBeIgnored={false}
             color="primary"
             actions={<>
@@ -34,14 +29,15 @@ export default function TextInput() {
                     color='primary'
                     variant="outlined"
                     onClick={() => {
-                        narration.inputValue = tempValue
+                        narration.inputValue = tempValue || currentValue
+                        setTempValue(undefined)
                         queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] })
                     }}
                 >
                     {t("confirm")}
                 </Button>
-                <Input
-                    value={tempValue}
+                {open && <Input
+                    defaultValue={currentValue || ""}
                     type={type}
                     onChange={(e) => {
                         let value: any = e.target.value;
@@ -50,7 +46,7 @@ export default function TextInput() {
                         }
                         setTempValue(value)
                     }}
-                />
+                />}
             </>}
         >
             {text && <Typewriter

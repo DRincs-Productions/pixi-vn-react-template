@@ -25,14 +25,14 @@ export function useQueryChoiceMenuOptions() {
 }
 
 const INPUT_VALUE_USE_QUEY_KEY = "input_value_use_quey_key";
-export function useQueryInputValue() {
+export function useQueryInputValue<T>() {
 	return useQuery({
 		queryKey: [INTERFACE_DATA_USE_QUEY_KEY, INPUT_VALUE_USE_QUEY_KEY],
 		queryFn: () => {
 			return {
 				isRequired: narration.isRequiredInput,
 				type: narration.inputType,
-				currentValue: narration.inputValue,
+				currentValue: narration.inputValue as T | undefined,
 			}
 		},
 	});
