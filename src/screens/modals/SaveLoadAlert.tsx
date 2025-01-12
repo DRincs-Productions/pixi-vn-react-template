@@ -4,10 +4,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { openGameSaveScreenState } from '../../atoms/openGameSaveScreenState';
-import { saveLoadAlertState } from '../../atoms/saveLoadAlertState';
 import ModalConfirmation from '../../components/ModalConfirmation';
+import useGameSaveScreenStore from '../../stores/useGameSaveScreenStore';
 import { INTERFACE_DATA_USE_QUEY_KEY } from '../../use_query/useQueryInterface';
 import { LAST_SAVE_USE_QUEY_KEY } from '../../use_query/useQueryLastSave';
 import { SAVES_USE_QUEY_KEY } from '../../use_query/useQuerySaves';
@@ -16,12 +14,13 @@ import { deleteSaveFromIndexDB, loadSave, putSaveIntoIndexDB } from '../../utils
 
 export default function SaveLoadAlert() {
     const navigate = useMyNavigate();
-    const [alertData, setAlertData] = useRecoilState(saveLoadAlertState);
+    const alertData = useGameSaveScreenStore((state) => (state.alert))
+    const close = useGameSaveScreenStore((state) => (state.closeAlert))
     const { t } = useTranslation(["ui"]);
     const { enqueueSnackbar } = useSnackbar();
     const queryClient = useQueryClient()
     const [tempSaveName, setTempSaveName] = useState<string>("")
-    const openGameSaveScreen = useSetRecoilState(openGameSaveScreenState);
+    const setOpenSaveScreen = useGameSaveScreenStore((state) => (state.setOpen))
 
     useEffect(() => {
         if (alertData.open && (alertData.type == "save" || alertData.type == "overwrite_save")) {
@@ -32,7 +31,7 @@ export default function SaveLoadAlert() {
     return (
         <ModalConfirmation
             open={alertData.open}
-            setOpen={() => setAlertData((prev) => { return { ...prev, open: false } })}
+            setOpen={close}
             color="primary"
             head={<Typography level="h4"
                 startDecorator={<CloudDownloadIcon />}
@@ -51,7 +50,7 @@ export default function SaveLoadAlert() {
                             .then(() => {
                                 queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] })
                                 enqueueSnackbar(t("success_load"), { variant: 'success' })
-                                openGameSaveScreen(false)
+                                setOpenSaveScreen(false)
                                 return true
                             })
                             .catch((e) => {

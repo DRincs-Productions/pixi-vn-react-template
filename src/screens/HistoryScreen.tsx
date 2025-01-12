@@ -6,11 +6,10 @@ import { useMediaQuery } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Markdown from 'react-markdown';
-import { useRecoilState } from 'recoil';
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
-import { openHistoryScreenState } from '../atoms/openHistoryScreenState';
 import ModalDialogCustom from '../components/ModalDialog';
+import useHistoryScreenStore from '../stores/useHistoryScreenStore';
 import { useQueryNarrativeHistory } from '../use_query/useQueryInterface';
 
 function HistoryList({ searchString }: {
@@ -85,14 +84,15 @@ function HistoryList({ searchString }: {
 }
 
 export default function HistoryScreen() {
-    const [open, setOpen] = useRecoilState(openHistoryScreenState);
+    const open = useHistoryScreenStore((state) => (state.open))
+    const editOpen = useHistoryScreenStore((state) => (state.editOpen))
     const [searchString, setSearchString] = useState("")
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
 
     const onkeydown = useCallback((event: KeyboardEvent) => {
         if (event.code == 'KeyH' && event.altKey) {
-            setOpen((prev) => !prev)
+            editOpen()
         }
     }, [])
 
@@ -106,7 +106,7 @@ export default function HistoryScreen() {
     return (
         <ModalDialogCustom
             open={open}
-            setOpen={setOpen}
+            setOpen={editOpen}
             layout={(smScreen ? "fullscreen" : "center")}
             head={<Stack
                 sx={{

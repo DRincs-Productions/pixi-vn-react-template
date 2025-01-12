@@ -2,13 +2,13 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Typography } from "@mui/joy";
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { hideInterfaceState } from '../../atoms/hideInterfaceState';
 import SettingButton from '../../components/SettingButton';
+import useInterfaceStore from '../../stores/useInterfaceStore';
 
 export default function HideInterfaceSettingToggle() {
     const { t } = useTranslation(["ui"]);
-    const [hideInterface, setHideInterface] = useRecoilState(hideInterfaceState);
+    const hidden = useInterfaceStore((state) => state.hidden);
+    const editHidden = useInterfaceStore((state) => state.editHidden);
 
     const location = useLocation();
     if (location.pathname === '/') {
@@ -17,8 +17,8 @@ export default function HideInterfaceSettingToggle() {
 
     return (
         <SettingButton
-            checked={hideInterface}
-            onClick={() => setHideInterface((prev) => !prev)}
+            checked={hidden}
+            onClick={editHidden}
         >
             <VisibilityOffIcon />
             <Typography level="title-md">{t("hide_ui")}</Typography>

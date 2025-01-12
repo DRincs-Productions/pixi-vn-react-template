@@ -8,11 +8,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { openGameSaveScreenState } from '../../atoms/openGameSaveScreenState';
-import { openSettingsState } from '../../atoms/openSettingsState';
-import { saveLoadAlertState } from '../../atoms/saveLoadAlertState';
 import SettingButton from '../../components/SettingButton';
+import useGameSaveScreenStore from '../../stores/useGameSaveScreenStore';
+import useSettingsScreenStore from '../../stores/useSettingsScreenStore';
 import { INTERFACE_DATA_USE_QUEY_KEY } from '../../use_query/useQueryInterface';
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from '../../use_query/useQueryLastSave';
 import { SAVES_USE_QUEY_KEY } from '../../use_query/useQuerySaves';
@@ -22,9 +20,9 @@ import { downloadGameSave, loadGameSaveFromFile, putSaveIntoIndexDB } from '../.
 export default function SaveLoadSettingButtons() {
     const navigate = useMyNavigate();
     const { t } = useTranslation(["ui"]);
-    const setOpenLoadAlert = useSetRecoilState(saveLoadAlertState);
-    const openSaveScreen = useSetRecoilState(openGameSaveScreenState);
-    const openSettings = useSetRecoilState(openSettingsState);
+    const openLoadAlert = useGameSaveScreenStore((state) => (state.editLoadAlert))
+    const editOpenSaveScreen = useGameSaveScreenStore((state) => (state.editOpen))
+    const setOpenSettings = useSettingsScreenStore((state) => (state.setOpen))
     const queryClient = useQueryClient()
     const { enqueueSnackbar } = useSnackbar();
     const { data: lastSave = null } = useQueryLastSave()
@@ -62,8 +60,8 @@ export default function SaveLoadSettingButtons() {
         <SettingButton
             key={"load_last_save_button"}
             onClick={() => {
-                lastSave && setOpenLoadAlert({ open: true, data: lastSave, type: 'load' })
-                openSettings(false)
+                lastSave && openLoadAlert(lastSave)
+                setOpenSettings(false)
             }}
             disabled={!lastSave}
         >
@@ -83,8 +81,8 @@ export default function SaveLoadSettingButtons() {
         <SettingButton
             key={"save_load_button"}
             onClick={() => {
-                openSaveScreen(true)
-                openSettings(false)
+                editOpenSaveScreen()
+                setOpenSettings(false)
             }}
         >
             <SaveIcon />
@@ -103,7 +101,7 @@ export default function SaveLoadSettingButtons() {
             onClick={() => loadGameSaveFromFile(navigate, () => {
                 queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] })
                 enqueueSnackbar(t("success_load"), { variant: 'success' })
-                openSettings(false)
+                setOpenSettings(false)
             })}
         >
             <FolderOpenIcon />

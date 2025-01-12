@@ -1,13 +1,15 @@
 import { Box, FormHelperText, FormLabel, Slider } from "@mui/joy";
 import { useTranslation } from 'react-i18next';
-import { useRecoilState } from 'recoil';
-import { autoInfoState } from "../../atoms/autoInfoState";
-import { typewriterDelayState } from "../../atoms/typewriterDelayState";
+import useAutoInfoStore from "../../stores/useAutoInfoStore";
+import useTypewriterStore from "../../stores/useTypewriterStore";
 
 export default function DialoguesSettings() {
-    const [typewriterDelay, setTypewriterDelay] = useRecoilState(typewriterDelayState)
+    const typewriterDelay = useTypewriterStore((state) => state.delay)
+    const setTypewriterDelay = useTypewriterStore((state) => state.setDelay)
     const { t } = useTranslation(["ui"]);
-    const [auto, setAuto] = useRecoilState(autoInfoState)
+    const autoEnabled = useAutoInfoStore((state) => state.enabled)
+    const setAutoTime = useAutoInfoStore((state) => state.setTime)
+    const autoTime = useAutoInfoStore((state) => state.time)
 
     return (
         <>
@@ -65,7 +67,7 @@ export default function DialoguesSettings() {
                 }}
             >
                 <Slider
-                    defaultValue={auto.time}
+                    defaultValue={autoTime}
                     getAriaValueText={(value) => `${value}s`}
                     step={1}
                     marks={[
@@ -81,15 +83,9 @@ export default function DialoguesSettings() {
                     valueLabelDisplay="on"
                     max={10}
                     min={1}
-                    disabled={!auto}
+                    disabled={!autoEnabled}
                     valueLabelFormat={(index) => index + "s"}
-                    onChange={(_, value) => {
-                        if (value)
-                            setAuto((prev) => ({
-                                ...prev,
-                                time: value as number
-                            }))
-                    }}
+                    onChange={(_, value) => setAutoTime(value as number)}
                 />
             </Box>
         </>

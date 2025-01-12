@@ -2,9 +2,8 @@ import { Box, DialogContent, DialogTitle, Divider, Drawer, FormControl, ModalClo
 import { Theme, useMediaQuery } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useRecoilState } from 'recoil';
-import { openSettingsState } from '../atoms/openSettingsState';
 import ReturnMainMenuButton from '../components/ReturnMainMenuButton';
+import useSettingsScreenStore from '../stores/useSettingsScreenStore';
 import AutoSettingToggle from './settings/AutoSettingToggle';
 import DialoguesSettings from './settings/DialoguesSettings';
 import FullScreenSettings from './settings/FullScreenSettings';
@@ -15,13 +14,14 @@ import SkipSettingToggle from './settings/SkipSettingToggle';
 import ThemeSettings from './settings/ThemeSettings';
 
 export default function Settings() {
-    const [open, setOpen] = useRecoilState(openSettingsState);
+    const open = useSettingsScreenStore((state) => (state.open))
+    const editOpen = useSettingsScreenStore((state) => (state.editOpen))
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
     const onkeydown = useCallback((event: KeyboardEvent) => {
         if (event.code == 'Escape') {
-            setOpen((prev) => !prev)
+            editOpen()
         }
     }, []);
 
@@ -36,7 +36,7 @@ export default function Settings() {
         <Drawer
             variant="plain"
             open={open}
-            onClose={() => setOpen(false)}
+            onClose={editOpen}
             sx={{
                 '& .MuiDrawer-content': {
                     width: smScreen ? '100%' : 600,

@@ -38,7 +38,7 @@ Core libraries:
 * [Vite](https://vitejs.dev/): A build tool that aims to provide a faster and leaner development experience for modern web projects.
 * [Vite Checker](https://www.npmjs.com/package/vite-plugin-checker): A Vite plugin that checks TypeScript types and ESLint on each build.
 * [PWA Vite Plugin](https://vite-pwa-org.netlify.app): A Vite plugin that provides PWA support. This allows the possibility of installing the game as a Progressive Web App.
-* [Recoil](https://recoiljs.org/): A state management library for React.
+* [Zustand](https://zustand-demo.pmnd.rs/): A small, fast, and scalable state management library.
 * [React Router](https://reactrouter.com/): A library that provides routing for React applications.
 * [Tanstack Query](https://tanstack.com/tanstack-query/): A library that provides a set of tools for getting, caching, and updating game data.
   <img width="44" alt="image" src="https://github.com/user-attachments/assets/bf70dddc-68c0-48f4-9c41-74c22f54e3d1">
