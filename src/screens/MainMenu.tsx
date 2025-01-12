@@ -5,13 +5,12 @@ import { motion } from "motion/react";
 import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSetRecoilState } from 'recoil';
-import { hideInterfaceState } from '../atoms/hideInterfaceState';
-import { openGameSaveScreenState } from '../atoms/openGameSaveScreenState';
-import { openSettingsState } from '../atoms/openSettingsState';
 import MenuButton from '../components/MenuButton';
 import { NARRATION_ROUTE } from '../constans';
 import startLabel from '../labels/startLabel';
+import useGameSaveScreenStore from '../stores/useGameSaveScreenStore';
+import useInterfaceStore from '../stores/useInterfaceStore';
+import useSettingsScreenStore from '../stores/useSettingsScreenStore';
 import { INTERFACE_DATA_USE_QUEY_KEY } from '../use_query/useQueryInterface';
 import useQueryLastSave from '../use_query/useQueryLastSave';
 import { useMyNavigate } from '../utils/navigate-utility';
@@ -19,9 +18,9 @@ import { loadSave } from '../utils/save-utility';
 
 export default function MainMenu() {
     const navigate = useMyNavigate();
-    const setOpenSettings = useSetRecoilState(openSettingsState);
-    const setHideInterface = useSetRecoilState(hideInterfaceState);
-    const setGameSaveScreen = useSetRecoilState(openGameSaveScreenState);
+    const setOpenSettings = useSettingsScreenStore((state) => (state.setOpen))
+    const editHideInterface = useInterfaceStore((state) => state.setHidden)
+    const editSaveScreen = useGameSaveScreenStore((state) => (state.editOpen))
     const { enqueueSnackbar } = useSnackbar();
     const { t } = useTranslation(["ui"]);
     const { t: tNarration } = useTranslation(["narration"]);
@@ -29,7 +28,7 @@ export default function MainMenu() {
     const { data: lastSave = null, isLoading } = useQueryLastSave()
 
     useEffect(() => {
-        setHideInterface(false)
+        editHideInterface(false)
         let bg = addImage("background_main_menu")
         bg.load()
 
@@ -87,7 +86,7 @@ export default function MainMenu() {
                 {t("start")}
             </MenuButton>
             <MenuButton
-                onClick={() => setGameSaveScreen(true)}
+                onClick={editSaveScreen}
                 transitionDelay={0.3}
             >
                 {t("load")}

@@ -2,15 +2,14 @@ import HistoryIcon from '@mui/icons-material/History';
 import { Typography } from "@mui/joy";
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { openHistoryScreenState } from '../../atoms/openHistoryScreenState';
-import { openSettingsState } from '../../atoms/openSettingsState';
 import SettingButton from '../../components/SettingButton';
+import useHistoryScreenStore from '../../stores/useHistoryScreenStore';
+import useSettingsScreenStore from '../../stores/useSettingsScreenStore';
 
 export default function OpenHistorySettingButton() {
     const { t } = useTranslation(["ui"]);
-    const setOpenHistory = useSetRecoilState(openHistoryScreenState);
-    const openSettings = useSetRecoilState(openSettingsState);
+    const openSettings = useSettingsScreenStore((state) => (state.setOpen))
+    const editOpenHistory = useHistoryScreenStore((state) => (state.editOpen))
 
     const location = useLocation();
     if (location.pathname === '/') {
@@ -20,7 +19,7 @@ export default function OpenHistorySettingButton() {
     return (
         <SettingButton
             onClick={() => {
-                setOpenHistory(true)
+                editOpenHistory()
                 openSettings(false)
             }}
         >
@@ -34,7 +33,7 @@ export default function OpenHistorySettingButton() {
                 }}
                 level="body-md"
             >
-                Shift+H
+                Alt+H
             </Typography>
         </SettingButton>
     );

@@ -3,14 +3,13 @@ import { Button, Stack, Typography } from "@mui/joy";
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { openSettingsState } from '../atoms/openSettingsState';
 import ModalDialogCustom from '../components/ModalDialog';
+import useSettingsScreenStore from '../stores/useSettingsScreenStore';
 import { gameEnd } from '../utils/actions-utility';
 import { useMyNavigate } from '../utils/navigate-utility';
 
 export default function ReturnMainMenuButton() {
-    const openSettings = useSetRecoilState(openSettingsState);
+    const setOpenSettings = useSettingsScreenStore((state) => (state.setOpen))
     const navigate = useMyNavigate();
     const [openDialog, setOpenDialog] = useState(false)
     const { t } = useTranslation(["ui"]);
@@ -53,7 +52,7 @@ export default function ReturnMainMenuButton() {
                         variant="outlined"
                         onClick={() => {
                             gameEnd(navigate)
-                            openSettings(false)
+                            setOpenSettings(false)
                             setOpenDialog(false)
                         }}
                         startDecorator={<ExitToAppIcon />}
