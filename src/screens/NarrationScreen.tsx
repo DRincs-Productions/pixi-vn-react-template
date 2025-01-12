@@ -6,24 +6,24 @@ import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
 import { motion, Variants } from "motion/react";
 import { useRef } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { dialogueCardHeightState } from '../atoms/dialogueCardHeightState';
-import { dialogueCardImageWidthState } from '../atoms/dialogueCardImageWidthState';
-import { hideInterfaceState } from '../atoms/hideInterfaceState';
-import { typewriterDelayState } from '../atoms/typewriterDelayState';
-import { typewriterIsAnimatedState } from '../atoms/typewriterIsAnimatedState';
+import { useShallow } from 'zustand/react/shallow';
 import SliderResizer from '../components/SliderResizer';
-import Typewriter from '../components/Typewriter';
+import TypewriterList from '../components/TypewriterList';
+import useDialogueCardStore from '../stores/useDialogueCardStore';
+import useInterfaceStore from '../stores/useInterfaceStore';
+import useTypewriterStore from '../stores/useTypewriterStore';
 import { useQueryDialogue } from '../use_query/useQueryInterface';
 import ChoiceMenu from './ChoiceMenu';
 
 export default function NarrationScreen() {
-    const [cardHeight, setCardHeight] = useRecoilState(dialogueCardHeightState)
-    const [cardImageWidth, setCardImageWidth] = useRecoilState(dialogueCardImageWidthState)
-    const typewriterDelay = useRecoilValue(typewriterDelayState)
+    const { height: cardHeight, setHeight: setCardHeight, imageWidth: cardImageWidth, setImageWidth: setCardImageWidth } = useDialogueCardStore(
+        useShallow((state) => (state)),
+    )
+    const typewriterDelay = useTypewriterStore((state) => state.delay)
+    const startTypewriter = useTypewriterStore((state) => state.start)
+    const endTypewriter = useTypewriterStore((state) => state.end)
     const { data: { text, character } = {} } = useQueryDialogue()
-    const hidden = useRecoilValue(hideInterfaceState) || (text ? false : true)
-    const setTypewriterIsAnimated = useSetRecoilState(typewriterIsAnimatedState)
+    const hidden = useInterfaceStore((state) => state.hidden || (text ? false : true));
     const cardVarians: Variants = {
         open: {
             opacity: 1,
@@ -123,7 +123,7 @@ export default function NarrationScreen() {
                             height: "100%",
                         }}
                     >
-                        {character && <AspectRatio
+                        {character?.icon && <AspectRatio
                             flex
                             ratio="1"
                             maxHeight={"20%"}
@@ -139,7 +139,7 @@ export default function NarrationScreen() {
                             transition={{ type: "tween" }}
                         >
                             <img
-                                src={character?.icon}
+                                src={character.icon}
                                 loading="lazy"
                                 alt=""
                             />
@@ -174,6 +174,7 @@ export default function NarrationScreen() {
                                 fontWeight="lg"
                                 sx={{
                                     color: character.color,
+                                    paddingLeft: 1,
                                 }}
                                 component={motion.div}
                                 variants={cardElementVarians}
@@ -198,11 +199,11 @@ export default function NarrationScreen() {
                                     marginBottom: 2,
                                 }}
                             >
-                                <Typewriter
+                                <TypewriterList
                                     text={text || ""}
                                     delay={typewriterDelay}
-                                    onAnimationStart={() => setTypewriterIsAnimated(true)}
-                                    onAnimationComplete={() => setTypewriterIsAnimated(false)}
+                                    onAnimationStart={startTypewriter}
+                                    onAnimationComplete={endTypewriter}
                                     scroll={typewriterDelay ? (offsetTop: number) => {
                                         if (paragraphRef.current) {
                                             let scrollTop = (offsetTop - (paragraphRef.current.clientHeight / 2))

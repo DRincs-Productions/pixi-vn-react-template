@@ -34,12 +34,12 @@ export const useI18n = () => {
                 },
                 missingInterpolationHandler(_text, value, _options) {
                     let key = value[1]
+                    if (key === "steph_fullname") {
+                        return "Stephanie"
+                    }
                     let character = getCharacterById(key)
                     if (character) {
                         return character.name
-                    }
-                    if (key === "steph_fullname") {
-                        return "Stephanie"
                     }
                     return `[${key}]`
                 },

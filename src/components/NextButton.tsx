@@ -5,23 +5,23 @@ import { motion } from "motion/react";
 import { useSnackbar } from 'notistack';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { hideInterfaceState } from '../atoms/hideInterfaceState';
-import { nextStepLoadingState } from '../atoms/nextStepLoadingState';
-import { skipEnabledState } from '../atoms/skipEnabledState';
+import useInterfaceStore from '../stores/useInterfaceStore';
+import useSkipStore from '../stores/useSkipStore';
+import useStepStore from '../stores/useStepStore';
 import { INTERFACE_DATA_USE_QUEY_KEY, useQueryCanGoNext } from '../use_query/useQueryInterface';
 import { useMyNavigate } from '../utils/navigate-utility';
 
 export default function NextButton() {
-    const [skip, setSkip] = useRecoilState(skipEnabledState)
-    const nextStepLoading = useRecoilValue(nextStepLoadingState)
+    const skipEnabled = useSkipStore((state) => state.enabled)
+    const setSkipEnabled = useSkipStore((state) => state.setEnabled)
+    const nextStepLoading = useStepStore((state) => state.loading);
     const { data: canGoNext = false } = useQueryCanGoNext()
-    const hideNextButton = useRecoilValue(hideInterfaceState) || !canGoNext
+    const hideNextButton = useInterfaceStore((state) => state.hidden || !canGoNext);
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useMyNavigate();
     const { t } = useTranslation(["ui"]);
     const { t: tNarration } = useTranslation(["narration"]);
-    const setNextStepLoading = useSetRecoilState(nextStepLoadingState);
+    const setNextStepLoading = useStepStore((state) => state.setLoading);
     const queryClient = useQueryClient()
 
     const nextOnClick = useCallback(async () => {
@@ -54,13 +54,13 @@ export default function NextButton() {
 
     const onkeypress = useCallback((event: KeyboardEvent) => {
         if ((event.code == 'Enter' || event.code == 'Space')) {
-            setSkip(true)
+            setSkipEnabled(true)
         }
     }, [])
 
     const onkeyup = useCallback((event: KeyboardEvent) => {
         if ((event.code == 'Enter' || event.code == 'Space')) {
-            setSkip(false)
+            setSkipEnabled(false)
             nextOnClick()
         }
     }, [nextOnClick])
@@ -90,8 +90,8 @@ export default function NextButton() {
                 zIndex: 100,
             }}
             onClick={() => {
-                if (skip) {
-                    setSkip(false)
+                if (skipEnabled) {
+                    setSkipEnabled(false)
                 }
                 nextOnClick()
             }}

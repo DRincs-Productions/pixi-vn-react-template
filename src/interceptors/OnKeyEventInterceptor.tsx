@@ -3,16 +3,16 @@ import { useSnackbar } from 'notistack';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { hideInterfaceState } from '../atoms/hideInterfaceState';
-import { saveLoadAlertState } from '../atoms/saveLoadAlertState';
+import useGameSaveScreenStore from '../stores/useGameSaveScreenStore';
+import useInterfaceStore from '../stores/useInterfaceStore';
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from '../use_query/useQueryLastSave';
 import { SAVES_USE_QUEY_KEY } from '../use_query/useQuerySaves';
 import { putSaveIntoIndexDB } from '../utils/save-utility';
 
 export default function EventInterceptor() {
-    const [hideInterface, setHideInterface] = useRecoilState(hideInterfaceState);
-    const setAlertData = useSetRecoilState(saveLoadAlertState);
+    const hideInterface = useInterfaceStore((state) => state.hidden);
+    const setHideInterface = useInterfaceStore((state) => state.setHidden);
+    const setOpenLoadAlert = useGameSaveScreenStore((state) => (state.editLoadAlert))
     const queryClient = useQueryClient()
     const { t } = useTranslation(["ui"]);
     const location = useLocation();
@@ -28,18 +28,12 @@ export default function EventInterceptor() {
                 }
                 break;
             case 'KeyV':
-                if (event.shiftKey) {
-                    setHideInterface((prev) => {
-                        if (location.pathname === '/') {
-                            console.log("Can't hide interface on home page")
-                            return false
-                        }
-                        return !prev
-                    })
+                if (event.altKey) {
+                    setHideInterface(!hideInterface)
                 }
                 break;
             case 'KeyS':
-                if (event.shiftKey) {
+                if (event.altKey) {
                     if (location.pathname === '/') {
                         console.log("Can't save on home page")
                         break
@@ -56,17 +50,12 @@ export default function EventInterceptor() {
                 }
                 break;
             case 'KeyL':
-                if (event.shiftKey) {
-                    setAlertData((prev) => {
-                        if (prev.open) {
-                            return { ...prev, open: false }
-                        }
-                        if (!lastSave) {
-                            console.log("No save to load")
-                            return { ...prev, open: false }
-                        }
-                        return { open: true, data: lastSave, type: 'load' }
-                    })
+                if (event.altKey) {
+                    if (!lastSave) {
+                        console.log("No save to load")
+                        return
+                    }
+                    setOpenLoadAlert(lastSave)
                 }
                 break;
         }

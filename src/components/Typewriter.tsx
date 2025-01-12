@@ -58,8 +58,9 @@ function TypewriterInternal({ children, letterVariants, dadElement, scrollOnLast
     return dadElement(children)
 };
 
-export default function Typewriter({ text, delay = 0, onAnimationComplete, onAnimationStart, scroll }: {
+export default function Typewriter({ text, index, delay = 0, onAnimationComplete, onAnimationStart, scroll }: {
     text: string
+    index?: Key | null | undefined
     delay?: number
     onAnimationComplete?: () => void
     onAnimationStart?: () => void
@@ -75,8 +76,8 @@ export default function Typewriter({ text, delay = 0, onAnimationComplete, onAni
     }), [delay]);
 
     return (
-        <motion.div
-            key={text}
+        <motion.span
+            key={index ?? text}
             variants={sentenceVariants}
             initial="hidden"
             animate={"visible"}
@@ -95,8 +96,8 @@ export default function Typewriter({ text, delay = 0, onAnimationComplete, onAni
                             scrollOnLastItem={scroll}
                             dadElement={(children) => {
                                 if (Array.isArray(children)) {
-                                    children.push(<motion.br
-                                        key={`br-${id}`}
+                                    children.push(<motion.span
+                                        key={`span-${id}`}
                                     />)
                                     return children
                                 }
@@ -363,6 +364,6 @@ export default function Typewriter({ text, delay = 0, onAnimationComplete, onAni
             >
                 {text}
             </Markdown>
-        </motion.div>
+        </motion.span>
     )
 };

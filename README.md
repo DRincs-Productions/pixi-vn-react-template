@@ -7,6 +7,8 @@ This Template contains basic functionality inspired by the widespread Visual Nov
 
 ## Overview
 
+For testing purposes we will recreate the visual novel [Breakdown](https://joshpowlison.itch.io/breakdown) with Pixi’VN in this guide. Breakdown is a short story that has all the features that a visual novel should have. Josh Powlison, the creator of Breakdown, has given us permission to use his narration for educational purposes❤️.
+
 The first page that appears is the main menu. From there, you can start the game, load a saved game, or go to the settings.
 
 The game page is in `/narration` route. It contains the text box, character avatar, and canvas for the background image. The text box displays the text of the current dialogue. The character avatar displays the character speaking the dialogue. The background image is the background of the scene.
@@ -22,11 +24,11 @@ The settings modal allows you to change the text speed, go to full screen, edit 
 
 * `Space` or `Enter`: Continue the dialogue.
 * `Keep Space` or `Keep Enter`: Skip the dialogue.
-* `Shift` + `S`: Quick save the game.
-* `Shift` + `L`: Quick load the game.
-* `Shift` + `H`: Open the history modal.
+* `Alt` + `S`: Quick save the game.
+* `Alt` + `L`: Quick load the game.
+* `Alt` + `H`: Open the history modal.
 * `Esc`: Open the settings modal.
-* `Shift` + `V`: Hide the UI (Show only the canvas).
+* `Alt` + `V`: Hide the UI (Show only the canvas).
 
 ### Used libraries
 
@@ -39,7 +41,7 @@ Core libraries:
 * [Vite](https://vitejs.dev/): A build tool that aims to provide a faster and leaner development experience for modern web projects.
 * [Vite Checker](https://www.npmjs.com/package/vite-plugin-checker): A Vite plugin that checks TypeScript types and ESLint on each build.
 * [PWA Vite Plugin](https://vite-pwa-org.netlify.app): A Vite plugin that provides PWA support. This allows the possibility of installing the game as a Progressive Web App.
-* [Recoil](https://recoiljs.org/): A state management library for React.
+* [Zustand](https://zustand-demo.pmnd.rs/): A small, fast, and scalable state management library.
 * [React Router](https://reactrouter.com/): A library that provides routing for React applications.
 * [Tanstack Query](https://tanstack.com/tanstack-query/): A library that provides a set of tools for getting, caching, and updating game data.
   <img width="44" alt="image" src="https://github.com/user-attachments/assets/bf70dddc-68c0-48f4-9c41-74c22f54e3d1">
