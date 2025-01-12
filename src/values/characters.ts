@@ -1,11 +1,23 @@
 import { saveCharacter } from "@drincs/pixi-vn";
 import Character from "../models/Character";
 
-export const juliette = new Character('juliette', {
-    name: 'Juliette',
-    age: 25,
-    icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4eMoz7DH8l_Q-iCzSc1xyu_C2iryWh2O9_FcDBpY04w&s",
-    color: "#ac0086"
+export const mc = new Character('mc', {
+    name: 'Me',
 });
 
-saveCharacter(juliette);
+export const james = new Character('james', {
+    name: 'James',
+    color: "#0084ac"
+});
+
+export const steph = new Character('steph', {
+    name: 'Steph',
+    color: "#ac5900"
+});
+
+export const sly = new Character('sly', {
+    name: 'Sly',
+    color: "#6d00ac"
+});
+
+saveCharacter([mc, james, steph, sly]);

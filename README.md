@@ -7,6 +7,8 @@ This Template contains basic functionality inspired by the widespread Visual Nov
 
 ## Overview
 
+For testing purposes we will recreate the visual novel [Breakdown](https://joshpowlison.itch.io/breakdown) with Pixi’VN in this guide. Breakdown is a short story that has all the features that a visual novel should have. Josh Powlison, the creator of Breakdown, has given us permission to use his narration for educational purposes❤️.
+
 The first page that appears is the main menu. From there, you can start the game, load a saved game, or go to the settings.
 
 The game page is in `/narration` route. It contains the text box, character avatar, and canvas for the background image. The text box displays the text of the current dialogue. The character avatar displays the character speaking the dialogue. The background image is the background of the scene.
