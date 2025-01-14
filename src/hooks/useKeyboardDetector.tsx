@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import useGameSaveScreenStore from '../stores/useGameSaveScreenStore';
@@ -8,8 +8,9 @@ import useInterfaceStore from '../stores/useInterfaceStore';
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from '../use_query/useQueryLastSave';
 import { SAVES_USE_QUEY_KEY } from '../use_query/useQuerySaves';
 import { putSaveIntoIndexDB } from '../utils/save-utility';
+import useEventListener from './useKeyDetector';
 
-export default function EventInterceptor() {
+export default function useKeyboardDetector() {
     const hideInterface = useInterfaceStore((state) => state.hidden);
     const setHideInterface = useInterfaceStore((state) => state.setHidden);
     const setOpenLoadAlert = useGameSaveScreenStore((state) => (state.editLoadAlert))
@@ -61,13 +62,7 @@ export default function EventInterceptor() {
         }
     }, [location, hideInterface, lastSave, queryClient, t])
 
-    useEffect(() => {
-        window.addEventListener('keydown', onkeydown);
-
-        return () => {
-            window.removeEventListener('keydown', onkeydown);
-        };
-    }, [onkeydown]);
+    useEventListener({ type: 'keydown', listener: onkeydown })
 
     return null
 }

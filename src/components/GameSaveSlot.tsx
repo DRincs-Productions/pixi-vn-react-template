@@ -120,7 +120,7 @@ export default function GameSaveSlot({ saveId, onDelete, onLoad, onOverwriteSave
                         }}
                     />
                 </IconButton>
-                <IconButton
+                {location.pathname !== MAIN_MENU_ROUTE && <IconButton
                     onClick={() => onOverwriteSave(saveData)}
                 >
                     <SaveAsIcon
@@ -129,7 +129,7 @@ export default function GameSaveSlot({ saveId, onDelete, onLoad, onOverwriteSave
                             color: useTheme().palette.neutral[300],
                         }}
                     />
-                </IconButton>
+                </IconButton>}
                 <IconButton
                     onClick={() => {
                         onLoad(saveData)
