@@ -1,26 +1,37 @@
 import { Box } from '@mui/joy';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Routes from './AppRoutes';
+import useClosePageDetector from './hooks/useClosePageDetector';
+import useInkInitialization from './hooks/useInkInitialization';
+import useKeyboardDetector from './hooks/useKeyboardDetector';
+import useEventListener from './hooks/useKeyDetector';
+import useNetworkDetector from './hooks/useNetworkDetector';
 import Imports from './Imports';
-import GoBackEventInterceptor from './interceptors/GoBackEventInterceptor';
-import OnKeyEventInterceptor from './interceptors/OnKeyEventInterceptor';
-import RefreshSaveEventInterceptor from './interceptors/RefreshEventInterceptor';
 import GameSaveScreen from './screens/GameSaveScreen';
 import SaveLoadAlert from './screens/modals/SaveLoadAlert';
+import OfflineScreen from './screens/OfflineScreen';
 import Settings from './screens/Settings';
-import InkInitialization from './interceptors/InkInitialization';
 
-export default function Home() {
+function HomeChild() {
+    useKeyboardDetector()
+    useClosePageDetector()
+    useNetworkDetector()
+    useInkInitialization()
+    // Prevent the user from going back to the previous page
+    useEventListener({
+        type: 'popstate',
+        listener: () => {
+            window.history.forward();
+        }
+    })
+
     return (
-        <Imports>
+        <>
             <Routes />
             <Settings />
             <GameSaveScreen />
             <SaveLoadAlert />
-            <OnKeyEventInterceptor />
-            <GoBackEventInterceptor />
-            <RefreshSaveEventInterceptor />
-            <InkInitialization />
+            <OfflineScreen />
             <Box
                 sx={{
                     pointerEvents: "auto",
@@ -28,6 +39,10 @@ export default function Home() {
             >
                 <ReactQueryDevtools initialIsOpen={false} />
             </Box>
-        </Imports>
+        </>
     )
+}
+
+export default function Home() {
+    return (<Imports><HomeChild /></Imports>)
 }

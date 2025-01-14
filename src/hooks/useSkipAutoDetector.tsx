@@ -10,13 +10,13 @@ import useTypewriterStore from '../stores/useTypewriterStore';
 import { INTERFACE_DATA_USE_QUEY_KEY } from '../use_query/useQueryInterface';
 import { useMyNavigate } from '../utils/navigate-utility';
 
-export default function SkipAutoInterceptor() {
+export default function useSkipAutoDetector() {
     const navigate = useMyNavigate();
     const { t: tNarration } = useTranslation(["narration"]);
     const skipEnabled = useSkipStore((state) => state.enabled)
     const autoEnabled = useAutoInfoStore((state) => state.enabled)
     const autoTime = useAutoInfoStore((state) => state.time)
-    const typewriterInProgress = useTypewriterStore((state) => !state.inProgress)
+    const typewriterInProgress = useTypewriterStore((state) => state.inProgress)
     const [recheckSkip, setRecheckSkip] = useState<number>(0)
     const { enqueueSnackbar } = useSnackbar();
     const setNextStepLoading = useStepStore((state) => state.setLoading);

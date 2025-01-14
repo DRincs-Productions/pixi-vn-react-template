@@ -3,8 +3,9 @@ import { Button } from '@mui/joy';
 import { useQueryClient } from '@tanstack/react-query';
 import { motion } from "motion/react";
 import { useSnackbar } from 'notistack';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import useEventListener from '../hooks/useKeyDetector';
 import useInterfaceStore from '../stores/useInterfaceStore';
 import useSkipStore from '../stores/useSkipStore';
 import useStepStore from '../stores/useStepStore';
@@ -52,28 +53,23 @@ export default function NextButton() {
         }
     }, [tNarration, queryClient])
 
-    const onkeypress = useCallback((event: KeyboardEvent) => {
-        if ((event.code == 'Enter' || event.code == 'Space')) {
-            setSkipEnabled(true)
+    useEventListener({
+        type: 'keypress',
+        listener: (event) => {
+            if ((event.code == 'Enter' || event.code == 'Space')) {
+                setSkipEnabled(true)
+            }
         }
-    }, [])
-
-    const onkeyup = useCallback((event: KeyboardEvent) => {
-        if ((event.code == 'Enter' || event.code == 'Space')) {
-            setSkipEnabled(false)
-            nextOnClick()
+    })
+    useEventListener({
+        type: 'keyup',
+        listener: (event) => {
+            if ((event.code == 'Enter' || event.code == 'Space')) {
+                setSkipEnabled(false)
+                nextOnClick()
+            }
         }
-    }, [nextOnClick])
-
-    useEffect(() => {
-        window.addEventListener("keypress", onkeypress);
-        window.addEventListener("keyup", onkeyup);
-
-        return () => {
-            window.removeEventListener("keypress", onkeypress);
-            window.removeEventListener("keyup", onkeyup);
-        };
-    }, [onkeypress, onkeyup]);
+    })
 
     return (
         <Button
