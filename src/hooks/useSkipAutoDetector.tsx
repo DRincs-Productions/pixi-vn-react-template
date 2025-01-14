@@ -10,7 +10,7 @@ import useTypewriterStore from '../stores/useTypewriterStore';
 import { INTERFACE_DATA_USE_QUEY_KEY } from '../use_query/useQueryInterface';
 import { useMyNavigate } from '../utils/navigate-utility';
 
-export default function SkipAutoInterceptor() {
+export default function useSkipAutoDetector() {
     const navigate = useMyNavigate();
     const { t: tNarration } = useTranslation(["narration"]);
     const skipEnabled = useSkipStore((state) => state.enabled)

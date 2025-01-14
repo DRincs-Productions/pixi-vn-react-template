@@ -1,8 +1,8 @@
 import { Box, DialogContent, DialogTitle, Divider, Drawer, FormControl, ModalClose, RadioGroup, Sheet, Typography } from "@mui/joy";
 import { Theme, useMediaQuery } from '@mui/material';
-import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReturnMainMenuButton from '../components/ReturnMainMenuButton';
+import useEventListener from "../hooks/useKeyDetector";
 import useSettingsScreenStore from '../stores/useSettingsScreenStore';
 import AutoSettingToggle from './settings/AutoSettingToggle';
 import DialoguesSettings from './settings/DialoguesSettings';
@@ -19,18 +19,14 @@ export default function Settings() {
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
 
-    const onkeydown = useCallback((event: KeyboardEvent) => {
-        if (event.code == 'Escape') {
-            editOpen()
+    useEventListener({
+        type: 'keydown',
+        listener: (event) => {
+            if (event.code == 'Escape') {
+                editOpen()
+            }
         }
-    }, []);
-
-    useEffect(() => {
-        window.addEventListener('keydown', onkeydown);
-        return () => {
-            window.removeEventListener('keydown', onkeydown);
-        };
-    }, [onkeydown]);
+    })
 
     return (
         <Drawer

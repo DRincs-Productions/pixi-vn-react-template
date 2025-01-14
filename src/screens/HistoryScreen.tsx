@@ -3,12 +3,13 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { Box, Chip, Input, Stack, Theme, Typography } from "@mui/joy";
 import Avatar from '@mui/joy/Avatar';
 import { useMediaQuery } from '@mui/material';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Markdown from 'react-markdown';
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import ModalDialogCustom from '../components/ModalDialog';
+import useEventListener from '../hooks/useKeyDetector';
 import useHistoryScreenStore from '../stores/useHistoryScreenStore';
 import { useQueryNarrativeHistory } from '../use_query/useQueryInterface';
 
@@ -90,18 +91,14 @@ export default function HistoryScreen() {
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
 
-    const onkeydown = useCallback((event: KeyboardEvent) => {
-        if (event.code == 'KeyH' && event.altKey) {
-            editOpen()
+    useEventListener({
+        type: 'keydown',
+        listener: (event) => {
+            if (event.code == 'KeyH' && event.altKey) {
+                editOpen()
+            }
         }
-    }, [])
-
-    useEffect(() => {
-        window.addEventListener('keydown', onkeydown);
-        return () => {
-            window.removeEventListener('keydown', onkeydown);
-        };
-    }, [onkeydown]);
+    })
 
     return (
         <ModalDialogCustom
