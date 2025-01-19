@@ -1,8 +1,7 @@
-import { canvas, narration } from '@drincs/pixi-vn'
+import { canvas, clearAllGameDatas, narration } from '@drincs/pixi-vn'
 import { createRoot } from 'react-dom/client'
 import App from './App'
 import './index.css'
-import { gameEnd } from './utils/actions-utility'
 import './values/characters'
 
 // Canvas setup with PIXI
@@ -32,7 +31,8 @@ canvas.initialize(body, 1920, 1080, {
 })
 
 narration.onGameEnd = async ({ navigate }) => {
-    gameEnd(navigate)
+    clearAllGameDatas()
+    navigate('/')
 }
 
 narration.onStepError = async (_error, { notify, t }) => {

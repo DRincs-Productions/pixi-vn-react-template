@@ -1,4 +1,4 @@
-import { ChoiceMenuOption, ChoiceMenuOptionClose, moveIn, narration, newLabel, showImage, showImageContainer } from "@drincs/pixi-vn";
+import { Assets, ChoiceMenuOption, ChoiceMenuOptionClose, moveIn, narration, newLabel, showImage, showImageContainer } from "@drincs/pixi-vn";
 import { james, mc, sly, steph } from "../values/characters";
 
 const steph_fullname = "Stephanie";
@@ -329,7 +329,16 @@ const startLabel = newLabel("start", [
             new ChoiceMenuOptionClose("No, I want to stop here"),
         ]
     },
-]);
+], {
+    onLoadingLabel: () => {
+        Assets.load([
+            "bg01-hallway",
+            "m01-body", "m01-eyes-grin", "m01-eyes-smile", "m01-eyes-wow", "m01-mouth-grin00", "m01-mouth-smile00", "m01-mouth-smile01",
+            "fm01-body", "fm01-eyes-smile", "fm01-eyes-upset", "fm01-mouth-serious00", "fm01-mouth-serious01", "fm01-mouth-smile00",
+            "fm02-body", "fm02-eyes-joy", "fm02-eyes-nervous", "fm02-eyes-wow", "fm02-mouth-nervous00", "fm02-mouth-smile00",
+        ])
+    }
+});
 export default startLabel;
 
 const secondPart = newLabel("second_part", [

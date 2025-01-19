@@ -1,3 +1,4 @@
+import { clearAllGameDatas } from '@drincs/pixi-vn';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Button, Stack, Typography } from "@mui/joy";
 import { useState } from 'react';
@@ -5,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import ModalDialogCustom from '../components/ModalDialog';
 import useSettingsScreenStore from '../stores/useSettingsScreenStore';
-import { gameEnd } from '../utils/actions-utility';
 import { useMyNavigate } from '../utils/navigate-utility';
 
 export default function ReturnMainMenuButton() {
@@ -51,7 +51,8 @@ export default function ReturnMainMenuButton() {
                         color='danger'
                         variant="outlined"
                         onClick={() => {
-                            gameEnd(navigate)
+                            clearAllGameDatas()
+                            navigate('/')
                             setOpenSettings(false)
                             setOpenDialog(false)
                         }}

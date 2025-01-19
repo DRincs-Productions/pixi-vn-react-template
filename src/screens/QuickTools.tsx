@@ -1,3 +1,4 @@
+import { narration } from '@drincs/pixi-vn';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { IconButton, Stack, useTheme } from '@mui/joy';
 import { useQueryClient } from '@tanstack/react-query';
@@ -14,7 +15,6 @@ import useSkipStore from '../stores/useSkipStore';
 import { INTERFACE_DATA_USE_QUEY_KEY, useQueryCanGoBack } from '../use_query/useQueryInterface';
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from '../use_query/useQueryLastSave';
 import { SAVES_USE_QUEY_KEY } from '../use_query/useQuerySaves';
-import { goBack } from '../utils/actions-utility';
 import { useMyNavigate } from '../utils/navigate-utility';
 import { putSaveIntoIndexDB } from '../utils/save-utility';
 
@@ -68,7 +68,7 @@ export default function QuickTools() {
                 transition={{ type: "tween" }}
             >
                 <TextMenuButton
-                    onClick={() => goBack(navigate).then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))}
+                    onClick={() => narration.goBack(navigate).then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))}
                     disabled={!canGoBack}
                     sx={{ pointerEvents: !hideInterface ? "auto" : "none" }}
                 >
