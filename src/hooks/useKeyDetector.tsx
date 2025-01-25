@@ -1,8 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-export default function useEventListener<K extends keyof WindowEventMap>({ type, listener }: {
-    type: K
-    listener: (this: Window, ev: WindowEventMap[K]) => any
+export default function useEventListener<K extends keyof WindowEventMap>({
+    type,
+    listener,
+}: {
+    type: K;
+    listener: (this: Window, ev: WindowEventMap[K]) => any;
 }) {
     useEffect(() => {
         window.addEventListener(type, listener);
@@ -12,5 +15,5 @@ export default function useEventListener<K extends keyof WindowEventMap>({ type,
         };
     }, [onkeydown]);
 
-    return null
+    return null;
 }

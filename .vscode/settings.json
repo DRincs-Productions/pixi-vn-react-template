@@ -1,28 +1,35 @@
 {
     // Formatter
     "[javascript]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features",
-        "editor.formatOnSave": true
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
     },
     "[javascriptreact]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features",
-        "editor.formatOnSave": true
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
     },
     "[typescript]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features",
-        "editor.formatOnSave": true
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
     },
     "[typescriptreact]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features",
-        "editor.formatOnSave": true
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
     },
     "[css]": {
         "editor.defaultFormatter": "vscode.css-language-features",
         "editor.formatOnSave": true
     },
     "[html]": {
-        "editor.defaultFormatter": "vscode.html-language-features"
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true,
+        "prettier.tabWidth": 2,
     },
+    "prettier.jsxSingleQuote": true,
+    "prettier.printWidth": 120,
+    "prettier.useTabs": false,
+    "prettier.singleAttributePerLine": false,
+    "prettier.tabWidth": 4,
     // reorganise imports
     "editor.codeActionsOnSave": {
         "source.organizeImports": "explicit"
@@ -46,4 +53,5 @@
     ],
     // olther
     "extensions.ignoreRecommendations": false,
+    "prettier.useEditorConfig": false,
 }

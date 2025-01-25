@@ -1,28 +1,19 @@
-import { Button } from '@mui/joy';
-import { ReactNode, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import ModalDialogCustom, { ModalDialogCustomProps } from './ModalDialog';
+import { Button } from "@mui/joy";
+import { ReactNode, useState } from "react";
+import { useTranslation } from "react-i18next";
+import ModalDialogCustom, { ModalDialogCustomProps } from "./ModalDialog";
 
 interface ModalConfirmationProps extends Omit<ModalDialogCustomProps, "actions"> {
-    onConfirm?: () => boolean | Promise<boolean>
-    onCancel?: () => void
-    disabledConfirm?: boolean
-    startDecorator?: ReactNode
+    onConfirm?: () => boolean | Promise<boolean>;
+    onCancel?: () => void;
+    disabledConfirm?: boolean;
+    startDecorator?: ReactNode;
 }
 
 export default function ModalConfirmation(props: ModalConfirmationProps) {
-    const {
-        setOpen
-        , onConfirm
-        , onCancel
-        , children
-        , color
-        , disabledConfirm
-        , startDecorator
-        , ...rest
-    } = props
+    const { setOpen, onConfirm, onCancel, children, color, disabledConfirm, startDecorator, ...rest } = props;
     const { t } = useTranslation(["ui"]);
-    const [loadingConfirm, setLoadingConfirm] = useState<boolean>(false)
+    const [loadingConfirm, setLoadingConfirm] = useState<boolean>(false);
 
     return (
         <ModalDialogCustom
@@ -34,13 +25,13 @@ export default function ModalConfirmation(props: ModalConfirmationProps) {
                     color={color}
                     onClick={async () => {
                         if (onConfirm) {
-                            setLoadingConfirm(true)
+                            setLoadingConfirm(true);
                             try {
-                                let result = await onConfirm()
-                                setLoadingConfirm(false)
-                                setOpen(!result)
+                                let result = await onConfirm();
+                                setLoadingConfirm(false);
+                                setOpen(!result);
                             } catch (_error) {
-                                setLoadingConfirm(false)
+                                setLoadingConfirm(false);
                             }
                         }
                     }}
@@ -53,14 +44,14 @@ export default function ModalConfirmation(props: ModalConfirmationProps) {
                 </Button>,
                 <Button
                     key='cancel-button'
-                    variant="plain"
-                    color="neutral"
+                    variant='plain'
+                    color='neutral'
                     onClick={() => setOpen(false)}
                     fullWidth={false}
                     disabled={loadingConfirm}
                 >
                     {t("cancel")}
-                </Button>
+                </Button>,
             ]}
             {...rest}
         >

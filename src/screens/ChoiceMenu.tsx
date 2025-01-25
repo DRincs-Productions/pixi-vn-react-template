@@ -1,27 +1,25 @@
-import { ChoiceMenuOption, ChoiceMenuOptionClose, narration } from '@drincs/pixi-vn';
-import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
-import { Box, Grid } from '@mui/joy';
-import { useQueryClient } from '@tanstack/react-query';
+import { ChoiceMenuOption, ChoiceMenuOptionClose, narration } from "@drincs/pixi-vn";
+import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
+import { Box, Grid } from "@mui/joy";
+import { useQueryClient } from "@tanstack/react-query";
 import { motion, Variants } from "motion/react";
-import { useSnackbar } from 'notistack';
-import { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import ChoiceButton from '../components/ChoiceButton';
-import useDialogueCardStore from '../stores/useDialogueCardStore';
-import useInterfaceStore from '../stores/useInterfaceStore';
-import { INTERFACE_DATA_USE_QUEY_KEY, useQueryChoiceMenuOptions } from '../use_query/useQueryInterface';
-import { useMyNavigate } from '../utils/navigate-utility';
+import { useSnackbar } from "notistack";
+import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
+import ChoiceButton from "../components/ChoiceButton";
+import useDialogueCardStore from "../stores/useDialogueCardStore";
+import useInterfaceStore from "../stores/useInterfaceStore";
+import { INTERFACE_DATA_USE_QUEY_KEY, useQueryChoiceMenuOptions } from "../use_query/useQueryInterface";
+import { useMyNavigate } from "../utils/navigate-utility";
 
-export default function ChoiceMenu({ fullscreen = true }: {
-    fullscreen?: boolean,
-}) {
-    const [loading, setLoading] = useState(false)
-    const height = useDialogueCardStore((state) => 100 - state.height)
+export default function ChoiceMenu({ fullscreen = true }: { fullscreen?: boolean }) {
+    const [loading, setLoading] = useState(false);
+    const height = useDialogueCardStore((state) => 100 - state.height);
     const { t: tNarration } = useTranslation(["narration"]);
     const navigate = useMyNavigate();
-    const { data: menu = [] } = useQueryChoiceMenuOptions()
+    const { data: menu = [] } = useQueryChoiceMenuOptions();
     const hidden = useInterfaceStore((state) => state.hidden || menu.length == 0);
-    const queryClient = useQueryClient()
+    const queryClient = useQueryClient();
     const { enqueueSnackbar } = useSnackbar();
     const gridVariants: Variants = {
         open: {
@@ -30,7 +28,7 @@ export default function ChoiceMenu({ fullscreen = true }: {
                 type: "spring",
                 bounce: 0,
                 duration: 0.7,
-                staggerChildren: 0.05
+                staggerChildren: 0.05,
             },
         },
         closed: {
@@ -38,41 +36,45 @@ export default function ChoiceMenu({ fullscreen = true }: {
             transition: {
                 type: "spring",
                 bounce: 0,
-                duration: 0.3
+                duration: 0.3,
             },
-        }
+        },
     };
     const itemVariants: Variants = {
         open: {
             opacity: 1,
             y: 0,
-            transition: { type: "spring", stiffness: 300, damping: 24 }
+            transition: { type: "spring", stiffness: 300, damping: 24 },
         },
-        closed: { opacity: 0, y: 20, transition: { duration: 0.2 } }
+        closed: { opacity: 0, y: 20, transition: { duration: 0.2 } },
     };
 
-    const afterSelectChoice = useCallback((item: ChoiceMenuOptionClose | ChoiceMenuOption<{}>) => {
-        setLoading(true)
-        narration.selectChoice(item, {
-            navigate: navigate,
-            t: tNarration,
-            notify: (message, variant) => enqueueSnackbar(message, { variant }),
-            ...item.props
-        })
-            .then(() => {
-                queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] })
-                setLoading(false)
-            })
-            .catch((e) => {
-                setLoading(false)
-                console.error(e)
-            })
-    }, [enqueueSnackbar, navigate, queryClient, tNarration])
+    const afterSelectChoice = useCallback(
+        (item: ChoiceMenuOptionClose | ChoiceMenuOption<{}>) => {
+            setLoading(true);
+            narration
+                .selectChoice(item, {
+                    navigate: navigate,
+                    t: tNarration,
+                    notify: (message, variant) => enqueueSnackbar(message, { variant }),
+                    ...item.props,
+                })
+                .then(() => {
+                    queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
+                    setLoading(false);
+                })
+                .catch((e) => {
+                    setLoading(false);
+                    console.error(e);
+                });
+        },
+        [enqueueSnackbar, navigate, queryClient, tNarration]
+    );
 
     return (
         <Box
             sx={{
-                width: '100%',
+                width: "100%",
                 position: "absolute",
                 top: 0,
                 left: 0,
@@ -83,15 +85,15 @@ export default function ChoiceMenu({ fullscreen = true }: {
         >
             <Grid
                 container
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
+                direction='column'
+                justifyContent='center'
+                alignItems='center'
                 spacing={2}
                 sx={{
-                    overflow: 'auto',
+                    overflow: "auto",
                     height: "100%",
                     gap: 1,
-                    width: '100%',
+                    width: "100%",
                 }}
                 component={motion.div}
                 variants={gridVariants}
@@ -101,15 +103,15 @@ export default function ChoiceMenu({ fullscreen = true }: {
                     return (
                         <Grid
                             key={"choice-" + index}
-                            justifyContent="center"
-                            alignItems="center"
+                            justifyContent='center'
+                            alignItems='center'
                             component={motion.div}
                             variants={itemVariants}
                         >
                             <ChoiceButton
                                 loading={loading}
                                 onClick={() => {
-                                    afterSelectChoice(item)
+                                    afterSelectChoice(item);
                                 }}
                                 sx={{
                                     left: 0,
@@ -120,7 +122,7 @@ export default function ChoiceMenu({ fullscreen = true }: {
                                 {item.text}
                             </ChoiceButton>
                         </Grid>
-                    )
+                    );
                 })}
             </Grid>
         </Box>
