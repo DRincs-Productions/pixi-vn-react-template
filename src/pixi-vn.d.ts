@@ -27,10 +27,28 @@ declare module "@drincs/pixi-vn/dist/override" {
         [key: string]: any;
     }
     interface CharacterInterface {
+        /**
+         * The name of the character.
+         * If you set undefined, it will return the default name.
+         */
         name: string;
+        /**
+         * The surname of the character.
+         * If you set undefined, it will return the default surname.
+         */
         surname?: string;
+        /**
+         * The age of the character.
+         * If you set undefined, it will return the default age.
+         */
         age?: number;
-        icon?: string;
-        color?: string;
+        /**
+         * The icon of the character.
+         */
+        readonly icon?: string;
+        /**
+         * The color of the character.
+         */
+        readonly color?: string;
     }
 }

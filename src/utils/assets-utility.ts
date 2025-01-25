@@ -9,7 +9,7 @@ export async function defineAssets() {
     // backgrounds
     Assets.add({
         alias: "background_main_menu",
-        src: "https://andreannaking.com/wp-content/uploads/2021/12/Download-Beautiful-Nature-Landscape-Hd-Wallpaper-Full-HD-Wallpapers.jpg",
+        src: "https://firebasestorage.googleapis.com/v0/b/pixi-vn.appspot.com/o/public%2Fmain-menu.webp?alt=media",
     });
     Assets.add({
         alias: "bg01-hallway",
