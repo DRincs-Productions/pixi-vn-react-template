@@ -5,8 +5,8 @@ export default function LoadingScreen() {
     return (
         <Box
             sx={{
-                height: '100vh',
-                width: '100vw',
+                height: "100vh",
+                width: "100vw",
             }}
         >
             <Box
@@ -27,7 +27,7 @@ export default function LoadingScreen() {
                         opacity: 0,
                         scale: 0,
                         pointerEvents: "none",
-                    }
+                    },
                 }}
                 initial={"closed"}
                 animate={"open"}
@@ -36,5 +36,5 @@ export default function LoadingScreen() {
                 <CircularProgress />
             </Box>
         </Box>
-    )
+    );
 }

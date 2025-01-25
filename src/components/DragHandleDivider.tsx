@@ -1,24 +1,21 @@
-import DragHandleIcon from '@mui/icons-material/DragHandle';
+import DragHandleIcon from "@mui/icons-material/DragHandle";
 import { Divider, DividerProps, DividerTypeMap, useTheme } from "@mui/joy";
 
-interface DragHandleDividerProps extends DividerProps<DividerTypeMap['defaultComponent'], {
-    component?: React.ElementType;
-}> {
-    onMouseDown: React.MouseEventHandler<any>
+interface DragHandleDividerProps
+    extends DividerProps<
+        DividerTypeMap["defaultComponent"],
+        {
+            component?: React.ElementType;
+        }
+    > {
+    onMouseDown: React.MouseEventHandler<any>;
 }
 
 export default function DragHandleDivider(props: DragHandleDividerProps) {
-    const {
-        onMouseDown,
-        orientation,
-        ...rest
-    } = props;
+    const { onMouseDown, orientation, ...rest } = props;
 
     return (
-        <Divider
-            orientation={orientation}
-            {...rest}
-        >
+        <Divider orientation={orientation} {...rest}>
             <DragHandleIcon
                 sx={{
                     cursor: orientation === "vertical" ? "col-resize" : "row-resize",

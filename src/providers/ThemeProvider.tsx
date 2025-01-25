@@ -1,42 +1,41 @@
-import { CssVarsProvider, extendTheme } from '@mui/joy';
+import { CssVarsProvider, extendTheme } from "@mui/joy";
 import {
     THEME_ID as MATERIAL_THEME_ID,
     ThemeProvider as MaterialCssVarsProvider,
     extendTheme as materialExtendTheme,
-} from '@mui/material/styles';
-import { createContext, useContext, useMemo, useState } from 'react';
-import ShadeGenerator from 'shade-generator';
+} from "@mui/material/styles";
+import { createContext, useContext, useMemo, useState } from "react";
+import ShadeGenerator from "shade-generator";
 
 type Iprops = {
-    children: React.ReactNode
-}
-type SolidColorType = "black" | "white"
+    children: React.ReactNode;
+};
+type SolidColorType = "black" | "white";
 
 const ColorContext = createContext<{
-    primaryColor: string,
-    setPrimaryColor: (color: string) => void,
-    solidColor: SolidColorType,
-    setSolidColor: (color: SolidColorType) => void,
-
+    primaryColor: string;
+    setPrimaryColor: (color: string) => void;
+    solidColor: SolidColorType;
+    setSolidColor: (color: SolidColorType) => void;
 }>({
     primaryColor: "",
-    setPrimaryColor: () => { },
+    setPrimaryColor: () => {},
     solidColor: "white",
-    setSolidColor: () => { },
-})
+    setSolidColor: () => {},
+});
 const materialTheme = materialExtendTheme();
 
 export function useEditColorProvider() {
     const context = useContext(ColorContext);
     if (context === undefined) {
-        throw new Error("usePrimaryColorProvider must be used within a PrimaryColorProvider")
+        throw new Error("usePrimaryColorProvider must be used within a PrimaryColorProvider");
     }
     return context;
 }
 
 /**
  * Get 10 shades of a color based on the color you pass in.
- * @param color 
+ * @param color
  * @example
  * If you pass in a color of '#03a9f4', you will get the following shades:
  * {
@@ -64,27 +63,32 @@ function get10ColorShades(color: string) {
         "700": ShadeGenerator.hue(color).shade("300").hex(),
         "800": ShadeGenerator.hue(color).shade("400").hex(),
         "900": ShadeGenerator.hue(color).shade("500").hex(),
-    }
+    };
 }
 
 export default function MyThemeProvider({ children }: Iprops) {
-    const [primaryColor, setPrimaryColor] = useState(localStorage.getItem("primaryColor") || '#1c73ff')
-    const [solidColor, setSolidColor] = useState<SolidColorType>(localStorage.getItem("solidColor") as SolidColorType || "white")
+    const [primaryColor, setPrimaryColor] = useState(localStorage.getItem("primaryColor") || "#1c73ff");
+    const [solidColor, setSolidColor] = useState<SolidColorType>(
+        (localStorage.getItem("solidColor") as SolidColorType) || "white"
+    );
 
     // Build the theme: https://mui.com/joy-ui/customization/theme-builder
     const theme = useMemo(() => {
         // Debouncing
-        localStorage.setItem("primaryColor", primaryColor)
-        localStorage.setItem("solidColor", solidColor)
+        localStorage.setItem("primaryColor", primaryColor);
+        localStorage.setItem("solidColor", solidColor);
 
-        let colors = get10ColorShades(primaryColor)
+        let colors = get10ColorShades(primaryColor);
         return extendTheme({
             colorSchemes: {
                 light: {
                     palette: {
                         primary: {
                             ...colors,
-                            solidColor: solidColor === "black" ? "var(--joy-palette-common-black)" : "var(--joy-palette-common-white)",
+                            solidColor:
+                                solidColor === "black"
+                                    ? "var(--joy-palette-common-black)"
+                                    : "var(--joy-palette-common-white)",
                         },
                     },
                 },
@@ -92,7 +96,10 @@ export default function MyThemeProvider({ children }: Iprops) {
                     palette: {
                         primary: {
                             ...colors,
-                            solidColor: solidColor === "black" ? "var(--joy-palette-common-black)" : "var(--joy-palette-common-white)",
+                            solidColor:
+                                solidColor === "black"
+                                    ? "var(--joy-palette-common-black)"
+                                    : "var(--joy-palette-common-white)",
                         },
                     },
                 },
@@ -138,25 +145,24 @@ export default function MyThemeProvider({ children }: Iprops) {
                     styleOverrides: {
                         root: {
                             pointerEvents: "auto",
-                        }
-                    }
-                }
-            }
-        })
-    }, [primaryColor, solidColor])
-
+                        },
+                    },
+                },
+            },
+        });
+    }, [primaryColor, solidColor]);
 
     return (
         <MaterialCssVarsProvider theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
-            <CssVarsProvider
-                theme={theme}
-            >
-                <ColorContext.Provider value={{
-                    primaryColor: primaryColor,
-                    setPrimaryColor: setPrimaryColor,
-                    solidColor: solidColor,
-                    setSolidColor: setSolidColor,
-                }}>
+            <CssVarsProvider theme={theme}>
+                <ColorContext.Provider
+                    value={{
+                        primaryColor: primaryColor,
+                        setPrimaryColor: setPrimaryColor,
+                        solidColor: solidColor,
+                        setSolidColor: setSolidColor,
+                    }}
+                >
                     {children}
                 </ColorContext.Provider>
             </CssVarsProvider>

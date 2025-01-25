@@ -1,27 +1,27 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 type SkipStoreType = {
     /**
      * Whether the skip is enabled
      */
-    enabled: boolean,
+    enabled: boolean;
     /**
      * Set the skip state
      */
-    editEnabled: () => void,
+    editEnabled: () => void;
     /**
      * Set the skip state
      */
-    setEnabled: (value: boolean) => void,
-}
+    setEnabled: (value: boolean) => void;
+};
 
 const useSkipStore = create<SkipStoreType>((set) => ({
     enabled: false,
     editEnabled: () => {
-        set((state) => ({ enabled: !state.enabled }))
+        set((state) => ({ enabled: !state.enabled }));
     },
     setEnabled: (value: boolean) => {
-        set({ enabled: value })
+        set({ enabled: value });
     },
-}))
+}));
 export default useSkipStore;

@@ -1,23 +1,23 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 type AutoInfoStoreType = {
     /**
      * Whether auto forward is enabled
      */
-    enabled: boolean,
+    enabled: boolean;
     /**
      * Time in seconds to wait before auto forwarding
      */
-    time: number,
+    time: number;
     /**
      * Enable or disable auto forward
      */
-    editEnabled: () => void,
+    editEnabled: () => void;
     /**
      * Set the time to wait before auto forwarding
      */
-    setTime: (value: number) => void,
-}
+    setTime: (value: number) => void;
+};
 
 const useAutoInfoStore = create<AutoInfoStoreType>((set) => ({
     enabled: false,
@@ -25,9 +25,9 @@ const useAutoInfoStore = create<AutoInfoStoreType>((set) => ({
     editEnabled: () => set((state) => ({ enabled: !state.enabled })),
     setTime: (value: number) => {
         if (value) {
-            localStorage.setItem("auto_forward_second", value.toString())
-            set({ time: value })
+            localStorage.setItem("auto_forward_second", value.toString());
+            set({ time: value });
         }
     },
-}))
+}));
 export default useAutoInfoStore;

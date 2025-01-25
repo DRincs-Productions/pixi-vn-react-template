@@ -8,23 +8,16 @@ import { importAllInkLabels } from "./utils/ink-utility";
 
 export default function App() {
     const Home = lazy(async () => {
-        let promileAll = Promise.all([
-            initializeIndexedDB(),
-            defineAssets(),
-            useI18n(),
-            importAllInkLabels(),
-        ])
-        await promileAll
-        return await import('./Home')
-    })
+        let promileAll = Promise.all([initializeIndexedDB(), defineAssets(), useI18n(), importAllInkLabels()]);
+        await promileAll;
+        return await import("./Home");
+    });
 
     return (
         <ErrorBoundary fallback={<div>Something went wrong</div>}>
-            <Suspense
-                fallback={<LoadingScreen />}
-            >
+            <Suspense fallback={<LoadingScreen />}>
                 <Home />
             </Suspense>
         </ErrorBoundary>
-    )
+    );
 }

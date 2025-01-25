@@ -9,10 +9,9 @@ export function useMyNavigate(): NavigateFunction {
     return (to: To | number, options?: NavigateOptions) => {
         if (typeof to === "number") {
             navigate(to);
-        }
-        else {
+        } else {
             navigate(to, options);
         }
         window.history.pushState(null, window.location.href, window.location.href);
-    }
+    };
 }

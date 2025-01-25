@@ -1,6 +1,10 @@
 import { Typography, TypographyProps, useTheme } from "@mui/joy";
 
-export default function TypographyShadow({ sx, shadowColor = useTheme().palette.neutral[900], ...rest }: TypographyProps & { shadowColor?: string }) {
+export default function TypographyShadow({
+    sx,
+    shadowColor = useTheme().palette.neutral[900],
+    ...rest
+}: TypographyProps & { shadowColor?: string }) {
     return (
         <Typography
             sx={{
