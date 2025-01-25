@@ -10,22 +10,22 @@ export function initializeIndexedDB(): Promise<void> {
             let db = request.result;
             if (!db.objectStoreNames.contains(INDEXED_DB_SAVE_TABLE)) {
                 // create the object store
-                let objectStore = db.createObjectStore(INDEXED_DB_SAVE_TABLE, { keyPath: 'id', autoIncrement: true });
+                let objectStore = db.createObjectStore(INDEXED_DB_SAVE_TABLE, { keyPath: "id", autoIncrement: true });
                 objectStore.createIndex("id", "id", { unique: true });
                 objectStore.createIndex("date", "date", { unique: false });
                 objectStore.createIndex("name", "name", { unique: false });
                 objectStore.createIndex("gameVersion", "gameVersion", { unique: false });
             }
-        }
+        };
 
         request.onsuccess = function (_event) {
-            resolve()
+            resolve();
         };
         request.onerror = function (event) {
-            console.error("Error opening indexDB", event)
-            reject()
-        }
-    })
+            console.error("Error opening indexDB", event);
+            reject();
+        };
+    });
 }
 
 export async function putRowIntoIndexDB<T extends {}>(tableName: string, data: T): Promise<T> {
@@ -36,24 +36,24 @@ export async function putRowIntoIndexDB<T extends {}>(tableName: string, data: T
             let db = request.result;
             // run onupgradeneeded before onsuccess
             if (!db.objectStoreNames.contains(tableName)) {
-                console.error("Object store rescues does not exist")
-                reject()
+                console.error("Object store rescues does not exist");
+                reject();
             }
             let transaction = db.transaction([tableName], "readwrite");
             let objectStore = transaction.objectStore(tableName);
-            let setRequest = objectStore.put(data)
+            let setRequest = objectStore.put(data);
             setRequest.onsuccess = function (_event) {
-                resolve(data)
-            }
+                resolve(data);
+            };
             setRequest.onerror = function (event) {
-                console.error("Error adding save data to indexDB", event)
-                reject()
-            }
+                console.error("Error adding save data to indexDB", event);
+                reject();
+            };
         };
         request.onerror = function (event) {
-            console.error("Error adding save data to indexDB", event)
-        }
-    })
+            console.error("Error adding save data to indexDB", event);
+        };
+    });
 }
 
 export async function getRowFromIndexDB<T extends {}>(tableName: string, id: any): Promise<T | null> {
@@ -63,25 +63,25 @@ export async function getRowFromIndexDB<T extends {}>(tableName: string, id: any
             let db = request.result;
             // check if the object store exists
             if (!db.objectStoreNames.contains(tableName)) {
-                resolve(null)
-                return
+                resolve(null);
+                return;
             }
             let transaction = db.transaction([tableName], "readwrite");
             let objectStore = transaction.objectStore(tableName);
             let getRequest = objectStore.get(id);
             getRequest.onsuccess = function (_event) {
-                resolve(getRequest.result)
-            }
+                resolve(getRequest.result);
+            };
             getRequest.onerror = function (event) {
-                console.error("Error getting save data from indexDB", event)
-                reject()
-            }
+                console.error("Error getting save data from indexDB", event);
+                reject();
+            };
         };
         request.onerror = function (event) {
-            console.error("Error opening indexDB", event)
-            reject()
-        }
-    })
+            console.error("Error opening indexDB", event);
+            reject();
+        };
+    });
 }
 
 export async function getLastRowFromIndexDB<T extends {}>(tableName: string): Promise<T | null> {
@@ -91,8 +91,8 @@ export async function getLastRowFromIndexDB<T extends {}>(tableName: string): Pr
             let db = request.result;
             // check if the object store exists
             if (!db.objectStoreNames.contains(tableName)) {
-                resolve(null)
-                return
+                resolve(null);
+                return;
             }
             let transaction = db.transaction([tableName], "readwrite");
             let objectStore = transaction.objectStore(tableName);
@@ -100,21 +100,21 @@ export async function getLastRowFromIndexDB<T extends {}>(tableName: string): Pr
             getRequest.onsuccess = function (_event) {
                 let cursor = getRequest.result;
                 if (cursor) {
-                    resolve(cursor.value)
+                    resolve(cursor.value);
                 } else {
-                    resolve(null)
+                    resolve(null);
                 }
-            }
+            };
             getRequest.onerror = function (event) {
-                console.error("Error getting save data from indexDB", event)
-                reject()
-            }
+                console.error("Error getting save data from indexDB", event);
+                reject();
+            };
         };
         request.onerror = function (event) {
-            console.error("Error opening indexDB", event)
-            reject()
-        }
-    })
+            console.error("Error opening indexDB", event);
+            reject();
+        };
+    });
 }
 
 export async function deleteRowFromIndexDB(tableName: string, id: any): Promise<void> {
@@ -126,24 +126,24 @@ export async function deleteRowFromIndexDB(tableName: string, id: any): Promise<
             let objectStore = transaction.objectStore(tableName);
             let deleteRequest = objectStore.delete(id);
             deleteRequest.onsuccess = function (_event) {
-                resolve()
-            }
+                resolve();
+            };
             deleteRequest.onerror = function (event) {
-                console.error("Error deleting save data from indexDB", event)
-                reject()
-            }
+                console.error("Error deleting save data from indexDB", event);
+                reject();
+            };
         };
         request.onerror = function (event) {
-            console.error("Error deleting save data from indexDB", event)
-        }
-    })
+            console.error("Error deleting save data from indexDB", event);
+        };
+    });
 }
 
 export async function getListFromIndexDB<T extends {}>(
     tableName: string,
     options: {
-        order?: { field: keyof T, direction: IDBCursorDirection },
-        pagination?: { offset: number, limit: number }
+        order?: { field: keyof T; direction: IDBCursorDirection };
+        pagination?: { offset: number; limit: number };
     } = {}
 ): Promise<T[]> {
     return new Promise((resolve, reject) => {
@@ -152,15 +152,15 @@ export async function getListFromIndexDB<T extends {}>(
             let db = request.result;
             // check if the object store exists
             if (!db.objectStoreNames.contains(tableName)) {
-                resolve([])
-                return
+                resolve([]);
+                return;
             }
             let transaction = db.transaction([tableName], "readwrite");
             let objectStore = transaction.objectStore(tableName);
-            let getRequest = options.order ?
-                objectStore.index(options.order.field as string).openCursor(null, options.order.direction) :
-                objectStore.openCursor();
-            let results: T[] = []
+            let getRequest = options.order
+                ? objectStore.index(options.order.field as string).openCursor(null, options.order.direction)
+                : objectStore.openCursor();
+            let results: T[] = [];
             let counter = 0;
             let limit = options.pagination?.limit ?? Infinity;
             let offset = options.pagination?.offset ?? 0;
@@ -169,9 +169,9 @@ export async function getListFromIndexDB<T extends {}>(
                 let cursor = getRequest.result;
                 if (cursor) {
                     if (counter >= offset) {
-                        results.push(cursor.value)
+                        results.push(cursor.value);
                         if (results.length >= limit) {
-                            resolve(results)
+                            resolve(results);
                             advanced = true;
                         }
                     }
@@ -179,18 +179,18 @@ export async function getListFromIndexDB<T extends {}>(
                     cursor.continue();
                 } else {
                     if (!advanced) {
-                        resolve(results)
+                        resolve(results);
                     }
                 }
             };
             getRequest.onerror = function (event) {
-                console.error("Error getting save data from indexDB", event)
-                reject()
-            }
+                console.error("Error getting save data from indexDB", event);
+                reject();
+            };
         };
         request.onerror = function (event) {
-            console.error("Error opening indexDB", event)
-            reject()
-        }
-    })
+            console.error("Error opening indexDB", event);
+            reject();
+        };
+    });
 }

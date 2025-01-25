@@ -1,11 +1,11 @@
-import SignalWifiBadIcon from '@mui/icons-material/SignalWifiBad';
-import { Box } from '@mui/joy';
-import Modal from '@mui/joy/Modal';
+import SignalWifiBadIcon from "@mui/icons-material/SignalWifiBad";
+import { Box } from "@mui/joy";
+import Modal from "@mui/joy/Modal";
 import { AnimatePresence, motion } from "motion/react";
-import useNetworkStore from '../stores/useNetworkStore';
+import useNetworkStore from "../stores/useNetworkStore";
 
 export default function OfflineScreen() {
-    const open = useNetworkStore((state) => !state.isOnline)
+    const open = useNetworkStore((state) => !state.isOnline);
 
     return (
         <AnimatePresence>
@@ -23,7 +23,7 @@ export default function OfflineScreen() {
                         opacity: 0,
                         pointerEvents: "none",
                         backdropFilter: "blur(0px)",
-                    }
+                    },
                 }}
                 initial={"closed"}
                 animate={open ? "open" : "closed"}
@@ -42,7 +42,7 @@ export default function OfflineScreen() {
                     }}
                 >
                     <SignalWifiBadIcon
-                        color="error"
+                        color='error'
                         sx={{
                             fontSize: "1000%",
                         }}

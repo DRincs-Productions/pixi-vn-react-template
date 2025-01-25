@@ -1,8 +1,8 @@
-import { DialogActions, DialogContent, Divider, ModalClose } from '@mui/joy';
-import Modal from '@mui/joy/Modal';
-import { default as ModalDialogJoy, ModalDialogProps } from '@mui/joy/ModalDialog';
+import { DialogActions, DialogContent, Divider, ModalClose } from "@mui/joy";
+import Modal from "@mui/joy/Modal";
+import { default as ModalDialogJoy, ModalDialogProps } from "@mui/joy/ModalDialog";
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export interface ModalDialogCustomProps extends ModalDialogProps {
     open: boolean;
@@ -14,29 +14,20 @@ export interface ModalDialogCustomProps extends ModalDialogProps {
 }
 
 export default function ModalDialogCustom(props: ModalDialogCustomProps) {
-    const {
-        open
-        , setOpen
-        , children
-        , actions
-        , head
-        , sx
-        , canBeIgnored = true
-        , ...rest
-    } = props;
-    const [internalOpen, setInternalOpen] = useState(open)
+    const { open, setOpen, children, actions, head, sx, canBeIgnored = true, ...rest } = props;
+    const [internalOpen, setInternalOpen] = useState(open);
     useEffect(() => {
         if (open) {
-            setInternalOpen(open)
-            return
+            setInternalOpen(open);
+            return;
         }
         const timeout = setTimeout(() => {
-            setInternalOpen(open)
-        }, 400)
+            setInternalOpen(open);
+        }, 400);
         return () => {
-            clearTimeout(timeout)
-        }
-    }, [open])
+            clearTimeout(timeout);
+        };
+    }, [open]);
 
     return (
         <AnimatePresence>
@@ -55,7 +46,7 @@ export default function ModalDialogCustom(props: ModalDialogCustomProps) {
                         opacity: 0,
                         pointerEvents: "none",
                         backdropFilter: "blur(0px)",
-                    }
+                    },
                 }}
                 initial={"closed"}
                 animate={open ? "open" : "closed"}
@@ -77,7 +68,7 @@ export default function ModalDialogCustom(props: ModalDialogCustomProps) {
                         closed: {
                             opacity: 0,
                             pointerEvents: "none",
-                        }
+                        },
                     }}
                     initial={"closed"}
                     animate={internalOpen ? "open" : "closed"}
@@ -90,12 +81,8 @@ export default function ModalDialogCustom(props: ModalDialogCustomProps) {
                     {canBeIgnored && <ModalClose />}
                     {head}
                     {head && <Divider />}
-                    <DialogContent>
-                        {children}
-                    </DialogContent>
-                    {actions && <DialogActions>
-                        {actions}
-                    </DialogActions>}
+                    <DialogContent>{children}</DialogContent>
+                    {actions && <DialogActions>{actions}</DialogActions>}
                 </ModalDialogJoy>
             </Modal>
         </AnimatePresence>

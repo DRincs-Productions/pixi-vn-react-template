@@ -1,27 +1,22 @@
 import { Slider, SliderProps, Stack, useTheme } from "@mui/joy";
 import { AnimationProps, motion } from "motion/react";
 
-interface SliderResizerProps extends SliderProps, AnimationProps { }
+interface SliderResizerProps extends SliderProps, AnimationProps {}
 
 export default function SliderResizer(props: SliderResizerProps) {
-    const {
-        orientation,
-        sx,
-        key,
-        ...rest
-    } = props;
+    const { orientation, sx, key, ...rest } = props;
 
     return (
         <Stack
             key={"stack-" + key}
             direction={orientation === "vertical" ? "row" : "column"}
-            justifyContent="center"
-            alignItems="center"
+            justifyContent='center'
+            alignItems='center'
             spacing={0}
             sx={{
                 pointerEvents: "none",
-                width: '100%',
-                height: '100%',
+                width: "100%",
+                height: "100%",
                 position: "absolute",
                 left: 0,
                 right: 0,
@@ -30,7 +25,7 @@ export default function SliderResizer(props: SliderResizerProps) {
             <Slider
                 key={key}
                 orientation={orientation}
-                valueLabelDisplay="auto"
+                valueLabelDisplay='auto'
                 valueLabelFormat={(index) => index + "%"}
                 sx={{
                     position: "static",
