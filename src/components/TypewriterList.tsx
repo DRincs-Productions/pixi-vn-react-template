@@ -57,5 +57,5 @@ export default function TypewriterList({
         );
     }, [texts]);
 
-    return <motion.p>{textsToRender.map((t) => t)}</motion.p>;
+    return <motion.p style={{ margin: 0, padding: 0 }}>{textsToRender.map((t) => t)}</motion.p>;
 }
