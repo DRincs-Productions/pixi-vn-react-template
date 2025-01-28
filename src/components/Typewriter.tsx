@@ -1,6 +1,6 @@
 import { useTheme } from "@mui/joy";
 import { motion, Variants } from "motion/react";
-import { Key, useMemo, useRef } from "react";
+import { Key, ReactElement, useMemo, useRef } from "react";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
@@ -14,7 +14,7 @@ function TypewriterInternal({
 }: {
     children: any;
     letterVariants: Variants;
-    dadElement: (children: JSX.Element | JSX.Element[]) => JSX.Element | JSX.Element[];
+    dadElement: (children: ReactElement | ReactElement[]) => ReactElement | ReactElement[];
     isRoot?: boolean;
     scrollOnLastItem?: (scrollTop: number) => void;
     key?: Key | null | undefined;
