@@ -174,12 +174,12 @@ steph: [sly]!
 # show imagecontainer steph [fm02-body fm02-eyes-upset fm02-mouth-upset01]
 <> SPOILERS!!!!
 
-// TODO animate steph
 # show imagecontainer james [m01-body m01-eyes-grin m01-mouth-grin00]
 # show imagecontainer sly [fm01-body fm01-eyes-smile fm01-mouth-smile00]
 # show imagecontainer steph [fm02-body fm02-eyes-upset fm02-mouth-nervous00]
+# remove image steph with moveout direction left speed 300
 [steph_fullname] goes through the opposite door,
-# show imagecontainer steph [fm02-body fm02-eyes-joy fm02-mouth-smile01]
+# call animation_01
 <> and returns with a HUGE tinfoil-covered platter.
 
 # show imagecontainer james [m01-body m01-eyes-concern m01-mouth-smile01]

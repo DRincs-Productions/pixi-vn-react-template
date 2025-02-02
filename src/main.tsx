@@ -2,6 +2,7 @@ import { canvas, clearAllGameDatas, narration } from "@drincs/pixi-vn";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
+import "./labels";
 import "./values/characters";
 
 // Canvas setup with PIXI
