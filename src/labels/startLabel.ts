@@ -3,12 +3,14 @@ import {
     ChoiceMenuOption,
     ChoiceMenuOptionClose,
     moveIn,
+    moveOut,
     narration,
     newLabel,
     showImage,
     showImageContainer,
 } from "@drincs/pixi-vn";
 import { james, mc, sly, steph } from "../values/characters";
+import { animation01 } from "./animations-labels";
 
 const steph_fullname = "Stephanie";
 
@@ -329,16 +331,16 @@ const startLabel = newLabel(
             narration.dialogue = ` SPOILERS!!!!`;
         },
         async () => {
-            // TODO animate steph
             await showImageContainer("james", ["m01-body", "m01-eyes-grin", "m01-mouth-grin00"]);
             await showImageContainer("sly", ["fm01-body", "fm01-eyes-smile", "fm01-mouth-smile00"]);
             await showImageContainer("steph", ["fm02-body", "fm02-eyes-upset", "fm02-mouth-nervous00"]);
+            moveOut("steph", { direction: "left", speed: 300 });
             narration.dialogue = `${steph_fullname} goes through the opposite door,`;
         },
-        async () => {
-            await showImageContainer("steph", ["fm02-body", "fm02-eyes-joy", "fm02-mouth-smile01"]);
+        async (props) => {
             narration.dialogGlue = true;
             narration.dialogue = ` and returns with a HUGE tinfoil-covered platter.`;
+            await narration.callLabel(animation01, props);
         },
         async () => {
             await showImageContainer("james", ["m01-body", "m01-eyes-concern", "m01-mouth-smile01"]);

@@ -1,6 +1,6 @@
 import { VariantType } from "notistack";
 
-declare module "@drincs/pixi-vn/dist/override" {
+declare module "@drincs/pixi-vn" {
     interface StepLabelResult {
         [key: string]: any;
     }
