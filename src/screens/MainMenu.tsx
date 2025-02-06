@@ -1,38 +1,38 @@
-import { addImage, canvas, narration } from "@drincs/pixi-vn";
+import { canvas, ImageSprite, narration } from "@drincs/pixi-vn";
 import Stack from "@mui/joy/Stack";
 import { useQueryClient } from "@tanstack/react-query";
 import { motion } from "motion/react";
-import { useSnackbar } from "notistack";
 import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import MenuButton from "../components/MenuButton";
-import { NARRATION_ROUTE } from "../constans";
+import { CANVAS_UI_LAYER_NAME, NARRATION_ROUTE } from "../constans";
+import useGameProps from "../hooks/useGameProps";
 import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
 import useInterfaceStore from "../stores/useInterfaceStore";
 import useSettingsScreenStore from "../stores/useSettingsScreenStore";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "../use_query/useQueryInterface";
 import useQueryLastSave from "../use_query/useQueryLastSave";
-import { useMyNavigate } from "../utils/navigate-utility";
 import { loadSave } from "../utils/save-utility";
 
 export default function MainMenu() {
-    const navigate = useMyNavigate();
     const setOpenSettings = useSettingsScreenStore((state) => state.setOpen);
     const editHideInterface = useInterfaceStore((state) => state.setHidden);
     const editSaveScreen = useGameSaveScreenStore((state) => state.editOpen);
-    const { enqueueSnackbar } = useSnackbar();
-    const { t } = useTranslation(["ui"]);
-    const { t: tNarration } = useTranslation(["narration"]);
     const queryClient = useQueryClient();
     const { data: lastSave = null, isLoading } = useQueryLastSave();
+    const gameProps = useGameProps();
+    const { uiTransition: t, navigate, notify } = gameProps;
 
     useEffect(() => {
         editHideInterface(false);
-        let bg = addImage("background_main_menu");
+        let bg = new ImageSprite({}, "background_main_menu");
         bg.load();
+        let layer = canvas.getLayer(CANVAS_UI_LAYER_NAME);
+        if (layer) {
+            layer.addChild(bg);
+        }
 
         return () => {
-            canvas.remove("background_main_menu");
+            canvas.getLayer(CANVAS_UI_LAYER_NAME)?.removeChildren();
         };
     });
 
@@ -60,7 +60,7 @@ export default function MainMenu() {
                     loadSave(lastSave, navigate)
                         .then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))
                         .catch((e) => {
-                            enqueueSnackbar(t("fail_load"), { variant: "error" });
+                            notify(t("fail_load"), { variant: "error" });
                             console.error(e);
                         });
                 }}
@@ -75,11 +75,7 @@ export default function MainMenu() {
                     canvas.removeAll();
                     navigate(NARRATION_ROUTE);
                     narration
-                        .callLabel("start", {
-                            navigate: navigate,
-                            t: tNarration,
-                            notify: (message, variant) => enqueueSnackbar(message, { variant }),
-                        })
+                        .callLabel("start", gameProps)
                         .then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }));
                 }}
                 transitionDelay={0.2}

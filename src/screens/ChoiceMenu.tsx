@@ -3,24 +3,20 @@ import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import { Box, Grid } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
 import { motion, Variants } from "motion/react";
-import { useSnackbar } from "notistack";
 import { useCallback, useState } from "react";
-import { useTranslation } from "react-i18next";
 import ChoiceButton from "../components/ChoiceButton";
+import useGameProps from "../hooks/useGameProps";
 import useDialogueCardStore from "../stores/useDialogueCardStore";
 import useInterfaceStore from "../stores/useInterfaceStore";
 import { INTERFACE_DATA_USE_QUEY_KEY, useQueryChoiceMenuOptions } from "../use_query/useQueryInterface";
-import { useMyNavigate } from "../utils/navigate-utility";
 
 export default function ChoiceMenu({ fullscreen = true }: { fullscreen?: boolean }) {
     const [loading, setLoading] = useState(false);
     const height = useDialogueCardStore((state) => 100 - state.height);
-    const { t: tNarration } = useTranslation(["narration"]);
-    const navigate = useMyNavigate();
     const { data: menu = [] } = useQueryChoiceMenuOptions();
     const hidden = useInterfaceStore((state) => state.hidden || menu.length == 0);
     const queryClient = useQueryClient();
-    const { enqueueSnackbar } = useSnackbar();
+    const gameProps = useGameProps();
     const gridVariants: Variants = {
         open: {
             clipPath: "inset(0% 0% 0% 0% round 10px)",
@@ -53,12 +49,7 @@ export default function ChoiceMenu({ fullscreen = true }: { fullscreen?: boolean
         (item: ChoiceMenuOptionClose | ChoiceMenuOption<{}>) => {
             setLoading(true);
             narration
-                .selectChoice(item, {
-                    navigate: navigate,
-                    t: tNarration,
-                    notify: (message, variant) => enqueueSnackbar(message, { variant }),
-                    ...item.props,
-                })
+                .selectChoice(item, gameProps)
                 .then(() => {
                     queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
                     setLoading(false);
@@ -68,7 +59,7 @@ export default function ChoiceMenu({ fullscreen = true }: { fullscreen?: boolean
                     console.error(e);
                 });
         },
-        [enqueueSnackbar, navigate, queryClient, tNarration]
+        [gameProps, queryClient]
     );
 
     return (
