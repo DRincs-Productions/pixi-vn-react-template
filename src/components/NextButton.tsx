@@ -2,15 +2,13 @@ import { narration } from "@drincs/pixi-vn";
 import { Button } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
 import { motion } from "motion/react";
-import { useSnackbar } from "notistack";
 import { useCallback } from "react";
-import { useTranslation } from "react-i18next";
+import useGameProps from "../hooks/useGameProps";
 import useEventListener from "../hooks/useKeyDetector";
 import useInterfaceStore from "../stores/useInterfaceStore";
 import useSkipStore from "../stores/useSkipStore";
 import useStepStore from "../stores/useStepStore";
 import { INTERFACE_DATA_USE_QUEY_KEY, useQueryCanGoNext } from "../use_query/useQueryInterface";
-import { useMyNavigate } from "../utils/navigate-utility";
 
 export default function NextButton() {
     const skipEnabled = useSkipStore((state) => state.enabled);
@@ -18,12 +16,10 @@ export default function NextButton() {
     const nextStepLoading = useStepStore((state) => state.loading);
     const { data: canGoNext = false } = useQueryCanGoNext();
     const hideNextButton = useInterfaceStore((state) => state.hidden || !canGoNext);
-    const { enqueueSnackbar } = useSnackbar();
-    const navigate = useMyNavigate();
-    const { t } = useTranslation(["ui"]);
-    const { t: tNarration } = useTranslation(["narration"]);
     const setNextStepLoading = useStepStore((state) => state.setLoading);
     const queryClient = useQueryClient();
+    const gameProps = useGameProps();
+    const { uiTransition: t } = gameProps;
 
     const nextOnClick = useCallback(async () => {
         setNextStepLoading(true);
@@ -33,11 +29,7 @@ export default function NextButton() {
                 return;
             }
             narration
-                .goNext({
-                    t: tNarration,
-                    navigate,
-                    notify: (message, variant) => enqueueSnackbar(message, { variant }),
-                })
+                .goNext(gameProps)
                 .then(() => {
                     queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
                     setNextStepLoading(false);
@@ -52,7 +44,7 @@ export default function NextButton() {
             console.error(e);
             return;
         }
-    }, [tNarration, queryClient]);
+    }, [gameProps, queryClient]);
 
     useEventListener({
         type: "keypress",
