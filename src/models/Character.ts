@@ -10,8 +10,8 @@ export default class Character extends CharacterStoredClass implements Character
         this.defaultName = props.name;
         this.defaultSurname = props.surname;
         this.defaultAge = props.age;
-        this._icon = props.icon;
-        this._color = props.color;
+        this.icon = props.icon;
+        this.color = props.color;
     }
     private defaultName?: string;
     get name(): string {
@@ -34,14 +34,8 @@ export default class Character extends CharacterStoredClass implements Character
     set age(value: number | undefined) {
         this.setStorageProperty<number>("age", value);
     }
-    private _icon?: string;
-    get icon(): string | undefined {
-        return this._icon;
-    }
-    private _color?: string | undefined;
-    get color(): string | undefined {
-        return this._color;
-    }
+    readonly icon?: string;
+    readonly color?: string | undefined;
 }
 
 interface CharacterProps {
