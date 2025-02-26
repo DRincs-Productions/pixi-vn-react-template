@@ -12,7 +12,9 @@ if (!body) {
 }
 
 canvas
-    .initialize(body, 1920, 1080, {
+    .initialize(body, {
+        height: 1080,
+        width: 1920,
         backgroundColor: "#303030",
     })
     .then(() => {
