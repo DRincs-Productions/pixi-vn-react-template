@@ -29,7 +29,7 @@ const startLabel = newLabel(
             );
             narration.dialogue = {
                 character: james,
-                text: `<div>You're my roommate's replacement, huh?</div><div>You're my roommate's replacement, huh?</div><div>You're my roommate's replacement, huh?</div><div>You're my roommate's replacement, huh?</div>`,
+                text: `<div>You're my roommate's replacement, huh?</div><div></div><div><div>You're my roommate's replacement, huh?</div></div><div>You're my roommate's replacement, huh?</div><div>You're my roommate's replacement, huh?</div>`,
             };
         },
         async () => {

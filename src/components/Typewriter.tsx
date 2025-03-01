@@ -15,7 +15,7 @@ function TypewriterInternal({
     children: any;
     className?: string;
     letterVariants: Variants;
-    dadElement: (children: ReactElement | ReactElement[]) => ReactElement | ReactElement[];
+    dadElement: (children: ReactElement | ReactElement[], isString?: boolean) => ReactElement | ReactElement[];
     isRoot?: boolean;
     scrollOnLastItem?: (scrollTop: number) => void;
     key?: Key | null | undefined;
@@ -43,7 +43,7 @@ function TypewriterInternal({
                 </motion.span>
             );
         });
-        return dadElement(spanList);
+        return dadElement(spanList, true);
     } else if (Array.isArray(children)) {
         const list = children.map((child) => {
             if (typeof child === "string") {
@@ -75,7 +75,7 @@ function TypewriterInternal({
         });
         return dadElement(list);
     }
-    return dadElement(children);
+    return dadElement(children, true);
 }
 
 export default function Typewriter({
@@ -171,21 +171,23 @@ function AAA({
                             // className={className}
                             letterVariants={letterVariants}
                             scrollOnLastItem={scroll}
-                            dadElement={(children) => {
+                            dadElement={(children, isString) => {
                                 return (
                                     <Test
                                         key={`${tag}-${id}`}
                                         style={style}
                                         // className={className}
                                         variants={
-                                            letterVariants && {
-                                                hidden: letterVariants.hidden,
-                                                visible: {
-                                                    ...letterVariants,
-                                                    opacity: 1,
-                                                    transition: { staggerChildren: 20 / 1000 },
-                                                },
-                                            }
+                                            isString
+                                                ? undefined
+                                                : letterVariants && {
+                                                      hidden: letterVariants.hidden,
+                                                      visible: {
+                                                          ...letterVariants,
+                                                          opacity: 1,
+                                                          transition: { staggerChildren: 20 / 1000 },
+                                                      },
+                                                  }
                                         }
                                     >
                                         {children}
