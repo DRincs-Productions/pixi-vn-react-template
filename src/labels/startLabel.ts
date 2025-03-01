@@ -27,13 +27,18 @@ const startLabel = newLabel(
                 },
                 { direction: "right", speed: 300 }
             );
-            narration.dialogue = { character: james, text: `You're my roommate's replacement, huh?` };
+            narration.dialogue = {
+                character: james,
+                text: `<div>You're my roommate's replacement, huh?</div><div>You're my roommate's replacement, huh?</div><div>You're my roommate's replacement, huh?</div><div>You're my roommate's replacement, huh?</div>`,
+            };
         },
         async () => {
             await showImageContainer("james", ["m01-body", "m01-eyes-grin", "m01-mouth-smile01"]);
             narration.dialogue = {
                 character: james,
-                text: `Don't worry, you don't have much to live up to. Just don't use heroin like the last guy, and you'll be fine!`,
+                text: `Don't worry, you don't have much to live up to. Just don't use heroin like the last guy, and you'll be fine!<div class="motion-preset-stretch">stretch
+</div>
+`,
             };
         },
         async () => {
@@ -181,7 +186,10 @@ const startLabel = newLabel(
         async () => {
             await showImageContainer("sly", ["fm01-body", "fm01-eyes-upset", "fm01-mouth-serious00"]);
             await showImageContainer("steph", ["fm02-body", "fm02-eyes-wow", "fm02-mouth-nervous00"]);
-            narration.dialogue = { character: mc, text: `Thanks, good to meet you, ${steph_fullname}.` };
+            narration.dialogue = {
+                character: mc,
+                text: `Thanks, good to meet you, ${steph_fullname}.<span class="motion-preset-stretch">stretch</span>`,
+            };
         },
         async () => {
             await showImageContainer("james", ["m01-body", "m01-eyes-wow", "m01-mouth-smile00"]);

@@ -1,18 +1,19 @@
-import { useTheme } from "@mui/joy";
-import { motion, Variants } from "motion/react";
-import { Key, ReactElement, useMemo, useRef } from "react";
-import Markdown from "react-markdown";
+import { ForwardRefComponent, HTMLMotionProps, motion, Variants } from "motion/react";
+import { ClassAttributes, ElementType, HTMLAttributes, Key, ReactElement, useMemo, useRef } from "react";
+import Markdown, { Components, ExtraProps } from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 
 function TypewriterInternal({
     children,
+    className,
     letterVariants,
     dadElement,
     scrollOnLastItem,
     key,
 }: {
     children: any;
+    className?: string;
     letterVariants: Variants;
     dadElement: (children: ReactElement | ReactElement[]) => ReactElement | ReactElement[];
     isRoot?: boolean;
@@ -25,6 +26,7 @@ function TypewriterInternal({
             return (
                 <motion.span
                     ref={ref}
+                    className={className}
                     key={`span-${key}-${char}-${i}`}
                     variants={letterVariants}
                     onAnimationComplete={
@@ -50,6 +52,7 @@ function TypewriterInternal({
                     return (
                         <motion.span
                             ref={ref}
+                            className={className}
                             key={`span-${key}-${char}-${i}`}
                             variants={letterVariants}
                             onAnimationComplete={
@@ -101,6 +104,14 @@ export default function Typewriter({
         }),
         [delay]
     );
+    const cccc = useMemo(
+        () =>
+            AAA({
+                letterVariants,
+                scroll,
+            }),
+        [letterVariants, scroll]
+    );
 
     return (
         <motion.span
@@ -111,11 +122,32 @@ export default function Typewriter({
             onAnimationStart={onAnimationStart}
             onAnimationComplete={onAnimationComplete}
         >
-            <Markdown
-                remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeRaw]}
-                components={{
-                    p: ({ children, id }) => {
+            <Markdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={cccc}>
+                {text}
+            </Markdown>
+        </motion.span>
+    );
+}
+
+import htmlTags from "html-tags";
+
+function AAA({
+    letterVariants,
+    scroll,
+}: {
+    letterVariants: Variants;
+    scroll?: (offsetTop: number) => void;
+}): Components {
+    let res: Components = {};
+    htmlTags.forEach((tag) => {
+        try {
+            let Test: ForwardRefComponent<HTMLHeadingElement, HTMLMotionProps<any>> = (motion as any)[tag];
+            if (Test) {
+                let fn: ElementType<
+                    ClassAttributes<HTMLHeadingElement> & HTMLAttributes<HTMLHeadingElement> & ExtraProps
+                > = (props) => {
+                    const { children, style, id } = props;
+                    if (tag == "p") {
                         return (
                             <TypewriterInternal
                                 key={id}
@@ -131,276 +163,41 @@ export default function Typewriter({
                                 }}
                             />
                         );
-                    },
-                    a: ({ children, href, style, id }) => {
-                        return (
-                            <TypewriterInternal
-                                key={id}
-                                children={children}
-                                letterVariants={letterVariants}
-                                scrollOnLastItem={scroll}
-                                dadElement={(children) => (
-                                    <motion.a
-                                        key={`a-${id}`}
-                                        href={href}
-                                        target='_blank'
-                                        style={{
-                                            ...style,
-                                            color: useTheme().palette.primary[500],
-                                        }}
-                                        variants={letterVariants}
+                    }
+                    return (
+                        <TypewriterInternal
+                            key={id}
+                            children={children}
+                            // className={className}
+                            letterVariants={letterVariants}
+                            scrollOnLastItem={scroll}
+                            dadElement={(children) => {
+                                return (
+                                    <Test
+                                        key={`${tag}-${id}`}
+                                        style={style}
+                                        // className={className}
+                                        variants={
+                                            letterVariants && {
+                                                hidden: letterVariants.hidden,
+                                                visible: {
+                                                    ...letterVariants,
+                                                    opacity: 1,
+                                                    transition: { staggerChildren: 20 / 1000 },
+                                                },
+                                            }
+                                        }
                                     >
                                         {children}
-                                    </motion.a>
-                                )}
-                            />
-                        );
-                    },
-                    code: ({ children, style, id }) => {
-                        return (
-                            <TypewriterInternal
-                                key={id}
-                                children={children}
-                                letterVariants={letterVariants}
-                                scrollOnLastItem={scroll}
-                                dadElement={(children) => (
-                                    <motion.code
-                                        key={`code-${id}`}
-                                        style={{
-                                            ...style,
-                                            backgroundColor: useTheme().palette.neutral[600],
-                                            color: useTheme().palette.neutral[200],
-                                        }}
-                                        variants={letterVariants}
-                                    >
-                                        {children}
-                                    </motion.code>
-                                )}
-                            />
-                        );
-                    },
-                    ul: ({ children, style, id }) => {
-                        return (
-                            <TypewriterInternal
-                                key={id}
-                                children={children}
-                                letterVariants={letterVariants}
-                                scrollOnLastItem={scroll}
-                                dadElement={(children) => (
-                                    <motion.ul
-                                        key={`ul-${id}`}
-                                        style={{
-                                            ...style,
-                                            margin: 0,
-                                        }}
-                                        variants={letterVariants}
-                                    >
-                                        {children}
-                                    </motion.ul>
-                                )}
-                            />
-                        );
-                    },
-                    li: ({ children, style, id }) => {
-                        return (
-                            <TypewriterInternal
-                                key={id}
-                                children={children}
-                                letterVariants={letterVariants}
-                                scrollOnLastItem={scroll}
-                                dadElement={(children) => (
-                                    <motion.li key={`li-${id}`} style={style} variants={letterVariants}>
-                                        {children}
-                                    </motion.li>
-                                )}
-                            />
-                        );
-                    },
-                    strong: ({ children, style, id }) => {
-                        return (
-                            <TypewriterInternal
-                                key={id}
-                                children={children}
-                                letterVariants={letterVariants}
-                                scrollOnLastItem={scroll}
-                                dadElement={(children) => (
-                                    <motion.strong key={`strong-${id}`} style={style} variants={letterVariants}>
-                                        {children}
-                                    </motion.strong>
-                                )}
-                            />
-                        );
-                    },
-                    em: ({ children, style, id }) => {
-                        return (
-                            <TypewriterInternal
-                                key={id}
-                                children={children}
-                                letterVariants={letterVariants}
-                                scrollOnLastItem={scroll}
-                                dadElement={(children) => (
-                                    <motion.em key={`em-${id}`} style={style} variants={letterVariants}>
-                                        {children}
-                                    </motion.em>
-                                )}
-                            />
-                        );
-                    },
-                    hr: ({ style, id }) => {
-                        return <motion.hr key={id} style={style} variants={letterVariants} />;
-                    },
-                    th: ({ children, style, id }) => {
-                        return (
-                            <TypewriterInternal
-                                key={id}
-                                children={children}
-                                letterVariants={letterVariants}
-                                scrollOnLastItem={scroll}
-                                dadElement={(children) => (
-                                    <motion.th key={`th-${id}`} style={style} variants={letterVariants}>
-                                        {children}
-                                    </motion.th>
-                                )}
-                            />
-                        );
-                    },
-                    del: ({ children, style, id }) => {
-                        return (
-                            <TypewriterInternal
-                                key={id}
-                                children={children}
-                                letterVariants={letterVariants}
-                                scrollOnLastItem={scroll}
-                                dadElement={(children) => (
-                                    <motion.del key={`del-${id}`} style={style} variants={letterVariants}>
-                                        {children}
-                                    </motion.del>
-                                )}
-                            />
-                        );
-                    },
-                    table: ({ children, style, id }) => {
-                        return (
-                            <TypewriterInternal
-                                key={id}
-                                children={children}
-                                letterVariants={letterVariants}
-                                scrollOnLastItem={scroll}
-                                dadElement={(children) => (
-                                    <motion.table key={`table-${id}`} style={style} variants={letterVariants}>
-                                        {children}
-                                    </motion.table>
-                                )}
-                            />
-                        );
-                    },
-                    span: ({ children, style, id }) => {
-                        return (
-                            <TypewriterInternal
-                                key={id}
-                                children={children}
-                                letterVariants={letterVariants}
-                                scrollOnLastItem={scroll}
-                                dadElement={(children) => (
-                                    <motion.span key={`span-${id}`} style={style} variants={letterVariants}>
-                                        {children}
-                                    </motion.span>
-                                )}
-                            />
-                        );
-                    },
-                    h1: ({ children, style, id }) => {
-                        return (
-                            <TypewriterInternal
-                                key={id}
-                                children={children}
-                                letterVariants={letterVariants}
-                                scrollOnLastItem={scroll}
-                                dadElement={(children) => (
-                                    <motion.h1
-                                        key={`h1-${id}`}
-                                        style={{
-                                            ...style,
-                                            margin: 0,
-                                        }}
-                                        variants={letterVariants}
-                                    >
-                                        {children}
-                                    </motion.h1>
-                                )}
-                            />
-                        );
-                    },
-                    h2: ({ children, style, id }) => {
-                        return (
-                            <TypewriterInternal
-                                key={id}
-                                children={children}
-                                letterVariants={letterVariants}
-                                scrollOnLastItem={scroll}
-                                dadElement={(children) => (
-                                    <motion.h2
-                                        key={`h2-${id}`}
-                                        style={{
-                                            ...style,
-                                            margin: 0,
-                                        }}
-                                        variants={letterVariants}
-                                    >
-                                        {children}
-                                    </motion.h2>
-                                )}
-                            />
-                        );
-                    },
-                    h3: ({ children, style, id }) => {
-                        return (
-                            <TypewriterInternal
-                                key={id}
-                                children={children}
-                                letterVariants={letterVariants}
-                                scrollOnLastItem={scroll}
-                                dadElement={(children) => (
-                                    <motion.h3
-                                        key={`h3-${id}`}
-                                        style={{
-                                            ...style,
-                                            margin: 0,
-                                        }}
-                                        variants={letterVariants}
-                                    >
-                                        {children}
-                                    </motion.h3>
-                                )}
-                            />
-                        );
-                    },
-                    h4: ({ children, style, id }) => {
-                        return (
-                            <TypewriterInternal
-                                key={id}
-                                children={children}
-                                letterVariants={letterVariants}
-                                scrollOnLastItem={scroll}
-                                dadElement={(children) => (
-                                    <motion.h4
-                                        key={`h4-${id}`}
-                                        style={{
-                                            ...style,
-                                            margin: 0,
-                                        }}
-                                        variants={letterVariants}
-                                    >
-                                        {children}
-                                    </motion.h4>
-                                )}
-                            />
-                        );
-                    },
-                }}
-            >
-                {text}
-            </Markdown>
-        </motion.span>
-    );
+                                    </Test>
+                                );
+                            }}
+                        />
+                    );
+                };
+                (res as any)[tag] = fn;
+            }
+        } catch (_) {}
+    });
+    return res;
 }
