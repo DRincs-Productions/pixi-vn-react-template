@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { useEffect, useMemo, useState } from "react";
+import { RefObject, useEffect, useMemo, useState } from "react";
 import Typewriter from "./Typewriter";
 
 export default function TypewriterList({
@@ -7,13 +7,13 @@ export default function TypewriterList({
     delay = 0,
     onAnimationComplete,
     onAnimationStart,
-    scroll,
+    paragraphRef,
 }: {
     text: string;
     delay?: number;
     onAnimationComplete?: () => void;
     onAnimationStart?: () => void;
-    scroll?: (offsetTop: number) => void;
+    paragraphRef?: RefObject<HTMLDivElement | null>;
 }) {
     const [texts, setTexts] = useState<string[]>([]);
     useEffect(() => {
@@ -49,7 +49,7 @@ export default function TypewriterList({
                         delay={delay}
                         onAnimationStart={texts.length - 1 == index ? onAnimationStart : undefined}
                         onAnimationComplete={texts.length - 1 == index ? onAnimationComplete : undefined}
-                        scroll={scroll}
+                        paragraphRef={paragraphRef}
                     />
                     {t[t.length - 1] == " " && <motion.span> </motion.span>}
                 </motion.span>

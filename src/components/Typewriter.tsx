@@ -1,5 +1,5 @@
 import { ForwardRefComponent, HTMLMotionProps, motion, Variants } from "motion/react";
-import { ClassAttributes, ElementType, HTMLAttributes, Key, ReactElement, useMemo, useRef } from "react";
+import { ClassAttributes, ElementType, HTMLAttributes, Key, ReactElement, RefObject, useMemo, useRef } from "react";
 import Markdown, { Components, ExtraProps } from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
@@ -84,14 +84,14 @@ export default function Typewriter({
     delay = 0,
     onAnimationComplete,
     onAnimationStart,
-    scroll,
+    paragraphRef,
 }: {
     text: string;
     index?: Key | null | undefined;
     delay?: number;
     onAnimationComplete?: () => void;
     onAnimationStart?: () => void;
-    scroll?: (offsetTop: number) => void;
+    paragraphRef?: RefObject<HTMLDivElement | null>;
 }) {
     const sentenceVariants: Variants = {
         hidden: {},
@@ -108,12 +108,12 @@ export default function Typewriter({
         () =>
             AAA({
                 letterVariants,
-                scroll,
+                paragraphRef,
             }),
-        [letterVariants, scroll]
+        [letterVariants, paragraphRef]
     );
 
-    return (
+    const typewriter = (
         <motion.span
             key={index ?? text}
             variants={sentenceVariants}
@@ -127,17 +127,27 @@ export default function Typewriter({
             </Markdown>
         </motion.span>
     );
+    return typewriter;
 }
 
 import htmlTags from "html-tags";
 
 function AAA({
     letterVariants,
-    scroll,
+    paragraphRef,
 }: {
     letterVariants: Variants;
-    scroll?: (offsetTop: number) => void;
+    paragraphRef?: RefObject<HTMLDivElement | null>;
 }): Components {
+    const scroll = (offsetTop: number) => {
+        if (paragraphRef && paragraphRef.current) {
+            let scrollTop = offsetTop - paragraphRef.current.clientHeight / 2;
+            paragraphRef.current.scrollTo({
+                top: scrollTop,
+                behavior: "auto",
+            });
+        }
+    };
     let res: Components = {};
     htmlTags.forEach((tag) => {
         try {

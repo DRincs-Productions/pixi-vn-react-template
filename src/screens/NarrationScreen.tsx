@@ -205,19 +205,7 @@ export default function NarrationScreen() {
                                     delay={typewriterDelay}
                                     onAnimationStart={startTypewriter}
                                     onAnimationComplete={endTypewriter}
-                                    scroll={
-                                        typewriterDelay
-                                            ? (offsetTop: number) => {
-                                                  if (paragraphRef.current) {
-                                                      let scrollTop = offsetTop - paragraphRef.current.clientHeight / 2;
-                                                      paragraphRef.current.scrollTo({
-                                                          top: scrollTop,
-                                                          behavior: "auto",
-                                                      });
-                                                  }
-                                              }
-                                            : undefined
-                                    }
+                                    paragraphRef={paragraphRef}
                                 />
                             </Sheet>
                         </CardContent>
