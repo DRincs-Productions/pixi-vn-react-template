@@ -156,7 +156,7 @@ function AAA({
                 let fn: ElementType<
                     ClassAttributes<HTMLHeadingElement> & HTMLAttributes<HTMLHeadingElement> & ExtraProps
                 > = (props) => {
-                    const { children, style, id } = props;
+                    const { children, id, className } = props;
                     if (tag == "p") {
                         return (
                             <TypewriterInternal
@@ -178,17 +178,15 @@ function AAA({
                         <TypewriterInternal
                             key={id}
                             children={children}
-                            // className={className}
                             letterVariants={letterVariants}
                             scrollOnLastItem={scroll}
                             dadElement={(children, isString) => {
                                 return (
                                     <Test
+                                        {...props}
                                         key={`${tag}-${id}`}
-                                        style={style}
-                                        // className={className}
                                         variants={
-                                            isString
+                                            isString || className
                                                 ? undefined
                                                 : letterVariants && {
                                                       hidden: letterVariants.hidden,
