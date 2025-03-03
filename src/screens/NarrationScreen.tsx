@@ -203,9 +203,9 @@ export default function NarrationScreen() {
                                     marginBottom: 2,
                                 }}
                             >
-                                <motion.p style={{ margin: 0, padding: 0 }}>
+                                <p style={{ margin: 0, padding: 0 }}>
                                     {oldText ? (
-                                        <motion.span>
+                                        <span>
                                             <Markdown
                                                 remarkPlugins={[remarkGfm]}
                                                 rehypePlugins={[rehypeRaw]}
@@ -215,11 +215,11 @@ export default function NarrationScreen() {
                                             >
                                                 {oldText}
                                             </Markdown>
-                                        </motion.span>
+                                        </span>
                                     ) : null}
                                     {text ? (
-                                        <motion.span>
-                                            <motion.span> </motion.span>
+                                        <span>
+                                            <span> </span>
                                             <Typewriter
                                                 text={text || ""}
                                                 delay={typewriterDelay}
@@ -227,9 +227,9 @@ export default function NarrationScreen() {
                                                 onAnimationComplete={endTypewriter}
                                                 paragraphRef={paragraphRef}
                                             />
-                                        </motion.span>
+                                        </span>
                                     ) : null}
-                                </motion.p>
+                                </p>
                             </Sheet>
                         </CardContent>
                     </Card>
