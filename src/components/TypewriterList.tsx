@@ -39,8 +39,9 @@ export default function TypewriterList({
     }, [text]);
 
     const textsToRender = useMemo(() => {
-        return texts.map((t, index) =>
-            t.length > 0 ? (
+        return texts.map((t, index) => {
+            if (t.length == 0) return null;
+            return (
                 <motion.span key={index}>
                     {t[0] == " " && <motion.span> </motion.span>}
                     <Typewriter
@@ -53,8 +54,8 @@ export default function TypewriterList({
                     />
                     {t[t.length - 1] == " " && <motion.span> </motion.span>}
                 </motion.span>
-            ) : null
-        );
+            );
+        });
     }, [texts]);
 
     return <motion.p style={{ margin: 0, padding: 0 }}>{textsToRender.map((t) => t)}</motion.p>;
