@@ -5,17 +5,17 @@ import Markdown, { Components, ExtraProps, Options } from "react-markdown";
 function TypewriterInternal({
     children,
     className,
-    letterVariants,
+    characterVariants,
     dadElement,
-    scrollOnLastItem,
+    onCharacterAnimationComplete,
     key,
 }: {
     children: any;
     className?: string;
-    letterVariants: Variants;
+    characterVariants: Variants;
     dadElement: (children: ReactElement | ReactElement[], isString?: boolean) => ReactElement | ReactElement[];
     isRoot?: boolean;
-    scrollOnLastItem?: (scrollTop: number) => void;
+    onCharacterAnimationComplete?: (letterRef: RefObject<HTMLSpanElement | null>) => void;
     key?: Key | null | undefined;
 }) {
     if (typeof children === "string") {
@@ -26,13 +26,11 @@ function TypewriterInternal({
                     ref={ref}
                     className={className}
                     key={`span-${key}-${char}-${i}`}
-                    variants={letterVariants}
+                    variants={characterVariants}
                     onAnimationComplete={
-                        scrollOnLastItem
+                        onCharacterAnimationComplete
                             ? () => {
-                                  if (ref.current?.offsetParent) {
-                                      scrollOnLastItem(ref.current.offsetTop);
-                                  }
+                                  onCharacterAnimationComplete(ref);
                               }
                             : undefined
                     }
@@ -52,13 +50,11 @@ function TypewriterInternal({
                             ref={ref}
                             className={className}
                             key={`span-${key}-${char}-${i}`}
-                            variants={letterVariants}
+                            variants={characterVariants}
                             onAnimationComplete={
-                                scrollOnLastItem
+                                onCharacterAnimationComplete
                                     ? () => {
-                                          if (ref.current?.offsetParent) {
-                                              scrollOnLastItem(ref.current.offsetTop);
-                                          }
+                                          onCharacterAnimationComplete(ref);
                                       }
                                     : undefined
                             }
@@ -79,17 +75,17 @@ function TypewriterInternal({
 export default function MarkdownTypewriter(
     props: {
         delay?: number;
-        scrollRef?: RefObject<HTMLDivElement | null>;
+        onCharacterAnimationComplete?: (letterRef: RefObject<HTMLSpanElement | null>) => void;
         motionProps?: Omit<HTMLMotionProps<"span">, "variants">;
-        letterVariants?: Variants;
+        characterVariants?: Variants;
     } & Omit<Options, "components">
 ) {
     const {
         delay = 10,
-        scrollRef,
+        onCharacterAnimationComplete,
         children: text,
         motionProps = {},
-        letterVariants: letterVariantsProp = {
+        characterVariants: letterVariantsProp = {
             hidden: { opacity: 0 },
             visible: { opacity: 1, transition: { opacity: { duration: 0 } } },
         },
@@ -102,14 +98,14 @@ export default function MarkdownTypewriter(
         }),
         [delay]
     );
-    const letterVariants = useMemo<Variants>(() => letterVariantsProp, [delay]);
+    const characterVariants = useMemo<Variants>(() => letterVariantsProp, [delay]);
     const components = useMemo(
         () =>
             MarkdownTypewriterComponents({
-                letterVariants,
-                scrollRef,
+                characterVariants,
+                onCharacterAnimationComplete,
             }),
-        [letterVariants, scrollRef]
+        [characterVariants, onCharacterAnimationComplete]
     );
 
     return (
@@ -130,21 +126,12 @@ export default function MarkdownTypewriter(
 import htmlTags from "html-tags";
 
 function MarkdownTypewriterComponents({
-    letterVariants,
-    scrollRef,
+    characterVariants,
+    onCharacterAnimationComplete,
 }: {
-    letterVariants: Variants;
-    scrollRef?: RefObject<HTMLDivElement | null>;
+    characterVariants: Variants;
+    onCharacterAnimationComplete?: (letterRef: RefObject<HTMLSpanElement | null>) => void;
 }): Components {
-    const scroll = (offsetTop: number) => {
-        if (scrollRef && scrollRef.current) {
-            let scrollTop = offsetTop - scrollRef.current.clientHeight / 2;
-            scrollRef.current.scrollTo({
-                top: scrollTop,
-                behavior: "auto",
-            });
-        }
-    };
     let res: Components = {};
     htmlTags.forEach((tag) => {
         try {
@@ -154,13 +141,19 @@ function MarkdownTypewriterComponents({
                     ClassAttributes<HTMLHeadingElement> & HTMLAttributes<HTMLHeadingElement> & ExtraProps
                 > = (props) => {
                     const { children, id, className } = props;
-                    if (tag == "p") {
+                    if (tag == "table") {
+                        return (
+                            <motion.table key={`table-${id}`} variants={characterVariants}>
+                                {children}
+                            </motion.table>
+                        );
+                    } else if (tag == "p") {
                         return (
                             <TypewriterInternal
                                 key={id}
                                 children={children}
-                                letterVariants={letterVariants}
-                                scrollOnLastItem={scroll}
+                                characterVariants={characterVariants}
+                                onCharacterAnimationComplete={onCharacterAnimationComplete}
                                 dadElement={(children) => {
                                     if (Array.isArray(children)) {
                                         children.push(<motion.span key={`span-${id}`} />);
@@ -175,8 +168,8 @@ function MarkdownTypewriterComponents({
                         <TypewriterInternal
                             key={id}
                             children={children}
-                            letterVariants={letterVariants}
-                            scrollOnLastItem={scroll}
+                            characterVariants={characterVariants}
+                            onCharacterAnimationComplete={onCharacterAnimationComplete}
                             dadElement={(children, isString) => {
                                 return (
                                     <MotionComponent
@@ -185,10 +178,10 @@ function MarkdownTypewriterComponents({
                                         variants={
                                             isString || className
                                                 ? undefined
-                                                : letterVariants && {
-                                                      hidden: letterVariants.hidden,
+                                                : characterVariants && {
+                                                      hidden: characterVariants.hidden,
                                                       visible: {
-                                                          ...letterVariants,
+                                                          ...characterVariants,
                                                           opacity: 1,
                                                           transition: { staggerChildren: 20 / 1000 },
                                                       },

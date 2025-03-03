@@ -17,7 +17,15 @@ export default function MarkdownComponent() {
                 delay={30}
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeRaw]}
-                scrollRef={paragraphRef}
+                onCharacterAnimationComplete={(ref) => {
+                    if (paragraphRef.current && ref.current) {
+                        let scrollTop = ref.current.offsetTop - paragraphRef.current.clientHeight / 2;
+                        paragraphRef.current.scrollTo({
+                            top: scrollTop,
+                            behavior: "auto",
+                        });
+                    }
+                }}
             >
                 {text}
             </MarkdownTypewriter>
