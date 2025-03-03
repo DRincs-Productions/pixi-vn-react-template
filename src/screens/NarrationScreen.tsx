@@ -221,12 +221,15 @@ export default function NarrationScreen() {
                                         <span>
                                             <span> </span>
                                             <MarkdownTypewriter
-                                                text={text || ""}
+                                                remarkPlugins={[remarkGfm]}
+                                                rehypePlugins={[rehypeRaw]}
                                                 delay={typewriterDelay}
                                                 onAnimationStart={startTypewriter}
                                                 onAnimationComplete={endTypewriter}
                                                 paragraphRef={paragraphRef}
-                                            />
+                                            >
+                                                {text}
+                                            </MarkdownTypewriter>
                                         </span>
                                     ) : null}
                                 </p>

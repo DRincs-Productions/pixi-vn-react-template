@@ -1,8 +1,6 @@
 import { ForwardRefComponent, HTMLMotionProps, motion, Variants } from "motion/react";
 import { ClassAttributes, ElementType, HTMLAttributes, Key, ReactElement, RefObject, useMemo, useRef } from "react";
-import Markdown, { Components, ExtraProps } from "react-markdown";
-import rehypeRaw from "rehype-raw";
-import remarkGfm from "remark-gfm";
+import Markdown, { Components, ExtraProps, Options } from "react-markdown";
 
 function TypewriterInternal({
     children,
@@ -79,20 +77,18 @@ function TypewriterInternal({
 }
 
 export default function MarkdownTypewriter({
-    text,
-    index,
     delay = 0,
     onAnimationComplete,
     onAnimationStart,
     paragraphRef,
+    children: text,
+    ...rest
 }: {
-    text: string;
-    index?: Key | null | undefined;
     delay?: number;
     onAnimationComplete?: () => void;
     onAnimationStart?: () => void;
     paragraphRef?: RefObject<HTMLDivElement | null>;
-}) {
+} & Omit<Options, "components">) {
     const sentenceVariants: Variants = {
         hidden: {},
         visible: { opacity: 1, transition: { staggerChildren: delay / 1000 } },
@@ -115,14 +111,14 @@ export default function MarkdownTypewriter({
 
     return (
         <motion.span
-            key={index ?? text}
+            key={`typewriter-internal-${text}`}
             variants={sentenceVariants}
             initial='hidden'
             animate={"visible"}
             onAnimationStart={onAnimationStart}
             onAnimationComplete={onAnimationComplete}
         >
-            <Markdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={components}>
+            <Markdown {...rest} components={components}>
                 {text}
             </Markdown>
         </motion.span>
@@ -150,8 +146,8 @@ function MarkdownTypewriterComponents({
     let res: Components = {};
     htmlTags.forEach((tag) => {
         try {
-            let Test: ForwardRefComponent<HTMLHeadingElement, HTMLMotionProps<any>> = (motion as any)[tag];
-            if (Test) {
+            let MotionComponent: ForwardRefComponent<HTMLHeadingElement, HTMLMotionProps<any>> = (motion as any)[tag];
+            if (MotionComponent) {
                 let fn: ElementType<
                     ClassAttributes<HTMLHeadingElement> & HTMLAttributes<HTMLHeadingElement> & ExtraProps
                 > = (props) => {
@@ -181,7 +177,7 @@ function MarkdownTypewriterComponents({
                             scrollOnLastItem={scroll}
                             dadElement={(children, isString) => {
                                 return (
-                                    <Test
+                                    <MotionComponent
                                         {...props}
                                         key={`${tag}-${id}`}
                                         variants={
@@ -198,7 +194,7 @@ function MarkdownTypewriterComponents({
                                         }
                                     >
                                         {children}
-                                    </Test>
+                                    </MotionComponent>
                                 );
                             }}
                         />
