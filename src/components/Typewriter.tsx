@@ -104,6 +104,7 @@ export default function MarkdownTypewriter(
             MarkdownTypewriterComponents({
                 characterVariants,
                 onCharacterAnimationComplete,
+                delay,
             }),
         [characterVariants, onCharacterAnimationComplete]
     );
@@ -128,11 +129,21 @@ import htmlTags from "html-tags";
 function MarkdownTypewriterComponents({
     characterVariants,
     onCharacterAnimationComplete,
+    delay,
 }: {
     characterVariants: Variants;
     onCharacterAnimationComplete?: (letterRef: RefObject<HTMLSpanElement | null>) => void;
+    delay: number;
 }): Components {
     let res: Components = {};
+    const sentenceVariants = {
+        hidden: characterVariants.hidden,
+        visible: {
+            ...characterVariants,
+            opacity: 1,
+            transition: { staggerChildren: delay / 1000 },
+        },
+    };
     htmlTags.forEach((tag) => {
         try {
             let MotionComponent: ForwardRefComponent<HTMLHeadingElement, HTMLMotionProps<any>> = (motion as any)[tag];
@@ -141,59 +152,76 @@ function MarkdownTypewriterComponents({
                     ClassAttributes<HTMLHeadingElement> & HTMLAttributes<HTMLHeadingElement> & ExtraProps
                 > = (props) => {
                     const { children, id, className } = props;
-                    if (tag == "table") {
-                        return (
-                            <motion.table key={`table-${id}`} variants={characterVariants}>
-                                {children}
-                            </motion.table>
-                        );
-                    } else if (tag == "p") {
-                        return (
-                            <TypewriterInternal
-                                key={id}
-                                children={children}
-                                characterVariants={characterVariants}
-                                onCharacterAnimationComplete={onCharacterAnimationComplete}
-                                dadElement={(children) => {
-                                    if (Array.isArray(children)) {
-                                        children.push(<motion.span key={`span-${id}`} />);
-                                        return children;
-                                    }
-                                    return children;
-                                }}
-                            />
-                        );
-                    }
-                    return (
-                        <TypewriterInternal
-                            key={id}
-                            children={children}
-                            characterVariants={characterVariants}
-                            onCharacterAnimationComplete={onCharacterAnimationComplete}
-                            dadElement={(children, isString) => {
-                                return (
-                                    <MotionComponent
-                                        {...props}
-                                        key={`${tag}-${id}`}
-                                        variants={
-                                            isString || className
-                                                ? undefined
-                                                : characterVariants && {
-                                                      hidden: characterVariants.hidden,
-                                                      visible: {
-                                                          ...characterVariants,
-                                                          opacity: 1,
-                                                          transition: { staggerChildren: 20 / 1000 },
-                                                      },
-                                                  }
+                    switch (tag) {
+                        case "table":
+                            return (
+                                <MotionComponent
+                                    {...props}
+                                    key={`${tag}-${id}`}
+                                    variants={className ? undefined : sentenceVariants}
+                                    onAnimationComplete={onCharacterAnimationComplete}
+                                >
+                                    {children}
+                                </MotionComponent>
+                            );
+                        case "tr":
+                        case "th":
+                        case "td":
+                            return <MotionComponent {...props}>{children}</MotionComponent>;
+                        case "p":
+                            return (
+                                <TypewriterInternal
+                                    key={id}
+                                    children={children}
+                                    characterVariants={characterVariants}
+                                    onCharacterAnimationComplete={onCharacterAnimationComplete}
+                                    dadElement={(children) => {
+                                        if (Array.isArray(children)) {
+                                            children.push(<motion.span key={`span-${id}`} />);
+                                            return children;
                                         }
-                                    >
-                                        {children}
-                                    </MotionComponent>
-                                );
-                            }}
-                        />
-                    );
+                                        return children;
+                                    }}
+                                />
+                            );
+                        case "span":
+                            return (
+                                <TypewriterInternal
+                                    key={id}
+                                    children={children}
+                                    characterVariants={characterVariants}
+                                    onCharacterAnimationComplete={onCharacterAnimationComplete}
+                                    dadElement={(children) => {
+                                        if (Array.isArray(children)) {
+                                            return (
+                                                <MotionComponent {...props} key={`${tag}-${id}`} children={children} />
+                                            );
+                                        }
+                                        return children;
+                                    }}
+                                />
+                            );
+                        default:
+                            return (
+                                <TypewriterInternal
+                                    key={id}
+                                    children={children}
+                                    characterVariants={characterVariants}
+                                    onCharacterAnimationComplete={onCharacterAnimationComplete}
+                                    dadElement={(children, isString) => {
+                                        return (
+                                            <MotionComponent
+                                                {...props}
+                                                key={`${tag}-${id}`}
+                                                variants={isString || className ? undefined : sentenceVariants}
+                                            >
+                                                {children}
+                                            </MotionComponent>
+                                        );
+                                    }}
+                                />
+                            );
+                    }
                 };
                 (res as any)[tag] = fn;
             }
