@@ -154,6 +154,8 @@ function MarkdownTypewriterComponents({
                     const { children, id, className } = props;
                     switch (tag) {
                         case "table":
+                        case "input":
+                        case "hr":
                             return (
                                 <MotionComponent
                                     {...props}
