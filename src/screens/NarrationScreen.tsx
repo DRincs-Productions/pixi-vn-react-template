@@ -6,9 +6,12 @@ import Sheet from "@mui/joy/Sheet";
 import Typography from "@mui/joy/Typography";
 import { motion, Variants } from "motion/react";
 import { useRef } from "react";
+import Markdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
 import { useShallow } from "zustand/react/shallow";
 import SliderResizer from "../components/SliderResizer";
-import TypewriterList from "../components/TypewriterList";
+import Typewriter from "../components/Typewriter";
 import useDialogueCardStore from "../stores/useDialogueCardStore";
 import useInterfaceStore from "../stores/useInterfaceStore";
 import useTypewriterStore from "../stores/useTypewriterStore";
@@ -25,8 +28,8 @@ export default function NarrationScreen() {
     const typewriterDelay = useTypewriterStore((state) => state.delay);
     const startTypewriter = useTypewriterStore((state) => state.start);
     const endTypewriter = useTypewriterStore((state) => state.end);
-    const { data: { text, character } = {} } = useQueryDialogue();
-    const hidden = useInterfaceStore((state) => state.hidden || (text ? false : true));
+    const { data: { text, character, oldText } = {} } = useQueryDialogue();
+    const hidden = useInterfaceStore((state) => state.hidden || (text || oldText ? false : true));
     const cardVarians: Variants = {
         open: {
             opacity: 1,
@@ -73,7 +76,7 @@ export default function NarrationScreen() {
                 top: 0,
             }}
         >
-            <ChoiceMenu fullscreen={text ? false : true} />
+            <ChoiceMenu fullscreen={text || oldText ? false : true} />
             <SliderResizer
                 orientation='vertical'
                 max={100}
@@ -200,13 +203,33 @@ export default function NarrationScreen() {
                                     marginBottom: 2,
                                 }}
                             >
-                                <TypewriterList
-                                    text={text || ""}
-                                    delay={typewriterDelay}
-                                    onAnimationStart={startTypewriter}
-                                    onAnimationComplete={endTypewriter}
-                                    paragraphRef={paragraphRef}
-                                />
+                                <motion.p style={{ margin: 0, padding: 0 }}>
+                                    {oldText ? (
+                                        <motion.span>
+                                            <Markdown
+                                                remarkPlugins={[remarkGfm]}
+                                                rehypePlugins={[rehypeRaw]}
+                                                components={{
+                                                    p: (props) => <span {...props} />,
+                                                }}
+                                            >
+                                                {oldText}
+                                            </Markdown>
+                                        </motion.span>
+                                    ) : null}
+                                    {text ? (
+                                        <motion.span>
+                                            <motion.span> </motion.span>
+                                            <Typewriter
+                                                text={text || ""}
+                                                delay={typewriterDelay}
+                                                onAnimationStart={startTypewriter}
+                                                onAnimationComplete={endTypewriter}
+                                                paragraphRef={paragraphRef}
+                                            />
+                                        </motion.span>
+                                    ) : null}
+                                </motion.p>
                             </Sheet>
                         </CardContent>
                     </Card>

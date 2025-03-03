@@ -1,5 +1,5 @@
 import { CharacterBaseModel, getCharacterById, narration } from "@drincs/pixi-vn";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
 export const INTERFACE_DATA_USE_QUEY_KEY = "interface_data_use_quey_key";
@@ -38,13 +38,19 @@ export function useQueryInputValue<T>() {
     });
 }
 
+type DialogueModel = {
+    text?: string;
+    oldText?: string;
+    character?: CharacterBaseModel;
+};
 const DIALOGUE_USE_QUEY_KEY = "dialogue_use_quey_key";
 export function useQueryDialogue() {
     const { t: tNarration } = useTranslation(["narration"]);
+    const queryClient = useQueryClient();
 
-    return useQuery({
+    return useQuery<DialogueModel>({
         queryKey: [INTERFACE_DATA_USE_QUEY_KEY, DIALOGUE_USE_QUEY_KEY],
-        queryFn: () => {
+        queryFn: ({ queryKey }) => {
             let dialogue = narration.dialogue;
             let newText: string | undefined = dialogue?.text;
             let newCharacter: CharacterBaseModel | undefined = undefined;
@@ -54,6 +60,22 @@ export function useQueryDialogue() {
                     newCharacter = new CharacterBaseModel(dialogue.character, { name: tNarration(dialogue.character) });
                 }
             }
+
+            let prevData = queryClient.getQueryData<DialogueModel>(queryKey);
+            if (
+                prevData &&
+                newText &&
+                newCharacter?.id === prevData?.character?.id &&
+                newText.startsWith(prevData.text || "" + prevData.oldText || "")
+            ) {
+                let oldText = prevData.text || "" + prevData.oldText || "";
+                return {
+                    text: newText.slice(oldText.length),
+                    oldText: oldText,
+                    character: newCharacter,
+                };
+            }
+
             return {
                 text: newText,
                 character: newCharacter,
