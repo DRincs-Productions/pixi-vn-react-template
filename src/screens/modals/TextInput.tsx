@@ -4,7 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ModalDialogCustom from "../../components/ModalDialog";
-import Typewriter from "../../components/Typewriter";
+import MarkdownTypewriter from "../../components/Typewriter";
 import useTypewriterStore from "../../stores/useTypewriterStore";
 import { INTERFACE_DATA_USE_QUEY_KEY, useQueryDialogue, useQueryInputValue } from "../../use_query/useQueryInterface";
 
@@ -53,7 +53,7 @@ export default function TextInput() {
                 </>
             }
         >
-            {text && <Typewriter text={text} />}
+            {text && <MarkdownTypewriter text={text} />}
         </ModalDialogCustom>
     );
 }

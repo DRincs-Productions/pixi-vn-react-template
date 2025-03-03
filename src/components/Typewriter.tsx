@@ -78,7 +78,7 @@ function TypewriterInternal({
     return dadElement(children, true);
 }
 
-export default function Typewriter({
+export default function MarkdownTypewriter({
     text,
     index,
     delay = 0,
@@ -104,16 +104,16 @@ export default function Typewriter({
         }),
         [delay]
     );
-    const cccc = useMemo(
+    const components = useMemo(
         () =>
-            AAA({
+            MarkdownTypewriterComponents({
                 letterVariants,
                 paragraphRef,
             }),
         [letterVariants, paragraphRef]
     );
 
-    const typewriter = (
+    return (
         <motion.span
             key={index ?? text}
             variants={sentenceVariants}
@@ -122,17 +122,16 @@ export default function Typewriter({
             onAnimationStart={onAnimationStart}
             onAnimationComplete={onAnimationComplete}
         >
-            <Markdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={cccc}>
+            <Markdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={components}>
                 {text}
             </Markdown>
         </motion.span>
     );
-    return typewriter;
 }
 
 import htmlTags from "html-tags";
 
-function AAA({
+function MarkdownTypewriterComponents({
     letterVariants,
     paragraphRef,
 }: {

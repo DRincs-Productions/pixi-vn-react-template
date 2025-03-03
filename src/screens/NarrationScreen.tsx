@@ -11,7 +11,7 @@ import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import { useShallow } from "zustand/react/shallow";
 import SliderResizer from "../components/SliderResizer";
-import Typewriter from "../components/Typewriter";
+import MarkdownTypewriter from "../components/Typewriter";
 import useDialogueCardStore from "../stores/useDialogueCardStore";
 import useInterfaceStore from "../stores/useInterfaceStore";
 import useTypewriterStore from "../stores/useTypewriterStore";
@@ -220,7 +220,7 @@ export default function NarrationScreen() {
                                     {text ? (
                                         <span>
                                             <span> </span>
-                                            <Typewriter
+                                            <MarkdownTypewriter
                                                 text={text || ""}
                                                 delay={typewriterDelay}
                                                 onAnimationStart={startTypewriter}
