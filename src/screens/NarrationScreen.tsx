@@ -224,9 +224,11 @@ export default function NarrationScreen() {
                                                 remarkPlugins={[remarkGfm]}
                                                 rehypePlugins={[rehypeRaw]}
                                                 delay={typewriterDelay}
-                                                onAnimationStart={startTypewriter}
-                                                onAnimationComplete={endTypewriter}
-                                                paragraphRef={paragraphRef}
+                                                scrollRef={paragraphRef}
+                                                motionProps={{
+                                                    onAnimationStart: startTypewriter,
+                                                    onAnimationComplete: endTypewriter,
+                                                }}
                                             >
                                                 {text}
                                             </MarkdownTypewriter>

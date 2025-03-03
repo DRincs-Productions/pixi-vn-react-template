@@ -76,37 +76,40 @@ function TypewriterInternal({
     return dadElement(children, true);
 }
 
-export default function MarkdownTypewriter({
-    delay = 0,
-    onAnimationComplete,
-    onAnimationStart,
-    paragraphRef,
-    children: text,
-    ...rest
-}: {
-    delay?: number;
-    onAnimationComplete?: () => void;
-    onAnimationStart?: () => void;
-    paragraphRef?: RefObject<HTMLDivElement | null>;
-} & Omit<Options, "components">) {
-    const sentenceVariants: Variants = {
-        hidden: {},
-        visible: { opacity: 1, transition: { staggerChildren: delay / 1000 } },
-    };
-    const letterVariants = useMemo<Variants>(
-        () => ({
+export default function MarkdownTypewriter(
+    props: {
+        delay?: number;
+        scrollRef?: RefObject<HTMLDivElement | null>;
+        motionProps?: Omit<HTMLMotionProps<"span">, "variants">;
+        letterVariants?: Variants;
+    } & Omit<Options, "components">
+) {
+    const {
+        delay = 0,
+        scrollRef,
+        children: text,
+        motionProps = {},
+        letterVariants: letterVariantsProp = {
             hidden: { opacity: 0 },
             visible: { opacity: 1, transition: { opacity: { duration: 0 } } },
+        },
+        ...rest
+    } = props;
+    const sentenceVariants = useMemo<Variants>(
+        () => ({
+            hidden: {},
+            visible: { opacity: 1, transition: { staggerChildren: delay / 1000 } },
         }),
         [delay]
     );
+    const letterVariants = useMemo<Variants>(() => letterVariantsProp, [delay]);
     const components = useMemo(
         () =>
             MarkdownTypewriterComponents({
                 letterVariants,
-                paragraphRef,
+                scrollRef,
             }),
-        [letterVariants, paragraphRef]
+        [letterVariants, scrollRef]
     );
 
     return (
@@ -115,8 +118,7 @@ export default function MarkdownTypewriter({
             variants={sentenceVariants}
             initial='hidden'
             animate={"visible"}
-            onAnimationStart={onAnimationStart}
-            onAnimationComplete={onAnimationComplete}
+            {...motionProps}
         >
             <Markdown {...rest} components={components}>
                 {text}
@@ -129,15 +131,15 @@ import htmlTags from "html-tags";
 
 function MarkdownTypewriterComponents({
     letterVariants,
-    paragraphRef,
+    scrollRef,
 }: {
     letterVariants: Variants;
-    paragraphRef?: RefObject<HTMLDivElement | null>;
+    scrollRef?: RefObject<HTMLDivElement | null>;
 }): Components {
     const scroll = (offsetTop: number) => {
-        if (paragraphRef && paragraphRef.current) {
-            let scrollTop = offsetTop - paragraphRef.current.clientHeight / 2;
-            paragraphRef.current.scrollTo({
+        if (scrollRef && scrollRef.current) {
+            let scrollTop = offsetTop - scrollRef.current.clientHeight / 2;
+            scrollRef.current.scrollTo({
                 top: scrollTop,
                 behavior: "auto",
             });
