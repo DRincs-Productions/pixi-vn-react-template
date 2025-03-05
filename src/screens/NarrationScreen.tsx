@@ -10,8 +10,8 @@ import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import { useShallow } from "zustand/react/shallow";
+import MarkdownTypewriter from "../components/MarkdownTypewriter";
 import SliderResizer from "../components/SliderResizer";
-import MarkdownTypewriter from "../components/Typewriter";
 import useDialogueCardStore from "../stores/useDialogueCardStore";
 import useInterfaceStore from "../stores/useInterfaceStore";
 import useTypewriterStore from "../stores/useTypewriterStore";
@@ -224,17 +224,6 @@ export default function NarrationScreen() {
                                                 remarkPlugins={[remarkGfm]}
                                                 rehypePlugins={[rehypeRaw]}
                                                 delay={typewriterDelay}
-                                                onCharacterAnimationComplete={(ref) => {
-                                                    if (paragraphRef.current && ref.current) {
-                                                        let scrollTop =
-                                                            ref.current.offsetTop -
-                                                            paragraphRef.current.clientHeight / 2;
-                                                        paragraphRef.current.scrollTo({
-                                                            top: scrollTop,
-                                                            behavior: "auto",
-                                                        });
-                                                    }
-                                                }}
                                                 motionProps={{
                                                     onAnimationStart: startTypewriter,
                                                     onAnimationComplete: endTypewriter,
