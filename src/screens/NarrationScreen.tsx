@@ -5,10 +5,13 @@ import CardContent from "@mui/joy/CardContent";
 import Sheet from "@mui/joy/Sheet";
 import Typography from "@mui/joy/Typography";
 import { motion, Variants } from "motion/react";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
+import Markdown from "react-markdown";
+import { MarkdownTypewriter } from "react-markdown-typewriter";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
 import { useShallow } from "zustand/react/shallow";
 import SliderResizer from "../components/SliderResizer";
-import TypewriterList from "../components/TypewriterList";
 import useDialogueCardStore from "../stores/useDialogueCardStore";
 import useInterfaceStore from "../stores/useInterfaceStore";
 import useTypewriterStore from "../stores/useTypewriterStore";
@@ -25,8 +28,8 @@ export default function NarrationScreen() {
     const typewriterDelay = useTypewriterStore((state) => state.delay);
     const startTypewriter = useTypewriterStore((state) => state.start);
     const endTypewriter = useTypewriterStore((state) => state.end);
-    const { data: { text, character } = {} } = useQueryDialogue();
-    const hidden = useInterfaceStore((state) => state.hidden || (text ? false : true));
+    const { data: { text, character, oldText } = {} } = useQueryDialogue();
+    const hidden = useInterfaceStore((state) => state.hidden || (text || oldText ? false : true));
     const cardVarians: Variants = {
         open: {
             opacity: 1,
@@ -62,6 +65,16 @@ export default function NarrationScreen() {
     };
     const paragraphRef = useRef<HTMLDivElement>(null);
 
+    const handleCharacterAnimationComplete = useCallback((ref: { current: HTMLSpanElement | null }) => {
+        if (paragraphRef.current && ref.current) {
+            let scrollTop = ref.current.offsetTop - paragraphRef.current.clientHeight / 2;
+            paragraphRef.current.scrollTo({
+                top: scrollTop,
+                behavior: "auto",
+            });
+        }
+    }, []);
+
     return (
         <Box
             sx={{
@@ -73,7 +86,7 @@ export default function NarrationScreen() {
                 top: 0,
             }}
         >
-            <ChoiceMenu fullscreen={text ? false : true} />
+            <ChoiceMenu fullscreen={text || oldText ? false : true} />
             <SliderResizer
                 orientation='vertical'
                 max={100}
@@ -200,25 +213,38 @@ export default function NarrationScreen() {
                                     marginBottom: 2,
                                 }}
                             >
-                                <TypewriterList
-                                    text={text || ""}
-                                    delay={typewriterDelay}
-                                    onAnimationStart={startTypewriter}
-                                    onAnimationComplete={endTypewriter}
-                                    scroll={
-                                        typewriterDelay
-                                            ? (offsetTop: number) => {
-                                                  if (paragraphRef.current) {
-                                                      let scrollTop = offsetTop - paragraphRef.current.clientHeight / 2;
-                                                      paragraphRef.current.scrollTo({
-                                                          top: scrollTop,
-                                                          behavior: "auto",
-                                                      });
-                                                  }
-                                              }
-                                            : undefined
+                                <p style={{ margin: 0, padding: 0 }}>
+                                    {
+                                        <span>
+                                            <Markdown
+                                                remarkPlugins={[remarkGfm]}
+                                                rehypePlugins={[rehypeRaw]}
+                                                components={{
+                                                    p: (props) => <span {...props} />,
+                                                }}
+                                            >
+                                                {oldText}
+                                            </Markdown>
+                                        </span>
                                     }
-                                />
+                                    {
+                                        <span>
+                                            <span> </span>
+                                            <MarkdownTypewriter
+                                                remarkPlugins={[remarkGfm]}
+                                                rehypePlugins={[rehypeRaw]}
+                                                delay={typewriterDelay}
+                                                motionProps={{
+                                                    onAnimationStart: startTypewriter,
+                                                    onAnimationComplete: endTypewriter,
+                                                    onCharacterAnimationComplete: handleCharacterAnimationComplete,
+                                                }}
+                                            >
+                                                {text}
+                                            </MarkdownTypewriter>
+                                        </span>
+                                    }
+                                </p>
                             </Sheet>
                         </CardContent>
                     </Card>
