@@ -1,6 +1,7 @@
-import { CharacterBaseModel, getCharacterById, narration } from "@drincs/pixi-vn";
+import { CharacterInterface, getCharacterById, narration } from "@drincs/pixi-vn";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
+import Character from "../models/Character";
 
 export const INTERFACE_DATA_USE_QUEY_KEY = "interface_data_use_quey_key";
 
@@ -41,7 +42,7 @@ export function useQueryInputValue<T>() {
 type DialogueModel = {
     text?: string;
     oldText?: string;
-    character?: CharacterBaseModel;
+    character?: CharacterInterface;
 };
 const DIALOGUE_USE_QUEY_KEY = "dialogue_use_quey_key";
 export function useQueryDialogue() {
@@ -53,11 +54,11 @@ export function useQueryDialogue() {
         queryFn: ({ queryKey }) => {
             let dialogue = narration.dialogue;
             let text: string | undefined = dialogue?.text;
-            let newCharacter: CharacterBaseModel | undefined = undefined;
+            let newCharacter: CharacterInterface | undefined = undefined;
             if (dialogue) {
                 newCharacter = dialogue.character ? getCharacterById(dialogue.character) : undefined;
                 if (!newCharacter && dialogue.character) {
-                    newCharacter = new CharacterBaseModel(dialogue.character, { name: tNarration(dialogue.character) });
+                    newCharacter = new Character(dialogue.character, { name: tNarration(dialogue.character) });
                 }
             }
 
@@ -101,7 +102,7 @@ export function useQueryNarrativeHistory({ searchString }: { searchString?: stri
                 .map((step) => {
                     let character = step.dialoge?.character
                         ? getCharacterById(step.dialoge?.character) ??
-                          new CharacterBaseModel(step.dialoge?.character, { name: tNarration(step.dialoge?.character) })
+                          new Character(step.dialoge?.character, { name: tNarration(step.dialoge?.character) })
                         : undefined;
                     return {
                         character: character?.name
