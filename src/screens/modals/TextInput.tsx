@@ -3,8 +3,10 @@ import { Button, Input } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import Markdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
 import ModalDialogCustom from "../../components/ModalDialog";
-import Typewriter from "../../components/Typewriter";
 import useTypewriterStore from "../../stores/useTypewriterStore";
 import { INTERFACE_DATA_USE_QUEY_KEY, useQueryDialogue, useQueryInputValue } from "../../use_query/useQueryInterface";
 
@@ -53,7 +55,17 @@ export default function TextInput() {
                 </>
             }
         >
-            {text && <Typewriter text={text} />}
+            {text && (
+                <Markdown
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeRaw]}
+                    components={{
+                        p: (props) => <span {...props} />,
+                    }}
+                >
+                    {text}
+                </Markdown>
+            )}
         </ModalDialogCustom>
     );
 }
