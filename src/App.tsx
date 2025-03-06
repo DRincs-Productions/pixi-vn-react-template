@@ -1,10 +1,19 @@
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import MarkdownTypewriter from "./components/MarkdownTypewriter";
 
 export default function MarkdownComponent() {
     const paragraphRef = useRef<HTMLDivElement>(null);
+    const scrollToEnd = useCallback((ref: { current: HTMLSpanElement | null }) => {
+        if (paragraphRef.current && ref.current) {
+            let scrollTop = ref.current.offsetTop - paragraphRef.current.clientHeight / 2;
+            paragraphRef.current.scrollTo({
+                top: scrollTop,
+                behavior: "auto",
+            });
+        }
+    }, []);
     return (
         <div
             ref={paragraphRef}
@@ -18,15 +27,7 @@ export default function MarkdownComponent() {
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeRaw]}
                 motionProps={{
-                    onCharacterAnimationComplete: (ref) => {
-                        if (paragraphRef.current && ref.current) {
-                            let scrollTop = ref.current.offsetTop - paragraphRef.current.clientHeight / 2;
-                            paragraphRef.current.scrollTo({
-                                top: scrollTop,
-                                behavior: "auto",
-                            });
-                        }
-                    },
+                    onCharacterAnimationComplete: scrollToEnd,
                 }}
             >
                 {text}
