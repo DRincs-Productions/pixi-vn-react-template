@@ -46,6 +46,8 @@ Core libraries:
 * [Tanstack Query](https://tanstack.com/tanstack-query/): A library that provides a set of tools for getting, caching, and updating game data.
   <img width="44" alt="image" src="https://github.com/user-attachments/assets/bf70dddc-68c0-48f4-9c41-74c22f54e3d1">
   You can use the following button to show Tanstack Query interactions with the game. (the button will be automatically hidden when released)
+* [Tailwind CSS](https://tailwindcss.com/): A utility-first CSS framework for rapidly building custom designs.
+  * [Tailwind CSS Motion](https://rombo.co/tailwind/): A library that provides a set of utilities for creating animations with Tailwind CSS.
 
 UI libraries:
 
@@ -57,7 +59,8 @@ UI libraries:
 Text libraries:
 
 * [i18next](https://www.i18next.com/): A library that gives the possibility to manage multiple translations in the application.
-* [Reacr Markdown](https://www.npmjs.com/package/react-markdown): A library that allows you to render markdown in React components.
+* [React Markdown](https://www.npmjs.com/package/react-markdown): A library that allows you to render markdown in React components.
+  * [React Markdown Typewriter](hhttps://www.npmjs.com/package/react-markdown-typewriter): This library provides a new component, MarkdownTypewriter, that combines the Markdown component of react-markdown with the animation of typewriter. The animation was created entirely with motion.
 
 ## How to use
 
