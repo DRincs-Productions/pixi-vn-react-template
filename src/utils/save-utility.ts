@@ -1,4 +1,4 @@
-import { canvas, getSaveData, loadSaveData } from "@drincs/pixi-vn";
+import { canvas, Game } from "@drincs/pixi-vn";
 import { LOADING_ROUTE, MAIN_MENU_ROUTE, NARRATION_ROUTE, REFRESH_SAVE_LOCAL_STORAGE_KEY } from "../constans";
 import GameSaveData from "../models/GameSaveData";
 import {
@@ -14,7 +14,7 @@ const SAVE_FILE_EXTENSION = "json";
 
 export function getSave(image?: string): GameSaveData {
     return {
-        saveData: getSaveData(),
+        saveData: Game.exportGameState(),
         gameVersion: __APP_VERSION__,
         date: new Date(),
         name: "",
@@ -25,7 +25,7 @@ export function getSave(image?: string): GameSaveData {
 export async function loadSave(saveData: GameSaveData, navigate: (path: string) => void) {
     navigate(LOADING_ROUTE);
     // load the save data from the JSON string
-    await loadSaveData(saveData.saveData, navigate);
+    await Game.restoreGameState(saveData.saveData, navigate);
 }
 
 export async function putSaveIntoIndexDB(
