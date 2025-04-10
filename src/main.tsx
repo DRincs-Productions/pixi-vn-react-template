@@ -1,4 +1,4 @@
-import { canvas, clearAllGameDatas, Container, narration } from "@drincs/pixi-vn";
+import { canvas, Container, Game, narration } from "@drincs/pixi-vn";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import { CANVAS_UI_LAYER_NAME } from "./constans";
@@ -11,33 +11,31 @@ if (!body) {
     throw new Error("body element not found");
 }
 
-canvas
-    .initialize(body, {
-        height: 1080,
-        width: 1920,
-        backgroundColor: "#303030",
-    })
-    .then(() => {
-        // Pixi.JS UI Layer
-        canvas.addLayer(CANVAS_UI_LAYER_NAME, new Container());
+Game.init(body, {
+    height: 1080,
+    width: 1920,
+    backgroundColor: "#303030",
+}).then(() => {
+    // Pixi.JS UI Layer
+    canvas.addLayer(CANVAS_UI_LAYER_NAME, new Container());
 
-        // React setup with ReactDOM
-        const root = document.getElementById("root");
-        if (!root) {
-            throw new Error("root element not found");
-        }
+    // React setup with ReactDOM
+    const root = document.getElementById("root");
+    if (!root) {
+        throw new Error("root element not found");
+    }
 
-        canvas.initializeHTMLLayout(root);
-        if (!canvas.htmlLayout) {
-            throw new Error("htmlLayout not found");
-        }
-        const reactRoot = createRoot(canvas.htmlLayout);
+    canvas.initializeHTMLLayout(root);
+    if (!canvas.htmlLayout) {
+        throw new Error("htmlLayout not found");
+    }
+    const reactRoot = createRoot(canvas.htmlLayout);
 
-        reactRoot.render(<App />);
-    });
+    reactRoot.render(<App />);
+});
 
 narration.onGameEnd = async ({ navigate }) => {
-    clearAllGameDatas();
+    Game.clear();
     navigate("/");
 };
 
