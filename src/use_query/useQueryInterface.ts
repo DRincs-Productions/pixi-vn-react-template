@@ -1,4 +1,4 @@
-import { CharacterInterface, getCharacterById, narration } from "@drincs/pixi-vn";
+import { CharacterInterface, getCharacterById, narration, stepHistory } from "@drincs/pixi-vn";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import Character from "../models/Character";
@@ -10,7 +10,7 @@ export function useQueryCanGoBack() {
     return useQuery({
         queryKey: [INTERFACE_DATA_USE_QUEY_KEY, CAN_GO_BACK_USE_QUEY_KEY],
         queryFn: () => {
-            return narration.canGoBack;
+            return stepHistory.canGoBack;
         },
     });
 }
@@ -98,7 +98,7 @@ export function useQueryNarrativeHistory({ searchString }: { searchString?: stri
     return useQuery({
         queryKey: [INTERFACE_DATA_USE_QUEY_KEY, NARRATIVE_HISTORY_USE_QUEY_KEY, searchString],
         queryFn: () => {
-            return narration.narrativeHistory
+            return stepHistory.narrativeHistory
                 .map((step) => {
                     let character = step.dialoge?.character
                         ? getCharacterById(step.dialoge?.character) ??

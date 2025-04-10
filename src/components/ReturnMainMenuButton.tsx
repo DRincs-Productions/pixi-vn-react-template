@@ -1,4 +1,4 @@
-import { clearAllGameDatas } from "@drincs/pixi-vn";
+import { Game } from "@drincs/pixi-vn";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { Button, Stack, Typography } from "@mui/joy";
 import { useState } from "react";
@@ -47,7 +47,7 @@ export default function ReturnMainMenuButton() {
                             color='danger'
                             variant='outlined'
                             onClick={() => {
-                                clearAllGameDatas();
+                                Game.clear();
                                 navigate("/");
                                 setOpenSettings(false);
                                 setOpenDialog(false);

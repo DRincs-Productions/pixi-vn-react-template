@@ -1,4 +1,4 @@
-import { narration } from "@drincs/pixi-vn";
+import { stepHistory } from "@drincs/pixi-vn";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { IconButton, Stack, useTheme } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
@@ -69,7 +69,7 @@ export default function QuickTools() {
             >
                 <TextMenuButton
                     onClick={() =>
-                        narration
+                        stepHistory
                             .goBack(navigate)
                             .then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))
                     }
