@@ -12,6 +12,7 @@ import useHistoryScreenStore from "../stores/useHistoryScreenStore";
 import useInterfaceStore from "../stores/useInterfaceStore";
 import useSettingsScreenStore from "../stores/useSettingsScreenStore";
 import useSkipStore from "../stores/useSkipStore";
+import useStepStore from "../stores/useStepStore";
 import { INTERFACE_DATA_USE_QUEY_KEY, useQueryCanGoBack } from "../use_query/useQueryInterface";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../use_query/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../use_query/useQuerySaves";
@@ -35,6 +36,8 @@ export default function QuickTools() {
     const queryClient = useQueryClient();
     const { data: lastSave = null } = useQueryLastSave();
     const { data: canGoBack = null } = useQueryCanGoBack();
+    const nextStepLoading = useStepStore((state) => state.loading);
+    const setBackLoading = useStepStore((state) => state.setBackLoading);
 
     return (
         <>
@@ -68,12 +71,20 @@ export default function QuickTools() {
                 transition={{ type: "tween" }}
             >
                 <TextMenuButton
-                    onClick={() =>
+                    onClick={() => {
+                        setBackLoading(true);
                         stepHistory
                             .goBack(navigate)
-                            .then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))
-                    }
-                    disabled={!canGoBack}
+                            .then(() => {
+                                setBackLoading(false);
+                                queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
+                            })
+                            .catch((e) => {
+                                setBackLoading(false);
+                                console.error(e);
+                            });
+                    }}
+                    disabled={!canGoBack || nextStepLoading}
                     sx={{ pointerEvents: !hideInterface ? "auto" : "none" }}
                 >
                     {t("back")}
