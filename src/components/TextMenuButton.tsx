@@ -39,7 +39,6 @@ export default function TextMenuButton(props: TextMenuButtonProps) {
                     textShadow: `0 0 3px ${useTheme().palette.common.black}, 0 0 5px ${
                         useTheme().palette.common.black
                     }`,
-                    pointerEvents: "auto",
                 }}
             >
                 {children}

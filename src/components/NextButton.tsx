@@ -14,6 +14,7 @@ export default function NextButton() {
     const skipEnabled = useSkipStore((state) => state.enabled);
     const setSkipEnabled = useSkipStore((state) => state.setEnabled);
     const nextStepLoading = useStepStore((state) => state.loading);
+    const goBackLoading = useStepStore((state) => state.backLoading);
     const { data: canGoNext = false } = useQueryCanGoNext();
     const hideNextButton = useInterfaceStore((state) => state.hidden || !canGoNext);
     const setNextStepLoading = useStepStore((state) => state.setLoading);
@@ -69,6 +70,7 @@ export default function NextButton() {
             variant='solid'
             color='primary'
             size='sm'
+            disabled={goBackLoading}
             loading={nextStepLoading}
             sx={{
                 position: "absolute",
