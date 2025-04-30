@@ -5,8 +5,8 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import ModalDialogCustom from "../components/ModalDialog";
+import useMyNavigate from "../hooks/useMyNavigate";
 import useSettingsScreenStore from "../stores/useSettingsScreenStore";
-import { useMyNavigate } from "../utils/navigate-utility";
 
 export default function ReturnMainMenuButton() {
     const setOpenSettings = useSettingsScreenStore((state) => state.setOpen);

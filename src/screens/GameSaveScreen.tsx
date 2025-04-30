@@ -10,9 +10,9 @@ import { useShallow } from "zustand/react/shallow";
 import GameSaveSlot from "../components/GameSaveSlot";
 import ModalDialogCustom from "../components/ModalDialog";
 import { MAIN_MENU_ROUTE } from "../constans";
+import useMyNavigate from "../hooks/useMyNavigate";
 import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "../use_query/useQueryInterface";
-import { useMyNavigate } from "../utils/navigate-utility";
 import { downloadGameSave, loadGameSaveFromFile } from "../utils/save-utility";
 
 export default function GameSaveScreen() {

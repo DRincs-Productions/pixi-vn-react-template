@@ -3,14 +3,14 @@ import { NavigateFunction, NavigateOptions, To, useNavigate } from "react-router
 /**
  * https://pixi-vn.web.app/advanced/intercept-events.html#back-and-forward-buttons
  */
-export function useMyNavigate(): NavigateFunction {
+export default function useMyNavigate(): NavigateFunction {
     const navigate = useNavigate();
 
-    return (to: To | number, options?: NavigateOptions) => {
+    return async (to: To | number, options?: NavigateOptions) => {
         if (typeof to === "number") {
-            navigate(to);
+            await navigate(to);
         } else {
-            navigate(to, options);
+            await navigate(to, options);
         }
         window.history.pushState(null, window.location.href, window.location.href);
     };

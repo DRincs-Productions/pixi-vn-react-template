@@ -1,10 +1,7 @@
 VAR _input_value_ = ""
 
 === start ===
-# load assets bg01-hallway
-# load assets m01-body m01-eyes-grin m01-eyes-smile m01-eyes-wow m01-mouth-grin00 m01-mouth-smile00 m01-mouth-smile01
-# load assets fm01-body fm01-eyes-smile fm01-eyes-upset fm01-mouth-serious00 fm01-mouth-serious01 fm01-mouth-smile00
-# load assets fm02-body fm02-eyes-joy fm02-eyes-nervous fm02-eyes-wow fm02-mouth-nervous00 fm02-mouth-smile00
+# lazyload bundle m01 fm01 fm02
 
 # show image bg bg01-hallway
 # show imagecontainer james [m01-body m01-eyes-smile m01-mouth-neutral01] xAlign 0.5 yAlign 1 with movein direction right speed 300

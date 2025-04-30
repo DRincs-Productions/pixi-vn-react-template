@@ -1,4 +1,4 @@
-import { canvas, Container, Game, narration } from "@drincs/pixi-vn";
+import { Assets, canvas, Container, Game } from "@drincs/pixi-vn";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import { CANVAS_UI_LAYER_NAME } from "./constans";
@@ -34,11 +34,16 @@ Game.init(body, {
     reactRoot.render(<App />);
 });
 
-narration.onGameEnd = async ({ navigate }) => {
+Game.onEnd(async ({ navigate }) => {
     Game.clear();
     navigate("/");
-};
+});
 
-narration.onStepError = async (_error, { notify, t }) => {
+Game.onError((type, error, { notify, t }) => {
     notify(t("allert_error_occurred"), { variant: "error" });
-};
+    console.error(`Error occurred: ${type}`, error);
+});
+
+Game.onLoadingLabel((_stepId, { id }) => {
+    Assets.backgroundLoadBundle(id);
+});
