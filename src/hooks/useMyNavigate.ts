@@ -1,3 +1,4 @@
+import { Assets } from "@drincs/pixi-vn";
 import { NavigateFunction, NavigateOptions, To, useNavigate } from "react-router-dom";
 
 /**
@@ -10,6 +11,7 @@ export default function useMyNavigate(): NavigateFunction {
         if (typeof to === "number") {
             await navigate(to);
         } else {
+            Assets.backgroundLoadBundle(to as string);
             await navigate(to, options);
         }
         window.history.pushState(null, window.location.href, window.location.href);
