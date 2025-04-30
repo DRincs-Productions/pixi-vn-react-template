@@ -9,12 +9,12 @@ import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import SettingButton from "../../components/SettingButton";
+import useMyNavigate from "../../hooks/useMyNavigate";
 import useGameSaveScreenStore from "../../stores/useGameSaveScreenStore";
 import useSettingsScreenStore from "../../stores/useSettingsScreenStore";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "../../use_query/useQueryInterface";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../use_query/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../use_query/useQuerySaves";
-import { useMyNavigate } from "../../utils/navigate-utility";
 import { downloadGameSave, loadGameSaveFromFile, putSaveIntoIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadSettingButtons() {

@@ -374,28 +374,7 @@ const startLabel = newLabel(
     ],
     {
         onLoadingLabel: () => {
-            Assets.load([
-                "bg01-hallway",
-                "m01-body",
-                "m01-eyes-grin",
-                "m01-eyes-smile",
-                "m01-eyes-wow",
-                "m01-mouth-grin00",
-                "m01-mouth-smile00",
-                "m01-mouth-smile01",
-                "fm01-body",
-                "fm01-eyes-smile",
-                "fm01-eyes-upset",
-                "fm01-mouth-serious00",
-                "fm01-mouth-serious01",
-                "fm01-mouth-smile00",
-                "fm02-body",
-                "fm02-eyes-joy",
-                "fm02-eyes-nervous",
-                "fm02-eyes-wow",
-                "fm02-mouth-nervous00",
-                "fm02-mouth-smile00",
-            ]);
+            Assets.backgroundLoadBundle(["fm01", "fm02", "m01"]);
         },
     }
 );

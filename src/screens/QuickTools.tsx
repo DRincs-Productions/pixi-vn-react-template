@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
 import TextMenuButton from "../components/TextMenuButton";
+import useMyNavigate from "../hooks/useMyNavigate";
 import useAutoInfoStore from "../stores/useAutoInfoStore";
 import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
 import useHistoryScreenStore from "../stores/useHistoryScreenStore";
@@ -16,7 +17,6 @@ import useStepStore from "../stores/useStepStore";
 import { INTERFACE_DATA_USE_QUEY_KEY, useQueryCanGoBack } from "../use_query/useQueryInterface";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../use_query/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../use_query/useQuerySaves";
-import { useMyNavigate } from "../utils/navigate-utility";
 import { putSaveIntoIndexDB } from "../utils/save-utility";
 
 export default function QuickTools() {
