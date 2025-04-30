@@ -1,5 +1,6 @@
 import { Assets } from "@drincs/pixi-vn";
 import manifest from "../assets/manifest";
+import { MAIN_MENU_ROUTE } from "../constans";
 
 /**
  * Define all the assets that will be used in the game.
@@ -10,7 +11,7 @@ export async function defineAssets() {
     Assets.init({ manifest });
 
     // The game will not start until these asserts are loaded.
-    await Assets.loadBundle("main_menu");
+    await Assets.loadBundle(MAIN_MENU_ROUTE);
 
     // The game will start immediately, but these asserts will be loaded in the background.
     // Assets.backgroundLoadBundle("main_menu");

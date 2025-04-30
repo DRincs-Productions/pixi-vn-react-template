@@ -1,4 +1,5 @@
 import { AssetsManifest } from "@drincs/pixi-vn";
+import { MAIN_MENU_ROUTE } from "../constans";
 
 /**
  * Manifest for the assets used in the game.
@@ -8,7 +9,7 @@ const manifest: AssetsManifest = {
     bundles: [
         // screens
         {
-            name: "main_menu",
+            name: MAIN_MENU_ROUTE,
             assets: [
                 {
                     alias: "background_main_menu",
