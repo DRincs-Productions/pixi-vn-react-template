@@ -1,7 +1,7 @@
 import { StepLabelProps } from "@drincs/pixi-vn";
 import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
-import { useMyNavigate } from "../utils/navigate-utility";
+import useMyNavigate from "./useMyNavigate";
 
 export default function useGameProps(): StepLabelProps {
     const navigate = useMyNavigate();

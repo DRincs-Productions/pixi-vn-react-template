@@ -51,7 +51,7 @@ export default function useSkipAutoDetector() {
                     setRecheckSkip((p) => p + 1);
                 });
             }
-        }, 400);
+        }, 100);
 
         return () => {
             clearTimeout(timeout);

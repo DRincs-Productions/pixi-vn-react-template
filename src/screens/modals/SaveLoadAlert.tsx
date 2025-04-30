@@ -5,11 +5,11 @@ import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ModalConfirmation from "../../components/ModalConfirmation";
+import useMyNavigate from "../../hooks/useMyNavigate";
 import useGameSaveScreenStore from "../../stores/useGameSaveScreenStore";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "../../use_query/useQueryInterface";
 import { LAST_SAVE_USE_QUEY_KEY } from "../../use_query/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../use_query/useQuerySaves";
-import { useMyNavigate } from "../../utils/navigate-utility";
 import { deleteSaveFromIndexDB, loadSave, putSaveIntoIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadAlert() {
