@@ -21,14 +21,19 @@ export default function AppRoutes() {
 }
 
 function NarrationElement() {
-    useSkipAutoDetector();
     return (
         <>
             <HistoryScreen />
-            <QuickTools />
             <NarrationScreen />
+            <QuickTools />
             <TextInput />
             <NextButton />
+            <Detectors />
         </>
     );
+}
+
+function Detectors() {
+    useSkipAutoDetector();
+    return <></>;
 }

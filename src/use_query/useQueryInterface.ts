@@ -1,4 +1,4 @@
-import { CharacterInterface, getCharacterById, narration, stepHistory } from "@drincs/pixi-vn";
+import { CharacterInterface, narration, stepHistory } from "@drincs/pixi-vn";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import Character from "../models/Character";
@@ -53,19 +53,22 @@ export function useQueryDialogue() {
         queryKey: [INTERFACE_DATA_USE_QUEY_KEY, DIALOGUE_USE_QUEY_KEY],
         queryFn: ({ queryKey }) => {
             let dialogue = narration.dialogue;
-            let text: string | undefined = dialogue?.text;
-            let newCharacter: CharacterInterface | undefined = undefined;
-            if (dialogue) {
-                newCharacter = dialogue.character ? getCharacterById(dialogue.character) : undefined;
-                if (!newCharacter && dialogue.character) {
-                    newCharacter = new Character(dialogue.character, { name: tNarration(dialogue.character) });
-                }
+            let text = dialogue?.text;
+            if (Array.isArray(text)) {
+                text = text.join(" ");
+            }
+            let newCharacter = dialogue?.character;
+            if (typeof newCharacter === "string") {
+                newCharacter = new Character(newCharacter, { name: tNarration(newCharacter) });
             }
 
             let prevData = queryClient.getQueryData<DialogueModel>(queryKey) || {};
             let oldText = (prevData.oldText || "") + (prevData.text || "");
             if (text && newCharacter?.id === prevData?.character?.id && text.startsWith(oldText)) {
                 let newText = text.slice(oldText.length);
+                if (!newText && oldText && newCharacter === prevData?.character) {
+                    return prevData;
+                }
                 return {
                     text: newText,
                     oldText: oldText,
@@ -100,15 +103,19 @@ export function useQueryNarrativeHistory({ searchString }: { searchString?: stri
         queryFn: () => {
             return stepHistory.narrativeHistory
                 .map((step) => {
-                    let character = step.dialoge?.character
-                        ? getCharacterById(step.dialoge?.character) ??
-                          new Character(step.dialoge?.character, { name: tNarration(step.dialoge?.character) })
-                        : undefined;
+                    let character = step.dialogue?.character;
+                    if (typeof character === "string") {
+                        character = new Character(character, { name: tNarration(character) });
+                    }
+                    let text = step.dialogue?.text || "";
+                    if (Array.isArray(text)) {
+                        text = text.join(" ");
+                    }
                     return {
                         character: character?.name
                             ? character.name + (character.surname ? " " + character.surname : "")
                             : undefined,
-                        text: step.dialoge?.text || "",
+                        text: text,
                         icon: character?.icon,
                         choices: step.choices,
                         inputValue: step.inputValue,

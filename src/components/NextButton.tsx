@@ -1,14 +1,11 @@
-import { narration } from "@drincs/pixi-vn";
 import { Button } from "@mui/joy";
-import { useQueryClient } from "@tanstack/react-query";
 import { motion } from "motion/react";
-import { useCallback } from "react";
-import useGameProps from "../hooks/useGameProps";
-import useEventListener from "../hooks/useKeyDetector";
+import { useTranslation } from "react-i18next";
+import useNarrationFunctions from "../hooks/useNarrationFunctions";
 import useInterfaceStore from "../stores/useInterfaceStore";
 import useSkipStore from "../stores/useSkipStore";
 import useStepStore from "../stores/useStepStore";
-import { INTERFACE_DATA_USE_QUEY_KEY, useQueryCanGoNext } from "../use_query/useQueryInterface";
+import { useQueryCanGoNext } from "../use_query/useQueryInterface";
 
 export default function NextButton() {
     const skipEnabled = useSkipStore((state) => state.enabled);
@@ -17,53 +14,8 @@ export default function NextButton() {
     const goBackLoading = useStepStore((state) => state.backLoading);
     const { data: canGoNext = false } = useQueryCanGoNext();
     const hideNextButton = useInterfaceStore((state) => state.hidden || !canGoNext);
-    const setNextStepLoading = useStepStore((state) => state.setLoading);
-    const queryClient = useQueryClient();
-    const gameProps = useGameProps();
-    const { uiTransition: t } = gameProps;
-
-    const nextOnClick = useCallback(async () => {
-        setNextStepLoading(true);
-        try {
-            if (!narration.canGoNext) {
-                setNextStepLoading(false);
-                return;
-            }
-            narration
-                .goNext(gameProps)
-                .then(() => {
-                    queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
-                    setNextStepLoading(false);
-                })
-                .catch((e) => {
-                    setNextStepLoading(false);
-                    console.error(e);
-                });
-            return;
-        } catch (e) {
-            setNextStepLoading(false);
-            console.error(e);
-            return;
-        }
-    }, [gameProps, queryClient]);
-
-    useEventListener({
-        type: "keypress",
-        listener: (event) => {
-            if (event.code == "Enter" || event.code == "Space") {
-                setSkipEnabled(true);
-            }
-        },
-    });
-    useEventListener({
-        type: "keyup",
-        listener: (event) => {
-            if (event.code == "Enter" || event.code == "Space") {
-                setSkipEnabled(false);
-                nextOnClick();
-            }
-        },
-    });
+    const { goNext } = useNarrationFunctions();
+    const { t } = useTranslation(["ui"]);
 
     return (
         <Button
@@ -84,7 +36,7 @@ export default function NextButton() {
                 if (skipEnabled) {
                     setSkipEnabled(false);
                 }
-                nextOnClick();
+                goNext();
             }}
             component={motion.div}
             variants={{

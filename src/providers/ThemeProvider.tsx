@@ -74,7 +74,6 @@ export default function MyThemeProvider({ children }: Iprops) {
 
     // Build the theme: https://mui.com/joy-ui/customization/theme-builder
     const theme = useMemo(() => {
-        // Debouncing
         localStorage.setItem("primaryColor", primaryColor);
         localStorage.setItem("solidColor", solidColor);
 

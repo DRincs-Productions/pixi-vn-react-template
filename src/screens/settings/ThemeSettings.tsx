@@ -14,10 +14,10 @@ import {
     useColorScheme,
 } from "@mui/joy";
 import { useColorScheme as useColorSchemeMaterial } from "@mui/material";
-import { useEffect } from "react";
 import { Hue, useColor } from "react-color-palette";
 import "react-color-palette/css";
 import { useTranslation } from "react-i18next";
+import useDebouncedEffect from "../../hooks/useDebouncedEffect";
 import { useEditColorProvider } from "../../providers/ThemeProvider";
 
 export default function ThemeSettings() {
@@ -27,16 +27,7 @@ export default function ThemeSettings() {
     const [tempColor, setTempColor] = useColor(primaryColor);
     const { t } = useTranslation(["ui"]);
 
-    useEffect(() => {
-        // Debouncing
-        let timeout = setTimeout(() => {
-            setPrimaryColor(tempColor.hex);
-        }, 50);
-
-        return () => {
-            clearTimeout(timeout);
-        };
-    }, [tempColor]);
+    useDebouncedEffect(() => setPrimaryColor(tempColor.hex), { delay: 50 }, [tempColor]);
 
     return (
         <>
