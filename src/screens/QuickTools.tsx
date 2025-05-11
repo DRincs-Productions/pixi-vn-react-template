@@ -1,4 +1,3 @@
-import { stepHistory } from "@drincs/pixi-vn";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { IconButton, Stack, useTheme } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
@@ -6,7 +5,7 @@ import { motion } from "motion/react";
 import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
 import TextMenuButton from "../components/TextMenuButton";
-import useMyNavigate from "../hooks/useMyNavigate";
+import useNarrationFunctions from "../hooks/useNarrationFunctions";
 import useAutoInfoStore from "../stores/useAutoInfoStore";
 import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
 import useHistoryScreenStore from "../stores/useHistoryScreenStore";
@@ -14,7 +13,7 @@ import useInterfaceStore from "../stores/useInterfaceStore";
 import useSettingsScreenStore from "../stores/useSettingsScreenStore";
 import useSkipStore from "../stores/useSkipStore";
 import useStepStore from "../stores/useStepStore";
-import { INTERFACE_DATA_USE_QUEY_KEY, useQueryCanGoBack } from "../use_query/useQueryInterface";
+import { useQueryCanGoBack } from "../use_query/useQueryInterface";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../use_query/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../use_query/useQuerySaves";
 import { putSaveIntoIndexDB } from "../utils/save-utility";
@@ -23,7 +22,6 @@ export default function QuickTools() {
     const editOpenSettings = useSettingsScreenStore((state) => state.editOpen);
     const editOpenHistory = useHistoryScreenStore((state) => state.editOpen);
     const editOpenSaveScreen = useGameSaveScreenStore((state) => state.editOpen);
-    const navigate = useMyNavigate();
     const setOpenLoadAlert = useGameSaveScreenStore((state) => state.editLoadAlert);
     const { t } = useTranslation(["ui"]);
     const hideInterface = useInterfaceStore((state) => state.hidden);
@@ -37,7 +35,7 @@ export default function QuickTools() {
     const { data: lastSave = null } = useQueryLastSave();
     const { data: canGoBack = null } = useQueryCanGoBack();
     const nextStepLoading = useStepStore((state) => state.loading);
-    const setBackLoading = useStepStore((state) => state.setBackLoading);
+    const { goBack } = useNarrationFunctions();
 
     return (
         <>
@@ -71,19 +69,7 @@ export default function QuickTools() {
                 transition={{ type: "tween" }}
             >
                 <TextMenuButton
-                    onClick={() => {
-                        setBackLoading(true);
-                        stepHistory
-                            .goBack(navigate)
-                            .then(() => {
-                                setBackLoading(false);
-                                queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
-                            })
-                            .catch((e) => {
-                                setBackLoading(false);
-                                console.error(e);
-                            });
-                    }}
+                    onClick={goBack}
                     disabled={!canGoBack || nextStepLoading}
                     sx={{ pointerEvents: !hideInterface ? "auto" : "none" }}
                 >
