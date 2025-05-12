@@ -1,3 +1,4 @@
+import { Assets, Texture } from "@drincs/pixi-vn";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";
 import Card from "@mui/joy/Card";
@@ -252,6 +253,42 @@ function NarrationScreenText(props: { paragraphRef: RefObject<HTMLDivElement | n
                         onCharacterAnimationComplete: handleCharacterAnimationComplete,
                     }}
                     fallback={<>...</>}
+                    urlTransform={(url, _key, node) => {
+                        if (node.tagName === "img") {
+                            Assets.load<Texture>(url);
+                            const cachedTexture = Assets.cache.has(url) ? Assets.get(url) : null;
+                            if (cachedTexture instanceof Texture) {
+                                const canvas = document.createElement("canvas");
+                                const ctx = canvas.getContext("2d");
+                                if (!ctx) {
+                                    console.warn("Failed to create canvas context");
+                                    return;
+                                }
+                                // draw yuor image to the canvas
+                                // using cachedTexture.source and cachedTexture.frame
+                                let source = cachedTexture.source;
+                                let frame = cachedTexture.frame;
+                                canvas.width = frame.width;
+                                canvas.height = frame.height;
+                                ctx.drawImage(
+                                    source,
+                                    frame.x,
+                                    frame.y,
+                                    frame.width,
+                                    frame.height,
+                                    0,
+                                    0,
+                                    frame.width,
+                                    frame.height
+                                );
+                                return canvas.toDataURL("image/png");
+                                // } else {
+                                //     console.warn("Source is not an HTMLImageElement");
+                                // }
+                            }
+                        }
+                        return url;
+                    }}
                 >
                     {text}
                 </MarkdownTypewriterHooks>
