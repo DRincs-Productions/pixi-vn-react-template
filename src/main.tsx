@@ -25,11 +25,11 @@ Game.init(body, {
         throw new Error("root element not found");
     }
 
-    canvas.initializeHTMLLayout(root);
-    if (!canvas.htmlLayout) {
+    const htmlLayout = canvas.addHtmlLayer("ui", root);
+    if (!htmlLayout) {
         throw new Error("htmlLayout not found");
     }
-    const reactRoot = createRoot(canvas.htmlLayout);
+    const reactRoot = createRoot(htmlLayout);
 
     reactRoot.render(<App />);
 });

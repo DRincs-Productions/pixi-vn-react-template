@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
+import { useShallow } from "zustand/react/shallow";
 import ModalDialogCustom from "../../components/ModalDialog";
 import useTypewriterStore from "../../stores/useTypewriterStore";
 import { INTERFACE_DATA_USE_QUEY_KEY, useQueryDialogue, useQueryInputValue } from "../../use_query/useQueryInterface";
@@ -14,7 +15,7 @@ export default function TextInput() {
     const { data: { text } = {} } = useQueryDialogue();
     const { data: { isRequired, type, currentValue } = { currentValue: undefined, isRequired: false } } =
         useQueryInputValue<string | number>();
-    const open = useTypewriterStore((state) => !state.inProgress && isRequired);
+    const open = useTypewriterStore(useShallow((state) => !state.inProgress && isRequired));
     const [tempValue, setTempValue] = useState<string | number>();
     const queryClient = useQueryClient();
     const { t } = useTranslation(["ui"]);

@@ -5,9 +5,9 @@ import CardContent from "@mui/joy/CardContent";
 import Sheet from "@mui/joy/Sheet";
 import Typography from "@mui/joy/Typography";
 import { motion, Variants } from "motion/react";
-import { useCallback, useRef } from "react";
+import { RefObject, useCallback, useRef } from "react";
 import Markdown from "react-markdown";
-import { MarkdownTypewriter } from "react-markdown-typewriter";
+import { MarkdownTypewriterHooks } from "react-markdown-typewriter";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import { useShallow } from "zustand/react/shallow";
@@ -25,9 +25,6 @@ export default function NarrationScreen() {
         imageWidth: cardImageWidth,
         setImageWidth: setCardImageWidth,
     } = useDialogueCardStore(useShallow((state) => state));
-    const typewriterDelay = useTypewriterStore((state) => state.delay);
-    const startTypewriter = useTypewriterStore((state) => state.start);
-    const endTypewriter = useTypewriterStore((state) => state.end);
     const { data: { text, character, oldText } = {} } = useQueryDialogue();
     const hidden = useInterfaceStore((state) => state.hidden || (text || oldText ? false : true));
     const cardVarians: Variants = {
@@ -64,16 +61,6 @@ export default function NarrationScreen() {
         },
     };
     const paragraphRef = useRef<HTMLDivElement>(null);
-
-    const handleCharacterAnimationComplete = useCallback((ref: { current: HTMLSpanElement | null }) => {
-        if (paragraphRef.current && ref.current) {
-            let scrollTop = ref.current.offsetTop - paragraphRef.current.clientHeight / 2;
-            paragraphRef.current.scrollTo({
-                top: scrollTop,
-                behavior: "auto",
-            });
-        }
-    }, []);
 
     return (
         <Box
@@ -213,43 +200,62 @@ export default function NarrationScreen() {
                                     marginBottom: 2,
                                 }}
                             >
-                                <p style={{ margin: 0, padding: 0 }}>
-                                    {
-                                        <span>
-                                            <Markdown
-                                                remarkPlugins={[remarkGfm]}
-                                                rehypePlugins={[rehypeRaw]}
-                                                components={{
-                                                    p: (props) => <span {...props} />,
-                                                }}
-                                            >
-                                                {oldText}
-                                            </Markdown>
-                                        </span>
-                                    }
-                                    {
-                                        <span>
-                                            <span> </span>
-                                            <MarkdownTypewriter
-                                                remarkPlugins={[remarkGfm]}
-                                                rehypePlugins={[rehypeRaw]}
-                                                delay={typewriterDelay}
-                                                motionProps={{
-                                                    onAnimationStart: startTypewriter,
-                                                    onAnimationComplete: endTypewriter,
-                                                    onCharacterAnimationComplete: handleCharacterAnimationComplete,
-                                                }}
-                                            >
-                                                {text}
-                                            </MarkdownTypewriter>
-                                        </span>
-                                    }
-                                </p>
+                                <NarrationScreenText paragraphRef={paragraphRef} />
                             </Sheet>
                         </CardContent>
                     </Card>
                 </Box>
             </Box>
         </Box>
+    );
+}
+
+function NarrationScreenText(props: { paragraphRef: RefObject<HTMLDivElement | null> }) {
+    const { paragraphRef } = props;
+    const typewriterDelay = useTypewriterStore(useShallow((state) => state.delay));
+    const startTypewriter = useTypewriterStore(useShallow((state) => state.start));
+    const endTypewriter = useTypewriterStore(useShallow((state) => state.end));
+    const { data: { text, oldText } = {} } = useQueryDialogue();
+
+    const handleCharacterAnimationComplete = useCallback((ref: { current: HTMLSpanElement | null }) => {
+        if (paragraphRef.current && ref.current) {
+            let scrollTop = ref.current.offsetTop - paragraphRef.current.clientHeight / 2;
+            paragraphRef.current.scrollTo({
+                top: scrollTop,
+                behavior: "auto",
+            });
+        }
+    }, []);
+
+    return (
+        <p style={{ margin: 0, padding: 0 }}>
+            <span>
+                <Markdown
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeRaw]}
+                    components={{
+                        p: (props) => <span {...props} />,
+                    }}
+                >
+                    {oldText}
+                </Markdown>
+            </span>
+            <span>
+                <span> </span>
+                <MarkdownTypewriterHooks
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeRaw]}
+                    delay={typewriterDelay}
+                    motionProps={{
+                        onAnimationStart: startTypewriter,
+                        onAnimationComplete: endTypewriter,
+                        onCharacterAnimationComplete: handleCharacterAnimationComplete,
+                    }}
+                    fallback={<>...</>}
+                >
+                    {text}
+                </MarkdownTypewriterHooks>
+            </span>
+        </p>
     );
 }

@@ -1,10 +1,10 @@
 import {
     Assets,
-    ChoiceMenuOption,
-    ChoiceMenuOptionClose,
     moveIn,
     moveOut,
     narration,
+    newChoiceOption,
+    newCloseChoiceOption,
     newLabel,
     showImage,
     showImageContainer,
@@ -367,8 +367,8 @@ const startLabel = newLabel(
         async () => {
             narration.dialogue = `You want continue to the next part?`;
             narration.choiceMenuOptions = [
-                new ChoiceMenuOption("Yes, I want to continue", secondPart, {}, { type: "jump" }),
-                new ChoiceMenuOptionClose("No, I want to stop here"),
+                newChoiceOption("Yes, I want to continue", secondPart, {}, { type: "jump" }),
+                newCloseChoiceOption("No, I want to stop here"),
             ];
         },
     ],
@@ -380,7 +380,7 @@ const startLabel = newLabel(
 );
 export default startLabel;
 
-const secondPart = newLabel("second_part", [
+export const secondPart = newLabel("second_part", [
     async () => {
         await showImage("bg", "bg02-dorm");
         await showImageContainer("steph", ["fm02-body", "fm02-eyes-wow", "fm02-mouth-nervous00"]);

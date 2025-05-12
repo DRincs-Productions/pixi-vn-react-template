@@ -1,5 +1,6 @@
 import { AssetsManifest } from "@drincs/pixi-vn";
 import { MAIN_MENU_ROUTE } from "../constans";
+import startLabel, { secondPart } from "../labels/startLabel";
 
 /**
  * Manifest for the assets used in the game.
@@ -19,7 +20,7 @@ const manifest: AssetsManifest = {
         },
         // labels
         {
-            name: "start",
+            name: startLabel.id,
             assets: [
                 {
                     alias: "bg01-hallway",
@@ -28,7 +29,7 @@ const manifest: AssetsManifest = {
             ],
         },
         {
-            name: "second_part",
+            name: secondPart.id,
             assets: [
                 {
                     alias: "bg02-dorm",
