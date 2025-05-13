@@ -1,9 +1,9 @@
-import { useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { SKIP_DELAY } from "../constans";
 import useAutoInfoStore from "../stores/useAutoInfoStore";
 import useSkipStore from "../stores/useSkipStore";
 import useTypewriterStore from "../stores/useTypewriterStore";
+import useDebouncedEffect from "./useDebouncedEffect";
 import useInterval from "./useInterval";
 import useEventListener from "./useKeyDetector";
 import useNarrationFunctions from "./useNarrationFunctions";
@@ -21,26 +21,14 @@ export default function useSkipAutoDetector() {
         enabled: skipEnabled,
     });
 
-    useEffect(() => {
-        if (skipEnabled) {
-            return;
-        }
-        if (autoEnabled && !typewriterInProgress) {
-            if (autoTime) {
-                let millisecond = autoTime * 1000;
-                // Debouncing
-                let timeout = setTimeout(() => {
-                    if (autoEnabled && !skipEnabled) {
-                        goNext();
-                    }
-                }, millisecond);
-
-                return () => {
-                    clearTimeout(timeout);
-                };
-            }
-        }
-    }, [autoTime, autoEnabled, typewriterInProgress, skipEnabled, goNext]);
+    useDebouncedEffect(
+        () => autoEnabled && !skipEnabled && goNext(),
+        {
+            delay: autoTime * 1000,
+            enabled: autoEnabled && !skipEnabled && !typewriterInProgress,
+        },
+        [autoEnabled, skipEnabled, goNext]
+    );
 
     useEventListener({
         type: "keypress",

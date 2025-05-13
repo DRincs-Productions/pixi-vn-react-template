@@ -54,4 +54,8 @@
     // olther
     "extensions.ignoreRecommendations": false,
     "prettier.useEditorConfig": false,
+    "workbench.editor.enablePreview": true,
+    "workbench.editorAssociations": {
+        "*.md": "vscode.markdown.preview.editor"
+    },
 }
