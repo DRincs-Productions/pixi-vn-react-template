@@ -25,9 +25,9 @@ export default function useDebouncedEffect(
     const { delay = 1000, enabled = true } = options;
 
     useEffect(() => {
-        if (enabled) {
+        if (enabled && delay > 0) {
             const timeout = setTimeout(callback, delay);
             return () => clearTimeout(timeout);
         }
-    }, dependencies);
+    }, [delay, enabled, ...dependencies]);
 }
