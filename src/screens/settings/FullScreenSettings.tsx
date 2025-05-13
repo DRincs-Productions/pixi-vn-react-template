@@ -5,6 +5,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import useQueryIsFullModeScreen, { IS_FULL_SCREEN_MODE_USE_QUEY_KEY } from "../../use_query/useQueryIsFullModeScreen";
+import * as app from '@tauri-apps/api';
+import { getCurrentWindow } from '@tauri-apps/api/window';
+declare global { interface Window { __TAURI__: typeof app; } }
 
 export default function FullScreenSettings() {
     const { data: isFullScreenMode } = useQueryIsFullModeScreen();
@@ -27,7 +30,9 @@ export default function FullScreenSettings() {
                 onClick={() => {
                     setLoading(true);
                     let promise: Promise<void>;
-                    if (isFullScreenMode) {
+                    if (window.__TAURI__) {
+                        promise = getCurrentWindow().setFullscreen(!isFullScreenMode);
+                    } else if (isFullScreenMode) {
                         promise = document.exitFullscreen();
                     } else {
                         promise = document.documentElement.requestFullscreen();
