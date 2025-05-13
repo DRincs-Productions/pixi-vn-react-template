@@ -28,6 +28,7 @@ export default function QuickTools() {
     const setHideInterface = useInterfaceStore((state) => state.editHidden);
     const skipEnabled = useSkipStore((state) => state.enabled);
     const editSkipEnabled = useSkipStore((state) => state.editEnabled);
+    const setSkipEnabled = useSkipStore((state) => state.setEnabled);
     const autoEnabled = useAutoInfoStore((state) => state.enabled);
     const editAutoEnabled = useAutoInfoStore((state) => state.editEnabled);
     const { enqueueSnackbar } = useSnackbar();
@@ -69,7 +70,12 @@ export default function QuickTools() {
                 transition={{ type: "tween" }}
             >
                 <TextMenuButton
-                    onClick={goBack}
+                    onClick={() => {
+                        if (skipEnabled) {
+                            setSkipEnabled(false);
+                        }
+                        goBack();
+                    }}
                     disabled={!canGoBack || nextStepLoading}
                     sx={{ pointerEvents: !hideInterface ? "auto" : "none" }}
                 >
