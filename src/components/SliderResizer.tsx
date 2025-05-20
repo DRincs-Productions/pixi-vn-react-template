@@ -1,10 +1,13 @@
-import { Slider, SliderProps, Stack, useTheme } from "@mui/joy";
-import { AnimationProps, motion } from "motion/react";
+import { Slider, SliderProps, Stack, StackProps, useTheme } from "@mui/joy";
 
-interface SliderResizerProps extends SliderProps, AnimationProps {}
-
-export default function SliderResizer(props: SliderResizerProps) {
-    const { orientation, sx, key, ...rest } = props;
+export default function SliderResizer(
+    props: SliderProps & {
+        stackProps?: StackProps;
+    }
+) {
+    const { orientation, sx, key, stackProps, ...rest } = props;
+    const { sx: stackSX, ...stackRest } = stackProps || {};
+    const { pointerEvents } = (sx || {}) as any;
 
     return (
         <Stack
@@ -20,7 +23,9 @@ export default function SliderResizer(props: SliderResizerProps) {
                 position: "absolute",
                 left: 0,
                 right: 0,
+                ...stackSX,
             }}
+            {...stackRest}
         >
             <Slider
                 key={key}
@@ -28,19 +33,17 @@ export default function SliderResizer(props: SliderResizerProps) {
                 valueLabelDisplay='auto'
                 valueLabelFormat={(index) => index + "%"}
                 sx={{
-                    position: "static",
                     zIndex: useTheme().zIndex.table + 1,
                     "--Slider-trackSize": "0px",
                     "--Slider-thumbWidth": orientation === "vertical" ? "42px" : "16px",
                     "--Slider-thumbSize": orientation === "vertical" ? "16px" : "42px",
                     "& .MuiSlider-thumb": {
                         cursor: orientation === "vertical" ? "row-resize" : "col-resize",
-                        pointerEvents: "auto",
+                        pointerEvents: pointerEvents ?? "auto",
                     },
                     ...sx,
-                    pointerEvents: "none",
+                    pointerEvents: pointerEvents ?? "none",
                 }}
-                component={motion.div}
                 {...rest}
             />
         </Stack>

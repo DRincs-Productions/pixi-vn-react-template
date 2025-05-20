@@ -1,5 +1,5 @@
 import { Button } from "@mui/joy";
-import { motion } from "motion/react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useNarrationFunctions from "../hooks/useNarrationFunctions";
 import useInterfaceStore from "../stores/useInterfaceStore";
@@ -16,6 +16,13 @@ export default function NextButton() {
     const hideNextButton = useInterfaceStore((state) => state.hidden || !canGoNext);
     const { goNext } = useNarrationFunctions();
     const { t } = useTranslation(["ui"]);
+    const varians = useMemo(
+        () =>
+            hideNextButton
+                ? `motion-opacity-out-0 motion-translate-y-out-[50%]`
+                : `motion-opacity-in-0 motion-translate-y-in-[50%]`,
+        [hideNextButton]
+    );
 
     return (
         <Button
@@ -38,20 +45,7 @@ export default function NextButton() {
                 }
                 goNext();
             }}
-            component={motion.div}
-            variants={{
-                open: {
-                    opacity: 1,
-                    pointerEvents: "auto",
-                },
-                closed: {
-                    opacity: 0,
-                    pointerEvents: "none",
-                },
-            }}
-            initial={"closed"}
-            animate={hideNextButton ? "closed" : "open"}
-            exit={"closed"}
+            className={varians}
         >
             {t("next")}
         </Button>

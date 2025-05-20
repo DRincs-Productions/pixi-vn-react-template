@@ -83,33 +83,31 @@ export default function GameSaveScreen() {
                     </span>
                 </Tooltip>
             </Stack>
-            {open && (
-                <Grid container>
-                    {/* for 6 element */}
-                    {Array.from({ length: 6 }).map((_, index) => {
-                        let id = page * 6 + index;
-                        return (
-                            <Grid xs={12} sm={6} md={4} key={"ModalDialogCustom" + index}>
-                                <GameSaveSlot
-                                    saveId={id}
-                                    onSave={() => {
-                                        openSaveAlert(id);
-                                    }}
-                                    onOverwriteSave={(data) => {
-                                        openOverwriteSaveAlert(id, data.name);
-                                    }}
-                                    onLoad={(data) => {
-                                        openLoadAlert({ ...data, id: id });
-                                    }}
-                                    onDelete={() => {
-                                        openDeleteAlert(id);
-                                    }}
-                                />
-                            </Grid>
-                        );
-                    })}
-                </Grid>
-            )}
+            <Grid container>
+                {/* for 6 element */}
+                {Array.from({ length: 6 }).map((_, index) => {
+                    let id = page * 6 + index;
+                    return (
+                        <Grid xs={12} sm={6} md={4} key={"ModalDialogCustom" + index}>
+                            <GameSaveSlot
+                                saveId={id}
+                                onSave={() => {
+                                    openSaveAlert(id);
+                                }}
+                                onOverwriteSave={(data) => {
+                                    openOverwriteSaveAlert(id, data.name);
+                                }}
+                                onLoad={(data) => {
+                                    openLoadAlert({ ...data, id: id });
+                                }}
+                                onDelete={() => {
+                                    openDeleteAlert(id);
+                                }}
+                            />
+                        </Grid>
+                    );
+                })}
+            </Grid>
             <Pagination
                 count={999}
                 siblingCount={smScreen ? 2 : 7}
