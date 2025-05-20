@@ -4,8 +4,7 @@ import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Sheet from "@mui/joy/Sheet";
 import Typography from "@mui/joy/Typography";
-import { motion, Variants } from "motion/react";
-import { RefObject, useCallback, useRef } from "react";
+import { RefObject, useCallback, useMemo, useRef } from "react";
 import Markdown from "react-markdown";
 import { MarkdownTypewriterHooks } from "react-markdown-typewriter";
 import rehypeRaw from "rehype-raw";
@@ -21,99 +20,75 @@ import ChoiceMenu from "./ChoiceMenu";
 
 export default function NarrationScreen() {
     const {
-        height: cardHeight,
+        height: cardHeightTemp,
         setHeight: setCardHeight,
         imageWidth: cardImageWidth,
         setImageWidth: setCardImageWidth,
     } = useDialogueCardStore(useShallow((state) => state));
-    const { data: { text, character, oldText } = {} } = useQueryDialogue();
-    const hidden = useInterfaceStore((state) => state.hidden || (text || oldText ? false : true));
-    const cardVarians: Variants = {
-        open: {
-            opacity: 1,
-            y: 0,
-        },
-        closed: {
-            opacity: 0,
-            y: 200,
-            pointerEvents: "none",
-        },
-    };
-    const cardElementVarians: Variants = {
-        open: {
-            opacity: 1,
-            scale: 1,
-            pointerEvents: "auto",
-        },
-        closed: {
-            opacity: 0,
-            scale: 0,
-            pointerEvents: "none",
-        },
-    };
-    const cardImageVarians: Variants = {
-        open: {
-            opacity: 1,
-            x: 0,
-        },
-        closed: {
-            opacity: 0,
-            x: -100,
-        },
-    };
+    const { data: { animatedText, character, text } = {} } = useQueryDialogue();
+    const hidden = useInterfaceStore((state) => state.hidden || (animatedText || text ? false : true));
+    const cardHeight = animatedText || text ? cardHeightTemp : 0;
+    const cardVarians = useMemo(
+        () =>
+            hidden
+                ? `motion-opacity-out-0 motion-translate-y-out-[50%]`
+                : `motion-opacity-in-0 motion-translate-y-in-[50%]`,
+        [hidden]
+    );
+    const sliderVarians = useMemo(
+        () =>
+            hidden
+                ? `motion-duration-200/opacity motion-opacity-out-0 motion-translate-y-out-[25%]`
+                : `motion-opacity-in-0 motion-translate-y-in-[25%]`,
+        [hidden]
+    );
+    const cardImageVarians = useMemo(
+        () => (!hidden && character?.icon ? `motion-opacity-in-0 motion-translate-x-in-[-5%]` : `motion-opacity-out-0`),
+        [hidden, character?.icon]
+    );
     const paragraphRef = useRef<HTMLDivElement>(null);
 
     return (
         <Box
             sx={{
-                height: "95%",
-                width: "100%",
                 position: "absolute",
-                left: 0,
-                right: 0,
-                top: 0,
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",
+                width: "100%",
             }}
         >
-            <ChoiceMenu fullscreen={text || oldText ? false : true} />
-            <SliderResizer
-                orientation='vertical'
-                max={100}
-                min={0}
-                value={cardHeight}
-                onChange={(_, value) => {
-                    if (typeof value === "number") {
-                        setCardHeight(value);
-                    }
-                }}
-                variants={cardVarians}
-                initial={"closed"}
-                animate={hidden ? "closed" : "open"}
-                exit={"closed"}
-                transition={{ type: "tween" }}
-            />
-            <Box
-                sx={{
-                    position: "absolute",
-                    height: `${cardHeight}%`,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                }}
-            >
+            <Box sx={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
+                <SliderResizer
+                    orientation='vertical'
+                    max={100}
+                    min={0}
+                    value={cardHeight}
+                    onChange={(_, value) => {
+                        if (typeof value === "number") {
+                            setCardHeight(value);
+                        }
+                    }}
+                    stackProps={{
+                        sx: {
+                            top: 0,
+                            paddingBottom: { xs: "0.9rem", sm: "1rem", md: "1.1rem", lg: "1.3rem", xl: "1.4rem" },
+                            pointerEvents: !hidden ? "auto" : "none",
+                        },
+                    }}
+                    className={sliderVarians}
+                />
+                <Box sx={{ flex: 1, minHeight: 0 }}>
+                    <ChoiceMenu />
+                </Box>
                 <Box
                     sx={{
-                        position: "absolute",
-                        left: 0,
-                        right: 0,
-                        top: 0,
-                        height: "100%",
+                        flex: "0 0 auto",
+                        height: `${cardHeight}%`,
+                        minHeight: 0,
+                        pointerEvents: !hidden ? "auto" : "none",
                     }}
-                    component={motion.div}
-                    variants={cardVarians}
-                    initial={"closed"}
-                    animate={hidden ? "closed" : "open"}
-                    exit={"closed"}
-                    transition={{ type: "tween" }}
+                    className={cardVarians}
                 >
                     <Card
                         key={"dialogue-card"}
@@ -123,6 +98,7 @@ export default function NarrationScreen() {
                             gap: 1,
                             padding: 0,
                             height: "100%",
+                            marginX: { xs: "0.9rem", sm: "1rem", md: "1.1rem", lg: "1.3rem", xl: "1.4rem" },
                         }}
                     >
                         {character?.icon && (
@@ -134,58 +110,50 @@ export default function NarrationScreen() {
                                     height: "100%",
                                     minWidth: `${cardImageWidth}%`,
                                 }}
-                                component={motion.div}
-                                variants={cardElementVarians}
-                                initial={"closed"}
-                                animate={character?.icon ? "open" : "closed"}
-                                exit={"closed"}
-                                transition={{ type: "tween" }}
+                                className={`motion-scale-x-in-0`}
                             >
                                 <img src={character.icon} loading='lazy' alt='' />
                             </AspectRatio>
                         )}
-                        {character && (
-                            <SliderResizer
-                                orientation='horizontal'
-                                max={100}
-                                min={0}
-                                value={cardImageWidth}
-                                onChange={(_, value) => {
-                                    if (typeof value === "number") {
-                                        if (value > 75) {
-                                            value = 75;
-                                        }
-                                        if (value < 5) {
-                                            value = 5;
-                                        }
-                                        setCardImageWidth(value);
+                        <SliderResizer
+                            orientation='horizontal'
+                            max={100}
+                            min={0}
+                            value={cardImageWidth}
+                            onChange={(_, value) => {
+                                if (typeof value === "number") {
+                                    if (value > 75) {
+                                        value = 75;
                                     }
-                                }}
-                                variants={cardImageVarians}
-                                initial={"closed"}
-                                animate={character?.icon ? "open" : "closed"}
-                                exit={"closed"}
-                                transition={{ type: "tween" }}
-                            />
-                        )}
+                                    if (value < 5) {
+                                        value = 5;
+                                    }
+                                    setCardImageWidth(value);
+                                }
+                            }}
+                            sx={{
+                                pointerEvents: !hidden && character?.icon ? "auto" : "none",
+                            }}
+                            className={cardImageVarians}
+                        />
                         <CardContent>
-                            {character && character.name && (
-                                <Typography
-                                    fontSize='xl'
-                                    fontWeight='lg'
-                                    sx={{
-                                        color: character.color,
-                                        paddingLeft: 1,
-                                    }}
-                                    component={motion.div}
-                                    variants={cardElementVarians}
-                                    initial={"closed"}
-                                    animate={character.name ? "open" : "closed"}
-                                    exit={"closed"}
-                                >
-                                    {character.name + (character.surname ? " " + character.surname : "")}
-                                </Typography>
-                            )}
+                            <Typography
+                                fontSize='xl'
+                                fontWeight='lg'
+                                sx={{
+                                    color: character?.color,
+                                    paddingLeft: 1,
+                                    height: 30,
+                                    marginLeft: 2,
+                                }}
+                                className={
+                                    character && character.name
+                                        ? `motion-opacity-in-0 motion-translate-x-in-[-3%]`
+                                        : `motion-opacity-out-0`
+                                }
+                            >
+                                {`${character?.name || ""} ${character?.surname || ""}`}
+                            </Typography>
                             <Sheet
                                 ref={paragraphRef}
                                 sx={{
@@ -197,8 +165,8 @@ export default function NarrationScreen() {
                                     flex: 1,
                                     overflow: "auto",
                                     height: "100%",
-                                    marginRight: 2,
-                                    marginBottom: 2,
+                                    marginX: 3,
+                                    marginBottom: 3,
                                 }}
                             >
                                 <NarrationScreenText paragraphRef={paragraphRef} />
@@ -207,16 +175,22 @@ export default function NarrationScreen() {
                     </Card>
                 </Box>
             </Box>
+            <Box
+                sx={{
+                    flex: "0 0 auto",
+                    height: { xs: "0.9rem", sm: "1rem", md: "1.1rem", lg: "1.3rem", xl: "1.4rem" },
+                    minHeight: 0,
+                }}
+            ></Box>
         </Box>
     );
 }
 
-function NarrationScreenText(props: { paragraphRef: RefObject<HTMLDivElement | null> }) {
-    const { paragraphRef } = props;
+function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement | null> }) {
     const typewriterDelay = useTypewriterStore(useShallow((state) => state.delay));
     const startTypewriter = useTypewriterStore(useShallow((state) => state.start));
     const endTypewriter = useTypewriterStore(useShallow((state) => state.end));
-    const { data: { text, oldText } = {} } = useQueryDialogue();
+    const { data: { animatedText, text } = {} } = useQueryDialogue();
 
     const handleCharacterAnimationComplete = useCallback((ref: { current: HTMLSpanElement | null }) => {
         if (paragraphRef.current && ref.current) {
@@ -238,7 +212,7 @@ function NarrationScreenText(props: { paragraphRef: RefObject<HTMLDivElement | n
                         p: (props) => <span {...props} />,
                     }}
                 >
-                    {oldText}
+                    {text}
                 </Markdown>
             </span>
             <span>
@@ -258,7 +232,7 @@ function NarrationScreenText(props: { paragraphRef: RefObject<HTMLDivElement | n
                     }}
                     fallback={<AnimatedDots />}
                 >
-                    {text}
+                    {animatedText}
                 </MarkdownTypewriterHooks>
             </span>
         </p>

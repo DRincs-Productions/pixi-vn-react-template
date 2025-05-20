@@ -135,7 +135,7 @@ export default function HistoryScreen() {
                     flexDirection: "column-reverse",
                 }}
             >
-                {open && <HistoryList searchString={searchString} />}
+                <HistoryList searchString={searchString} />
             </Box>
         </ModalDialogCustom>
     );
