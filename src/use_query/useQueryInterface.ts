@@ -17,7 +17,11 @@ const CHOICE_MENU_OPTIONS_USE_QUEY_KEY = "choice_menu_options_use_quey_key";
 export function useQueryChoiceMenuOptions() {
     return useQuery({
         queryKey: [INTERFACE_DATA_USE_QUEY_KEY, CHOICE_MENU_OPTIONS_USE_QUEY_KEY],
-        queryFn: async () => narration.choiceMenuOptions || [],
+        queryFn: async () =>
+            narration.choiceMenuOptions?.map((option) => ({
+                ...option,
+                text: typeof option.text === "string" ? option.text : option.text.join(" "),
+            })) || [],
     });
 }
 
@@ -40,7 +44,7 @@ type DialogueModel = {
 };
 const DIALOGUE_USE_QUEY_KEY = "dialogue_use_quey_key";
 export function useQueryDialogue() {
-    const { t: tNarration } = useTranslation(["narration"]);
+    const { t } = useTranslation(["narration"]);
     const queryClient = useQueryClient();
 
     return useQuery<DialogueModel>({
@@ -49,11 +53,13 @@ export function useQueryDialogue() {
             let dialogue = narration.dialogue;
             let text = dialogue?.text;
             if (Array.isArray(text)) {
-                text = text.join(" ");
+                text = text.map((text) => t(text)).join(" ");
+            } else if (typeof text === "string") {
+                text = t(text);
             }
             let newCharacter = dialogue?.character;
             if (typeof newCharacter === "string") {
-                newCharacter = new Character(newCharacter, { name: tNarration(newCharacter) });
+                newCharacter = new Character(newCharacter, { name: t(newCharacter) });
             }
 
             let prevData = queryClient.getQueryData<DialogueModel>(queryKey) || {};
@@ -88,7 +94,7 @@ export function useQueryCanGoNext() {
 
 const NARRATIVE_HISTORY_USE_QUEY_KEY = "narrative_history_use_quey_key";
 export function useQueryNarrativeHistory({ searchString }: { searchString?: string }) {
-    const { t: tNarration } = useTranslation(["narration"]);
+    const { t } = useTranslation(["narration"]);
 
     return useQuery({
         queryKey: [INTERFACE_DATA_USE_QUEY_KEY, NARRATIVE_HISTORY_USE_QUEY_KEY, searchString],
@@ -96,17 +102,19 @@ export function useQueryNarrativeHistory({ searchString }: { searchString?: stri
             const promises = stepHistory.narrativeHistory.map(async (step) => {
                 let character = step.dialogue?.character;
                 if (typeof character === "string") {
-                    character = new Character(character, { name: tNarration(character) });
+                    character = new Character(character, { name: t(character) });
                 }
-                let text = step.dialogue?.text || "";
+                let text = step.dialogue?.text;
                 if (Array.isArray(text)) {
-                    text = text.join(" ");
+                    text = text.map((text) => t(text)).join(" ");
+                } else if (typeof text === "string") {
+                    text = t(text);
                 }
                 return {
                     character: character?.name
                         ? character.name + (character.surname ? " " + character.surname : "")
                         : undefined,
-                    text: text,
+                    text: text || "",
                     icon: character?.icon,
                     choices: step.choices,
                     inputValue: step.inputValue,

@@ -1,6 +1,5 @@
 import { RegisteredCharacters } from "@drincs/pixi-vn";
-import { importInkText, onInkHashtagScript, onInkTranslate, onReplaceTextBeforeTranslation } from "@drincs/pixi-vn-ink";
-import { TFunction } from "i18next";
+import { importInkText, onInkHashtagScript, onReplaceTextBeforeTranslation } from "@drincs/pixi-vn-ink";
 
 export async function importAllInkLabels() {
     const files = import.meta.glob<{ default: string }>("../ink/*.{ink,txt}");
@@ -13,13 +12,7 @@ export async function importAllInkLabels() {
     await importInkText(fileEntries);
 }
 
-export function initializeInk({
-    navigate,
-    t,
-}: {
-    navigate: (path: string) => void;
-    t: TFunction<[string], undefined>;
-}) {
+export function initializeInk({ navigate }: { navigate: (path: string) => void }) {
     onInkHashtagScript((script, _convertListStringToObj) => {
         if (script.length === 2) {
             if (script[0] === "navigate") {
@@ -38,8 +31,5 @@ export function initializeInk({
     });
     onReplaceTextBeforeTranslation((key) => {
         return `{{${key}}}`;
-    });
-    onInkTranslate((text) => {
-        return t(text);
     });
 }

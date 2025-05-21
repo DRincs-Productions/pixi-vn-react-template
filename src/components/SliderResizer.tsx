@@ -42,7 +42,7 @@ export default function SliderResizer(
                         pointerEvents: pointerEvents ?? "auto",
                     },
                     ...sx,
-                    pointerEvents: pointerEvents ?? "none",
+                    pointerEvents: "none",
                 }}
                 {...rest}
             />

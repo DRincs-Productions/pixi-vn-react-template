@@ -73,8 +73,10 @@ export default function NarrationScreen() {
                         sx: {
                             top: 0,
                             paddingBottom: { xs: "0.9rem", sm: "1rem", md: "1.1rem", lg: "1.3rem", xl: "1.4rem" },
-                            pointerEvents: !hidden ? "auto" : "none",
                         },
+                    }}
+                    sx={{
+                        pointerEvents: !hidden ? "auto" : "none",
                     }}
                     className={sliderVarians}
                 />
@@ -143,7 +145,7 @@ export default function NarrationScreen() {
                                 sx={{
                                     color: character?.color,
                                     paddingLeft: 1,
-                                    height: 30,
+                                    height: { sx: undefined, md: 30 },
                                     marginLeft: 2,
                                 }}
                                 className={
@@ -165,8 +167,8 @@ export default function NarrationScreen() {
                                     flex: 1,
                                     overflow: "auto",
                                     height: "100%",
-                                    marginX: 3,
-                                    marginBottom: 3,
+                                    marginX: { xs: 0, md: 3 },
+                                    marginBottom: { xs: 0, md: 3 },
                                 }}
                             >
                                 <NarrationScreenText paragraphRef={paragraphRef} />
