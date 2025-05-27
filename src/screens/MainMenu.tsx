@@ -74,10 +74,10 @@ export default function MainMenu() {
             <MenuButton
                 onClick={() => {
                     canvas.removeAll();
-                    navigate(NARRATION_ROUTE);
-                    narration
-                        .callLabel(startLabel, gameProps)
-                        .then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }));
+                    narration.callLabel(startLabel, gameProps).then(() => {
+                        queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
+                        navigate(NARRATION_ROUTE);
+                    });
                 }}
                 transitionDelay={0.2}
             >
