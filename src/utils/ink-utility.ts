@@ -2,11 +2,10 @@ import { RegisteredCharacters } from "@drincs/pixi-vn";
 import { importInkText, onInkHashtagScript, onReplaceTextBeforeTranslation } from "@drincs/pixi-vn-ink";
 
 export async function importAllInkLabels() {
-    const files = import.meta.glob<{ default: string }>("../ink/*.{ink,txt}");
+    const files = import.meta.glob<string>("../ink/*.{ink,txt}", { as: "raw" });
     const fileEntries = await Promise.all(
-        Object.entries(files).map(async ([path]) => {
-            const fileModule = await import(/* @vite-ignore */ path + "?raw");
-            return fileModule.default;
+        Object.values(files).map(async (importFile) => {
+            return await importFile();
         })
     );
     await importInkText(fileEntries);
