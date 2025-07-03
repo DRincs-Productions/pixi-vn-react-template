@@ -1,28 +1,28 @@
 {
     // Formatter
     "[javascript]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode",
-		"editor.formatOnSave": true
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
     },
     "[javascriptreact]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode",
-		"editor.formatOnSave": true
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
     },
     "[typescript]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode",
-		"editor.formatOnSave": true
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
     },
     "[typescriptreact]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode",
-		"editor.formatOnSave": true
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
     },
     "[css]": {
         "editor.defaultFormatter": "vscode.css-language-features",
         "editor.formatOnSave": true
     },
     "[html]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode",
-		"editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
         "prettier.tabWidth": 2,
     },
     "prettier.jsxSingleQuote": true,
@@ -53,7 +53,6 @@
     ],
     // olther
     "extensions.ignoreRecommendations": false,
-    "prettier.useEditorConfig": false,
     "workbench.editor.enablePreview": true,
     "workbench.editorAssociations": {
         "*.md": "vscode.markdown.preview.editor"

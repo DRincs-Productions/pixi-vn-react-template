@@ -7,8 +7,8 @@ import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import TypographyShadow from "../components/TypographyShadow";
 import { MAIN_MENU_ROUTE } from "../constans";
+import useQuerySaves from "../hooks/useQuerySaves";
 import GameSaveData from "../models/GameSaveData";
-import useQuerySaves from "../use_query/useQuerySaves";
 import { downloadGameSave } from "../utils/save-utility";
 
 export default function GameSaveSlot({

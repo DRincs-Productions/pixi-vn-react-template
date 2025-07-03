@@ -6,12 +6,12 @@ import { useEffect } from "react";
 import MenuButton from "../components/MenuButton";
 import { CANVAS_UI_LAYER_NAME, NARRATION_ROUTE } from "../constans";
 import useGameProps from "../hooks/useGameProps";
+import { INTERFACE_DATA_USE_QUEY_KEY } from "../hooks/useQueryInterface";
+import useQueryLastSave from "../hooks/useQueryLastSave";
 import startLabel from "../labels/startLabel";
 import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
 import useInterfaceStore from "../stores/useInterfaceStore";
 import useSettingsScreenStore from "../stores/useSettingsScreenStore";
-import { INTERFACE_DATA_USE_QUEY_KEY } from "../use_query/useQueryInterface";
-import useQueryLastSave from "../use_query/useQueryLastSave";
 import { loadSave } from "../utils/save-utility";
 
 export default function MainMenu() {
@@ -74,10 +74,10 @@ export default function MainMenu() {
             <MenuButton
                 onClick={() => {
                     canvas.removeAll();
-                    navigate(NARRATION_ROUTE);
-                    narration
-                        .callLabel(startLabel, gameProps)
-                        .then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }));
+                    narration.callLabel(startLabel, gameProps).then(() => {
+                        queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
+                        navigate(NARRATION_ROUTE);
+                    });
                 }}
                 transitionDelay={0.2}
             >

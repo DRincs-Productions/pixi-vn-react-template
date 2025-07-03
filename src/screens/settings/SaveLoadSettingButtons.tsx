@@ -10,11 +10,11 @@ import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import SettingButton from "../../components/SettingButton";
 import useMyNavigate from "../../hooks/useMyNavigate";
+import { INTERFACE_DATA_USE_QUEY_KEY } from "../../hooks/useQueryInterface";
+import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
+import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
 import useGameSaveScreenStore from "../../stores/useGameSaveScreenStore";
 import useSettingsScreenStore from "../../stores/useSettingsScreenStore";
-import { INTERFACE_DATA_USE_QUEY_KEY } from "../../use_query/useQueryInterface";
-import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../use_query/useQueryLastSave";
-import { SAVES_USE_QUEY_KEY } from "../../use_query/useQuerySaves";
 import { downloadGameSave, loadGameSaveFromFile, putSaveIntoIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadSettingButtons() {

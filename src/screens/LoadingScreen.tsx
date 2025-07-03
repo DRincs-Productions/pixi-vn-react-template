@@ -1,5 +1,4 @@
 import { Box, CircularProgress } from "@mui/joy";
-import { motion } from "motion/react";
 
 export default function LoadingScreen() {
     return (
@@ -16,22 +15,7 @@ export default function LoadingScreen() {
                     bottom: 0,
                     margin: 2,
                 }}
-                component={motion.div}
-                variants={{
-                    open: {
-                        opacity: 1,
-                        scale: 1,
-                        pointerEvents: "auto",
-                    },
-                    closed: {
-                        opacity: 0,
-                        scale: 0,
-                        pointerEvents: "none",
-                    },
-                }}
-                initial={"closed"}
-                animate={"open"}
-                exit={"closed"}
+                className='motion-preset-pop'
             >
                 <CircularProgress />
             </Box>

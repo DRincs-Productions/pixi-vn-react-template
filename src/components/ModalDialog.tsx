@@ -1,8 +1,7 @@
 import { DialogActions, DialogContent, Divider, ModalClose } from "@mui/joy";
 import Modal from "@mui/joy/Modal";
 import { default as ModalDialogJoy, ModalDialogProps } from "@mui/joy/ModalDialog";
-import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export interface ModalDialogCustomProps extends ModalDialogProps {
     open: boolean;
@@ -28,63 +27,42 @@ export default function ModalDialogCustom(props: ModalDialogCustomProps) {
             clearTimeout(timeout);
         };
     }, [open]);
+    const modalVarians = useMemo(
+        () => `transition-all duration-400
+        ${open ? "opacity-100 backdrop-blur-sm" : "opacity-0 backdrop-blur-0"}`,
+        [open]
+    );
+    const modalDialogVarians = useMemo(
+        () =>
+            `transition-all duration-400
+        ${open ? "opacity-100" : "opacity-0"}`,
+        [open]
+    );
 
     return (
-        <AnimatePresence>
-            <Modal
-                keepMounted
-                open={internalOpen}
-                onClose={() => canBeIgnored && setOpen(false)}
-                component={motion.div}
-                variants={{
-                    open: {
-                        opacity: 1,
-                        pointerEvents: "auto",
-                        backdropFilter: "blur(8px)",
-                    },
-                    closed: {
-                        opacity: 0,
-                        pointerEvents: "none",
-                        backdropFilter: "blur(0px)",
-                    },
+        <Modal
+            keepMounted
+            open={internalOpen}
+            onClose={() => canBeIgnored && setOpen(false)}
+            sx={{
+                pointerEvents: open ? "auto" : "none",
+            }}
+            className={modalVarians}
+        >
+            <ModalDialogJoy
+                sx={{
+                    pointerEvents: open ? "auto" : "none",
+                    ...sx,
                 }}
-                initial={"closed"}
-                animate={open ? "open" : "closed"}
-                exit={"closed"}
-                transition={{
-                    duration: 0.4,
-                }}
+                className={modalDialogVarians}
+                {...rest}
             >
-                <ModalDialogJoy
-                    sx={{
-                        ...sx,
-                    }}
-                    component={motion.div}
-                    variants={{
-                        open: {
-                            opacity: 1,
-                            pointerEvents: "auto",
-                        },
-                        closed: {
-                            opacity: 0,
-                            pointerEvents: "none",
-                        },
-                    }}
-                    initial={"closed"}
-                    animate={internalOpen ? "open" : "closed"}
-                    exit={"closed"}
-                    transition={{
-                        duration: 0.3,
-                    }}
-                    {...rest}
-                >
-                    {canBeIgnored && <ModalClose />}
-                    {head}
-                    {head && <Divider />}
-                    <DialogContent>{children}</DialogContent>
-                    {actions && <DialogActions>{actions}</DialogActions>}
-                </ModalDialogJoy>
-            </Modal>
-        </AnimatePresence>
+                {canBeIgnored && <ModalClose />}
+                {head}
+                {head && <Divider />}
+                <DialogContent>{internalOpen && children}</DialogContent>
+                {actions && <DialogActions>{actions}</DialogActions>}
+            </ModalDialogJoy>
+        </Modal>
     );
 }

@@ -5,8 +5,6 @@ export const IS_FULL_SCREEN_MODE_USE_QUEY_KEY = "is_full_screen_mode_use_quey_ke
 export default function useQueryIsFullModeScreen() {
     return useQuery({
         queryKey: [IS_FULL_SCREEN_MODE_USE_QUEY_KEY],
-        queryFn: () => {
-            return document.fullscreenElement !== null;
-        },
+        queryFn: async () => document.fullscreenElement !== null,
     });
 }
