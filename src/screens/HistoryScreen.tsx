@@ -10,8 +10,8 @@ import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import ModalDialogCustom from "../components/ModalDialog";
 import useEventListener from "../hooks/useKeyDetector";
+import { useQueryNarrativeHistory } from "../hooks/useQueryInterface";
 import useHistoryScreenStore from "../stores/useHistoryScreenStore";
-import { useQueryNarrativeHistory } from "../use_query/useQueryInterface";
 
 function HistoryList({ searchString }: { searchString?: string }) {
     const { data = [] } = useQueryNarrativeHistory({ searchString });

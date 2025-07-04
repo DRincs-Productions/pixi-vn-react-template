@@ -4,7 +4,7 @@ import { Box, Button, FormHelperText, FormLabel } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import useQueryIsFullModeScreen, { IS_FULL_SCREEN_MODE_USE_QUEY_KEY } from "../../use_query/useQueryIsFullModeScreen";
+import useQueryIsFullModeScreen, { IS_FULL_SCREEN_MODE_USE_QUEY_KEY } from "../../hooks/useQueryIsFullModeScreen";
 
 export default function FullScreenSettings() {
     const { data: isFullScreenMode } = useQueryIsFullModeScreen();

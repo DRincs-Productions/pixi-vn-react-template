@@ -5,10 +5,10 @@ import { useShallow } from "zustand/react/shallow";
 import ChoiceButton from "../components/ChoiceButton";
 import useDebouncedEffect from "../hooks/useDebouncedEffect";
 import useNarrationFunctions from "../hooks/useNarrationFunctions";
+import { useQueryChoiceMenuOptions } from "../hooks/useQueryInterface";
 import useInterfaceStore from "../stores/useInterfaceStore";
 import useStepStore from "../stores/useStepStore";
 import useTypewriterStore from "../stores/useTypewriterStore";
-import { useQueryChoiceMenuOptions } from "../use_query/useQueryInterface";
 
 export default function ChoiceMenu() {
     const nextStepLoading = useStepStore((state) => state.loading);
@@ -18,11 +18,13 @@ export default function ChoiceMenu() {
     const { selectChoice } = useNarrationFunctions();
     const [open, setOpen] = useState(false);
 
-    useDebouncedEffect(() => setOpen(!(hidden || menu.length == 0 || typewriterInProgress)), { delay: 50 }, [
+    useDebouncedEffect(() => setOpen(!(hidden || menu.length == 0 || typewriterInProgress)), { delay: 100 }, [
         hidden,
         menu,
         typewriterInProgress,
     ]);
+
+    if (!open) return null;
 
     return (
         <Grid
@@ -39,34 +41,36 @@ export default function ChoiceMenu() {
                 pointerEvents: hidden ? "none" : "auto",
                 margin: 0,
             }}
+            role='menu'
         >
-            {open &&
-                menu?.map((item, index) => {
-                    return (
-                        <Grid
-                            key={"choice-" + index}
-                            justifyContent='center'
-                            alignItems='center'
-                            className={
-                                hidden
-                                    ? "motion-opacity-out-0 motion-translate-y-out-[50%]"
-                                    : `motion-opacity-in-0 motion-translate-y-in-[50%] motion-delay-[${index * 200}ms]`
-                            }
-                        >
-                            <ChoiceButton
-                                loading={nextStepLoading}
-                                onClick={() => selectChoice(item)}
-                                sx={{
-                                    left: 0,
-                                    right: 0,
-                                }}
-                                startDecorator={item.type == "close" ? <KeyboardReturnIcon /> : undefined}
-                            >
-                                {item.text}
-                            </ChoiceButton>
-                        </Grid>
-                    );
-                })}
+            {menu.map((item, index) => (
+                <Grid
+                    key={"choice-" + index}
+                    justifyContent='center'
+                    alignItems='center'
+                    className={
+                        hidden
+                            ? "motion-opacity-out-0 motion-translate-y-out-[50%]"
+                            : `motion-opacity-in-0 motion-translate-y-in-[50%] motion-delay-[${index * 200}ms]`
+                    }
+                >
+                    <ChoiceButton
+                        loading={nextStepLoading}
+                        onClick={() =>
+                            selectChoice(item).then(() => {
+                                setOpen(false);
+                            })
+                        }
+                        sx={{
+                            left: 0,
+                            right: 0,
+                        }}
+                        startDecorator={item.type === "close" ? <KeyboardReturnIcon /> : undefined}
+                    >
+                        {item.text}
+                    </ChoiceButton>
+                </Grid>
+            ))}
         </Grid>
     );
 }

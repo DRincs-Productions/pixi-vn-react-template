@@ -3,8 +3,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { useShallow } from "zustand/react/shallow";
 import useStepStore from "../stores/useStepStore";
-import { INTERFACE_DATA_USE_QUEY_KEY } from "../use_query/useQueryInterface";
 import useGameProps from "./useGameProps";
+import { INTERFACE_DATA_USE_QUEY_KEY } from "./useQueryInterface";
 
 export default function useNarrationFunctions() {
     const setNextStepLoading = useStepStore(useShallow((state) => state.setLoading));

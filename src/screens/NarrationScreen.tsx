@@ -1,3 +1,4 @@
+import { useColorScheme } from "@mui/joy";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";
 import Card from "@mui/joy/Card";
@@ -12,10 +13,10 @@ import remarkGfm from "remark-gfm";
 import { useShallow } from "zustand/react/shallow";
 import AnimatedDots from "../components/AnimatedDots";
 import SliderResizer from "../components/SliderResizer";
+import { useQueryDialogue } from "../hooks/useQueryInterface";
 import useDialogueCardStore from "../stores/useDialogueCardStore";
 import useInterfaceStore from "../stores/useInterfaceStore";
 import useTypewriterStore from "../stores/useTypewriterStore";
-import { useQueryDialogue } from "../use_query/useQueryInterface";
 import ChoiceMenu from "./ChoiceMenu";
 
 export default function NarrationScreen() {
@@ -183,7 +184,7 @@ export default function NarrationScreen() {
                     height: { xs: "0.9rem", sm: "1rem", md: "1.1rem", lg: "1.3rem", xl: "1.4rem" },
                     minHeight: 0,
                 }}
-            ></Box>
+            />
         </Box>
     );
 }
@@ -193,6 +194,7 @@ function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDiv
     const startTypewriter = useTypewriterStore(useShallow((state) => state.start));
     const endTypewriter = useTypewriterStore(useShallow((state) => state.end));
     const { data: { animatedText, text } = {} } = useQueryDialogue();
+    const { mode } = useColorScheme();
 
     const handleCharacterAnimationComplete = useCallback((ref: { current: HTMLSpanElement | null }) => {
         if (paragraphRef.current && ref.current) {
@@ -205,7 +207,7 @@ function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDiv
     }, []);
 
     return (
-        <p style={{ margin: 0, padding: 0 }}>
+        <p className={`prose ${mode === "dark" ? "dark:prose-invert" : ""}`} style={{ margin: 0, padding: 0 }}>
             <span>
                 <Markdown
                     remarkPlugins={[remarkGfm]}
