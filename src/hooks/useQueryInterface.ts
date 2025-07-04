@@ -15,12 +15,13 @@ export function useQueryCanGoBack() {
 
 const CHOICE_MENU_OPTIONS_USE_QUEY_KEY = "choice_menu_options_use_quey_key";
 export function useQueryChoiceMenuOptions() {
+    const { t } = useTranslation(["narration"]);
     return useQuery({
         queryKey: [INTERFACE_DATA_USE_QUEY_KEY, CHOICE_MENU_OPTIONS_USE_QUEY_KEY],
         queryFn: async () =>
             narration.choiceMenuOptions?.map((option) => ({
                 ...option,
-                text: typeof option.text === "string" ? option.text : option.text.join(" "),
+                text: typeof option.text === "string" ? t(option.text) : option.text.map((text) => t(text)).join(" "),
             })) || [],
     });
 }
@@ -57,28 +58,28 @@ export function useQueryDialogue() {
             } else if (typeof text === "string") {
                 text = t(text);
             }
-            let newCharacter = dialogue?.character;
-            if (typeof newCharacter === "string") {
-                newCharacter = new Character(newCharacter, { name: t(newCharacter) });
+            let character = dialogue?.character;
+            if (typeof character === "string") {
+                character = new Character(character, { name: t(character) });
             }
 
             let prevData = queryClient.getQueryData<DialogueModel>(queryKey) || {};
             let oldText = (prevData.text || "") + (prevData.animatedText || "");
-            if (text && newCharacter?.id === prevData?.character?.id && text.startsWith(oldText)) {
+            if (text && character?.id === prevData?.character?.id && text.startsWith(oldText)) {
                 let newText = text.slice(oldText.length);
-                if (!newText && oldText && newCharacter === prevData?.character) {
+                if (!newText && oldText && character === prevData?.character) {
                     return prevData;
                 }
                 return {
                     animatedText: newText,
                     text: oldText,
-                    character: newCharacter,
+                    character: character,
                 };
             }
 
             return {
                 animatedText: text,
-                character: newCharacter,
+                character: character,
             };
         },
     });

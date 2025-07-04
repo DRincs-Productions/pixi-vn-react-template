@@ -8,8 +8,8 @@ import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import { useShallow } from "zustand/react/shallow";
 import ModalDialogCustom from "../../components/ModalDialog";
+import { INTERFACE_DATA_USE_QUEY_KEY, useQueryDialogue, useQueryInputValue } from "../../hooks/useQueryInterface";
 import useTypewriterStore from "../../stores/useTypewriterStore";
-import { INTERFACE_DATA_USE_QUEY_KEY, useQueryDialogue, useQueryInputValue } from "../../use_query/useQueryInterface";
 
 export default function TextInput() {
     const { data: { animatedText: text } = {} } = useQueryDialogue();

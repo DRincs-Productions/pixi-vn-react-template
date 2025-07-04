@@ -2,10 +2,10 @@ import { Button } from "@mui/joy";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useNarrationFunctions from "../hooks/useNarrationFunctions";
+import { useQueryCanGoNext } from "../hooks/useQueryInterface";
 import useInterfaceStore from "../stores/useInterfaceStore";
 import useSkipStore from "../stores/useSkipStore";
 import useStepStore from "../stores/useStepStore";
-import { useQueryCanGoNext } from "../use_query/useQueryInterface";
 
 export default function NextButton() {
     const skipEnabled = useSkipStore((state) => state.enabled);
