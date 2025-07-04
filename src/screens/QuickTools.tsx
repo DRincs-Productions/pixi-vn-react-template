@@ -6,6 +6,9 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import TextMenuButton from "../components/TextMenuButton";
 import useNarrationFunctions from "../hooks/useNarrationFunctions";
+import { useQueryCanGoBack } from "../hooks/useQueryInterface";
+import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastSave";
+import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
 import useAutoInfoStore from "../stores/useAutoInfoStore";
 import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
 import useHistoryScreenStore from "../stores/useHistoryScreenStore";
@@ -13,9 +16,6 @@ import useInterfaceStore from "../stores/useInterfaceStore";
 import useSettingsScreenStore from "../stores/useSettingsScreenStore";
 import useSkipStore from "../stores/useSkipStore";
 import useStepStore from "../stores/useStepStore";
-import { useQueryCanGoBack } from "../use_query/useQueryInterface";
-import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../use_query/useQueryLastSave";
-import { SAVES_USE_QUEY_KEY } from "../use_query/useQuerySaves";
 import { putSaveIntoIndexDB } from "../utils/save-utility";
 
 export default function QuickTools() {

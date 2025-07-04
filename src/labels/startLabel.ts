@@ -109,7 +109,7 @@ const startLabel = newLabel(
         async () => {
             await showImageContainer("sly", ["fm01-body", "fm01-eyes-upset", "fm01-mouth-smile01"]);
             narration.dialogGlue = true;
-            narration.dialogue = `Hey, you, ${mc.name}- be nice to our little brother,`;
+            narration.dialogue = `<span class="inline-block motion-translate-y-loop-25">Hey</span>, you, ${mc.name}- be nice to our little brother,`;
         },
         async () => {
             await showImageContainer("sly", ["fm01-body", "fm01-eyes-smile", "fm01-mouth-grin00"]);
@@ -207,7 +207,10 @@ const startLabel = newLabel(
             await showImageContainer("james", ["m01-body", "m01-eyes-smile", "m01-mouth-grin00"]);
             await showImageContainer("sly", ["fm01-body", "fm01-eyes-upset", "fm01-mouth-serious00"]);
             await showImageContainer("steph", ["fm02-body", "fm02-eyes-upset", "fm02-mouth-upset01"]);
-            narration.dialogue = { character: steph, text: `Then just give it to him!` };
+            narration.dialogue = {
+                character: steph,
+                text: `<span class="inline-block animate-wave">Then just give it to him!</span>`,
+            };
         },
         async () => {
             await showImageContainer("james", ["m01-body", "m01-eyes-concern", "m01-mouth-smile01"]);

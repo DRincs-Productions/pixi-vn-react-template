@@ -6,12 +6,12 @@ import { useEffect } from "react";
 import MenuButton from "../components/MenuButton";
 import { CANVAS_UI_LAYER_NAME, NARRATION_ROUTE } from "../constans";
 import useGameProps from "../hooks/useGameProps";
+import { INTERFACE_DATA_USE_QUEY_KEY } from "../hooks/useQueryInterface";
+import useQueryLastSave from "../hooks/useQueryLastSave";
 import startLabel from "../labels/startLabel";
 import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
 import useInterfaceStore from "../stores/useInterfaceStore";
 import useSettingsScreenStore from "../stores/useSettingsScreenStore";
-import { INTERFACE_DATA_USE_QUEY_KEY } from "../use_query/useQueryInterface";
-import useQueryLastSave from "../use_query/useQueryLastSave";
 import { loadSave } from "../utils/save-utility";
 
 export default function MainMenu() {

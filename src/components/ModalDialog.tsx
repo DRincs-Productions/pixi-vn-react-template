@@ -1,7 +1,6 @@
 import { DialogActions, DialogContent, Divider, ModalClose } from "@mui/joy";
 import Modal from "@mui/joy/Modal";
 import { default as ModalDialogJoy, ModalDialogProps } from "@mui/joy/ModalDialog";
-import { AnimatePresence } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
 
 export interface ModalDialogCustomProps extends ModalDialogProps {
@@ -41,31 +40,29 @@ export default function ModalDialogCustom(props: ModalDialogCustomProps) {
     );
 
     return (
-        <AnimatePresence>
-            <Modal
-                keepMounted
-                open={internalOpen}
-                onClose={() => canBeIgnored && setOpen(false)}
+        <Modal
+            keepMounted
+            open={internalOpen}
+            onClose={() => canBeIgnored && setOpen(false)}
+            sx={{
+                pointerEvents: open ? "auto" : "none",
+            }}
+            className={modalVarians}
+        >
+            <ModalDialogJoy
                 sx={{
                     pointerEvents: open ? "auto" : "none",
+                    ...sx,
                 }}
-                className={modalVarians}
+                className={modalDialogVarians}
+                {...rest}
             >
-                <ModalDialogJoy
-                    sx={{
-                        pointerEvents: open ? "auto" : "none",
-                        ...sx,
-                    }}
-                    className={modalDialogVarians}
-                    {...rest}
-                >
-                    {canBeIgnored && <ModalClose />}
-                    {head}
-                    {head && <Divider />}
-                    <DialogContent>{internalOpen && children}</DialogContent>
-                    {actions && <DialogActions>{actions}</DialogActions>}
-                </ModalDialogJoy>
-            </Modal>
-        </AnimatePresence>
+                {canBeIgnored && <ModalClose />}
+                {head}
+                {head && <Divider />}
+                <DialogContent>{internalOpen && children}</DialogContent>
+                {actions && <DialogActions>{actions}</DialogActions>}
+            </ModalDialogJoy>
+        </Modal>
     );
 }

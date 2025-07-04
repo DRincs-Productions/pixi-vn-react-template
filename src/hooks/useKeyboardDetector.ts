@@ -5,10 +5,10 @@ import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
 import useInterfaceStore from "../stores/useInterfaceStore";
-import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../use_query/useQueryLastSave";
-import { SAVES_USE_QUEY_KEY } from "../use_query/useQuerySaves";
 import { putSaveIntoIndexDB } from "../utils/save-utility";
 import useEventListener from "./useKeyDetector";
+import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "./useQueryLastSave";
+import { SAVES_USE_QUEY_KEY } from "./useQuerySaves";
 
 export default function useKeyboardDetector() {
     const hideInterface = useInterfaceStore((state) => state.hidden);

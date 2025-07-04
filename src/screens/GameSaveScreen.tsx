@@ -11,8 +11,8 @@ import GameSaveSlot from "../components/GameSaveSlot";
 import ModalDialogCustom from "../components/ModalDialog";
 import { MAIN_MENU_ROUTE } from "../constans";
 import useMyNavigate from "../hooks/useMyNavigate";
+import { INTERFACE_DATA_USE_QUEY_KEY } from "../hooks/useQueryInterface";
 import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
-import { INTERFACE_DATA_USE_QUEY_KEY } from "../use_query/useQueryInterface";
 import { downloadGameSave, loadGameSaveFromFile } from "../utils/save-utility";
 
 export default function GameSaveScreen() {

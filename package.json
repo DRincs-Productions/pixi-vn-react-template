@@ -43,6 +43,7 @@
     "zustand": "^5.0.4"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.16",
     "@tanstack/react-query-devtools": "^5.75.7",
     "@tauri-apps/cli": "^2",
     "@types/node": "^22.15.17",
