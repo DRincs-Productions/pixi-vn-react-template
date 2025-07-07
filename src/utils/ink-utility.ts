@@ -12,10 +12,10 @@ export async function importAllInkLabels() {
 }
 
 export function initializeInk() {
-    onInkHashtagScript((script, { navigate }, _convertListStringToObj) => {
+    onInkHashtagScript((script, props, _convertListStringToObj) => {
         if (script.length === 2) {
             if (script[0] === "navigate") {
-                navigate(script[1]);
+                props.navigate(script[1]);
                 return true;
             }
         }
