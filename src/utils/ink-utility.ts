@@ -11,8 +11,8 @@ export async function importAllInkLabels() {
     await importInkText(fileEntries);
 }
 
-export function initializeInk({ navigate }: { navigate: (path: string) => void }) {
-    onInkHashtagScript((script, _convertListStringToObj) => {
+export function initializeInk() {
+    onInkHashtagScript((script, { navigate }, _convertListStringToObj) => {
         if (script.length === 2) {
             if (script[0] === "navigate") {
                 navigate(script[1]);
