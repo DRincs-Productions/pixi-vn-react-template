@@ -35,6 +35,11 @@ declare module "@drincs/pixi-vn" {
             message: SnackbarMessage,
             options?: OptionsWithExtraProps<"default" | "error" | "success" | "warning" | "info">
         ) => SnackbarKey;
+        /**
+         * Invalidate the interface data.
+         * This will cause the interface to be reloaded and the data to be fetched again.
+         */
+        invalidateInterfaceData: () => void;
     }
     interface CharacterInterface {
         /**
