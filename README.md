@@ -48,6 +48,7 @@ Core libraries:
   You can use the following button to show Tanstack Query interactions with the game. (the button will be automatically hidden when released)
 * [Tailwind CSS](https://tailwindcss.com/): A utility-first CSS framework for rapidly building custom designs.
   * [Tailwind CSS Motion](https://rombo.co/tailwind/): A library that provides a set of utilities for creating animations with Tailwind CSS.
+  * [Tailwind CSS Typography](https://tailwindcss.com/docs/typography-plugin): A plugin that provides a set of utilities for styling text.
 
 UI libraries:
 
