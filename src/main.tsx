@@ -3,8 +3,6 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import { CANVAS_UI_LAYER_NAME } from "./constans";
 import "./index.css";
-import "./labels";
-import "./values";
 
 const body = document.body;
 if (!body) {
