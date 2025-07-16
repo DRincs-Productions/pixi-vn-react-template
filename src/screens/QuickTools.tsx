@@ -1,5 +1,4 @@
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { IconButton, Stack, useTheme } from "@mui/joy";
+import { Stack } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import { useMemo } from "react";
@@ -25,7 +24,6 @@ export default function QuickTools() {
     const setOpenLoadAlert = useGameSaveScreenStore((state) => state.editLoadAlert);
     const { t } = useTranslation(["ui"]);
     const hidden = useInterfaceStore((state) => state.hidden);
-    const setHideInterface = useInterfaceStore((state) => state.editHidden);
     const skipEnabled = useSkipStore((state) => state.enabled);
     const editSkipEnabled = useSkipStore((state) => state.editEnabled);
     const setSkipEnabled = useSkipStore((state) => state.setEnabled);
@@ -44,99 +42,81 @@ export default function QuickTools() {
                 : `motion-opacity-in-0 motion-translate-y-in-[50%]`,
         [hidden]
     );
-    const iconVarians = useMemo(() => (hidden ? `motion-preset-pop` : `motion-scale-out-0`), [hidden]);
 
     return (
-        <>
-            <Stack
-                direction='row'
-                justifyContent='center'
-                alignItems='flex-end'
-                spacing={{ xs: 0.5, sm: 1, md: 2 }}
-                sx={{
-                    position: "absolute",
-                    height: { xs: "0.9rem", sm: "1rem", md: "1.1rem", lg: "1.3rem", xl: "1.4rem" },
-                    paddingLeft: { xs: 1, sm: 2, md: 4, lg: 6, xl: 8 },
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
+        <Stack
+            direction='row'
+            justifyContent='center'
+            alignItems='flex-end'
+            spacing={{ xs: 0.5, sm: 1, md: 2 }}
+            sx={{
+                position: "absolute",
+                height: { xs: "0.9rem", sm: "1rem", md: "1.1rem", lg: "1.3rem", xl: "1.4rem" },
+                paddingLeft: { xs: 1, sm: 2, md: 4, lg: 6, xl: 8 },
+                left: 0,
+                right: 0,
+                bottom: 0,
+            }}
+            className={textMenuVarians}
+        >
+            <TextMenuButton
+                onClick={() => {
+                    if (skipEnabled) {
+                        setSkipEnabled(false);
+                    }
+                    goBack();
                 }}
-                className={textMenuVarians}
+                disabled={!canGoBack || nextStepLoading}
+                sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
-                <TextMenuButton
-                    onClick={() => {
-                        if (skipEnabled) {
-                            setSkipEnabled(false);
-                        }
-                        goBack();
-                    }}
-                    disabled={!canGoBack || nextStepLoading}
-                    sx={{ pointerEvents: !hidden ? "auto" : "none" }}
-                >
-                    {t("back")}
-                </TextMenuButton>
-                <TextMenuButton onClick={editOpenHistory} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
-                    {t("history")}
-                </TextMenuButton>
-                <TextMenuButton
-                    selected={skipEnabled}
-                    onClick={editSkipEnabled}
-                    sx={{ pointerEvents: !hidden ? "auto" : "none" }}
-                >
-                    {t("skip")}
-                </TextMenuButton>
-                <TextMenuButton
-                    selected={autoEnabled}
-                    onClick={editAutoEnabled}
-                    sx={{ pointerEvents: !hidden ? "auto" : "none" }}
-                >
-                    {t("auto_forward_time_restricted")}
-                </TextMenuButton>
-                <TextMenuButton onClick={editOpenSaveScreen} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
-                    {t(`${t("save")}/${t("load")}`)}
-                </TextMenuButton>
-                <TextMenuButton
-                    onClick={() => {
-                        putSaveIntoIndexDB()
-                            .then((save) => {
-                                queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
-                                queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
-                                enqueueSnackbar(t("success_save"), { variant: "success" });
-                            })
-                            .catch(() => {
-                                enqueueSnackbar(t("fail_save"), { variant: "error" });
-                            });
-                    }}
-                    sx={{ pointerEvents: !hidden ? "auto" : "none" }}
-                >
-                    {t("quick_save_restricted")}
-                </TextMenuButton>
-                <TextMenuButton
-                    onClick={() => lastSave && setOpenLoadAlert(lastSave)}
-                    disabled={!lastSave}
-                    sx={{ pointerEvents: !hidden ? "auto" : "none" }}
-                >
-                    {t("load_last_save_restricted")}
-                </TextMenuButton>
-                <TextMenuButton onClick={editOpenSettings} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
-                    {t("settings_restricted")}
-                </TextMenuButton>
-            </Stack>
-            <IconButton
-                onClick={setHideInterface}
-                sx={{
-                    position: "absolute",
-                    top: 0,
-                    right: 0,
+                {t("back")}
+            </TextMenuButton>
+            <TextMenuButton onClick={editOpenHistory} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
+                {t("history")}
+            </TextMenuButton>
+            <TextMenuButton
+                selected={skipEnabled}
+                onClick={editSkipEnabled}
+                sx={{ pointerEvents: !hidden ? "auto" : "none" }}
+            >
+                {t("skip")}
+            </TextMenuButton>
+            <TextMenuButton
+                selected={autoEnabled}
+                onClick={editAutoEnabled}
+                sx={{ pointerEvents: !hidden ? "auto" : "none" }}
+            >
+                {t("auto_forward_time_restricted")}
+            </TextMenuButton>
+            <TextMenuButton onClick={editOpenSaveScreen} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
+                {t(`${t("save")}/${t("load")}`)}
+            </TextMenuButton>
+            <TextMenuButton
+                onClick={() => {
+                    putSaveIntoIndexDB()
+                        .then((save) => {
+                            queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
+                            queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
+                            enqueueSnackbar(t("success_save"), { variant: "success" });
+                        })
+                        .catch(() => {
+                            enqueueSnackbar(t("fail_save"), { variant: "error" });
+                        });
                 }}
-                className={iconVarians}
+                sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
-                <VisibilityOffIcon
-                    sx={{
-                        color: useTheme().palette.neutral[500],
-                    }}
-                />
-            </IconButton>
-        </>
+                {t("quick_save_restricted")}
+            </TextMenuButton>
+            <TextMenuButton
+                onClick={() => lastSave && setOpenLoadAlert(lastSave)}
+                disabled={!lastSave}
+                sx={{ pointerEvents: !hidden ? "auto" : "none" }}
+            >
+                {t("load_last_save_restricted")}
+            </TextMenuButton>
+            <TextMenuButton onClick={editOpenSettings} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
+                {t("settings_restricted")}
+            </TextMenuButton>
+        </Stack>
     );
 }

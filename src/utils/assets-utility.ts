@@ -17,3 +17,14 @@ export async function defineAssets() {
     // Assets.backgroundLoadBundle("main_menu");
     // Assets.backgroundLoad("background_main_menu");
 }
+
+/**
+ * Get the PixiJS asset from the given asset string.
+ * If the asset is not a PixiAsset, it will return the asset as is.
+ * @param asset - The asset string to resolve.
+ * @returns The resolved PixiJS asset or the original asset string.
+ */
+export function getPixiJSAsset(asset: string) {
+    // check if the asset is a PixiAsset
+    return Assets.resolver.resolve(asset).src || asset;
+}
