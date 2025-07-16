@@ -13,21 +13,16 @@ type InterfaceStoreType = {
      * Set the interface visibility
      */
     setHidden: (value: boolean) => void;
+    /**
+     * Set the interface visibility to true
+     */
+    show: () => void;
 };
 
 const useInterfaceStore = create<InterfaceStoreType>((set) => ({
     hidden: false,
-    editHidden: () => {
-        if (location.pathname === "/") {
-            return;
-        }
-        set((state) => ({ hidden: !state.hidden }));
-    },
-    setHidden: (value: boolean) => {
-        if (location.pathname === "/") {
-            return;
-        }
-        set({ hidden: value });
-    },
+    editHidden: () => set((state) => ({ hidden: !state.hidden })),
+    setHidden: (value: boolean) => set({ hidden: value }),
+    show: () => set(() => ({ hidden: false })),
 }));
 export default useInterfaceStore;

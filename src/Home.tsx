@@ -5,7 +5,7 @@ import useClosePageDetector from "./hooks/useClosePageDetector";
 import useInkInitialization from "./hooks/useInkInitialization";
 import useKeyboardDetector from "./hooks/useKeyboardDetector";
 import useEventListener from "./hooks/useKeyDetector";
-import Imports from "./Imports";
+import RootProvider from "./providers/RootProvider";
 import GameSaveScreen from "./screens/GameSaveScreen";
 import SaveLoadAlert from "./screens/modals/SaveLoadAlert";
 import OfflineScreen from "./screens/OfflineScreen";
@@ -43,8 +43,8 @@ function HomeChild() {
 
 export default function Home() {
     return (
-        <Imports>
+        <RootProvider>
             <HomeChild />
-        </Imports>
+        </RootProvider>
     );
 }
