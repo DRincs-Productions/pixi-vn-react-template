@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import NextButton from "./components/NextButton";
+import VisibilityButton from "./components/VisibilityButton";
 import { LOADING_ROUTE, MAIN_MENU_ROUTE, NARRATION_ROUTE } from "./constans";
 import useSkipAutoDetector from "./hooks/useSkipAutoDetector";
 import HistoryScreen from "./screens/HistoryScreen";
@@ -28,12 +29,13 @@ function NarrationElement() {
             <QuickTools />
             <TextInput />
             <NextButton />
-            <Detectors />
+            <NarrationDetectors />
+            <VisibilityButton />
         </>
     );
 }
 
-function Detectors() {
+function NarrationDetectors() {
     useSkipAutoDetector();
     return <></>;
 }
