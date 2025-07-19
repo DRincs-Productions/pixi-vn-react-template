@@ -70,7 +70,7 @@ export default function MainMenu() {
                 }}
                 transitionDelay={0.1}
                 loading={isLoading}
-                disabled={!isLoading && !lastSave}
+                disabled={!isLoading && !lastSave && !loading}
             >
                 {t("continue")}
             </MenuButton>
