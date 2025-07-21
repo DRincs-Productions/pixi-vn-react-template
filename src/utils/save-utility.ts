@@ -24,7 +24,7 @@ export function getSave(image?: string): GameSaveData {
 }
 
 export async function loadSave(saveData: GameSaveData, navigate: NavigateFunction) {
-    navigate(LOADING_ROUTE);
+    await navigate(LOADING_ROUTE);
     // load the save data from the JSON string
     await Game.restoreGameState(saveData.saveData, navigate);
 }
