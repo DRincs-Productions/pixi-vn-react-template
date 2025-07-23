@@ -13,7 +13,7 @@ export default function LoadingScreen() {
                     position: "absolute",
                     right: 0,
                     bottom: 0,
-                    margin: 2,
+                    padding: 0.5,
                 }}
                 className='motion-preset-pop'
             >
