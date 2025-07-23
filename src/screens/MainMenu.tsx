@@ -1,4 +1,5 @@
 import { canvas, ImageSprite, narration } from "@drincs/pixi-vn";
+import { Box, CircularProgress } from "@mui/joy";
 import Stack from "@mui/joy/Stack";
 import { useQueryClient } from "@tanstack/react-query";
 import { motion } from "motion/react";
@@ -70,7 +71,7 @@ export default function MainMenu() {
                 }}
                 transitionDelay={0.1}
                 loading={isLoading}
-                disabled={!isLoading && !lastSave && !loading}
+                disabled={(!isLoading && !lastSave) || loading}
             >
                 {t("continue")}
             </MenuButton>
@@ -95,6 +96,19 @@ export default function MainMenu() {
             <MenuButton onClick={() => setOpenSettings(true)} transitionDelay={0.4}>
                 {t("settings")}
             </MenuButton>
+            {loading && (
+                <Box
+                    sx={{
+                        position: "absolute",
+                        right: 0,
+                        bottom: 0,
+                        padding: 0.5,
+                    }}
+                    className='motion-preset-pop'
+                >
+                    <CircularProgress />
+                </Box>
+            )}
         </Stack>
     );
 }
