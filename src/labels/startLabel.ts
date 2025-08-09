@@ -25,7 +25,7 @@ const startLabel = newLabel(
                     value: ["m01-body", "m01-eyes-smile", "m01-mouth-neutral01"],
                     options: { xAlign: 0.5, yAlign: 1 },
                 },
-                { direction: "right", speed: 300 }
+                { direction: "right", ease: "circInOut", type: "spring" }
             );
             narration.dialogue = { character: james, text: `You're my roommate's replacement, huh?` };
         },
@@ -94,7 +94,7 @@ const startLabel = newLabel(
                     value: ["fm01-body", "fm01-eyes-wow", "fm01-mouth-soft01"],
                     options: { xAlign: 0.2, yAlign: 1 },
                 },
-                { direction: "right", speed: 300 }
+                { direction: "right", ease: "anticipate" }
             );
             await moveIn(
                 "steph",
@@ -102,7 +102,7 @@ const startLabel = newLabel(
                     value: ["fm02-body", "fm02-eyes-nervous", "fm02-mouth-nervous00"],
                     options: { xAlign: 0.8, yAlign: 1 },
                 },
-                { direction: "left", speed: 300 }
+                { direction: "left", ease: "easeInOut" }
             );
             narration.dialogue = { character: sly, text: `I just wanted to see what the new guy was like.` };
         },
@@ -337,7 +337,7 @@ const startLabel = newLabel(
             await showImageContainer("james", ["m01-body", "m01-eyes-grin", "m01-mouth-grin00"]);
             await showImageContainer("sly", ["fm01-body", "fm01-eyes-smile", "fm01-mouth-smile00"]);
             await showImageContainer("steph", ["fm02-body", "fm02-eyes-upset", "fm02-mouth-nervous00"]);
-            moveOut("steph", { direction: "left", speed: 300 });
+            moveOut("steph", { direction: "left", ease: "easeInOut" });
             narration.dialogue = `${steph_fullname} goes through the opposite door,`;
         },
         async (props) => {
