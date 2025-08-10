@@ -4,7 +4,7 @@ VAR _input_value_ = ""
 # lazyload bundle m01 fm01 fm02
 
 # show image bg bg01-hallway
-# show imagecontainer james [m01-body m01-eyes-smile m01-mouth-neutral01] xAlign 0.5 yAlign 1 with movein direction right speed 300
+# show imagecontainer james [m01-body m01-eyes-smile m01-mouth-neutral01] xAlign 0.5 yAlign 1 with movein direction right ease circInOut type spring
 james: You're my roommate's replacement, huh?
 # show imagecontainer james [m01-body m01-eyes-grin m01-mouth-smile01]
 james: Don't worry, you don't have much to live up to. Just don't use heroin like the last guy, and you'll be fine!
