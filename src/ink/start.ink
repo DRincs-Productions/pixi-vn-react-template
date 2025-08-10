@@ -4,7 +4,7 @@ VAR _input_value_ = ""
 # lazyload bundle m01 fm01 fm02
 
 # show image bg bg01-hallway
-# show imagecontainer james [m01-body m01-eyes-smile m01-mouth-neutral01] xAlign 0.5 yAlign 1 with movein direction right speed 300
+# show imagecontainer james [m01-body m01-eyes-smile m01-mouth-neutral01] xAlign 0.5 yAlign 1 with movein direction right ease circInOut type spring
 james: You're my roommate's replacement, huh?
 # show imagecontainer james [m01-body m01-eyes-grin m01-mouth-smile01]
 james: Don't worry, you don't have much to live up to. Just don't use heroin like the last guy, and you'll be fine!
@@ -38,8 +38,8 @@ james: ...
 james: I know you're both watching, come on out already!
 
 # show imagecontainer james [m01-body m01-eyes-annoy m01-mouth-annoy00]
-# show imagecontainer sly [fm01-body fm01-eyes-wow fm01-mouth-soft01] xAlign 0.2 yAlign 1 with movein direction right speed 300
-# show imagecontainer steph [fm02-body fm02-eyes-nervous fm02-mouth-nervous00] xAlign 0.8 yAlign 1 with movein direction left speed 300
+# show imagecontainer sly [fm01-body fm01-eyes-wow fm01-mouth-soft01] xAlign 0.2 yAlign 1 with movein direction right ease anticipate
+# show imagecontainer steph [fm02-body fm02-eyes-nervous fm02-mouth-nervous00] xAlign 0.8 yAlign 1 with movein direction left ease easeInOut
 sly: I just wanted to see what the new guy was like.
 # show imagecontainer sly [fm01-body fm01-eyes-upset fm01-mouth-smile01]
 <><span class="inline-block motion-translate-y-loop-25">Hey</span>, you, [mc]- be nice to our little brother,
@@ -174,7 +174,7 @@ steph: [sly]!
 # show imagecontainer james [m01-body m01-eyes-grin m01-mouth-grin00]
 # show imagecontainer sly [fm01-body fm01-eyes-smile fm01-mouth-smile00]
 # show imagecontainer steph [fm02-body fm02-eyes-upset fm02-mouth-nervous00]
-# remove image steph with moveout direction left speed 300
+# remove image steph with moveout direction left ease easeInOut
 [steph_fullname] goes through the opposite door,
 # call animation_01
 <>and returns with a HUGE tinfoil-covered platter.

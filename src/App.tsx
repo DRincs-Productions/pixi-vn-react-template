@@ -7,14 +7,8 @@ import { initializeIndexedDB } from "./utils/indexedDB-utility";
 import { importAllInkLabels } from "./utils/ink-utility";
 
 const Home = lazy(async () => {
-    await Promise.all([
-        import("./values"),
-        import("./labels"),
-        initializeIndexedDB(),
-        defineAssets(),
-        useI18n(),
-        importAllInkLabels(),
-    ]);
+    await Promise.all([import("./values"), import("./labels")]);
+    await Promise.all([initializeIndexedDB(), defineAssets(), useI18n(), importAllInkLabels()]);
     return import("./Home");
 });
 
