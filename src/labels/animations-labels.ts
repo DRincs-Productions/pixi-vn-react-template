@@ -7,7 +7,7 @@ export const animation01 = newLabel("animation_01", [
             {
                 scaleX: 1,
             },
-            { autoplay: false }
+            { autoplay: false, forceCompleteBeforeNext: true }
         );
 
         await moveIn(
