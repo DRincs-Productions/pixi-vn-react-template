@@ -1,7 +1,6 @@
 import { canvas, Layer, PIXI } from "@drincs/pixi-vn";
 import { useEffect, useRef } from "react";
 import { CANVAS_MINIGAME_LAYER_NAME } from "../constans";
-const { Container } = PIXI;
 
 export default function useMinigame(
     game: (layer: Layer) => void,
@@ -15,7 +14,7 @@ export default function useMinigame(
 
     useEffect(() => {
         loading.current = true;
-        const layer = canvas.addLayer(CANVAS_MINIGAME_LAYER_NAME, new Container());
+        const layer = canvas.addLayer(CANVAS_MINIGAME_LAYER_NAME, new PIXI.Container());
         if (!layer) {
             console.error("Failed to create UI layer for minigame");
             return;
