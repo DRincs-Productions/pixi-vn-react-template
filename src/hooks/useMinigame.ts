@@ -6,7 +6,7 @@ export default function useMinigame(
     game: (layer: Layer) => void,
     props?: {
         onStart?: () => Promise<void>;
-        onExit?: () => void;
+        onExit?: (layer: Layer) => void;
     }
 ) {
     const { onStart = () => Promise.resolve(), onExit } = props || {};
@@ -27,7 +27,7 @@ export default function useMinigame(
         return () => {
             canvas.removeLayer(CANVAS_MINIGAME_LAYER_NAME);
             if (onExit) {
-                onExit();
+                onExit(layer);
             }
         };
     }, [game, onStart, onExit]);
