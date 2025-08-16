@@ -2,7 +2,7 @@ import { Assets } from "@drincs/pixi-vn";
 import { NavigateFunction, NavigateOptions, To, useNavigate } from "react-router-dom";
 
 /**
- * https://pixi-vn.web.app/advanced/intercept-events.html#back-and-forward-buttons
+ * https://pixi-vn.web.app/it/start/interface-navigate#block-back-forward
  */
 export default function useMyNavigate(): NavigateFunction {
     const navigate = useNavigate();
