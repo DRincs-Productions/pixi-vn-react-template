@@ -11,22 +11,26 @@ function getUserLang(): string {
     return userLang?.toLocaleLowerCase()?.split("-")[0];
 }
 
-async function getLocalesResource(lng: string): Promise<any> {
-    let res = await import(`./locales/strings_${lng}.json`);
+function getLocalesResource(lng: string): Promise<any> {
+    return import(`./locales/strings_${lng}.json`);
+}
+
+async function generateResourceToTranslate(lng: string): Promise<any> {
+    let res = await getLocalesResource(lng);
+    res = { ...res };
     if (!res) {
         res = {};
     }
     if (!res.narration) {
         res.narration = {};
     }
+    if (res.default) {
+        delete res.default;
+    }
     (await convertInkToJson()).forEach((element) => {
         element && generateJsonInkTranslation(element, res.narration);
     });
     return res;
-}
-
-function generateResourceToTranslate(lng: string): Promise<any> {
-    return getLocalesResource(lng);
 }
 
 export async function downloadResourceToTranslate() {
