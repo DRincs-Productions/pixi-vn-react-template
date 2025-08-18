@@ -36,6 +36,7 @@ export async function saveGameToIndexDB(
     const { image = await canvas.extractImage(), ...rest } = info;
     let item = {
         ...data,
+        image: image,
         ...rest,
     };
     if (item.id === undefined) {
