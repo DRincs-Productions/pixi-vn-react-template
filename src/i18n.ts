@@ -13,7 +13,7 @@ function getUserLang(): string {
 
 async function getLocalesResource(lng: string): Promise<any> {
     let res = await import(`./locales/strings_${lng}.json`);
-    (await convertInkToJson()).forEach((element) => generateJsonInkTranslation(element));
+    (await convertInkToJson()).forEach((element) => element && generateJsonInkTranslation(element), res.narration);
     return res;
 }
 
