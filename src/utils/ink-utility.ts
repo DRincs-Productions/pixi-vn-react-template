@@ -1,5 +1,11 @@
 import { RegisteredCharacters } from "@drincs/pixi-vn";
-import { convertInkText, importInkText, onInkHashtagScript, onReplaceTextBeforeTranslation } from "@drincs/pixi-vn-ink";
+import {
+    convertInkText,
+    importInkText,
+    onInkHashtagScript,
+    onInkTranslate,
+    onReplaceTextBeforeTranslation,
+} from "@drincs/pixi-vn-ink";
 
 async function getInkText() {
     const files = import.meta.glob<string>("../ink/*.{ink,txt}", { query: "?raw", import: "default" });
@@ -20,7 +26,8 @@ export async function convertInkToJson() {
     return await Promise.all(fileEntries.map((data) => convertInkText(data)));
 }
 
-export function initializeInk() {
+export function initializeInk(options: { t: (key: string) => string }) {
+    const { t } = options;
     onInkHashtagScript((script, props, _convertListStringToObj) => {
         if (script.length === 2) {
             if (script[0] === "navigate") {
@@ -40,4 +47,5 @@ export function initializeInk() {
     onReplaceTextBeforeTranslation((key) => {
         return `{{${key}}}`;
     });
+    onInkTranslate(t);
 }
