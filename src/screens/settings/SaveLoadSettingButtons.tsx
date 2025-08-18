@@ -15,7 +15,7 @@ import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLa
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
 import useGameSaveScreenStore from "../../stores/useGameSaveScreenStore";
 import useSettingsScreenStore from "../../stores/useSettingsScreenStore";
-import { downloadGameSave, loadGameSaveFromFile, putSaveIntoIndexDB } from "../../utils/save-utility";
+import { downloadGameSave, loadGameSaveFromFile, saveGameToIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadSettingButtons() {
     const navigate = useMyNavigate();
@@ -33,7 +33,7 @@ export default function SaveLoadSettingButtons() {
             <SettingButton
                 key={"quick_save_button"}
                 onClick={() => {
-                    putSaveIntoIndexDB()
+                    saveGameToIndexDB()
                         .then((save) => {
                             queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
                             queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);

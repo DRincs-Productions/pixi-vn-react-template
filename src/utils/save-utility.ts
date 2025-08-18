@@ -29,15 +29,14 @@ export async function loadSave(saveData: GameSaveData, navigate: NavigateFunctio
     await Game.restoreGameState(saveData.saveData, navigate);
 }
 
-export async function putSaveIntoIndexDB(
+export async function saveGameToIndexDB(
     info: Partial<GameSaveData> & { id?: number } = {},
     data = createGameSave()
 ): Promise<GameSaveData & { id: number }> {
-    let image = await canvas.extractImage();
+    const { image = await canvas.extractImage(), ...rest } = info;
     let item = {
         ...data,
-        image: image,
-        ...info,
+        ...rest,
     };
     if (item.id === undefined) {
         let lastSave = await getLastRowFromIndexDB<GameSaveData & { id: number }>(INDEXED_DB_SAVE_TABLE);
