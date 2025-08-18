@@ -13,7 +13,7 @@ import {
 
 const SAVE_FILE_EXTENSION = "json";
 
-export function getSave(image?: string): GameSaveData {
+export function createGameSave(image?: string): GameSaveData {
     return {
         saveData: Game.exportGameState(),
         gameVersion: __APP_VERSION__,
@@ -31,7 +31,7 @@ export async function loadSave(saveData: GameSaveData, navigate: NavigateFunctio
 
 export async function putSaveIntoIndexDB(
     info: Partial<GameSaveData> & { id?: number } = {},
-    data = getSave()
+    data = createGameSave()
 ): Promise<GameSaveData & { id: number }> {
     let image = await canvas.extractImage();
     let item = {
@@ -73,7 +73,7 @@ export async function deleteSaveFromIndexDB(id: number): Promise<void> {
     return await deleteRowFromIndexDB(INDEXED_DB_SAVE_TABLE, id);
 }
 
-export function downloadGameSave(data: GameSaveData = getSave()) {
+export function downloadGameSave(data: GameSaveData = createGameSave()) {
     const jsonString = JSON.stringify(data);
     // download the save data as a JSON file
     const blob = new Blob([jsonString], { type: "application/json" });
@@ -114,7 +114,7 @@ export function loadGameSaveFromFile(navigate: NavigateFunction, afterLoad?: () 
 }
 
 export async function addRefreshSave() {
-    const data = getSave();
+    const data = createGameSave();
     let jsonString = JSON.stringify(data);
     if (jsonString) {
         localStorage.setItem(REFRESH_SAVE_LOCAL_STORAGE_KEY, jsonString);
