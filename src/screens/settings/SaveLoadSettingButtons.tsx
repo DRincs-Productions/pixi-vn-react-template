@@ -91,11 +91,7 @@ export default function SaveLoadSettingButtons() {
             <Typography level='title-md'>{t(`${t("save")}/${t("load")}`)}</Typography>
         </SettingButton>,
         location.pathname === "/" ? null : (
-            <SettingButton
-                key={"download_button"}
-                onClick={() => downloadGameSave()}
-                disabled={location.pathname === "/"}
-            >
+            <SettingButton key={"save_to_file"} onClick={() => downloadGameSave()} disabled={location.pathname === "/"}>
                 <DownloadIcon />
                 <Typography level='title-md'>{t("save_to_file")}</Typography>
             </SettingButton>
