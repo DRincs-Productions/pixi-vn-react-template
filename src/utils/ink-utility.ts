@@ -1,14 +1,23 @@
 import { RegisteredCharacters } from "@drincs/pixi-vn";
-import { importInkText, onInkHashtagScript, onReplaceTextBeforeTranslation } from "@drincs/pixi-vn-ink";
+import { convertInkText, importInkText, onInkHashtagScript, onReplaceTextBeforeTranslation } from "@drincs/pixi-vn-ink";
 
-export async function importAllInkLabels() {
+async function getInkText() {
     const files = import.meta.glob<string>("../ink/*.{ink,txt}", { query: "?raw", import: "default" });
-    const fileEntries = await Promise.all(
+    return await Promise.all(
         Object.values(files).map(async (importFile) => {
             return await importFile();
         })
     );
+}
+
+export async function importAllInkLabels() {
+    let fileEntries = await getInkText();
     await importInkText(fileEntries);
+}
+
+export async function convertInkToJson() {
+    let fileEntries = await getInkText();
+    return await Promise.all(fileEntries.map((data) => convertInkText(data)));
 }
 
 export function initializeInk() {
