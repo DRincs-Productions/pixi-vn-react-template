@@ -1,4 +1,4 @@
-const INDEXED_DB_VERSION = 2;
+const INDEXED_DB_VERSION = 2; // Increment this version number when you change the database schema
 const INDEXED_DB_NAME = "game_db";
 export const INDEXED_DB_SAVE_TABLE = "saves";
 
