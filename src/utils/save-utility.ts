@@ -13,12 +13,12 @@ import {
 
 const SAVE_FILE_EXTENSION = "json";
 
-export function createGameSave(image?: string): GameSaveData {
+export function createGameSave(image?: string, name = ""): GameSaveData {
     return {
         saveData: Game.exportGameState(),
         gameVersion: __APP_VERSION__,
         date: new Date(),
-        name: "",
+        name: name,
         image: image,
     };
 }
