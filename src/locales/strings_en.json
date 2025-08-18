@@ -54,7 +54,8 @@
 		"theme_mode_description": "Choose between light, dark, or system theme mode.",
 		"you_sure_to_delete_save": "Are you sure you want to delete this save file?",
 		"you_sure_to_load_save": "Are you sure you want to load this save file?",
-		"you_sure_to_return_main_menu": "Are you sure you want to return to the main menu? All unsaved progress will be lost."
+		"you_sure_to_return_main_menu": "Are you sure you want to return to the main menu? All unsaved progress will be lost.",
+		"download_locale": "Download File to Translate"
 	},
 	"narration": {}
 }
