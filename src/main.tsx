@@ -1,4 +1,5 @@
 import { Assets, canvas, Container, Game } from "@drincs/pixi-vn";
+import { setupInkHmrListener } from "@drincs/pixi-vn-ink";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import { CANVAS_UI_LAYER_NAME } from "./constans";
@@ -43,3 +44,5 @@ Game.onError((type, error, { notify, t }) => {
 });
 
 Game.onLoadingLabel((_stepId, { id }) => Assets.backgroundLoadBundle(id));
+
+setupInkHmrListener();

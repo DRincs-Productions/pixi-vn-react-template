@@ -1,3 +1,4 @@
+import { noHmrInkPlugin } from "@drincs/pixi-vn-ink/vite";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
@@ -38,6 +39,7 @@ export default defineConfig({
                 ],
             },
         }),
+        noHmrInkPlugin(),
     ],
     assetsInclude: ["**/*.ink"],
     define: {
