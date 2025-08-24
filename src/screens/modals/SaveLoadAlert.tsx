@@ -10,7 +10,7 @@ import { INTERFACE_DATA_USE_QUEY_KEY } from "../../hooks/useQueryInterface";
 import { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
 import useGameSaveScreenStore from "../../stores/useGameSaveScreenStore";
-import { deleteSaveFromIndexDB, loadSave, putSaveIntoIndexDB } from "../../utils/save-utility";
+import { deleteSaveFromIndexDB, loadSave, saveGameToIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadAlert() {
     const navigate = useMyNavigate();
@@ -73,7 +73,7 @@ export default function SaveLoadAlert() {
                             });
                     case "save":
                     case "overwrite_save":
-                        return putSaveIntoIndexDB({ id: alertData.data, name: tempSaveName })
+                        return saveGameToIndexDB({ id: alertData.data, name: tempSaveName })
                             .then((save) => {
                                 queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
                                 queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);

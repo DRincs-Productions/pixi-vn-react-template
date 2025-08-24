@@ -25,6 +25,10 @@
         "editor.formatOnSave": true,
         "prettier.tabWidth": 2,
     },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features",
+        "editor.formatOnSave": true
+    },
     "prettier.jsxSingleQuote": true,
     "prettier.printWidth": 120,
     "prettier.useTabs": false,
