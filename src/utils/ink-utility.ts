@@ -1,17 +1,33 @@
 import { RegisteredCharacters } from "@drincs/pixi-vn";
-import { importInkText, onInkHashtagScript, onReplaceTextBeforeTranslation } from "@drincs/pixi-vn-ink";
+import {
+    convertInkText,
+    importInkText,
+    onInkHashtagScript,
+    onInkTranslate,
+    onReplaceTextBeforeTranslation,
+} from "@drincs/pixi-vn-ink";
 
-export async function importAllInkLabels() {
-    const files = import.meta.glob<string>("../ink/*.{ink,txt}", { as: "raw" });
-    const fileEntries = await Promise.all(
+async function getInkText() {
+    const files = import.meta.glob<string>("../ink/*.{ink,txt}", { query: "?raw", import: "default" });
+    return await Promise.all(
         Object.values(files).map(async (importFile) => {
             return await importFile();
         })
     );
+}
+
+export async function importAllInkLabels() {
+    let fileEntries = await getInkText();
     await importInkText(fileEntries);
 }
 
-export function initializeInk() {
+export async function convertInkToJson() {
+    let fileEntries = await getInkText();
+    return await Promise.all(fileEntries.map((data) => convertInkText(data)));
+}
+
+export function initializeInk(options: { t: (key: string) => string }) {
+    const { t } = options;
     onInkHashtagScript((script, props, _convertListStringToObj) => {
         if (script.length === 2) {
             if (script[0] === "navigate") {
@@ -31,4 +47,5 @@ export function initializeInk() {
     onReplaceTextBeforeTranslation((key) => {
         return `{{${key}}}`;
     });
+    onInkTranslate(t);
 }

@@ -17,6 +17,7 @@ import useEventListener from "../hooks/useKeyDetector";
 import useSettingsScreenStore from "../stores/useSettingsScreenStore";
 import AutoSettingToggle from "./settings/AutoSettingToggle";
 import DialoguesSettings from "./settings/DialoguesSettings";
+import DownloadFileToTranslateSettingButton from "./settings/DownloadFileToTranslateSettingButton";
 import FullScreenSettings from "./settings/FullScreenSettings";
 import HideInterfaceSettingToggle from "./settings/HideInterfaceSettingToggle";
 import OpenHistorySettingButton from "./settings/OpenHistorySettingButton";
@@ -89,6 +90,7 @@ export default function Settings() {
                                 <OpenHistorySettingButton />
                                 <SaveLoadSettingButtons />
                                 <HideInterfaceSettingToggle />
+                                <DownloadFileToTranslateSettingButton />
                             </Box>
                         </RadioGroup>
                     </FormControl>

@@ -13,31 +13,31 @@ import {
 
 const SAVE_FILE_EXTENSION = "json";
 
-export function getSave(image?: string): GameSaveData {
+export function createGameSave(options?: { image?: string; name?: string }): GameSaveData {
+    const { image, name = "" } = options || {};
     return {
         saveData: Game.exportGameState(),
         gameVersion: __APP_VERSION__,
         date: new Date(),
-        name: "",
+        name: name,
         image: image,
     };
 }
 
 export async function loadSave(saveData: GameSaveData, navigate: NavigateFunction) {
     await navigate(LOADING_ROUTE);
-    // load the save data from the JSON string
     await Game.restoreGameState(saveData.saveData, navigate);
 }
 
-export async function putSaveIntoIndexDB(
+export async function saveGameToIndexDB(
     info: Partial<GameSaveData> & { id?: number } = {},
-    data = getSave()
+    data = createGameSave()
 ): Promise<GameSaveData & { id: number }> {
-    let image = await canvas.extractImage();
+    const { image = await canvas.extractImage(), ...rest } = info;
     let item = {
         ...data,
         image: image,
-        ...info,
+        ...rest,
     };
     if (item.id === undefined) {
         let lastSave = await getLastRowFromIndexDB<GameSaveData & { id: number }>(INDEXED_DB_SAVE_TABLE);
@@ -73,7 +73,7 @@ export async function deleteSaveFromIndexDB(id: number): Promise<void> {
     return await deleteRowFromIndexDB(INDEXED_DB_SAVE_TABLE, id);
 }
 
-export function downloadGameSave(data: GameSaveData = getSave()) {
+export function downloadGameSave(data: GameSaveData = createGameSave()) {
     const jsonString = JSON.stringify(data);
     // download the save data as a JSON file
     const blob = new Blob([jsonString], { type: "application/json" });
@@ -114,7 +114,7 @@ export function loadGameSaveFromFile(navigate: NavigateFunction, afterLoad?: () 
 }
 
 export async function addRefreshSave() {
-    const data = getSave();
+    const data = createGameSave();
     let jsonString = JSON.stringify(data);
     if (jsonString) {
         localStorage.setItem(REFRESH_SAVE_LOCAL_STORAGE_KEY, jsonString);

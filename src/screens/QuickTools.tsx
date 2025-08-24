@@ -15,7 +15,7 @@ import useInterfaceStore from "../stores/useInterfaceStore";
 import useSettingsScreenStore from "../stores/useSettingsScreenStore";
 import useSkipStore from "../stores/useSkipStore";
 import useStepStore from "../stores/useStepStore";
-import { putSaveIntoIndexDB } from "../utils/save-utility";
+import { saveGameToIndexDB } from "../utils/save-utility";
 
 export default function QuickTools() {
     const editOpenSettings = useSettingsScreenStore((state) => state.editOpen);
@@ -93,7 +93,7 @@ export default function QuickTools() {
             </TextMenuButton>
             <TextMenuButton
                 onClick={() => {
-                    putSaveIntoIndexDB()
+                    saveGameToIndexDB()
                         .then((save) => {
                             queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
                             queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);

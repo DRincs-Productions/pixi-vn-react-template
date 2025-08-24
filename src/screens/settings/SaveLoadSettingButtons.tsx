@@ -15,7 +15,7 @@ import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLa
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
 import useGameSaveScreenStore from "../../stores/useGameSaveScreenStore";
 import useSettingsScreenStore from "../../stores/useSettingsScreenStore";
-import { downloadGameSave, loadGameSaveFromFile, putSaveIntoIndexDB } from "../../utils/save-utility";
+import { downloadGameSave, loadGameSaveFromFile, saveGameToIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadSettingButtons() {
     const navigate = useMyNavigate();
@@ -33,7 +33,7 @@ export default function SaveLoadSettingButtons() {
             <SettingButton
                 key={"quick_save_button"}
                 onClick={() => {
-                    putSaveIntoIndexDB()
+                    saveGameToIndexDB()
                         .then((save) => {
                             queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
                             queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
@@ -91,11 +91,7 @@ export default function SaveLoadSettingButtons() {
             <Typography level='title-md'>{t(`${t("save")}/${t("load")}`)}</Typography>
         </SettingButton>,
         location.pathname === "/" ? null : (
-            <SettingButton
-                key={"download_button"}
-                onClick={() => downloadGameSave()}
-                disabled={location.pathname === "/"}
-            >
+            <SettingButton key={"save_to_file"} onClick={() => downloadGameSave()} disabled={location.pathname === "/"}>
                 <DownloadIcon />
                 <Typography level='title-md'>{t("save_to_file")}</Typography>
             </SettingButton>
