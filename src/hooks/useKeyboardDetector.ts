@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
-import { putSaveIntoIndexDB } from "../utils/save-utility";
+import { saveGameToIndexDB } from "../utils/save-utility";
 import useEventListener from "./useKeyDetector";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "./useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "./useQuerySaves";
@@ -26,7 +26,7 @@ export default function useKeyboardDetector() {
                             console.log("Can't save on home page");
                             break;
                         }
-                        putSaveIntoIndexDB()
+                        saveGameToIndexDB()
                             .then((save) => {
                                 queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
                                 queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
