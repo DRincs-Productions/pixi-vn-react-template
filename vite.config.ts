@@ -43,7 +43,7 @@ export default defineConfig({
         }),
         noHmrInkPlugin(),
     ],
-    assetsInclude: ["**/*.ink"],
+    assetsInclude: ["**/ink/*.ink"],
     define: {
         __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
         __APP_NAME__: JSON.stringify(process.env.npm_package_name),
