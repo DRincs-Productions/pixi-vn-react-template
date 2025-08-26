@@ -102,8 +102,15 @@ export function useQueryNarrativeHistory({ searchString }: { searchString?: stri
         queryFn: async () => {
             const promises = stepHistory.narrativeHistory.map(async (step) => {
                 let character = step.dialogue?.character;
+                let icon: string | undefined;
+                let characterName: string | undefined;
                 if (typeof character === "string") {
-                    character = new Character(character, { name: t(character) });
+                    characterName = t(character);
+                } else {
+                    characterName = character?.name
+                        ? character.name + (character.surname ? " " + character.surname : "")
+                        : undefined;
+                    icon = character?.icon;
                 }
                 let text = step.dialogue?.text;
                 if (Array.isArray(text)) {
@@ -112,11 +119,9 @@ export function useQueryNarrativeHistory({ searchString }: { searchString?: stri
                     text = t(text);
                 }
                 return {
-                    character: character?.name
-                        ? character.name + (character.surname ? " " + character.surname : "")
-                        : undefined,
+                    character: characterName,
                     text: text || "",
-                    icon: character?.icon,
+                    icon: icon,
                     choices: step.choices,
                     inputValue: step.inputValue,
                 };
