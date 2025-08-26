@@ -51,6 +51,7 @@ export default defineConfig({
                 manualChunks: {
                     "lib/@mui/joy": ["@mui/joy"],
                     "lib/react-markdown": ["react-markdown", "rehype-raw", "remark-gfm"],
+                    "lib/@drincs/pixi-vn": ["@drincs/pixi-vn"],
                 },
             },
         },
