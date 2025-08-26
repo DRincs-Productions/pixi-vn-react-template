@@ -1,7 +1,6 @@
 import { CharacterInterface, narration, stepHistory } from "@drincs/pixi-vn";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import Character from "../models/Character";
 
 export const INTERFACE_DATA_USE_QUEY_KEY = "interface_data_use_quey_key";
 
@@ -60,7 +59,10 @@ export function useQueryDialogue() {
             }
             let character = dialogue?.character;
             if (typeof character === "string") {
-                character = new Character(character, { name: t(character) });
+                character = {
+                    id: character,
+                    name: t(character),
+                } as CharacterInterface;
             }
 
             let prevData = queryClient.getQueryData<DialogueModel>(queryKey) || {};
