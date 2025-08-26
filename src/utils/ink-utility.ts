@@ -8,10 +8,10 @@ import {
 } from "@drincs/pixi-vn-ink";
 
 async function getInkText() {
-    const files = import.meta.glob<string>("../ink/*.{ink,txt}", { query: "?raw", import: "default" });
+    const files = import.meta.glob<string>("../ink/*.ink", { eager: true, import: "default" });
     return await Promise.all(
         Object.values(files).map(async (importFile) => {
-            return await importFile();
+            return importFile;
         })
     );
 }

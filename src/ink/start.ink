@@ -1,5 +1,3 @@
-VAR _input_value_ = ""
-
 === start ===
 # lazyload bundle m01 fm01 fm02
 
