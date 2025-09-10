@@ -1,3 +1,4 @@
+-> start
 === start ===
 # lazyload bundle m01 fm01 fm02
 
@@ -174,7 +175,7 @@ steph: [sly]!
 # show imagecontainer steph [fm02-body fm02-eyes-upset fm02-mouth-nervous00]
 # remove image steph with moveout direction left ease easeInOut
 [steph_fullname] goes through the opposite door,
-# call animation_01
+<- animation_01
 <>and returns with a HUGE tinfoil-covered platter.
 
 # show imagecontainer james [m01-body m01-eyes-concern m01-mouth-smile01]
