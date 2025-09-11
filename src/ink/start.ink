@@ -41,7 +41,7 @@ james: I know you're both watching, come on out already!
 # show imagecontainer steph [fm02-body fm02-eyes-nervous fm02-mouth-nervous00] xAlign 0.8 yAlign 1 with movein direction left ease easeInOut
 sly: I just wanted to see what the new guy was like.
 # show imagecontainer sly [fm01-body fm01-eyes-upset fm01-mouth-smile01]
-<><span class="inline-block motion-translate-y-loop-25">Hey</span>, you, [mc]- be nice to our little brother,
+<><span className="inline-block motion-translate-y-loop-25">Hey</span>, you, [mc]- be nice to our little brother,
 # show imagecontainer sly [fm01-body fm01-eyes-smile fm01-mouth-grin00]
 <>or you'll have to deal with *us*.
 # show imagecontainer james [m01-body m01-eyes-smile m01-mouth-neutral00]
@@ -98,7 +98,7 @@ sly: It's just a handshake...
 # show imagecontainer james [m01-body m01-eyes-smile m01-mouth-grin00]
 # show imagecontainer sly [fm01-body fm01-eyes-upset fm01-mouth-serious00]
 # show imagecontainer steph [fm02-body fm02-eyes-upset fm02-mouth-upset01]
-steph: <span class="inline-block animate-wave">Then just give it to him!</span>
+steph: <span className="inline-block animate-wave">Then just give it to him!</span>
 # show imagecontainer james [m01-body m01-eyes-concern m01-mouth-smile01]
 # show imagecontainer sly [fm01-body fm01-eyes-smile fm01-mouth-serious00]
 # show imagecontainer steph [fm02-body fm02-eyes-upset fm02-mouth-upset00]
