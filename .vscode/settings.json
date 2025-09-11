@@ -56,7 +56,7 @@
         "typescriptreact",
     ],
     // ink
-    "ink.mainFile": "src/ink/start.ink",
+    "ink.mainFile": "start.ink",
     "ink.rootFolder": "src/ink",
     "ink.markup": "Markdown",
     "ink.engine": "pixi-vn",
