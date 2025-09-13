@@ -1,7 +1,6 @@
 import { CharacterInterface, narration, stepHistory } from "@drincs/pixi-vn";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import Character from "../models/Character";
 
 export const INTERFACE_DATA_USE_QUEY_KEY = "interface_data_use_quey_key";
 
@@ -60,7 +59,10 @@ export function useQueryDialogue() {
             }
             let character = dialogue?.character;
             if (typeof character === "string") {
-                character = new Character(character, { name: t(character) });
+                character = {
+                    id: character,
+                    name: t(character),
+                } as CharacterInterface;
             }
 
             let prevData = queryClient.getQueryData<DialogueModel>(queryKey) || {};
@@ -102,8 +104,15 @@ export function useQueryNarrativeHistory({ searchString }: { searchString?: stri
         queryFn: async () => {
             const promises = stepHistory.narrativeHistory.map(async (step) => {
                 let character = step.dialogue?.character;
+                let icon: string | undefined;
+                let characterName: string | undefined;
                 if (typeof character === "string") {
-                    character = new Character(character, { name: t(character) });
+                    characterName = t(character);
+                } else {
+                    characterName = character?.name
+                        ? character.name + (character.surname ? " " + character.surname : "")
+                        : undefined;
+                    icon = character?.icon;
                 }
                 let text = step.dialogue?.text;
                 if (Array.isArray(text)) {
@@ -112,11 +121,9 @@ export function useQueryNarrativeHistory({ searchString }: { searchString?: stri
                     text = t(text);
                 }
                 return {
-                    character: character?.name
-                        ? character.name + (character.surname ? " " + character.surname : "")
-                        : undefined,
+                    character: characterName,
                     text: text || "",
-                    icon: character?.icon,
+                    icon: icon,
                     choices: step.choices,
                     inputValue: step.inputValue,
                 };
