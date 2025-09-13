@@ -55,6 +55,11 @@
         "javascriptreact",
         "typescriptreact",
     ],
+    // ink
+    "ink.mainFile": "start.ink",
+    "ink.rootFolder": "src/ink",
+    "ink.markup": "Markdown",
+    "ink.engine": "pixi-vn",
     // olther
     "extensions.ignoreRecommendations": false,
     "workbench.editor.enablePreview": true,
