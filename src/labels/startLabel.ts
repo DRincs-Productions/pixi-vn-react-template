@@ -343,7 +343,7 @@ const startLabel = newLabel(
         async (props) => {
             narration.dialogGlue = true;
             narration.dialogue = `and returns with a HUGE tinfoil-covered platter.`;
-            await narration.callLabel(animation01, props);
+            await narration.call(animation01, props);
         },
         async () => {
             await showImageContainer("james", ["m01-body", "m01-eyes-concern", "m01-mouth-smile01"]);
@@ -369,7 +369,7 @@ const startLabel = newLabel(
         },
         async () => {
             narration.dialogue = `You want continue to the next part?`;
-            narration.choiceMenuOptions = [
+            narration.choices = [
                 newChoiceOption("Yes, I want to continue", secondPart, {}, { type: "jump" }),
                 newCloseChoiceOption("No, I want to stop here"),
             ];
