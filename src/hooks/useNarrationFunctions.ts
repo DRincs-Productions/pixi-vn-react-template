@@ -21,12 +21,12 @@ export default function useNarrationFunctions() {
             if (hidden) {
                 setHideInterface(false);
             }
-            if (!narration.canGoNext) {
+            if (!narration.canContinue) {
                 setNextStepLoading(false);
                 return;
             }
             return narration
-                .goNext(gameProps)
+                .continue(gameProps)
                 .then(() => {
                     queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
                     setNextStepLoading(false);
@@ -45,7 +45,7 @@ export default function useNarrationFunctions() {
     const goBack = useCallback(async () => {
         setBackLoading(true);
         return stepHistory
-            .goBack(gameProps.navigate)
+            .back(gameProps.navigate)
             .then(() => {
                 setBackLoading(false);
                 queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
