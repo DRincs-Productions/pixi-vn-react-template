@@ -18,7 +18,7 @@ export function useQueryChoiceMenuOptions() {
     return useQuery({
         queryKey: [INTERFACE_DATA_USE_QUEY_KEY, CHOICE_MENU_OPTIONS_USE_QUEY_KEY],
         queryFn: async () =>
-            narration.choiceMenuOptions?.map((option) => ({
+            narration.choices?.map((option) => ({
                 ...option,
                 text: typeof option.text === "string" ? t(option.text) : option.text.map((text) => t(text)).join(" "),
             })) || [],
@@ -91,7 +91,7 @@ const CAN_GO_NEXT_USE_QUEY_KEY = "can_go_next_use_quey_key";
 export function useQueryCanGoNext() {
     return useQuery({
         queryKey: [INTERFACE_DATA_USE_QUEY_KEY, CAN_GO_NEXT_USE_QUEY_KEY],
-        queryFn: async () => narration.canGoNext && !narration.isRequiredInput,
+        queryFn: async () => narration.canContinue && !narration.isRequiredInput,
     });
 }
 
