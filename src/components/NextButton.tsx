@@ -12,8 +12,8 @@ export default function NextButton() {
     const setSkipEnabled = useSkipStore((state) => state.setEnabled);
     const nextStepLoading = useStepStore((state) => state.loading);
     const goBackLoading = useStepStore((state) => state.backLoading);
-    const { data: canGoNext = false } = useQueryCanGoNext();
-    const hideNextButton = useInterfaceStore((state) => state.hidden || !canGoNext);
+    const { data: canContinue = false } = useQueryCanGoNext();
+    const hideNextButton = useInterfaceStore((state) => state.hidden || !canContinue);
     const { goNext } = useNarrationFunctions();
     const { t } = useTranslation(["ui"]);
     const varians = useMemo(
