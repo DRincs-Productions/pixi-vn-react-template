@@ -1,4 +1,5 @@
 import { vitePluginInk } from "@drincs/pixi-vn-ink/vite";
+import { vitePluginPixivn } from "@drincs/pixi-vn/vite";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
@@ -39,6 +40,7 @@ export default defineConfig({
                 ],
             },
         }),
+        vitePluginPixivn(),
         vitePluginInk(),
     ],
     assetsInclude: ["**/ink/*.ink"],
