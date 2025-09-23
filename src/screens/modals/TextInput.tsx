@@ -37,6 +37,7 @@ export default function TextInput() {
                             setTempValue(undefined);
                             queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
                         }}
+                        disabled={tempValue === undefined || tempValue === ""}
                     >
                         {t("confirm")}
                     </Button>
