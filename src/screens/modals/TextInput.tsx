@@ -1,7 +1,7 @@
 import { narration } from "@drincs/pixi-vn";
 import { Button, Input } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
@@ -19,6 +19,9 @@ export default function TextInput() {
     const [tempValue, setTempValue] = useState<string | number>();
     const queryClient = useQueryClient();
     const { t } = useTranslation(["ui"]);
+    useEffect(() => {
+        setTempValue(currentValue);
+    }, [open, currentValue]);
 
     return (
         <ModalDialogCustom
@@ -43,6 +46,7 @@ export default function TextInput() {
                     </Button>
                     <Input
                         defaultValue={currentValue || ""}
+                        value={tempValue || ""}
                         type={type}
                         onChange={(e) => {
                             let value: any = e.target.value;
