@@ -1,4 +1,5 @@
 import { Assets, canvas, Container, Game } from "@drincs/pixi-vn";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import { CANVAS_UI_LAYER_NAME } from "./constans";
@@ -29,8 +30,13 @@ Game.init(body, {
         throw new Error("htmlLayout not found");
     }
     const reactRoot = createRoot(htmlLayout);
+    const queryClient = new QueryClient();
 
-    reactRoot.render(<App />);
+    reactRoot.render(
+        <QueryClientProvider client={queryClient}>
+            <App />
+        </QueryClientProvider>
+    );
 });
 
 Game.onEnd(async ({ navigate }) => {

@@ -1,6 +1,5 @@
 import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { lazy, Suspense, useMemo } from "react";
+import { lazy, Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useI18n } from "./i18n";
 import LoadingScreen from "./screens/LoadingScreen";
@@ -48,14 +47,11 @@ function ErrorFallback({ error }: { error: Error }) {
 }
 
 export default function App() {
-    const queryClient = useMemo(() => new QueryClient(), []);
     return (
         <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <QueryClientProvider client={queryClient}>
-                <Suspense fallback={<LoadingScreen />}>
-                    <Home />
-                </Suspense>
-            </QueryClientProvider>
+            <Suspense fallback={<LoadingScreen />}>
+                <Home />
+            </Suspense>
         </ErrorBoundary>
     );
 }
