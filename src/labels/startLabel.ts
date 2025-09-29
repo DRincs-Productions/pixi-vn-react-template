@@ -368,6 +368,9 @@ const startLabel = newLabel(
             narration.dialogue = { character: steph, text: `Oh! You gotta take in your luggage!` };
         },
         async () => {
+            moveOut("james", { direction: "right", ease: "circInOut", type: "spring", delay: 0.5 });
+            moveOut("sly", { direction: "right", ease: "anticipate" });
+            moveOut("steph", { direction: "left", ease: "easeInOut", delay: 0.5 });
             narration.dialogue = `You want continue to the next part?`;
             narration.choices = [
                 newChoiceOption("Yes, I want to continue", secondPart, {}, { type: "jump" }),
