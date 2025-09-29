@@ -45,7 +45,6 @@ export default function TextInput() {
                         {t("confirm")}
                     </Button>
                     <Input
-                        defaultValue={currentValue || ""}
                         value={tempValue || ""}
                         type={type}
                         onChange={(e) => {
