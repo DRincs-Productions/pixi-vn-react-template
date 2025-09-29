@@ -368,9 +368,10 @@ const startLabel = newLabel(
             narration.dialogue = { character: steph, text: `Oh! You gotta take in your luggage!` };
         },
         async () => {
-            moveOut("james", { direction: "right", ease: "circInOut", type: "spring", delay: 0.5 });
-            moveOut("sly", { direction: "right", ease: "anticipate" });
-            moveOut("steph", { direction: "left", ease: "easeInOut", delay: 0.5 });
+            await showImageContainer("steph", ["fm02-body", "fm02-eyes-smile", "fm02-mouth-smile00"]);
+            moveOut("james", { direction: "right", ease: "circInOut", type: "spring", duration: 0.5, delay: 0.05 });
+            moveOut("sly", { direction: "right", ease: "anticipate", duration: 0.5 });
+            moveOut("steph", { direction: "left", ease: "easeInOut", duration: 0.5, delay: 0.1 });
             narration.dialogue = `You want continue to the next part?`;
             narration.choices = [
                 newChoiceOption("Yes, I want to continue", secondPart, {}, { type: "jump" }),
@@ -389,7 +390,30 @@ export default startLabel;
 export const secondPart = newLabel("second_part", [
     async () => {
         await showImage("bg", "bg02-dorm");
-        await showImageContainer("steph", ["fm02-body", "fm02-eyes-wow", "fm02-mouth-nervous00"]);
+        await moveIn(
+            "james",
+            {
+                value: ["m01-body", "m01-eyes-smile", "m01-mouth-smile00"],
+                options: { xAlign: 0.5, yAlign: 1 },
+            },
+            { direction: "right", ease: "circInOut", type: "spring" }
+        );
+        await moveIn(
+            "sly",
+            {
+                value: ["fm01-eyes-smile", "fm01-mouth-serious00"],
+                options: { xAlign: 0.2, yAlign: 1 },
+            },
+            { direction: "right", ease: "anticipate" }
+        );
+        await moveIn(
+            "steph",
+            {
+                value: ["fm02-body", "fm02-eyes-wow", "fm02-mouth-nervous00"],
+                options: { xAlign: 0.8, yAlign: 1 },
+            },
+            { direction: "left", ease: "easeInOut" }
+        );
         narration.dialogue = `She enters my room before I'VE even had a chance to.`;
     },
     async () => {
