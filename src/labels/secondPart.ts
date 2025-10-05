@@ -3,6 +3,7 @@ import { james, mc, sly, steph, steph_fullname } from "../values/characters";
 
 const secondPart = newLabel("second_part", [
     async ({ t }) => {
+        narration.dialogue = undefined;
         const skewStyle = new TextStyle({
             fontFamily: "Arial",
             dropShadow: {
@@ -19,10 +20,10 @@ const secondPart = newLabel("second_part", [
         });
         const text = new Text({
             text: t(`(A few minutes later...)`),
-            align: 0.5,
             style: skewStyle,
         });
         await showWithFade("bg", text);
+        text.align = 0.5;
     },
     async () => {
         await showWithFade("bg", "bg02-dorm");
