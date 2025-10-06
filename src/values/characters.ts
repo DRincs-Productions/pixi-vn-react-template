@@ -10,6 +10,7 @@ export const james = new Character("james", {
     color: "#0084ac",
 });
 
+export const steph_fullname = "Stephanie";
 export const steph = new Character("steph", {
     name: "Steph",
     color: "#ac5900",
