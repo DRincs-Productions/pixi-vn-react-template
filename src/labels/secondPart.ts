@@ -38,7 +38,7 @@ const secondPart = newLabel("second_part", [
         await moveIn(
             "sly",
             {
-                value: ["fm01-eyes-smile", "fm01-mouth-serious00"],
+                value: ["fm01-body", "fm01-eyes-smile", "fm01-mouth-serious00"],
                 options: { xAlign: 0.2, yAlign: 1 },
             },
             { direction: "right", ease: "anticipate", delay: 0.3 }
