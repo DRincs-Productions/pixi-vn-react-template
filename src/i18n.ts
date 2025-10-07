@@ -27,9 +27,9 @@ async function generateResourceToTranslate(lng: string): Promise<any> {
     if (res.default) {
         delete res.default;
     }
-    (await convertInkToJson()).forEach((element) => {
-        element && generateJsonInkTranslation(element, res.narration);
-    });
+    for (const element of await convertInkToJson()) {
+        element && (await generateJsonInkTranslation(element, res.narration));
+    }
     return res;
 }
 

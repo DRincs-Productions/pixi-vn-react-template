@@ -195,7 +195,11 @@ mc: ...thanks... um...
 # show imagecontainer steph [fm02-body fm02-eyes-wow fm02-mouth-wow01]
 steph: Oh! You gotta take in your luggage!
 
-You want continue to the next part?
+# remove image james with moveout direction right ease circInOut type spring duration 0.5 delay 0.05
+# remove image sly with moveout direction right ease anticipate duration 0.5
+# remove image steph with moveout direction left ease easeInOut duration 0.5 delay 0.1
+
+You want continue to the next part?<># continue
 * Yes, I want to continue
 -> second_part
 * No, I want to stop here

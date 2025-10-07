@@ -6,7 +6,9 @@
 # pause
 
 # show image bg bg02-dorm align 0 with fade
-# show imagecontainer steph [fm02-body fm02-eyes-wow fm02-mouth-nervous00]
+# show imagecontainer james [m01-body m01-eyes-smile m01-mouth-smile00] xAlign 0.5 yAlign 1 with movein direction right ease circInOut type spring delay 0.3
+# show imagecontainer sly [fm01-body fm01-eyes-smile fm01-mouth-serious00] xAlign 0.2 yAlign 1 with movein direction right ease anticipate delay 0.3
+# show imagecontainer steph [fm02-body fm02-eyes-wow fm02-mouth-nervous00] xAlign 0.8 yAlign 1 with movein direction left ease easeInOut delay 0.3
 She enters my room before I'VE even had a chance to.
 # show imagecontainer steph [fm02-body fm02-eyes-joy fm02-mouth-smile00]
 <> \\n\\n...I could've just come back and gotten the platter later...
