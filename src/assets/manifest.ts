@@ -1,6 +1,7 @@
 import { AssetsManifest } from "@drincs/pixi-vn";
 import { MAIN_MENU_ROUTE } from "../constans";
-import startLabel, { secondPart } from "../labels/startLabel";
+import secondPart from "../labels/secondPart";
+import startLabel from "../labels/startLabel";
 
 /**
  * Manifest for the assets used in the game.
