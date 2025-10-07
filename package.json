@@ -12,8 +12,8 @@
     "tauri": "tauri"
   },
   "dependencies": {
-    "@drincs/pixi-vn": "^1.3.27",
-    "@drincs/pixi-vn-ink": "^0.9.13",
+    "@drincs/pixi-vn": "^1.3.32",
+    "@drincs/pixi-vn-ink": "^0.10.4",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.3.2",
