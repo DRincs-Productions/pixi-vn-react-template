@@ -1,7 +1,10 @@
 -> second_part
 === second_part ===
 
-# show image bg bg02-dorm
+# show text bg "(A few minutes later...)" align 0.5 style \{ fontFamily: "Arial", dropShadow: \{ alpha: 0.8, angle: 2.1, blur: 4, color: "0x111111", distance: 10, \}, fill: "#ffffff", stroke: \{ color: "#004620", width: 12, join: "round" \}, fontSize: 60, fontWeight: "lighter" \} with dissolve
+# pause
+
+# show image bg bg02-dorm align 0
 # show imagecontainer steph [fm02-body fm02-eyes-wow fm02-mouth-nervous00]
 She enters my room before I'VE even had a chance to.
 # show imagecontainer steph [fm02-body fm02-eyes-joy fm02-mouth-smile00]
