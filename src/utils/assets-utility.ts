@@ -10,6 +10,17 @@ import { MAIN_MENU_ROUTE } from "../constans";
 export async function defineAssets() {
     Assets.init({ manifest });
 
+    Assets.setPreferences({ preferWorkers: false });
+
+    Assets.setMiddleware({
+        fetch: async (url, options) => {
+            // Aggiungi un header personalizzato
+            const headers = new Headers(options?.headers || {});
+            headers.set("X-From-PIXI", "true");
+            return fetch(url, { ...options, headers });
+        },
+    });
+
     // The game will not start until these asserts are loaded.
     await Assets.loadBundle(MAIN_MENU_ROUTE);
 

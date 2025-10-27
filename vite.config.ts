@@ -1,6 +1,7 @@
 import { vitePluginPixivn } from "@drincs/pixi-vn/vite";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
+import copy from "rollup-plugin-copy";
 import { defineConfig } from "vite";
 import checker from "vite-plugin-checker";
 import { VitePWA } from "vite-plugin-pwa";
@@ -38,6 +39,10 @@ export default defineConfig({
                     },
                 ],
             },
+        }),
+        copy({
+            targets: [{ src: "src/service-worker.ts", dest: "dist", rename: "service-worker.js" }],
+            hook: "writeBundle",
         }),
         vitePluginPixivn(),
     ],
