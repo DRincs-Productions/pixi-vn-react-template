@@ -5,6 +5,13 @@ import App from "./App";
 import { CANVAS_UI_LAYER_NAME } from "./constans";
 import "./index.css";
 
+// Register service worker
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/service-worker.js").catch(console.error);
+    });
+}
+
 // Canvas setup with PIXI
 const body = document.body;
 if (!body) {
