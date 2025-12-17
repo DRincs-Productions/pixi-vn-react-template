@@ -52,59 +52,59 @@ const manifest: AssetsManifest = {
                 },
                 {
                     alias: "fm01-eyes-smile",
-                    src: "https://firebasestorage.googleapis.com/v0/b/pixi-vn.appspot.com/o/public%2Fbreakdown%2Ffm01%2Ffm01-eyes-smile.webp?alt=media",
+                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-eyes-smile.webp",
                 },
                 {
                     alias: "fm01-eyes-soft",
-                    src: "https://firebasestorage.googleapis.com/v0/b/pixi-vn.appspot.com/o/public%2Fbreakdown%2Ffm01%2Ffm01-eyes-soft.webp?alt=media",
+                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-eyes-soft.webp",
                 },
                 {
                     alias: "fm01-eyes-upset",
-                    src: "https://firebasestorage.googleapis.com/v0/b/pixi-vn.appspot.com/o/public%2Fbreakdown%2Ffm01%2Ffm01-eyes-upset.webp?alt=media",
+                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-eyes-upset.webp",
                 },
                 {
                     alias: "fm01-eyes-wow",
-                    src: "https://firebasestorage.googleapis.com/v0/b/pixi-vn.appspot.com/o/public%2Fbreakdown%2Ffm01%2Ffm01-eyes-wow.webp?alt=media",
+                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-eyes-wow.webp",
                 },
                 {
                     alias: "fm01-mouth-grin00",
-                    src: "https://firebasestorage.googleapis.com/v0/b/pixi-vn.appspot.com/o/public%2Fbreakdown%2Ffm01%2Ffm01-mouth-grin00.webp?alt=media",
+                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-grin00.webp",
                 },
                 {
                     alias: "fm01-mouth-serious00",
-                    src: "https://firebasestorage.googleapis.com/v0/b/pixi-vn.appspot.com/o/public%2Fbreakdown%2Ffm01%2Ffm01-mouth-serious00.webp?alt=media",
+                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-serious00.webp",
                 },
                 {
                     alias: "fm01-mouth-serious01",
-                    src: "https://firebasestorage.googleapis.com/v0/b/pixi-vn.appspot.com/o/public%2Fbreakdown%2Ffm01%2Ffm01-mouth-serious01.webp?alt=media",
+                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-serious01.webp",
                 },
                 {
                     alias: "fm01-mouth-smile00",
-                    src: "https://firebasestorage.googleapis.com/v0/b/pixi-vn.appspot.com/o/public%2Fbreakdown%2Ffm01%2Ffm01-mouth-smile00.webp?alt=media",
+                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-smile00.webp",
                 },
                 {
                     alias: "fm01-mouth-smile01",
-                    src: "https://firebasestorage.googleapis.com/v0/b/pixi-vn.appspot.com/o/public%2Fbreakdown%2Ffm01%2Ffm01-mouth-smile01.webp?alt=media",
+                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-smile01.webp",
                 },
                 {
                     alias: "fm01-mouth-soft00",
-                    src: "https://firebasestorage.googleapis.com/v0/b/pixi-vn.appspot.com/o/public%2Fbreakdown%2Ffm01%2Ffm01-mouth-soft00.webp?alt=media",
+                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-soft00.webp",
                 },
                 {
                     alias: "fm01-mouth-soft01",
-                    src: "https://firebasestorage.googleapis.com/v0/b/pixi-vn.appspot.com/o/public%2Fbreakdown%2Ffm01%2Ffm01-mouth-soft01.webp?alt=media",
+                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-soft01.webp",
                 },
                 {
                     alias: "fm01-mouth-upset00",
-                    src: "https://firebasestorage.googleapis.com/v0/b/pixi-vn.appspot.com/o/public%2Fbreakdown%2Ffm01%2Ffm01-mouth-upset00.webp?alt=media",
+                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-upset00.webp",
                 },
                 {
                     alias: "fm01-mouth-upset01",
-                    src: "https://firebasestorage.googleapis.com/v0/b/pixi-vn.appspot.com/o/public%2Fbreakdown%2Ffm01%2Ffm01-mouth-upset01.webp?alt=media",
+                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-upset01.webp",
                 },
                 {
                     alias: "fm01-mouth-wow01",
-                    src: "https://firebasestorage.googleapis.com/v0/b/pixi-vn.appspot.com/o/public%2Fbreakdown%2Ffm01%2Ffm01-mouth-wow01.webp?alt=media",
+                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-wow01.webp",
                 },
             ],
         },
