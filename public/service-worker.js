@@ -46,7 +46,7 @@ self.addEventListener("fetch", (event) => {
 
             try {
                 const response = await fetch(request);
-                if (response && response.type === "opaque" && response.status < 400) {
+                if (response && response.type === "cors" && response.status < 400) {
                     await cache.put(request, response.clone());
                     lastUsed[url.href] = now;
                 }
