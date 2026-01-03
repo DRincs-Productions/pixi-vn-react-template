@@ -6,6 +6,7 @@ import useInterfaceStore from "../stores/useInterfaceStore";
 import useStepStore from "../stores/useStepStore";
 import useGameProps from "./useGameProps";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "./useQueryInterface";
+import { useScrollDirection } from "./useScrollDirection";
 
 export default function useNarrationFunctions() {
     const setNextStepLoading = useStepStore(useShallow((state) => state.setLoading));
@@ -14,6 +15,7 @@ export default function useNarrationFunctions() {
     const setHideInterface = useInterfaceStore((state) => state.setHidden);
     const queryClient = useQueryClient();
     const gameProps = useGameProps();
+    useScrollDirection();
 
     const goNext = useCallback(async () => {
         setNextStepLoading(true);
