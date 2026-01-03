@@ -7,8 +7,13 @@ import useStepStore from "../stores/useStepStore";
 import useGameProps from "./useGameProps";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "./useQueryInterface";
 
-export function useScrollDirection({ throttleMs = 300 }: { throttleMs?: number } = {}) {
-    const lastScrollY = useRef(0);
+export function useWheelDirection({
+    throttleMs = 300,
+    minDelta = 20,
+}: {
+    throttleMs?: number;
+    minDelta?: number;
+} = {}) {
     const pendingAsync = useRef(0);
     const setLoading = useStepStore((state) => state.setLoading);
     const queryClient = useQueryClient();
@@ -28,35 +33,35 @@ export function useScrollDirection({ throttleMs = 300 }: { throttleMs?: number }
         }
     };
 
-    const handleScroll = useCallback(
-        throttle(async () => {
-            const currentScrollY = window.scrollY;
+    const handleWheel = useCallback(
+        throttle(async (event: WheelEvent) => {
+            event.preventDefault();
 
-            if (currentScrollY < lastScrollY.current) {
+            const { deltaY } = event;
+
+            if (Math.abs(deltaY) < minDelta) return;
+
+            if (deltaY < 0) {
                 // ⬆️ Scroll up
-                await runAsync(narration.continue);
+                await runAsync(narration.continue.bind(narration));
             }
 
-            if (currentScrollY > lastScrollY.current) {
+            if (deltaY > 0) {
                 // ⬇️ Scroll down
-                await runAsync(stepHistory.back);
+                await runAsync(stepHistory.back.bind(stepHistory));
             }
-
-            lastScrollY.current = currentScrollY;
         }, throttleMs),
-        [throttleMs]
+        [throttleMs, minDelta]
     );
 
     useEffect(() => {
-        lastScrollY.current = window.scrollY;
-
-        window.addEventListener("scroll", handleScroll, { passive: true });
+        window.addEventListener("wheel", handleWheel, { passive: false });
 
         return () => {
-            window.removeEventListener("scroll", handleScroll);
-            handleScroll.cancel();
+            window.removeEventListener("wheel", handleWheel);
+            handleWheel.cancel();
         };
-    }, [handleScroll]);
+    }, [handleWheel]);
 
     return null;
 }
