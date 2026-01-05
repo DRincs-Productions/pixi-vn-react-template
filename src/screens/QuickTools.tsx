@@ -8,6 +8,7 @@ import useNarrationFunctions from "../hooks/useNarrationFunctions";
 import { useQueryCanGoBack } from "../hooks/useQueryInterface";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
+import { useWheelActions } from "../hooks/useWheelActions";
 import useAutoInfoStore from "../stores/useAutoInfoStore";
 import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
 import useHistoryScreenStore from "../stores/useHistoryScreenStore";
@@ -35,6 +36,7 @@ export default function QuickTools() {
     const { data: canGoBack = null } = useQueryCanGoBack();
     const nextStepLoading = useStepStore((state) => state.loading);
     const { goBack } = useNarrationFunctions();
+    useWheelActions();
     const textMenuVarians = useMemo(
         () =>
             hidden
