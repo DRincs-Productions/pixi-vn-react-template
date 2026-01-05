@@ -6,7 +6,7 @@ import useInterfaceStore from "../stores/useInterfaceStore";
 import useStepStore from "../stores/useStepStore";
 import useGameProps from "./useGameProps";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "./useQueryInterface";
-import { useWheelActions } from "./useWheelDirection";
+import { useWheelActions } from "./useWheelActions";
 
 export default function useNarrationFunctions() {
     const setNextStepLoading = useStepStore(useShallow((state) => state.setLoading));
