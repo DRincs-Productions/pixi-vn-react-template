@@ -45,7 +45,7 @@ export default function useNarrationFunctions() {
     const goBack = useCallback(async () => {
         setBackLoading(true);
         return stepHistory
-            .back(gameProps.navigate)
+            .back(gameProps)
             .then(() => {
                 setBackLoading(false);
                 queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
