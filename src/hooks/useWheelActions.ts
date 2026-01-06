@@ -3,9 +3,40 @@ import { narration } from "@drincs/pixi-vn/narration";
 import { useQueryClient } from "@tanstack/react-query";
 import { throttle } from "es-toolkit";
 import { useCallback, useEffect, useRef } from "react";
+import { HTML_CANVAS_LAYER_NAME, HTML_UI_LAYER_NAME } from "../constans";
 import useStepStore from "../stores/useStepStore";
 import useGameProps from "./useGameProps";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "./useQueryInterface";
+
+function isScrollableElement(element: HTMLElement | null): boolean {
+    if (!element) return false;
+
+    const style = window.getComputedStyle(element);
+    const overflowY = style.overflowY;
+
+    const isScrollable =
+        (overflowY === "auto" || overflowY === "scroll") && element.scrollHeight > element.clientHeight;
+
+    return isScrollable;
+}
+
+function hasScrollableParent(target: EventTarget | null): boolean {
+    let el = target as HTMLElement | null;
+
+    while (el) {
+        if (isScrollableElement(el)) {
+            return true;
+        }
+        el = el.parentElement;
+    }
+
+    return false;
+}
+
+function isInsideRoot(target: EventTarget | null, selector: string): boolean {
+    if (!(target instanceof HTMLElement)) return false;
+    return target.closest("#" + selector) !== null;
+}
 
 export function useWheelActions({
     throttleMs = 300,
@@ -35,6 +66,10 @@ export function useWheelActions({
 
     const handleWheel = useCallback(
         throttle(async (event: WheelEvent) => {
+            if (!(isInsideRoot(event.target, HTML_UI_LAYER_NAME) || isInsideRoot(event.target, HTML_CANVAS_LAYER_NAME)))
+                return;
+            if (hasScrollableParent(event.target)) return;
+
             // blocca lo scroll nativo
             event.preventDefault();
 
