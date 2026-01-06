@@ -3,7 +3,7 @@ import { setupInkHmrListener } from "@drincs/pixi-vn-ink/vite-listener";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRoot } from "react-dom/client";
 import App from "./App";
-import { CANVAS_UI_LAYER_NAME } from "./constans";
+import { CANVAS_UI_LAYER_NAME, HTML_CANVAS_LAYER_NAME, HTML_UI_LAYER_NAME } from "./constans";
 import "./index.css";
 
 // Register service worker
@@ -20,6 +20,7 @@ if (!body) {
 }
 
 Game.init(body, {
+    id: HTML_CANVAS_LAYER_NAME,
     height: 1080,
     width: 1920,
     backgroundColor: "#303030",
@@ -33,7 +34,7 @@ Game.init(body, {
         throw new Error("root element not found");
     }
 
-    const htmlLayout = canvas.addHtmlLayer("ui", root);
+    const htmlLayout = canvas.addHtmlLayer(HTML_UI_LAYER_NAME, root);
     if (!htmlLayout) {
         throw new Error("htmlLayout not found");
     }
