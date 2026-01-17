@@ -1,6 +1,6 @@
 import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
-import { lazy, Suspense } from "react";
-import { ErrorBoundary } from "react-error-boundary";
+import { ComponentType, lazy, Suspense } from "react";
+import { ErrorBoundary, FallbackProps } from "react-error-boundary";
 import { useI18n } from "./i18n";
 import LoadingScreen from "./screens/LoadingScreen";
 import { defineAssets } from "./utils/assets-utility";
@@ -14,7 +14,7 @@ const Home = lazy(async () => {
     return import("./Home");
 });
 
-function ErrorFallback({ error }: { error: Error }) {
+const ErrorFallback: ComponentType<FallbackProps> = ({ error, resetErrorBoundary }) => {
     return (
         <div
             role='alert'
@@ -41,11 +41,30 @@ function ErrorFallback({ error }: { error: Error }) {
                     marginTop: "1rem",
                 }}
             >
-                {error.message}
+                {(error as Error).message}
             </p>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: "1rem",
+                    paddingBottom: "1rem",
+                }}
+            >
+                <button
+                    style={{
+                        padding: "0.5rem 1rem",
+                        backgroundColor: "white",
+                        borderRadius: "0.5rem",
+                    }}
+                    onClick={resetErrorBoundary}
+                >
+                    Try again
+                </button>
+            </div>
         </div>
     );
-}
+};
 
 export default function App() {
     return (
