@@ -95,6 +95,11 @@ export default function MainMenu() {
             <MenuButton onClick={() => setOpenSettings(true)} transitionDelay={0.4}>
                 {t("settings")}
             </MenuButton>
+            {window.__TAURI__ && (
+                <MenuButton onClick={() => window.close()} transitionDelay={0.4}>
+                    {t("quit")}
+                </MenuButton>
+            )}
             {loading && (
                 <Box
                     sx={{
