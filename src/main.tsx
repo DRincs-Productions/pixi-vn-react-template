@@ -43,7 +43,7 @@ Game.init(body, {
     reactRoot.render(
         <QueryClientProvider client={queryClient}>
             <App />
-        </QueryClientProvider>
+        </QueryClientProvider>,
     );
 });
 
@@ -52,8 +52,8 @@ Game.onEnd(async ({ navigate }) => {
     navigate("/");
 });
 
-Game.onError((type, error, { notify, t }) => {
-    notify(t("allert_error_occurred"), { variant: "error" });
+Game.onError((type, error, { notify, uiTransition }) => {
+    notify(uiTransition("allert_error_occurred"), { variant: "error" });
     console.error(`Error occurred: ${type}`, error);
 });
 
