@@ -30,12 +30,10 @@ export default function MainMenu() {
         let bg = new ImageSprite({}, "background_main_menu");
         bg.load();
         let layer = canvas.getLayer(CANVAS_UI_LAYER_NAME);
-        if (layer) {
-            layer.addChild(bg);
-        }
+        layer?.addChild(bg);
 
         return () => {
-            canvas.getLayer(CANVAS_UI_LAYER_NAME)?.removeChildren();
+            layer?.removeChildren();
         };
     });
 
