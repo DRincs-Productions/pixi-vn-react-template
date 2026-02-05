@@ -24,6 +24,7 @@ Game.init(body, {
     height: 1080,
     width: 1920,
     backgroundColor: "#303030",
+    resizeMode: "contain",
 }).then(() => {
     // Pixi.JS UI Layer
     canvas.addLayer(CANVAS_UI_LAYER_NAME, new Container());
