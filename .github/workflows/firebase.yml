@@ -8,6 +8,8 @@ name: Firebase CI
 on:
   push:
     branches: [ deploy ]
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   build:
