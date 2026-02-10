@@ -1,4 +1,5 @@
 import { Assets, canvas, Container, Game } from "@drincs/pixi-vn";
+import "@drincs/pixi-vn-spine";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRoot } from "react-dom/client";
 import App from "./App";
