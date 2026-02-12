@@ -90,7 +90,7 @@ npm run tauri icon public/pwa-512x512.png
 
 ## *ink* - Custom hashtag scripts
 
-By using the [onInkHashtagScript](https://pixi-vn.web.app/ink/ink-hashtag.html) function, in this template the following features have been added.
+By using the [HashtagCommands](https://pixi-vn.web.app/ink/ink-hashtag.html) function, in this template the following features have been added.
 
 **Moving between screens**: This feature allows you to navigate between different screens. The syntax is as follows:
 
