@@ -12,9 +12,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@drincs/pixi-vn": "^1.5.11",
+    "@drincs/pixi-vn": "^1.5.13",
     "@drincs/pixi-vn-ink": "^0.11.3",
-    "@drincs/pixi-vn-spine": "^0.1.5",
+    "@drincs/pixi-vn-spine": "^0.2.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.3.7",
