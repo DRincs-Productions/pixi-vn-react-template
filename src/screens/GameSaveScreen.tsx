@@ -2,7 +2,6 @@ import DownloadIcon from "@mui/icons-material/Download";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import { Grid, IconButton, Stack, Theme, Typography } from "@mui/joy";
 import { Pagination, Tooltip, useMediaQuery } from "@mui/material";
-import { useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
@@ -10,8 +9,8 @@ import { useShallow } from "zustand/react/shallow";
 import GameSaveSlot from "../components/GameSaveSlot";
 import ModalDialogCustom from "../components/ModalDialog";
 import { MAIN_MENU_ROUTE } from "../constans";
+import useGameProps from "../hooks/useGameProps";
 import useMyNavigate from "../hooks/useMyNavigate";
-import { INTERFACE_DATA_USE_QUEY_KEY } from "../hooks/useQueryInterface";
 import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
 import { downloadGameSave, loadGameSaveFromFile } from "../utils/save-utility";
 
@@ -30,7 +29,7 @@ export default function GameSaveScreen() {
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
     const navigate = useMyNavigate();
     const { enqueueSnackbar } = useSnackbar();
-    const queryClient = useQueryClient();
+    const gameProps = useGameProps();
     let location = useLocation();
 
     return (
@@ -59,7 +58,7 @@ export default function GameSaveScreen() {
                             size='lg'
                             onClick={() =>
                                 loadGameSaveFromFile(navigate, () => {
-                                    queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
+                                    gameProps.invalidateInterfaceData();
                                     enqueueSnackbar(t("success_load"), { variant: "success" });
                                     setOpen(false);
                                 })

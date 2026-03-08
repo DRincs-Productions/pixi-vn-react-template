@@ -9,8 +9,8 @@ import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import SettingButton from "../../components/SettingButton";
+import useGameProps from "../../hooks/useGameProps";
 import useMyNavigate from "../../hooks/useMyNavigate";
-import { INTERFACE_DATA_USE_QUEY_KEY } from "../../hooks/useQueryInterface";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
 import useGameSaveScreenStore from "../../stores/useGameSaveScreenStore";
@@ -24,6 +24,7 @@ export default function SaveLoadSettingButtons() {
     const editOpenSaveScreen = useGameSaveScreenStore((state) => state.editOpen);
     const setOpenSettings = useSettingsScreenStore((state) => state.setOpen);
     const queryClient = useQueryClient();
+    const gameProps = useGameProps();
     const { enqueueSnackbar } = useSnackbar();
     const { data: lastSave = null } = useQueryLastSave();
     const location = useLocation();
@@ -100,7 +101,7 @@ export default function SaveLoadSettingButtons() {
             key={"load_button"}
             onClick={() =>
                 loadGameSaveFromFile(navigate, () => {
-                    queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
+                    gameProps.invalidateInterfaceData();
                     enqueueSnackbar(t("success_load"), { variant: "success" });
                     setOpenSettings(false);
                 })

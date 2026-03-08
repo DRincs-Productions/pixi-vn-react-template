@@ -1,6 +1,5 @@
 import { narration } from "@drincs/pixi-vn";
 import { Button, Input } from "@mui/joy";
-import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
@@ -8,7 +7,8 @@ import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import { useShallow } from "zustand/react/shallow";
 import ModalDialogCustom from "../../components/ModalDialog";
-import { INTERFACE_DATA_USE_QUEY_KEY, useQueryDialogue, useQueryInputValue } from "../../hooks/useQueryInterface";
+import useGameProps from "../../hooks/useGameProps";
+import { useQueryDialogue, useQueryInputValue } from "../../hooks/useQueryInterface";
 import useTypewriterStore from "../../stores/useTypewriterStore";
 
 export default function TextInput() {
@@ -17,7 +17,7 @@ export default function TextInput() {
         useQueryInputValue<string | number>();
     const open = useTypewriterStore(useShallow((state) => !state.inProgress && isRequired));
     const [tempValue, setTempValue] = useState<string | number>();
-    const queryClient = useQueryClient();
+    const gameProps = useGameProps();
     const { t } = useTranslation(["ui"]);
     useEffect(() => {
         setTempValue(currentValue);
@@ -38,7 +38,7 @@ export default function TextInput() {
                         onClick={() => {
                             narration.inputValue = tempValue || currentValue;
                             setTempValue(undefined);
-                            queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
+                            gameProps.invalidateInterfaceData();
                         }}
                         disabled={tempValue === undefined || tempValue === ""}
                     >
