@@ -1,5 +1,4 @@
 import { narration, stepHistory, StoredIndexedChoiceInterface } from "@drincs/pixi-vn";
-
 import { useCallback } from "react";
 import { useShallow } from "zustand/react/shallow";
 import useInterfaceStore from "../stores/useInterfaceStore";
