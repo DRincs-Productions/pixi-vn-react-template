@@ -5,8 +5,8 @@ import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ModalConfirmation from "../../components/ModalConfirmation";
+import useGameProps from "../../hooks/useGameProps";
 import useMyNavigate from "../../hooks/useMyNavigate";
-import { INTERFACE_DATA_USE_QUEY_KEY } from "../../hooks/useQueryInterface";
 import { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
 import useGameSaveScreenStore from "../../stores/useGameSaveScreenStore";
@@ -19,6 +19,7 @@ export default function SaveLoadAlert() {
     const { t } = useTranslation(["ui"]);
     const { enqueueSnackbar } = useSnackbar();
     const queryClient = useQueryClient();
+    const gameProps = useGameProps();
     const [tempSaveName, setTempSaveName] = useState<string>("");
     const setOpenSaveScreen = useGameSaveScreenStore((state) => state.setOpen);
 
@@ -48,7 +49,7 @@ export default function SaveLoadAlert() {
                     case "load":
                         return loadSave(alertData.data, navigate)
                             .then(() => {
-                                queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
+                                gameProps.invalidateInterfaceData();
                                 enqueueSnackbar(t("success_load"), { variant: "success" });
                                 setOpenSaveScreen(false);
                                 return true;

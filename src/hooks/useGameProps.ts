@@ -17,8 +17,9 @@ export default function useGameProps(): StepLabelProps {
         t,
         uiTransition,
         notify: enqueueSnackbar,
-        invalidateInterfaceData: () => {
-            queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
+        invalidateInterfaceData: async (delay: number = 0) => {
+            if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay));
+            return await queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
         },
     };
 }

@@ -1,18 +1,16 @@
 import { narration, stepHistory, StoredIndexedChoiceInterface } from "@drincs/pixi-vn";
-import { useQueryClient } from "@tanstack/react-query";
+
 import { useCallback } from "react";
 import { useShallow } from "zustand/react/shallow";
 import useInterfaceStore from "../stores/useInterfaceStore";
 import useStepStore from "../stores/useStepStore";
 import useGameProps from "./useGameProps";
-import { INTERFACE_DATA_USE_QUEY_KEY } from "./useQueryInterface";
 
 export default function useNarrationFunctions() {
     const setNextStepLoading = useStepStore(useShallow((state) => state.setLoading));
     const setBackLoading = useStepStore((state) => state.setBackLoading);
     const hidden = useInterfaceStore(useShallow((state) => state.hidden));
     const setHideInterface = useInterfaceStore((state) => state.setHidden);
-    const queryClient = useQueryClient();
     const gameProps = useGameProps();
 
     const goNext = useCallback(async () => {
@@ -28,7 +26,7 @@ export default function useNarrationFunctions() {
             return narration
                 .continue(gameProps)
                 .then(() => {
-                    queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
+                    gameProps.invalidateInterfaceData();
                     setNextStepLoading(false);
                 })
                 .catch((e) => {
@@ -40,7 +38,7 @@ export default function useNarrationFunctions() {
             console.error(e);
             return;
         }
-    }, [gameProps, queryClient]);
+    }, [gameProps]);
 
     const goBack = useCallback(async () => {
         setBackLoading(true);
@@ -48,13 +46,13 @@ export default function useNarrationFunctions() {
             .back(gameProps)
             .then(() => {
                 setBackLoading(false);
-                queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
+                gameProps.invalidateInterfaceData();
             })
             .catch((e) => {
                 setBackLoading(false);
                 console.error(e);
             });
-    }, [gameProps, queryClient]);
+    }, [gameProps]);
 
     const selectChoice = useCallback(
         async (item: StoredIndexedChoiceInterface) => {
@@ -62,7 +60,7 @@ export default function useNarrationFunctions() {
             return narration
                 .selectChoice(item, gameProps)
                 .then(() => {
-                    queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
+                    gameProps.invalidateInterfaceData();
                     setNextStepLoading(false);
                 })
                 .catch((e) => {
@@ -70,7 +68,7 @@ export default function useNarrationFunctions() {
                     console.error(e);
                 });
         },
-        [gameProps, queryClient]
+        [gameProps],
     );
 
     return {
