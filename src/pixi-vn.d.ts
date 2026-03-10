@@ -33,13 +33,14 @@ declare module "@drincs/pixi-vn" {
          */
         notify: (
             message: SnackbarMessage,
-            options?: OptionsWithExtraProps<"default" | "error" | "success" | "warning" | "info">
+            options?: OptionsWithExtraProps<"default" | "error" | "success" | "warning" | "info">,
         ) => SnackbarKey;
         /**
          * Invalidate the interface data.
          * This will cause the interface to be reloaded and the data to be fetched again.
+         * @param delay The delay before invalidating the data. This can be used to wait for some time before invalidating the data, for example, to wait for an animation to finish.
          */
-        invalidateInterfaceData: () => void;
+        invalidateInterfaceData: (delay?: number) => Promise<void> | void;
     }
     interface CharacterInterface {
         /**

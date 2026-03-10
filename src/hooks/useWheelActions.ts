@@ -1,12 +1,10 @@
 import { stepHistory, StepLabelProps } from "@drincs/pixi-vn";
 import { narration } from "@drincs/pixi-vn/narration";
-import { useQueryClient } from "@tanstack/react-query";
 import { throttle } from "es-toolkit";
 import { useCallback, useEffect, useRef } from "react";
 import { HTML_CANVAS_LAYER_NAME, HTML_UI_LAYER_NAME } from "../constans";
 import useStepStore from "../stores/useStepStore";
 import useGameProps from "./useGameProps";
-import { INTERFACE_DATA_USE_QUEY_KEY } from "./useQueryInterface";
 
 function isScrollableElement(element: HTMLElement | null): boolean {
     if (!element) return false;
@@ -47,7 +45,6 @@ export function useWheelActions({
 } = {}) {
     const pendingAsync = useRef(0);
     const setLoading = useStepStore((state) => state.setLoading);
-    const queryClient = useQueryClient();
     const gameProps = useGameProps();
 
     const runAsync = async (fn: (props: StepLabelProps) => Promise<unknown>) => {
@@ -59,7 +56,7 @@ export function useWheelActions({
             pendingAsync.current -= 1;
             setLoading(pendingAsync.current > 0);
             if (pendingAsync.current === 0) {
-                queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
+                gameProps.invalidateInterfaceData();
             }
         }
     };
@@ -88,7 +85,7 @@ export function useWheelActions({
                 await runAsync(stepHistory.back.bind(stepHistory));
             }
         }, throttleMs),
-        [throttleMs, minDelta]
+        [throttleMs, minDelta],
     );
 
     useEffect(() => {
