@@ -1,6 +1,7 @@
 import { vitePluginPixivn } from "@drincs/pixi-vn/vite";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
+import path from "path";
 import { defineConfig } from "vite";
 import checker from "vite-plugin-checker";
 import { VitePWA } from "vite-plugin-pwa";
@@ -41,6 +42,9 @@ export default defineConfig({
         }),
         vitePluginPixivn(),
     ],
+    resolve: {
+        alias: [{ find: "@", replacement: path.resolve(__dirname, "src") }],
+    },
     define: {
         __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
         __APP_NAME__: JSON.stringify(process.env.npm_package_name),
