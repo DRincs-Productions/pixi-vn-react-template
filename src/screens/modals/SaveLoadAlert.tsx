@@ -1,3 +1,4 @@
+import { deleteSaveFromIndexDB, loadSave, saveGameToIndexDB } from "@/lib/save-utils";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import { Input, Typography } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
@@ -10,7 +11,6 @@ import useMyNavigate from "../../hooks/useMyNavigate";
 import { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
 import useGameSaveScreenStore from "../../stores/useGameSaveScreenStore";
-import { deleteSaveFromIndexDB, loadSave, saveGameToIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadAlert() {
     const navigate = useMyNavigate();

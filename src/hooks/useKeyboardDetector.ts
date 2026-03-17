@@ -1,10 +1,10 @@
+import { saveGameToIndexDB } from "@/lib/save-utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
-import { saveGameToIndexDB } from "../utils/save-utility";
 import useEventListener from "./useKeyDetector";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "./useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "./useQuerySaves";
@@ -48,7 +48,7 @@ export default function useKeyboardDetector() {
                     break;
             }
         },
-        [location, lastSave, queryClient, t]
+        [location, lastSave, queryClient, t],
     );
 
     useEventListener({ type: "keydown", listener: onkeydown });

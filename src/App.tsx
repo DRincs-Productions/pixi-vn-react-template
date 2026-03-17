@@ -1,10 +1,10 @@
+import { defineAssets } from "@/lib/assets-utils";
+import { initializeIndexedDB } from "@/lib/indexedDB-utils";
 import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
 import { ComponentType, lazy, Suspense } from "react";
 import { ErrorBoundary, FallbackProps } from "react-error-boundary";
 import { useI18n } from "./i18n";
 import LoadingScreen from "./screens/LoadingScreen";
-import { defineAssets } from "./utils/assets-utility";
-import { initializeIndexedDB } from "./utils/indexedDB-utility";
 
 const Home = lazy(async () => {
     await Promise.all([import("./values"), import("./labels")]);

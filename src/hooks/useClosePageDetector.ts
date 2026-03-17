@@ -1,8 +1,8 @@
+import { addRefreshSave, loadRefreshSave } from "@/lib/save-utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { LOADING_ROUTE, MAIN_MENU_ROUTE } from "../constans";
-import { addRefreshSave, loadRefreshSave } from "../utils/save-utility";
 import useEventListener from "./useKeyDetector";
 import useMyNavigate from "./useMyNavigate";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "./useQueryInterface";
@@ -24,7 +24,7 @@ export default function useClosePageDetector() {
 
     useEffect(() => {
         loadRefreshSave(navigate).then(() =>
-            queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] })
+            queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }),
         );
     }, []);
 

@@ -1,3 +1,4 @@
+import { downloadGameSave, loadGameSaveFromFile, saveGameToIndexDB } from "@/lib/save-utils";
 import DownloadIcon from "@mui/icons-material/Download";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
@@ -15,7 +16,6 @@ import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLa
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
 import useGameSaveScreenStore from "../../stores/useGameSaveScreenStore";
 import useSettingsScreenStore from "../../stores/useSettingsScreenStore";
-import { downloadGameSave, loadGameSaveFromFile, saveGameToIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadSettingButtons() {
     const navigate = useMyNavigate();
