@@ -9,4 +9,6 @@ export const CANVAS_MINIGAME_LAYER_NAME = "minigame";
 export const HTML_UI_LAYER_NAME = "ui";
 export const HTML_CANVAS_LAYER_NAME = "canvas";
 
+export const AUDIO_BUNDLE_NAME = "audio";
+
 export const SKIP_DELAY = 100;
