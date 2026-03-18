@@ -10,5 +10,7 @@ export const HTML_UI_LAYER_NAME = "ui";
 export const HTML_CANVAS_LAYER_NAME = "canvas";
 
 export const AUDIO_BUNDLE_NAME = "audio";
+export const BGM_CHANNEL_NAME = "bgm";
+export const SFX_CHANNEL_NAME = "sfx";
 
 export const SKIP_DELAY = 100;

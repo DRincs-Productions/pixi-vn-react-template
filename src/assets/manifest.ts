@@ -17,7 +17,7 @@ const manifest: AssetsManifest = {
                     src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/audio/bgm_cheerful.wav",
                 },
                 {
-                    alias: "bgm_cheerful",
+                    alias: "sfx_whoosh",
                     src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/audio/sfx_whoosh.wav",
                 },
             ],
