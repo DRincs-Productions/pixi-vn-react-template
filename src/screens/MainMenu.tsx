@@ -1,3 +1,4 @@
+import { loadSave } from "@/lib/save-utils";
 import { canvas, ImageSprite, narration } from "@drincs/pixi-vn";
 import { Box, CircularProgress } from "@mui/joy";
 import Stack from "@mui/joy/Stack";
@@ -13,7 +14,6 @@ import startLabel from "../labels/startLabel";
 import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
 import useInterfaceStore from "../stores/useInterfaceStore";
 import useSettingsScreenStore from "../stores/useSettingsScreenStore";
-import { loadSave } from "../utils/save-utility";
 
 export default function MainMenu() {
     const setOpenSettings = useSettingsScreenStore((state) => state.setOpen);

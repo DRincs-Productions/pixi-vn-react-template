@@ -1,3 +1,4 @@
+import { downloadGameSave, loadGameSaveFromFile } from "@/lib/save-utils";
 import DownloadIcon from "@mui/icons-material/Download";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import { Grid, IconButton, Stack, Theme, Typography } from "@mui/joy";
@@ -12,7 +13,6 @@ import { MAIN_MENU_ROUTE } from "../constans";
 import useGameProps from "../hooks/useGameProps";
 import useMyNavigate from "../hooks/useMyNavigate";
 import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
-import { downloadGameSave, loadGameSaveFromFile } from "../utils/save-utility";
 
 export default function GameSaveScreen() {
     const {

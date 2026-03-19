@@ -1,3 +1,4 @@
+import { downloadGameSave } from "@/lib/save-utils";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
@@ -9,7 +10,6 @@ import TypographyShadow from "../components/TypographyShadow";
 import { MAIN_MENU_ROUTE } from "../constans";
 import useQuerySaves from "../hooks/useQuerySaves";
 import GameSaveData from "../models/GameSaveData";
-import { downloadGameSave } from "../utils/save-utility";
 
 export default function GameSaveSlot({
     saveId,
