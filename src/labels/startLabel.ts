@@ -19,7 +19,6 @@ const startLabel = newLabel(
     "start",
     [
         async () => {
-            sound.play("bgm_cheerful", { channel: BGM_CHANNEL_NAME, loop: true });
             await showImage("bg", "bg01-hallway");
             sound.play("sfx_whoosh", { channel: SFX_CHANNEL_NAME, start: 0.1 });
             await moveIn(
@@ -33,6 +32,7 @@ const startLabel = newLabel(
             narration.dialogue = { character: james, text: `You're my roommate's replacement, huh?` };
         },
         async () => {
+            sound.play("bgm_cheerful", { channel: BGM_CHANNEL_NAME, loop: true });
             await showImageContainer("james", ["m01-body", "m01-eyes-grin", "m01-mouth-smile01"]);
             narration.dialogue = {
                 character: james,
