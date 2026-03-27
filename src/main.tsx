@@ -54,9 +54,9 @@ Game.onEnd(async ({ navigate }) => {
     navigate("/");
 });
 
-Game.onError((type, error, { notify, uiTransition }) => {
+Game.addOnError((error, { notify, uiTransition }) => {
     notify(uiTransition("allert_error_occurred"), { variant: "error" });
-    console.error(`Error occurred: ${type}`, error);
+    console.error(`Error occurred`, error);
 });
 
 Game.onLoadingLabel((_stepId, { id }) => Assets.backgroundLoadBundle(id));
