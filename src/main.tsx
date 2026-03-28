@@ -1,4 +1,4 @@
-import { Assets, canvas, Container, Game, sound } from "@drincs/pixi-vn";
+import { Assets, canvas, Container, drawCanvasErrorHandler, Game, sound } from "@drincs/pixi-vn";
 import "@drincs/pixi-vn-spine";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRoot } from "react-dom/client";
@@ -64,8 +64,9 @@ Game.onEnd(async ({ navigate }) => {
     navigate("/");
 });
 
+Game.addOnError(drawCanvasErrorHandler());
 Game.addOnError((error, { notify, uiTransition }) => {
-    notify(uiTransition("allert_error_occurred"), { variant: "error" });
+    notify && uiTransition && notify(uiTransition("allert_error_occurred"), { variant: "error" });
     console.error(`Error occurred`, error);
 });
 

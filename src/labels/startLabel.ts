@@ -19,7 +19,7 @@ const startLabel = newLabel(
     "start",
     [
         async () => {
-            await showImage("bg", "bg01-hallway");
+            await showImage("bg", "bg01-halway");
             sound.play("sfx_whoosh", { channel: SFX_CHANNEL_NAME, delay: 0.1 });
             await moveIn(
                 "james",
@@ -33,7 +33,7 @@ const startLabel = newLabel(
         },
         async () => {
             sound.play("bgm_cheerful", { channel: BGM_CHANNEL_NAME, loop: true });
-            await showImageContainer("james", ["m01-body", "m01-eyes-grin", "m01-mouth-smile01"]);
+            await showImageContainer("james", ["m01-body", "m01-eyes-gin", "m01-mouth-smile01"]);
             narration.dialogue = {
                 character: james,
                 text: `Don't worry, you don't have much to live up to. Just don't use heroin like the last guy, and you'll be fine!`,
