@@ -374,6 +374,7 @@ const startLabel = newLabel(
             narration.dialogue = { character: steph, text: `Oh! You gotta take in your luggage!` };
         },
         async () => {
+            sound.pauseAll();
             await showImageContainer("steph", ["fm02-body", "fm02-eyes-smile", "fm02-mouth-smile00"]);
             sound.play("sfx_whoosh", { channel: SFX_CHANNEL_NAME, start: 0.1 });
             moveOut("james", { direction: "right", ease: "circInOut", type: "spring", duration: 0.5, delay: 0.05 });

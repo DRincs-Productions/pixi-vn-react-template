@@ -27,6 +27,7 @@ const secondPart = newLabel("second_part", [
         text.align = 0.5;
     },
     async () => {
+        sound.resumeAll();
         await showWithFade("bg", "bg02-dorm");
         sound.play("sfx_whoosh", { channel: SFX_CHANNEL_NAME, start: 0.1 });
         await moveIn(
