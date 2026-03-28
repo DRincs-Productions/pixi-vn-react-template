@@ -29,7 +29,7 @@ const secondPart = newLabel("second_part", [
     async () => {
         sound.resumeAll();
         await showWithFade("bg", "bg02-dorm");
-        sound.play("sfx_whoosh", { channel: SFX_CHANNEL_NAME, start: 0.1 });
+        sound.play("sfx_whoosh", { channel: SFX_CHANNEL_NAME, delay: 0.4 });
         await moveIn(
             "james",
             {
