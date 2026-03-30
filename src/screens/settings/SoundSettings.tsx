@@ -57,6 +57,10 @@ export default function SoundSettings() {
                 setSfx(Math.round(vv * 100));
                 if ("muted" in cs) setMutedSfx(Boolean(cs.muted));
             }
+            // if both channels expose muted=true, consider master muted
+            if (cb && cs && "muted" in cb && "muted" in cs) {
+                setMutedMaster(Boolean(cb.muted && cs.muted));
+            }
         } catch (e) {
             // ignore initialization errors
         }
@@ -70,14 +74,34 @@ export default function SoundSettings() {
     function toggleMute(setMuted: (v: boolean) => void, muted: boolean, valueKey: "master" | "bgm" | "sfx") {
         try {
             if (valueKey === "master") {
-                setMuted(sound.toggleMuteAll());
+                if (!muted) {
+                    if (typeof (sound as any).muteAll === "function") (sound as any).muteAll();
+                    else if (typeof (sound as any).toggleMuteAll === "function") (sound as any).toggleMuteAll();
+                    setMuted(true);
+                } else {
+                    if (typeof (sound as any).unmuteAll === "function") (sound as any).unmuteAll();
+                    else if (typeof (sound as any).toggleMuteAll === "function") (sound as any).toggleMuteAll();
+                    setMuted(false);
+                }
                 return;
             }
 
             const channelName = valueKey === "bgm" ? BGM_CHANNEL_NAME : SFX_CHANNEL_NAME;
-            const ch = sound.findChannel(channelName);
-            if ("muted" in ch) {
-                setMuted(sound.toggleMuteAll());
+            const ch = typeof (sound as any).findChannel === "function" ? (sound as any).findChannel(channelName) : null;
+            if (ch && "muted" in ch) {
+                ch.muted = !muted;
+                setMuted(!muted);
+            } else {
+                // fallback to volume-based mute if channel has no muted flag
+                if (!muted) {
+                    if (valueKey === "bgm") setBgm(0);
+                    if (valueKey === "sfx") setSfx(0);
+                    setMuted(true);
+                } else {
+                    if (valueKey === "bgm") setBgm(100);
+                    if (valueKey === "sfx") setSfx(100);
+                    setMuted(false);
+                }
             }
         } catch (e) {
             console.error("toggle mute error", e);
@@ -89,7 +113,7 @@ export default function SoundSettings() {
             <Box>
                 <FormLabel sx={{ typography: "title-sm" }}>{t("master_volume") || "Master"}</FormLabel>
                 <FormHelperText sx={{ typography: "body-sm" }}>
-                    {t("sound_settings_description") || "Controlla volume e mute"}
+                    {t("master_volume_description") || "Master controls all channels; muting it disables channel controls."}
                 </FormHelperText>
             </Box>
             <Stack direction='row' alignItems='center' spacing={1}>
@@ -115,7 +139,7 @@ export default function SoundSettings() {
                 </FormHelperText>
             </Box>
             <Stack direction='row' alignItems='center' spacing={1}>
-                <IconButton onClick={() => toggleMute(setMutedBgm, mutedBgm, "bgm")}>
+                <IconButton disabled={mutedMaster} onClick={() => toggleMute(setMutedBgm, mutedBgm, "bgm")}> 
                     {mutedBgm ? <VolumeOffIcon /> : <VolumeUpIcon />}
                 </IconButton>
                 <Slider
@@ -123,6 +147,7 @@ export default function SoundSettings() {
                     max={100}
                     value={bgm}
                     onChange={(_, v) => setBgm(Array.isArray(v) ? v[0] : (v as number))}
+                    disabled={mutedMaster}
                     sx={{ flex: 1 }}
                 />
                 <Box component='span' sx={{ minWidth: 36, textAlign: "right" }}>
@@ -137,7 +162,7 @@ export default function SoundSettings() {
                 </FormHelperText>
             </Box>
             <Stack direction='row' alignItems='center' spacing={1}>
-                <IconButton onClick={() => toggleMute(setMutedSfx, mutedSfx, "sfx")}>
+                <IconButton disabled={mutedMaster} onClick={() => toggleMute(setMutedSfx, mutedSfx, "sfx")}> 
                     {mutedSfx ? <VolumeOffIcon /> : <VolumeUpIcon />}
                 </IconButton>
                 <Slider
@@ -145,6 +170,7 @@ export default function SoundSettings() {
                     max={100}
                     value={sfx}
                     onChange={(_, v) => setSfx(Array.isArray(v) ? v[0] : (v as number))}
+                    disabled={mutedMaster}
                     sx={{ flex: 1 }}
                 />
                 <Box component='span' sx={{ minWidth: 36, textAlign: "right" }}>
