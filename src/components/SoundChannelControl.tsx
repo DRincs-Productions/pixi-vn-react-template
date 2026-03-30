@@ -20,19 +20,19 @@ export default function SoundChannelControl({ label, alias, disabled, helper }: 
     const setMuted = storeHook((s) => s.setMuted);
 
     useEffect(() => {
-        const m = localStorage.getItem("master_muted");
+        const m = localStorage.getItem(`${alias}_muted`);
         if (m !== null) {
             setMuted(m === "true");
         }
-        let v = localStorage.getItem("master_volume");
+        let v = localStorage.getItem(`${alias}_volume`);
         if (v !== null) {
             const vn = parseInt(v);
             if (!isNaN(vn)) setVolume(vn);
         }
 
         return () => {
-            localStorage.setItem("master_muted", muted.toString());
-            localStorage.setItem("master_volume", volume.toString());
+            localStorage.setItem(`${alias}_muted`, muted.toString());
+            localStorage.setItem(`${alias}_volume`, volume.toString());
         };
     }, []);
 
