@@ -37,10 +37,7 @@ export default function SoundSettings() {
         <Stack spacing={1} sx={{ p: 1 }}>
             <Box>
                 <FormLabel sx={{ typography: "title-sm" }}>{t("master_volume") || "Master"}</FormLabel>
-                <FormHelperText sx={{ typography: "body-sm" }}>
-                    {t("master_volume_description") ||
-                        "Master controls all channels; muting it disables channel controls."}
-                </FormHelperText>
+                <FormHelperText sx={{ typography: "body-sm" }}>{t("master_volume_description")}</FormHelperText>
             </Box>
             <Stack direction='row' alignItems='center' spacing={1}>
                 <IconButton onClick={() => toggleMasterMuted()}>
@@ -61,14 +58,14 @@ export default function SoundSettings() {
 
             <SoundChannelControl
                 label={t("bgm_volume")}
-                helper={t("sound_settings_description")}
+                helper={t("bgm_volume_description")}
                 alias={BGM_CHANNEL_NAME}
                 disabled={masterMuted}
             />
 
             <SoundChannelControl
                 label={t("sfx_volume")}
-                helper={t("sound_settings_description")}
+                helper={t("sfx_volume_description")}
                 alias={SFX_CHANNEL_NAME}
                 disabled={masterMuted}
             />
