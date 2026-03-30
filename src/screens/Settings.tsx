@@ -23,6 +23,7 @@ import HideInterfaceSettingToggle from "./settings/HideInterfaceSettingToggle";
 import OpenHistorySettingButton from "./settings/OpenHistorySettingButton";
 import SaveLoadSettingButtons from "./settings/SaveLoadSettingButtons";
 import SkipSettingToggle from "./settings/SkipSettingToggle";
+import SoundSettings from "./settings/SoundSettings";
 import ThemeSettings from "./settings/ThemeSettings";
 
 export default function Settings() {
@@ -103,6 +104,7 @@ export default function Settings() {
                         {t("display")}
                     </Typography>
                     <FullScreenSettings />
+                    <SoundSettings />
                     <ThemeSettings />
                 </DialogContent>
                 <Divider sx={{ mt: "auto" }} />
