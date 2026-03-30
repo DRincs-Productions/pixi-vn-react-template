@@ -15,9 +15,8 @@ export default function createChannelSoundStore(alias: string) {
         muted: sound.findChannel(alias).muted,
 
         setVolume: (volume: number) => {
-            const nv = Math.max(0, Math.min(100, Math.round(volume)));
-            sound.findChannel(alias).volume = nv / 100;
-            set({ volume: nv });
+            sound.findChannel(alias).volume = volume / 100;
+            set({ volume: volume });
         },
 
         setMuted: (muted: boolean) => {

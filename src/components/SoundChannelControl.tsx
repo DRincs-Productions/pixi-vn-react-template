@@ -17,8 +17,24 @@ export default function SoundChannelControl({ label, alias, disabled, helper }: 
     const muted = storeHook((s) => s.muted);
     const setVolume = storeHook((s) => s.setVolume);
     const toggleMuted = storeHook((s) => s.toggleMuted);
+    const setMuted = storeHook((s) => s.setMuted);
 
-    useEffect(() => {}, [storeHook]);
+    useEffect(() => {
+        const m = localStorage.getItem("master_muted");
+        if (m !== null) {
+            setMuted(m === "true");
+        }
+        let v = localStorage.getItem("master_volume");
+        if (v !== null) {
+            const vn = parseInt(v);
+            if (!isNaN(vn)) setVolume(vn);
+        }
+
+        return () => {
+            localStorage.setItem("master_muted", muted.toString());
+            localStorage.setItem("master_volume", volume.toString());
+        };
+    }, []);
 
     return (
         <>
@@ -37,6 +53,7 @@ export default function SoundChannelControl({ label, alias, disabled, helper }: 
                     onChange={(_, v) => setVolume(Array.isArray(v) ? v[0] : (v as number))}
                     disabled={disabled}
                     sx={{ flex: 1 }}
+                    step={1}
                 />
                 <Box component='span' sx={{ minWidth: 36, textAlign: "right" }}>
                     {volume}%

@@ -7,9 +7,8 @@ const useMasterSoundStore = create<ChannelSoundStore>((set, get) => ({
     muted: false,
 
     setVolume: (volume: number) => {
-        const nv = Math.max(0, Math.min(100, Math.round(volume)));
-        sound.volumeAll = nv / 100;
-        set({ volume: nv });
+        sound.volumeAll = volume / 100;
+        set({ volume: volume });
     },
 
     setMuted: (muted: boolean) => {
