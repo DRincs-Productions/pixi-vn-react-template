@@ -87,7 +87,8 @@ export default function SoundSettings() {
             }
 
             const channelName = valueKey === "bgm" ? BGM_CHANNEL_NAME : SFX_CHANNEL_NAME;
-            const ch = typeof (sound as any).findChannel === "function" ? (sound as any).findChannel(channelName) : null;
+            const ch =
+                typeof (sound as any).findChannel === "function" ? (sound as any).findChannel(channelName) : null;
             if (ch && "muted" in ch) {
                 ch.muted = !muted;
                 setMuted(!muted);
@@ -113,7 +114,8 @@ export default function SoundSettings() {
             <Box>
                 <FormLabel sx={{ typography: "title-sm" }}>{t("master_volume") || "Master"}</FormLabel>
                 <FormHelperText sx={{ typography: "body-sm" }}>
-                    {t("master_volume_description") || "Master controls all channels; muting it disables channel controls."}
+                    {t("master_volume_description") ||
+                        "Master controls all channels; muting it disables channel controls."}
                 </FormHelperText>
             </Box>
             <Stack direction='row' alignItems='center' spacing={1}>
@@ -139,7 +141,7 @@ export default function SoundSettings() {
                 </FormHelperText>
             </Box>
             <Stack direction='row' alignItems='center' spacing={1}>
-                <IconButton disabled={mutedMaster} onClick={() => toggleMute(setMutedBgm, mutedBgm, "bgm")}> 
+                <IconButton disabled={mutedMaster} onClick={() => toggleMute(setMutedBgm, mutedBgm, "bgm")}>
                     {mutedBgm ? <VolumeOffIcon /> : <VolumeUpIcon />}
                 </IconButton>
                 <Slider
@@ -162,7 +164,7 @@ export default function SoundSettings() {
                 </FormHelperText>
             </Box>
             <Stack direction='row' alignItems='center' spacing={1}>
-                <IconButton disabled={mutedMaster} onClick={() => toggleMute(setMutedSfx, mutedSfx, "sfx")}> 
+                <IconButton disabled={mutedMaster} onClick={() => toggleMute(setMutedSfx, mutedSfx, "sfx")}>
                     {mutedSfx ? <VolumeOffIcon /> : <VolumeUpIcon />}
                 </IconButton>
                 <Slider
