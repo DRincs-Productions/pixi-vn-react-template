@@ -101,10 +101,13 @@ export default function Settings() {
                     <DialoguesSettings />
 
                     <Typography level='title-md' fontWeight='bold'>
+                        {t("sound")}
+                    </Typography>
+                    <SoundSettings />
+                    <Typography level='title-md' fontWeight='bold'>
                         {t("display")}
                     </Typography>
                     <FullScreenSettings />
-                    <SoundSettings />
                     <ThemeSettings />
                 </DialogContent>
                 <Divider sx={{ mt: "auto" }} />

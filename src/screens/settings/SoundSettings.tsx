@@ -1,8 +1,7 @@
 import { sound } from "@drincs/pixi-vn";
-import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import { Box, Button, FormHelperText, FormLabel, IconButton, Slider, Stack } from "@mui/joy";
+import { Box, FormHelperText, FormLabel, IconButton, Slider, Stack } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BGM_CHANNEL_NAME, SFX_CHANNEL_NAME } from "../../constans";
@@ -86,88 +85,72 @@ export default function SoundSettings() {
     }
 
     return (
-        <>
+        <Stack spacing={1} sx={{ p: 1 }}>
             <Box>
-                <FormLabel sx={{ typography: "title-sm" }}>{t("sound_settings") || "Sound"}</FormLabel>
+                <FormLabel sx={{ typography: "title-sm" }}>{t("master_volume") || "Master"}</FormLabel>
                 <FormHelperText sx={{ typography: "body-sm" }}>
                     {t("sound_settings_description") || "Controlla volume e mute"}
                 </FormHelperText>
             </Box>
-
-            <Stack spacing={1} sx={{ p: 1 }}>
-                <Box>
-                    <FormLabel sx={{ typography: "title-sm" }}>{t("master_volume") || "Master"}</FormLabel>
-                </Box>
-                <Stack direction='row' alignItems='center' spacing={1}>
-                    <IconButton onClick={() => toggleMute(setMutedMaster, mutedMaster, "master")}>
-                        {mutedMaster ? <VolumeOffIcon /> : <VolumeUpIcon />}
-                    </IconButton>
-                    <Slider
-                        min={0}
-                        max={100}
-                        value={master}
-                        onChange={(_, v) => setMaster(Array.isArray(v) ? v[0] : (v as number))}
-                        sx={{ flex: 1 }}
-                    />
-                    <Box component='span' sx={{ minWidth: 36, textAlign: "right" }}>
-                        {master}%
-                    </Box>
-                </Stack>
-
-                <Box>
-                    <FormLabel sx={{ typography: "title-sm" }}>{t("bgm_volume") || "BGM"}</FormLabel>
-                </Box>
-                <Stack direction='row' alignItems='center' spacing={1}>
-                    <IconButton onClick={() => toggleMute(setMutedBgm, mutedBgm, "bgm")}>
-                        {mutedBgm ? <VolumeOffIcon /> : <MusicNoteIcon />}
-                    </IconButton>
-                    <Slider
-                        min={0}
-                        max={100}
-                        value={bgm}
-                        onChange={(_, v) => setBgm(Array.isArray(v) ? v[0] : (v as number))}
-                        sx={{ flex: 1 }}
-                    />
-                    <Box component='span' sx={{ minWidth: 36, textAlign: "right" }}>
-                        {bgm}%
-                    </Box>
-                </Stack>
-
-                <Box>
-                    <FormLabel sx={{ typography: "title-sm" }}>{t("sfx_volume") || "SFX"}</FormLabel>
-                </Box>
-                <Stack direction='row' alignItems='center' spacing={1}>
-                    <IconButton onClick={() => toggleMute(setMutedSfx, mutedSfx, "sfx")}>
-                        {mutedSfx ? <VolumeOffIcon /> : <VolumeUpIcon />}
-                    </IconButton>
-                    <Slider
-                        min={0}
-                        max={100}
-                        value={sfx}
-                        onChange={(_, v) => setSfx(Array.isArray(v) ? v[0] : (v as number))}
-                        sx={{ flex: 1 }}
-                    />
-                    <Box component='span' sx={{ minWidth: 36, textAlign: "right" }}>
-                        {sfx}%
-                    </Box>
-                </Stack>
-
-                <Box sx={{ display: "flex", justifyContent: "flex-end", pt: 1 }}>
-                    <Button
-                        onClick={() => {
-                            // quick reset: restore to 100
-                            setMaster(100);
-                            setBgm(100);
-                            setSfx(100);
-                            setMutedMaster(false);
-                            setMutedBgm(false);
-                            setMutedSfx(false);
-                        }}
-                    >
-                        {t("reset") || "Reset"}
-                    </Button>
+            <Stack direction='row' alignItems='center' spacing={1}>
+                <IconButton onClick={() => toggleMute(setMutedMaster, mutedMaster, "master")}>
+                    {mutedMaster ? <VolumeOffIcon /> : <VolumeUpIcon />}
+                </IconButton>
+                <Slider
+                    min={0}
+                    max={100}
+                    value={master}
+                    onChange={(_, v) => setMaster(Array.isArray(v) ? v[0] : (v as number))}
+                    sx={{ flex: 1 }}
+                />
+                <Box component='span' sx={{ minWidth: 36, textAlign: "right" }}>
+                    {master}%
                 </Box>
             </Stack>
-        </>
+
+            <Box>
+                <FormLabel sx={{ typography: "title-sm" }}>{t("bgm_volume") || "BGM"}</FormLabel>
+                <FormHelperText sx={{ typography: "body-sm" }}>
+                    {t("sound_settings_description") || "Controlla volume e mute"}
+                </FormHelperText>
+            </Box>
+            <Stack direction='row' alignItems='center' spacing={1}>
+                <IconButton onClick={() => toggleMute(setMutedBgm, mutedBgm, "bgm")}>
+                    {mutedBgm ? <VolumeOffIcon /> : <VolumeUpIcon />}
+                </IconButton>
+                <Slider
+                    min={0}
+                    max={100}
+                    value={bgm}
+                    onChange={(_, v) => setBgm(Array.isArray(v) ? v[0] : (v as number))}
+                    sx={{ flex: 1 }}
+                />
+                <Box component='span' sx={{ minWidth: 36, textAlign: "right" }}>
+                    {bgm}%
+                </Box>
+            </Stack>
+
+            <Box>
+                <FormLabel sx={{ typography: "title-sm" }}>{t("sfx_volume") || "SFX"}</FormLabel>
+                <FormHelperText sx={{ typography: "body-sm" }}>
+                    {t("sound_settings_description") || "Controlla volume e mute"}
+                </FormHelperText>
+            </Box>
+            <Stack direction='row' alignItems='center' spacing={1}>
+                <IconButton onClick={() => toggleMute(setMutedSfx, mutedSfx, "sfx")}>
+                    {mutedSfx ? <VolumeOffIcon /> : <VolumeUpIcon />}
+                </IconButton>
+                <Slider
+                    min={0}
+                    max={100}
+                    value={sfx}
+                    onChange={(_, v) => setSfx(Array.isArray(v) ? v[0] : (v as number))}
+                    sx={{ flex: 1 }}
+                />
+                <Box component='span' sx={{ minWidth: 36, textAlign: "right" }}>
+                    {sfx}%
+                </Box>
+            </Stack>
+        </Stack>
     );
 }
