@@ -3,12 +3,14 @@ import { create } from "zustand";
 import { ChannelSoundStore } from "./createChannelSoundStore";
 
 const useMasterSoundStore = create<ChannelSoundStore>((set, get) => ({
-    volume: sound.volumeAll,
-    muted: false,
+    volume: localStorage.getItem(`master_volume`)
+        ? parseInt(localStorage.getItem(`master_volume`)!)
+        : sound.volumeAll * 100,
+    muted: localStorage.getItem(`$master_muted`) ? localStorage.getItem(`master_muted`) === "true" : false,
 
     setVolume: (volume: number) => {
         sound.volumeAll = volume / 100;
-        set({ volume: volume });
+        set({ volume: Math.round(volume) });
     },
 
     setMuted: (muted: boolean) => {

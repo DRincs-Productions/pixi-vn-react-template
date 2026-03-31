@@ -1,7 +1,6 @@
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { Box, FormHelperText, FormLabel, IconButton, Slider, Stack } from "@mui/joy";
-import { useEffect } from "react";
 import createChannelSoundStore from "../stores/createChannelSoundStore";
 
 type Props = {
@@ -17,24 +16,6 @@ export default function SoundChannelControl({ label, alias, disabled, helper }: 
     const muted = storeHook((s) => s.muted);
     const setVolume = storeHook((s) => s.setVolume);
     const toggleMuted = storeHook((s) => s.toggleMuted);
-    const setMuted = storeHook((s) => s.setMuted);
-
-    useEffect(() => {
-        const m = localStorage.getItem(`${alias}_muted`);
-        if (m !== null) {
-            setMuted(m === "true");
-        }
-        let v = localStorage.getItem(`${alias}_volume`);
-        if (v !== null) {
-            const vn = parseInt(v);
-            if (!isNaN(vn)) setVolume(vn);
-        }
-
-        return () => {
-            localStorage.setItem(`${alias}_muted`, muted.toString());
-            localStorage.setItem(`${alias}_volume`, volume.toString());
-        };
-    }, []);
 
     return (
         <>

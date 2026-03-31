@@ -11,16 +11,22 @@ export type ChannelSoundStore = {
 
 export default function createChannelSoundStore(alias: string) {
     const useChannelStore = create<ChannelSoundStore>((set, get) => ({
-        volume: sound.findChannel(alias).volume * 100,
-        muted: sound.findChannel(alias).muted,
+        volume: localStorage.getItem(`${alias}_volume`)
+            ? parseInt(localStorage.getItem(`${alias}_volume`)!)
+            : sound.findChannel(alias).volume * 100,
+        muted: localStorage.getItem(`${alias}_muted`)
+            ? localStorage.getItem(`${alias}_muted`) === "true"
+            : sound.findChannel(alias).muted,
 
         setVolume: (volume: number) => {
             sound.findChannel(alias).volume = volume / 100;
-            set({ volume: volume });
+            localStorage.setItem(`${alias}_volume`, volume.toString());
+            set({ volume: Math.round(volume) });
         },
 
         setMuted: (muted: boolean) => {
             sound.findChannel(alias).muted = muted;
+            localStorage.setItem(`${alias}_muted`, muted.toString());
             set({ muted: muted });
         },
 

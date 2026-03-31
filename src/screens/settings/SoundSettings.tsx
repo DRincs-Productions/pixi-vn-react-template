@@ -1,7 +1,6 @@
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { Box, FormHelperText, FormLabel, IconButton, Slider, Stack } from "@mui/joy";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import SoundChannelControl from "../../components/SoundChannelControl";
 import { BGM_CHANNEL_NAME, SFX_CHANNEL_NAME } from "../../constans";
@@ -14,24 +13,6 @@ export default function SoundSettings() {
     const setMasterVolume = useMasterSoundStore((s) => s.setVolume);
     const masterMuted = useMasterSoundStore((s) => s.muted);
     const toggleMasterMuted = useMasterSoundStore((s) => s.toggleMuted);
-    const setMuted = useMasterSoundStore((s) => s.setMuted);
-
-    useEffect(() => {
-        const m = localStorage.getItem("master_muted");
-        if (m !== null) {
-            setMuted(m === "true");
-        }
-        let v = localStorage.getItem("master_volume");
-        if (v !== null) {
-            const vn = parseInt(v);
-            if (!isNaN(vn)) setMasterVolume(vn);
-        }
-
-        return () => {
-            localStorage.setItem("master_muted", masterMuted.toString());
-            localStorage.setItem("master_volume", masterVolume.toString());
-        };
-    }, []);
 
     return (
         <Stack spacing={1} sx={{ p: 1 }}>
