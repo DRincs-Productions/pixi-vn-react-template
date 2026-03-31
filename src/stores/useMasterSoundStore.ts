@@ -9,8 +9,15 @@ const useMasterSoundStore = create<ChannelSoundStore>((set, get) => ({
     muted: localStorage.getItem(`$master_muted`) ? localStorage.getItem(`master_muted`) === "true" : false,
 
     setVolume: (volume: number) => {
+        if (get().muted) {
+            get().setMuted(false);
+        }
         sound.volumeAll = volume / 100;
         set({ volume: Math.round(volume) });
+
+        if (Math.round(volume) === 0 && !get().muted) {
+            get().setMuted(true);
+        }
     },
 
     setMuted: (muted: boolean) => {
