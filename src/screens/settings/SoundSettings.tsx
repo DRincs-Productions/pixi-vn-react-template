@@ -1,9 +1,9 @@
+import { sound } from "@drincs/pixi-vn";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { Box, FormHelperText, FormLabel, IconButton, Slider, Stack } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import SoundChannelControl from "../../components/SoundChannelControl";
-import { BGM_CHANNEL_NAME, SFX_CHANNEL_NAME } from "../../constans";
 import useMasterSoundStore from "../../stores/useMasterSoundStore";
 
 export default function SoundSettings() {
@@ -37,19 +37,15 @@ export default function SoundSettings() {
                 </Box>
             </Stack>
 
-            <SoundChannelControl
-                label={t("bgm_volume")}
-                helper={t("bgm_volume_description")}
-                alias={BGM_CHANNEL_NAME}
-                disabled={masterMuted}
-            />
-
-            <SoundChannelControl
-                label={t("sfx_volume")}
-                helper={t("sfx_volume_description")}
-                alias={SFX_CHANNEL_NAME}
-                disabled={masterMuted}
-            />
+            {sound.channels.map((c) => (
+                <SoundChannelControl
+                    key={c.alias}
+                    label={t(`${c.alias}_volume`)}
+                    helper={t(`${c.alias}_volume_description`)}
+                    alias={c.alias}
+                    disabled={masterMuted}
+                />
+            ))}
         </Stack>
     );
 }
