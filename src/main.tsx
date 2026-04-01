@@ -1,10 +1,16 @@
-import { Assets, canvas, Container, Game } from "@drincs/pixi-vn";
+import { Assets, canvas, Container, drawCanvasErrorHandler, Game, sound } from "@drincs/pixi-vn";
 import { setupInkHmrListener } from "@drincs/pixi-vn-ink/vite-listener";
 import "@drincs/pixi-vn-spine";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRoot } from "react-dom/client";
 import App from "./App";
-import { CANVAS_UI_LAYER_NAME, HTML_CANVAS_LAYER_NAME, HTML_UI_LAYER_NAME } from "./constans";
+import {
+    BGM_CHANNEL_NAME,
+    CANVAS_UI_LAYER_NAME,
+    HTML_CANVAS_LAYER_NAME,
+    HTML_UI_LAYER_NAME,
+    SFX_CHANNEL_NAME,
+} from "./constans";
 import "./index.css";
 
 // Register service worker
@@ -29,6 +35,10 @@ Game.init(body, {
 }).then(() => {
     // Pixi.JS UI Layer
     canvas.addLayer(CANVAS_UI_LAYER_NAME, new Container());
+
+    sound.addChannel(BGM_CHANNEL_NAME, { background: true });
+    sound.addChannel(SFX_CHANNEL_NAME);
+    sound.defaultChannelAlias = SFX_CHANNEL_NAME;
 
     // React setup with ReactDOM
     const root = document.getElementById("root");
@@ -55,9 +65,10 @@ Game.onEnd(async ({ navigate }) => {
     navigate("/");
 });
 
-Game.onError((type, error, { notify, uiTransition }) => {
-    notify(uiTransition("allert_error_occurred"), { variant: "error" });
-    console.error(`Error occurred: ${type}`, error);
+Game.addOnError(drawCanvasErrorHandler());
+Game.addOnError((error, { notify, uiTransition }) => {
+    notify && uiTransition && notify(uiTransition("allert_error_occurred"), { variant: "error" });
+    console.error(`Error occurred`, error);
 });
 
 Game.onLoadingLabel((_stepId, { id }) => Assets.backgroundLoadBundle(id));

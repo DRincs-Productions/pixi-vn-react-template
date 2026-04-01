@@ -5,8 +5,10 @@ INCLUDE second_part.ink
 # lazyload bundle m01 fm01 fm02
 
 # show image bg bg01-hallway
+# play sound sfx_whoosh delay 0.1
 # show imagecontainer james [m01-body m01-eyes-smile m01-mouth-neutral01] xAlign 0.5 yAlign 1 with movein direction right ease circInOut type spring
 james: You're my roommate's replacement, huh?
+# play sound sfx_whoosh channel bgm loop true
 # show imagecontainer james [m01-body m01-eyes-grin m01-mouth-smile01]
 james: Don't worry, you don't have much to live up to. Just don't use heroin like the last guy, and you'll be fine!
 # show imagecontainer james [m01-body m01-eyes-smile m01-mouth-grin00]
@@ -38,6 +40,7 @@ james: ...
 # show imagecontainer james [m01-body m01-eyes-annoy m01-mouth-annoy01]
 james: I know you're both watching, come on out already!
 
+# play sound sfx_whoosh delay 0.1
 # show imagecontainer james [m01-body m01-eyes-annoy m01-mouth-annoy00]
 # show imagecontainer sly [fm01-body fm01-eyes-wow fm01-mouth-soft01] xAlign 0.2 yAlign 1 with movein direction right ease anticipate
 # show imagecontainer steph [fm02-body fm02-eyes-nervous fm02-mouth-nervous00] xAlign 0.8 yAlign 1 with movein direction left ease easeInOut
@@ -175,8 +178,10 @@ steph: [sly]!
 # show imagecontainer james [m01-body m01-eyes-grin m01-mouth-grin00]
 # show imagecontainer sly [fm01-body fm01-eyes-smile fm01-mouth-smile00]
 # show imagecontainer steph [fm02-body fm02-eyes-upset fm02-mouth-nervous00]
+# play sound sfx_whoosh delay 0.1
 # remove image steph with moveout direction left ease easeInOut
 [steph_fullname] goes through the opposite door,
+# play sound sfx_whoosh delay 0.1
 <- animation_01
 <>and returns with a HUGE tinfoil-covered platter.
 
@@ -195,6 +200,9 @@ mc: ...thanks... um...
 # show imagecontainer steph [fm02-body fm02-eyes-wow fm02-mouth-wow01]
 steph: Oh! You gotta take in your luggage!
 
+# pause allsounds
+# show imagecontainer steph [fm02-body fm02-eyes-smile fm02-mouth-smile00]
+# play sound sfx_whoosh delay 0.1
 # remove image james with moveout direction right ease circInOut type spring duration 0.5 delay 0.05
 # remove image sly with moveout direction right ease anticipate duration 0.5
 # remove image steph with moveout direction left ease easeInOut duration 0.5 delay 0.1

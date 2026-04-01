@@ -1,4 +1,4 @@
-import { canvas, ImageSprite, narration } from "@drincs/pixi-vn";
+import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
 import { Box, CircularProgress } from "@mui/joy";
 import Stack from "@mui/joy/Stack";
 import { useQueryClient } from "@tanstack/react-query";
@@ -77,10 +77,8 @@ export default function MainMenu() {
             <MenuButton
                 onClick={async () => {
                     setLoading(true);
-                    canvas.removeAll();
                     await navigate(NARRATION_ROUTE);
-                    narration
-                        .call("start", gameProps)
+                    Game.start("start", gameProps)
                         .then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))
                         .finally(() => setLoading(false));
                 }}
