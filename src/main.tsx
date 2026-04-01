@@ -35,6 +35,7 @@ Game.init(body, {
     // Pixi.JS UI Layer
     canvas.addLayer(CANVAS_UI_LAYER_NAME, new Container());
 
+    // Sound setup
     sound.addChannel(BGM_CHANNEL_NAME, { background: true });
     sound.addChannel(SFX_CHANNEL_NAME);
     sound.defaultChannelAlias = SFX_CHANNEL_NAME;
