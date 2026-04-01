@@ -200,7 +200,7 @@ mc: ...thanks... um...
 # show imagecontainer steph [fm02-body fm02-eyes-wow fm02-mouth-wow01]
 steph: Oh! You gotta take in your luggage!
 
-# pause allsounds
+# pause all sounds
 # show imagecontainer steph [fm02-body fm02-eyes-smile fm02-mouth-smile00]
 # play sound sfx_whoosh delay 0.1
 # remove image james with moveout direction right ease circInOut type spring duration 0.5 delay 0.05

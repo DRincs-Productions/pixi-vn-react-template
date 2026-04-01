@@ -5,7 +5,7 @@
 # edit text bg align 0.5
 # pause
 
-# resume allsounds
+# resume all sounds
 # show image bg bg02-dorm align 0 with fade
 # play sound sfx_whoosh delay 0.4
 # show imagecontainer james [m01-body m01-eyes-smile m01-mouth-smile00] xAlign 0.5 yAlign 1 with movein direction right ease circInOut type spring delay 0.3
