@@ -10,7 +10,7 @@ import {
     showImageContainer,
     sound,
 } from "@drincs/pixi-vn";
-import { BGM_CHANNEL_NAME, SFX_CHANNEL_NAME } from "../constans";
+import { BGM_CHANNEL_NAME } from "../constans";
 import { james, mc, sly, steph, steph_fullname } from "../values/characters";
 import { animation01 } from "./animations-labels";
 import secondPart from "./secondPart";
@@ -20,7 +20,7 @@ const startLabel = newLabel(
     [
         async () => {
             await showImage("bg", "bg01-hallway");
-            await sound.play("sfx_whoosh", { channel: SFX_CHANNEL_NAME, delay: 0.1 });
+            await sound.play("sfx_whoosh", { delay: 0.1 });
             await moveIn(
                 "james",
                 {
@@ -91,7 +91,7 @@ const startLabel = newLabel(
         },
         async () => {
             await showImageContainer("james", ["m01-body", "m01-eyes-annoy", "m01-mouth-annoy00"]);
-            await sound.play("sfx_whoosh", { channel: SFX_CHANNEL_NAME, delay: 0.1 });
+            await sound.play("sfx_whoosh", { delay: 0.1 });
             await moveIn(
                 "sly",
                 {
@@ -341,14 +341,14 @@ const startLabel = newLabel(
             await showImageContainer("james", ["m01-body", "m01-eyes-grin", "m01-mouth-grin00"]);
             await showImageContainer("sly", ["fm01-body", "fm01-eyes-smile", "fm01-mouth-smile00"]);
             await showImageContainer("steph", ["fm02-body", "fm02-eyes-upset", "fm02-mouth-nervous00"]);
-            await sound.play("sfx_whoosh", { channel: SFX_CHANNEL_NAME, delay: 0.1 });
+            await sound.play("sfx_whoosh", { delay: 0.1 });
             moveOut("steph", { direction: "left", ease: "easeInOut" });
             narration.dialogue = `${steph_fullname} goes through the opposite door,`;
         },
         async (props) => {
             narration.dialogGlue = true;
             narration.dialogue = `and returns with a HUGE tinfoil-covered platter.`;
-            await sound.play("sfx_whoosh", { channel: SFX_CHANNEL_NAME, delay: 0.1 });
+            await sound.play("sfx_whoosh", { delay: 0.1 });
             await narration.call(animation01, props);
         },
         async () => {
@@ -376,7 +376,7 @@ const startLabel = newLabel(
         async () => {
             sound.pauseAll();
             await showImageContainer("steph", ["fm02-body", "fm02-eyes-smile", "fm02-mouth-smile00"]);
-            await sound.play("sfx_whoosh", { channel: SFX_CHANNEL_NAME, delay: 0.1 });
+            await sound.play("sfx_whoosh", { delay: 0.1 });
             moveOut("james", { direction: "right", ease: "circInOut", type: "spring", duration: 0.5, delay: 0.05 });
             moveOut("sly", { direction: "right", ease: "anticipate", duration: 0.5 });
             moveOut("steph", { direction: "left", ease: "easeInOut", duration: 0.5, delay: 0.1 });

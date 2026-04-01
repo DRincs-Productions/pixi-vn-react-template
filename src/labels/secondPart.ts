@@ -1,5 +1,4 @@
 import { moveIn, narration, newLabel, showImageContainer, showWithFade, sound, Text, TextStyle } from "@drincs/pixi-vn";
-import { SFX_CHANNEL_NAME } from "../constans";
 import { james, mc, sly, steph, steph_fullname } from "../values/characters";
 
 const secondPart = newLabel("second_part", [
@@ -29,7 +28,7 @@ const secondPart = newLabel("second_part", [
     async () => {
         sound.resumeAll();
         await showWithFade("bg", "bg02-dorm");
-        await sound.play("sfx_whoosh", { channel: SFX_CHANNEL_NAME, delay: 0.4 });
+        await sound.play("sfx_whoosh", { delay: 0.4 });
         await moveIn(
             "james",
             {
