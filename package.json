@@ -12,7 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@drincs/pixi-vn": "^1.6.1",
+    "@drincs/pixi-vn": "^1.6.2",
     "@drincs/pixi-vn-ink": "^0.13.2",
     "@drincs/pixi-vn-spine": "^0.2.1",
     "@emotion/react": "^11.14.0",
