@@ -1,4 +1,4 @@
-import { moveIn, narration, newLabel, showImageContainer, showWithFade, Text, TextStyle } from "@drincs/pixi-vn";
+import { moveIn, narration, newLabel, showImageContainer, showWithFade, sound, Text, TextStyle } from "@drincs/pixi-vn";
 import { james, mc, sly, steph, steph_fullname } from "../values/characters";
 
 const secondPart = newLabel("second_part", [
@@ -26,14 +26,16 @@ const secondPart = newLabel("second_part", [
         text.align = 0.5;
     },
     async () => {
+        sound.resumeAll();
         await showWithFade("bg", "bg02-dorm");
+        await sound.play("sfx_whoosh", { delay: 0.4 });
         await moveIn(
             "james",
             {
                 value: ["m01-body", "m01-eyes-smile", "m01-mouth-smile00"],
                 options: { xAlign: 0.5, yAlign: 1 },
             },
-            { direction: "right", ease: "circInOut", type: "spring", delay: 0.3 }
+            { direction: "right", ease: "circInOut", type: "spring", delay: 0.3 },
         );
         await moveIn(
             "sly",
@@ -41,7 +43,7 @@ const secondPart = newLabel("second_part", [
                 value: ["fm01-body", "fm01-eyes-smile", "fm01-mouth-serious00"],
                 options: { xAlign: 0.2, yAlign: 1 },
             },
-            { direction: "right", ease: "anticipate", delay: 0.3 }
+            { direction: "right", ease: "anticipate", delay: 0.3 },
         );
         await moveIn(
             "steph",
@@ -49,7 +51,7 @@ const secondPart = newLabel("second_part", [
                 value: ["fm02-body", "fm02-eyes-wow", "fm02-mouth-nervous00"],
                 options: { xAlign: 0.8, yAlign: 1 },
             },
-            { direction: "left", ease: "easeInOut", delay: 0.3 }
+            { direction: "left", ease: "easeInOut", delay: 0.3 },
         );
         narration.dialogue = `She enters my room before I'VE even had a chance to.`;
     },

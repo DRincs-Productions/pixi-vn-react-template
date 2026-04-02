@@ -56,6 +56,13 @@
 		"you_sure_to_delete_save": "Are you sure you want to delete this save file?",
 		"you_sure_to_load_save": "Are you sure you want to load this save file?",
 		"you_sure_to_return_main_menu": "Are you sure you want to return to the main menu? All unsaved progress will be lost.",
-		"download_locale": "Download File to Translate"
+		"download_locale": "Download File to Translate",
+		"sound": "Audio",
+		"master_volume": "Master Volume",
+		"bgm_volume": "Music Volume",
+		"sfx_volume": "Sound Effects Volume",
+		"master_volume_description": "Controls the overall audio level for the game. Use this to raise or lower all sounds at once.",
+		"bgm_volume_description": "Sets the volume for background music tracks only.",
+		"sfx_volume_description": "Sets the volume for sound effects such as UI clicks and in-game actions."
 	}
 }
