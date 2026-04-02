@@ -23,6 +23,7 @@ import HideInterfaceSettingToggle from "./settings/HideInterfaceSettingToggle";
 import OpenHistorySettingButton from "./settings/OpenHistorySettingButton";
 import SaveLoadSettingButtons from "./settings/SaveLoadSettingButtons";
 import SkipSettingToggle from "./settings/SkipSettingToggle";
+import SoundSettings from "./settings/SoundSettings";
 import ThemeSettings from "./settings/ThemeSettings";
 
 export default function Settings() {
@@ -99,6 +100,10 @@ export default function Settings() {
                     </Typography>
                     <DialoguesSettings />
 
+                    <Typography level='title-md' fontWeight='bold'>
+                        {t("sound")}
+                    </Typography>
+                    <SoundSettings />
                     <Typography level='title-md' fontWeight='bold'>
                         {t("display")}
                     </Typography>

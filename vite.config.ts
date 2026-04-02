@@ -50,12 +50,13 @@ export default defineConfig({
     build: {
         rollupOptions: {
             output: {
-                manualChunks: {
-                    "lib/@mui/joy": ["@mui/joy"],
-                    "lib/react-markdown": ["react-markdown", "rehype-raw", "remark-gfm"],
-                    "lib/pixi.js": ["pixi.js"],
-                    "lib/@drincs/pixi-vn": ["@drincs/pixi-vn"],
-                    "lib/spine": ["@drincs/pixi-vn-spine"],
+                manualChunks(id) {
+                    if (id.includes("react-markdown") || id.includes("rehype-raw") || id.includes("remark-gfm"))
+                        return "react-markdown";
+                    if (id.includes("@pixi/sound")) return "sound";
+                    if (id.includes("@drincs/pixi-vn-spine")) return "spine";
+                    if (id.includes("pixi.js")) return "pixi.js";
+                    if (id.includes("@drincs/pixi-vn")) return "pixi-vn";
                 },
             },
         },
