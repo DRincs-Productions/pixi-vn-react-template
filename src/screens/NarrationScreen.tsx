@@ -34,18 +34,18 @@ export default function NarrationScreen() {
             hidden
                 ? `motion-opacity-out-0 motion-translate-y-out-[50%]`
                 : `motion-opacity-in-0 motion-translate-y-in-[50%]`,
-        [hidden]
+        [hidden],
     );
     const sliderVarians = useMemo(
         () =>
             hidden
                 ? `motion-duration-200/opacity motion-opacity-out-0 motion-translate-y-out-[25%]`
                 : `motion-opacity-in-0 motion-translate-y-in-[25%]`,
-        [hidden]
+        [hidden],
     );
     const cardImageVarians = useMemo(
         () => (!hidden && character?.icon ? `motion-opacity-in-0 motion-translate-x-in-[-5%]` : `motion-opacity-out-0`),
-        [hidden, character?.icon]
+        [hidden, character?.icon],
     );
     const paragraphRef = useRef<HTMLDivElement>(null);
 
