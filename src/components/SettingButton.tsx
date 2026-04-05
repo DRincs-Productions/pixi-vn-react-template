@@ -28,8 +28,8 @@ export default function SettingButton({
                 disableIcon
                 overlay
                 checked={true}
-                variant='outlined'
-                color='neutral'
+                variant="outlined"
+                color="neutral"
                 onChange={onChange}
                 sx={{ mt: -2 }}
                 disabled={disabled}

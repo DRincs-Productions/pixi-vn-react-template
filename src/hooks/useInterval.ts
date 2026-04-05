@@ -20,7 +20,7 @@ export default function useInterval(
          */
         enabled?: boolean;
     },
-    dependencies: any[] = []
+    dependencies: any[] = [],
 ) {
     const savedCallback = useRef<() => any | null>(null);
     const { delay = 1000, enabled = true } = options;

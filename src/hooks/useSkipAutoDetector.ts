@@ -27,7 +27,7 @@ export default function useSkipAutoDetector() {
             delay: autoTime * 1000,
             enabled: autoEnabled && !skipEnabled && !typewriterInProgress,
         },
-        [autoEnabled, skipEnabled, goNext]
+        [autoEnabled, skipEnabled, goNext],
     );
 
     useEventListener({

@@ -21,7 +21,7 @@ export default function ModalConfirmation(props: ModalConfirmationProps) {
             color={color}
             actions={[
                 <Button
-                    key='confirm-button'
+                    key="confirm-button"
                     color={color}
                     onClick={async () => {
                         if (onConfirm) {
@@ -43,9 +43,9 @@ export default function ModalConfirmation(props: ModalConfirmationProps) {
                     {t("confirm")}
                 </Button>,
                 <Button
-                    key='cancel-button'
-                    variant='plain'
-                    color='neutral'
+                    key="cancel-button"
+                    variant="plain"
+                    color="neutral"
                     onClick={() => setOpen(false)}
                     fullWidth={false}
                     disabled={loadingConfirm}

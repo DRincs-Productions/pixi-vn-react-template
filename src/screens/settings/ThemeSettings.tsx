@@ -44,23 +44,23 @@ export default function ThemeSettings() {
                     }
                 }}
             >
-                <Tooltip title='Light Mode'>
+                <Tooltip title="Light Mode">
                     <span>
-                        <IconButton value='light'>
+                        <IconButton value="light">
                             <LightModeIcon />
                         </IconButton>
                     </span>
                 </Tooltip>
-                <Tooltip title='System Mode'>
+                <Tooltip title="System Mode">
                     <span>
-                        <IconButton value='system'>
+                        <IconButton value="system">
                             <AutoModeIcon />
                         </IconButton>
                     </span>
                 </Tooltip>
-                <Tooltip title='Dark Mode'>
+                <Tooltip title="Dark Mode">
                     <span>
-                        <IconButton value='dark'>
+                        <IconButton value="dark">
                             <DarkModeIcon />
                         </IconButton>
                     </span>
@@ -89,22 +89,22 @@ export default function ThemeSettings() {
                     if (newValue) setSolidColor(newValue);
                 }}
             >
-                <Tooltip title='White'>
+                <Tooltip title="White">
                     <span>
-                        <IconButton value='white'>
+                        <IconButton value="white">
                             <WbIncandescentIcon />
                         </IconButton>
                     </span>
                 </Tooltip>
-                <Tooltip title='Black'>
+                <Tooltip title="Black">
                     <span>
-                        <IconButton value='black'>
+                        <IconButton value="black">
                             <ModeNightIcon />
                         </IconButton>
                     </span>
                 </Tooltip>
             </ToggleButtonGroup>
-            <ToggleButtonGroup color='primary' variant='solid'>
+            <ToggleButtonGroup color="primary" variant="solid">
                 <Button>{t("example")}</Button>
             </ToggleButtonGroup>
         </>

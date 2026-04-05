@@ -61,7 +61,7 @@ export default function NarrationScreen() {
         >
             <Box sx={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
                 <SliderResizer
-                    orientation='vertical'
+                    orientation="vertical"
                     max={100}
                     min={0}
                     value={cardHeight}
@@ -95,7 +95,7 @@ export default function NarrationScreen() {
                 >
                     <Card
                         key={"dialogue-card"}
-                        orientation='horizontal'
+                        orientation="horizontal"
                         sx={{
                             overflow: "auto",
                             gap: 1,
@@ -107,7 +107,7 @@ export default function NarrationScreen() {
                         {character?.icon && (
                             <AspectRatio
                                 flex
-                                ratio='1'
+                                ratio="1"
                                 maxHeight={"20%"}
                                 sx={{
                                     height: "100%",
@@ -115,11 +115,11 @@ export default function NarrationScreen() {
                                 }}
                                 className={`motion-scale-x-in-0`}
                             >
-                                <img src={character.icon} loading='lazy' alt='' />
+                                <img src={character.icon} loading="lazy" alt="" />
                             </AspectRatio>
                         )}
                         <SliderResizer
-                            orientation='horizontal'
+                            orientation="horizontal"
                             max={100}
                             min={0}
                             value={cardImageWidth}
@@ -141,8 +141,8 @@ export default function NarrationScreen() {
                         />
                         <CardContent>
                             <Typography
-                                fontSize='xl'
-                                fontWeight='lg'
+                                fontSize="xl"
+                                fontWeight="lg"
                                 sx={{
                                     color: character?.color,
                                     paddingLeft: 1,

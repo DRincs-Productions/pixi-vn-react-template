@@ -15,7 +15,7 @@ export default function LoadingScreen() {
                     bottom: 0,
                     padding: 0.5,
                 }}
-                className='motion-preset-pop'
+                className="motion-preset-pop"
             >
                 <CircularProgress />
             </Box>

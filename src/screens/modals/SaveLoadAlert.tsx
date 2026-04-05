@@ -33,9 +33,9 @@ export default function SaveLoadAlert() {
         <ModalConfirmation
             open={alertData.open}
             setOpen={close}
-            color='primary'
+            color="primary"
             head={
-                <Typography level='h4' startDecorator={<CloudDownloadIcon />}>
+                <Typography level="h4" startDecorator={<CloudDownloadIcon />}>
                     {alertData.type == "load" && t("load")}
                     {alertData.type == "delete" && t("delete")}
                     {(alertData.type == "save" || alertData.type == "overwrite_save") && t("save")}

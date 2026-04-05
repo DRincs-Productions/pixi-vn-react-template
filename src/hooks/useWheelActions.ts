@@ -36,13 +36,7 @@ function isInsideRoot(target: EventTarget | null, selector: string): boolean {
     return target.closest("#" + selector) !== null;
 }
 
-export function useWheelActions({
-    throttleMs = 300,
-    minDelta = 20,
-}: {
-    throttleMs?: number;
-    minDelta?: number;
-} = {}) {
+export function useWheelActions({ throttleMs = 300, minDelta = 20 }: { throttleMs?: number; minDelta?: number } = {}) {
     const pendingAsync = useRef(0);
     const setLoading = useStepStore((state) => state.setLoading);
     const gameProps = useGameProps();

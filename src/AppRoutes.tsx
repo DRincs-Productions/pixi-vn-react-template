@@ -23,7 +23,7 @@ export default function AppRoutes() {
             <Route key={"main_menu"} path={MAIN_MENU_ROUTE} element={<MainMenu />} />
             <Route key={"loading"} path={LOADING_ROUTE} element={<LoadingScreen />} />
             <Route key={"narration"} path={NARRATION_ROUTE} element={<NarrationElement />} />
-            <Route path='*' element={<MainMenu />} />
+            <Route path="*" element={<MainMenu />} />
         </Routes>
     );
 }

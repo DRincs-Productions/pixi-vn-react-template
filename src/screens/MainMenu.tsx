@@ -41,9 +41,9 @@ export default function MainMenu() {
 
     return (
         <Stack
-            direction='column'
-            justifyContent='center'
-            alignItems='flex-start'
+            direction="column"
+            justifyContent="center"
+            alignItems="flex-start"
             spacing={{ xs: 1, sm: 2, lg: 3 }}
             sx={{
                 height: "100%",
@@ -51,9 +51,9 @@ export default function MainMenu() {
                 paddingLeft: { xs: 1, sm: 2, md: 4, lg: 6, xl: 8 },
             }}
             component={motion.div}
-            initial='closed'
+            initial="closed"
             animate={"open"}
-            exit='closed'
+            exit="closed"
         >
             <MenuButton
                 onClick={() => {
@@ -102,7 +102,7 @@ export default function MainMenu() {
                         bottom: 0,
                         padding: 0.5,
                     }}
-                    className='motion-preset-pop'
+                    className="motion-preset-pop"
                 >
                     <CircularProgress />
                 </Box>

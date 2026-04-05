@@ -9,8 +9,8 @@ export default function AnimatedDots() {
             transition={{
                 staggerChildren: 0.2,
             }}
-            initial='closed'
-            animate='open'
+            initial="closed"
+            animate="open"
         >
             {dots.map((dot, index) => (
                 <motion.span

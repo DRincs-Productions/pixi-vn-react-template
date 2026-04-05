@@ -37,8 +37,8 @@ export default function GameSaveScreen() {
             open={open}
             setOpen={setOpen}
             layout={smScreen ? "fullscreen" : "center"}
-            head={<Typography level='h2'>{`${t("save")}/${t("load")}`}</Typography>}
-            minWidth='80%'
+            head={<Typography level="h2">{`${t("save")}/${t("load")}`}</Typography>}
+            minWidth="80%"
             sx={{
                 minHeight: "50%",
                 paddingBottom: 6,
@@ -55,7 +55,7 @@ export default function GameSaveScreen() {
                 <Tooltip title={t("load_from_file")}>
                     <span>
                         <IconButton
-                            size='lg'
+                            size="lg"
                             onClick={() =>
                                 loadGameSaveFromFile(navigate, () => {
                                     gameProps.invalidateInterfaceData();
@@ -64,20 +64,20 @@ export default function GameSaveScreen() {
                                 })
                             }
                         >
-                            <FolderOpenIcon fontSize='large' />
+                            <FolderOpenIcon fontSize="large" />
                         </IconButton>
                     </span>
                 </Tooltip>
                 <Tooltip title={t("save_to_file")}>
                     <span>
                         <IconButton
-                            size='lg'
+                            size="lg"
                             onClick={() => {
                                 downloadGameSave();
                             }}
                             disabled={location.pathname == MAIN_MENU_ROUTE}
                         >
-                            <DownloadIcon fontSize='large' />
+                            <DownloadIcon fontSize="large" />
                         </IconButton>
                     </span>
                 </Tooltip>

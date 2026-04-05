@@ -50,7 +50,7 @@ export default function GameSaveSlot({
                 }}
             >
                 <IconButton
-                    variant='soft'
+                    variant="soft"
                     sx={{
                         height: "100%",
                         width: "100%",
@@ -66,7 +66,7 @@ export default function GameSaveSlot({
 
     return (
         <AspectRatio
-            objectFit='contain'
+            objectFit="contain"
             sx={{
                 borderRadius: 10,
                 margin: { xs: 1, sm: 2, md: 1, lg: 2 },
@@ -89,7 +89,7 @@ export default function GameSaveSlot({
                     userSelect: "none",
                 }}
             >
-                <TypographyShadow level='h2'>{saveData.name}</TypographyShadow>
+                <TypographyShadow level="h2">{saveData.name}</TypographyShadow>
                 <TypographyShadow>{saveData.date.toLocaleDateString()}</TypographyShadow>
                 <TypographyShadow>{saveData.date.toLocaleTimeString()}</TypographyShadow>
                 <TypographyShadow>{`${t("save_slot")} ${saveId + 1}`}</TypographyShadow>
@@ -131,7 +131,7 @@ export default function GameSaveSlot({
                 </IconButton>
             </Stack>
             <Stack direction={"row"} position={"absolute"} top={10} right={10}>
-                <IconButton color='danger' size='md' onClick={onDelete}>
+                <IconButton color="danger" size="md" onClick={onDelete}>
                     <DeleteIcon fontSize={"large"} />
                 </IconButton>
             </Stack>

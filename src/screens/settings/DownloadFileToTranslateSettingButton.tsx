@@ -26,7 +26,7 @@ export default function DownloadFileToTranslateSettingButton() {
             disabled={loading}
         >
             <TranslateIcon />
-            <Typography level='title-md'>{t("download_locale")}</Typography>
+            <Typography level="title-md">{t("download_locale")}</Typography>
         </SettingButton>
     );
 }

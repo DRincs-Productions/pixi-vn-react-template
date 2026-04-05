@@ -24,7 +24,7 @@ export default function useClosePageDetector() {
 
     useEffect(() => {
         loadRefreshSave(navigate).then(() =>
-            queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] })
+            queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }),
         );
     }, []);
 

@@ -24,14 +24,14 @@ export default function OpenHistorySettingButton() {
             }}
         >
             <HistoryIcon />
-            <Typography level='title-md'>{t("history")}</Typography>
+            <Typography level="title-md">{t("history")}</Typography>
             <Typography
                 sx={{
                     position: "absolute",
                     top: 10,
                     right: 10,
                 }}
-                level='body-md'
+                level="body-md"
             >
                 Alt+H
             </Typography>

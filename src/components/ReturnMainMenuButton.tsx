@@ -21,10 +21,10 @@ export default function ReturnMainMenuButton() {
 
     return (
         <>
-            <Stack direction='row' justifyContent='space-between' useFlexGap spacing={1}>
+            <Stack direction="row" justifyContent="space-between" useFlexGap spacing={1}>
                 <Button
-                    variant='outlined'
-                    color='danger'
+                    variant="outlined"
+                    color="danger"
                     startDecorator={<ExitToAppIcon />}
                     onClick={() => setOpenDialog(true)}
                 >
@@ -34,9 +34,9 @@ export default function ReturnMainMenuButton() {
             <ModalDialogCustom
                 open={openDialog}
                 setOpen={setOpenDialog}
-                color='danger'
+                color="danger"
                 head={
-                    <Typography level='h4' startDecorator={<ExitToAppIcon />}>
+                    <Typography level="h4" startDecorator={<ExitToAppIcon />}>
                         {t("attention")}
                     </Typography>
                 }
@@ -44,8 +44,8 @@ export default function ReturnMainMenuButton() {
                     <>
                         <Button
                             key={"exit"}
-                            color='danger'
-                            variant='outlined'
+                            color="danger"
+                            variant="outlined"
                             onClick={() => {
                                 Game.clear();
                                 navigate("/");
@@ -56,7 +56,7 @@ export default function ReturnMainMenuButton() {
                         >
                             {t("exit")}
                         </Button>
-                        <Button key={"cancel"} color='neutral' variant='plain' onClick={() => setOpenDialog(false)}>
+                        <Button key={"cancel"} color="neutral" variant="plain" onClick={() => setOpenDialog(false)}>
                             {t("cancel")}
                         </Button>
                     </>

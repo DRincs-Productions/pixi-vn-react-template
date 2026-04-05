@@ -37,7 +37,7 @@ export default function DialoguesSettings() {
                             label: "200ms",
                         },
                     ]}
-                    valueLabelDisplay='on'
+                    valueLabelDisplay="on"
                     max={200}
                     min={0}
                     valueLabelFormat={(index) => {
@@ -77,7 +77,7 @@ export default function DialoguesSettings() {
                             label: "10s",
                         },
                     ]}
-                    valueLabelDisplay='on'
+                    valueLabelDisplay="on"
                     max={10}
                     min={1}
                     disabled={!autoEnabled}

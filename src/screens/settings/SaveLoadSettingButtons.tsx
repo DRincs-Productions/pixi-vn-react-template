@@ -47,14 +47,14 @@ export default function SaveLoadSettingButtons() {
                 disabled={location.pathname === "/"}
             >
                 <SaveAsIcon />
-                <Typography level='title-md'>{t("quick_save")}</Typography>
+                <Typography level="title-md">{t("quick_save")}</Typography>
                 <Typography
                     sx={{
                         position: "absolute",
                         top: 10,
                         right: 10,
                     }}
-                    level='body-md'
+                    level="body-md"
                 >
                     Alt+S
                 </Typography>
@@ -69,14 +69,14 @@ export default function SaveLoadSettingButtons() {
             disabled={!lastSave}
         >
             <FileUploadIcon />
-            <Typography level='title-md'>{t("load_last_save")}</Typography>
+            <Typography level="title-md">{t("load_last_save")}</Typography>
             <Typography
                 sx={{
                     position: "absolute",
                     top: 10,
                     right: 10,
                 }}
-                level='body-md'
+                level="body-md"
             >
                 Alt+L
             </Typography>
@@ -89,12 +89,12 @@ export default function SaveLoadSettingButtons() {
             }}
         >
             <SaveIcon />
-            <Typography level='title-md'>{t(`${t("save")}/${t("load")}`)}</Typography>
+            <Typography level="title-md">{t(`${t("save")}/${t("load")}`)}</Typography>
         </SettingButton>,
         location.pathname === "/" ? null : (
             <SettingButton key={"save_to_file"} onClick={() => downloadGameSave()} disabled={location.pathname === "/"}>
                 <DownloadIcon />
-                <Typography level='title-md'>{t("save_to_file")}</Typography>
+                <Typography level="title-md">{t("save_to_file")}</Typography>
             </SettingButton>
         ),
         <SettingButton
@@ -108,7 +108,7 @@ export default function SaveLoadSettingButtons() {
             }
         >
             <FolderOpenIcon />
-            <Typography level='title-md'>{t("load_from_file")}</Typography>
+            <Typography level="title-md">{t("load_from_file")}</Typography>
         </SettingButton>,
     ];
 }

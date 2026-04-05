@@ -12,7 +12,7 @@ export default function OfflineScreen() {
         <Modal
             keepMounted
             open={open}
-            className='motion-blur-in-md'
+            className="motion-blur-in-md"
             sx={{
                 backdropFilter: "blur(10px)",
             }}
@@ -27,7 +27,7 @@ export default function OfflineScreen() {
                 }}
             >
                 <SignalWifiBadIcon
-                    color='error'
+                    color="error"
                     sx={{
                         fontSize: "1000%",
                     }}

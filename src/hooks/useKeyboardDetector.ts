@@ -48,7 +48,7 @@ export default function useKeyboardDetector() {
                     break;
             }
         },
-        [location, lastSave, queryClient, t]
+        [location, lastSave, queryClient, t],
     );
 
     useEventListener({ type: "keydown", listener: onkeydown });

@@ -30,8 +30,8 @@ export default function TextMenuButton(props: TextMenuButtonProps) {
                     selected
                         ? useTheme().palette.primary[500]
                         : disabled
-                        ? useTheme().palette.neutral[500]
-                        : useTheme().palette.neutral[300]
+                          ? useTheme().palette.neutral[500]
+                          : useTheme().palette.neutral[300]
                 }
                 sx={{
                     fontSize: { xs: "0.6rem", sm: "0.7rem", md: "0.8rem", lg: "1rem", xl: "1.1rem" },

@@ -11,5 +11,5 @@ interface Props
 export default function ChoiceButton(props: Props) {
     const { sx, ...rest } = props;
 
-    return <Button size='sm' {...rest} />;
+    return <Button size="sm" {...rest} />;
 }
