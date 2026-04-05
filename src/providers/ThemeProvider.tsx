@@ -7,6 +7,10 @@ import {
 import { createContext, useContext, useMemo, useState } from "react";
 import ShadeGenerator from "shade-generator";
 
+// `shade-generator` may export differently depending on bundler/commonjs interop.
+// Normalize to `ShadeGen` which should expose `.hue()`.
+const ShadeGen: any = (ShadeGenerator as any)?.default ?? ShadeGenerator;
+
 type Iprops = {
     children: React.ReactNode;
 };
@@ -53,23 +57,23 @@ export function useEditColorProvider() {
  */
 function get10ColorShades(color: string) {
     return {
-        "50": ShadeGenerator.hue(color).shade("10").hex(),
-        "100": ShadeGenerator.hue(color).shade("20").hex(),
-        "200": ShadeGenerator.hue(color).shade("40").hex(),
-        "300": ShadeGenerator.hue(color).shade("60").hex(),
-        "400": ShadeGenerator.hue(color).shade("80").hex(),
-        "500": ShadeGenerator.hue(color).shade("100").hex(),
-        "600": ShadeGenerator.hue(color).shade("200").hex(),
-        "700": ShadeGenerator.hue(color).shade("300").hex(),
-        "800": ShadeGenerator.hue(color).shade("400").hex(),
-        "900": ShadeGenerator.hue(color).shade("500").hex(),
+        "50": ShadeGen.hue(color).shade("10").hex(),
+        "100": ShadeGen.hue(color).shade("20").hex(),
+        "200": ShadeGen.hue(color).shade("40").hex(),
+        "300": ShadeGen.hue(color).shade("60").hex(),
+        "400": ShadeGen.hue(color).shade("80").hex(),
+        "500": ShadeGen.hue(color).shade("100").hex(),
+        "600": ShadeGen.hue(color).shade("200").hex(),
+        "700": ShadeGen.hue(color).shade("300").hex(),
+        "800": ShadeGen.hue(color).shade("400").hex(),
+        "900": ShadeGen.hue(color).shade("500").hex(),
     };
 }
 
 export default function MyThemeProvider({ children }: Iprops) {
     const [primaryColor, setPrimaryColor] = useState(localStorage.getItem("primaryColor") || "#1c73ff");
     const [solidColor, setSolidColor] = useState<SolidColorType>(
-        (localStorage.getItem("solidColor") as SolidColorType) || "white"
+        (localStorage.getItem("solidColor") as SolidColorType) || "white",
     );
 
     // Build the theme: https://mui.com/joy-ui/customization/theme-builder
