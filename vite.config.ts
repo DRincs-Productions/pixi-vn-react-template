@@ -1,14 +1,21 @@
 import { vitePluginPixivn } from "@drincs/pixi-vn/vite";
 import tailwindcss from "@tailwindcss/vite";
+import { devtools } from "@tanstack/devtools-vite";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 // https://vite.dev/config/
 export default defineConfig({
     plugins: [
         react(),
+        devtools(),
+        tsconfigPaths({ projects: ["./tsconfig.json"] }),
         tailwindcss(),
+        tanstackRouter({ target: "react", autoCodeSplitting: true }),
+        vitePluginPixivn(),
         VitePWA({
             // you can generate the icons using: https://favicon.io/favicon-converter/
             // and the maskable icon using: https://progressier.com/maskable-icons-editor
@@ -35,7 +42,6 @@ export default defineConfig({
                 ],
             },
         }),
-        vitePluginPixivn(),
     ],
     define: {
         __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
