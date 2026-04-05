@@ -34,6 +34,8 @@
     "source.organizeImports.biome": "explicit",
     "source.fixAll.biome": "explicit"
   },
+  "js/ts.preferences.importModuleSpecifier": "non-relative",
+  "js/ts.preferences.importModuleSpecifierEnding": "minimal",
   // references
   "js/ts.referencesCodeLens.enabled": true,
   "js/ts.referencesCodeLens.showOnAllFunctions": true,
