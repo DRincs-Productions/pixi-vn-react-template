@@ -1,4 +1,4 @@
-import { Card, CardContent, CardProps, Checkbox, useTheme } from "@mui/joy";
+import { Card, CardContent, type CardProps, Checkbox, useTheme } from "@mui/joy";
 
 export default function SettingButton({
     children,
@@ -12,12 +12,13 @@ export default function SettingButton({
     checked?: boolean;
     disabled?: boolean;
 } & CardProps) {
+    const theme = useTheme();
     return (
         <Card
             sx={{
                 boxShadow: "none",
                 "&:hover": disabled ? undefined : { bgcolor: "background.level1" },
-                backgroundColor: disabled ? useTheme().palette.neutral[100] : undefined,
+                backgroundColor: disabled ? theme.palette.neutral[100] : undefined,
                 ...sx,
             }}
             onClick={disabled ? undefined : onClick}
@@ -37,7 +38,7 @@ export default function SettingButton({
                     action: {
                         sx: {
                             borderWidth: checked ? 2 : undefined,
-                            borderColor: checked ? useTheme().palette.primary.outlinedBorder : undefined,
+                            borderColor: checked ? theme.palette.primary.outlinedBorder : undefined,
                             "&:hover": disabled
                                 ? undefined
                                 : {
