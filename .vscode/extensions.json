@@ -1,9 +1,8 @@
 {
     "recommendations": [
         "ms-vscode.vscode-typescript-next",
-        "dbaeumer.vscode-eslint",
         "anseki.vscode-color",
         "pflannery.vscode-versionlens",
-        "esbenp.prettier-vscode"
+        "biomejs.biome"
     ]
 }
