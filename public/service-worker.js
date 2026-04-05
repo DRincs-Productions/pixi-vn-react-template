@@ -55,6 +55,6 @@ self.addEventListener("fetch", (event) => {
                 if (cached) return cached;
                 return fetch(request);
             }
-        })()
+        })(),
     );
 });
