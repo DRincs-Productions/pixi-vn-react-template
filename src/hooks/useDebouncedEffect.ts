@@ -29,5 +29,5 @@ export default function useDebouncedEffect(
             const timeout = setTimeout(callback, delay);
             return () => clearTimeout(timeout);
         }
-    }, [delay, enabled, ...dependencies]);
+    }, [delay, enabled, ...dependencies, callback]);
 }

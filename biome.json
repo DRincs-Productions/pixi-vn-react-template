@@ -18,7 +18,18 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "suspicious": {
+        "noExplicitAny": "off",
+        "noArrayIndexKey": "warn",
+        "noDoubleEquals": "info"
+      },
+      "a11y": "info",
+      "style": {
+        "noDefaultExport": "off",
+        "useImportType": "info",
+        "useConst": "info"
+      }
     },
     "domains": {
       "react": "recommended"

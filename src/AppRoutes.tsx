@@ -16,7 +16,7 @@ export default function AppRoutes() {
     const navigate = useNavigate();
     useEffect(() => {
         Game.onNavigate(navigate);
-    }, []);
+    }, [navigate]);
 
     return (
         <Routes>

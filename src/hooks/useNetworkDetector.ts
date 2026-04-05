@@ -12,7 +12,7 @@ export default function useNetworkDetector() {
             window.removeEventListener("online", update);
             window.removeEventListener("offline", update);
         };
-    }, []);
+    }, [update]);
 
     return null;
 }
