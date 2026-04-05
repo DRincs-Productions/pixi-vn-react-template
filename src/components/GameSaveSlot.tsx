@@ -8,7 +8,7 @@ import { useLocation } from "react-router-dom";
 import TypographyShadow from "../components/TypographyShadow";
 import { MAIN_MENU_ROUTE } from "../constans";
 import useQuerySaves from "../hooks/useQuerySaves";
-import GameSaveData from "../models/GameSaveData";
+import type GameSaveData from "../models/GameSaveData";
 import { downloadGameSave } from "../utils/save-utility";
 
 export default function GameSaveSlot({
@@ -26,7 +26,8 @@ export default function GameSaveSlot({
 }) {
     const { t } = useTranslation(["ui"]);
     const { isLoading, data: saveData, isError } = useQuerySaves({ id: saveId });
-    let location = useLocation();
+    const location = useLocation();
+    const theme = useTheme();
 
     if (isLoading) {
         return (
@@ -56,7 +57,7 @@ export default function GameSaveSlot({
                         width: "100%",
                     }}
                     onClick={onSave}
-                    disabled={location.pathname == MAIN_MENU_ROUTE}
+                    disabled={location.pathname === MAIN_MENU_ROUTE}
                 >
                     <SaveAsIcon sx={{ fontSize: "3rem", opacity: 0.2 }} />
                 </IconButton>
@@ -74,6 +75,7 @@ export default function GameSaveSlot({
         >
             <img
                 src={saveData.image}
+                alt={saveData.name}
                 style={{
                     backgroundColor: "#303030",
                     pointerEvents: "none",
@@ -103,7 +105,7 @@ export default function GameSaveSlot({
                     <DownloadIcon
                         fontSize={"large"}
                         sx={{
-                            color: useTheme().palette.neutral[300],
+                            color: theme.palette.neutral[300],
                         }}
                     />
                 </IconButton>
@@ -112,7 +114,7 @@ export default function GameSaveSlot({
                         <SaveAsIcon
                             fontSize={"large"}
                             sx={{
-                                color: useTheme().palette.neutral[300],
+                                color: theme.palette.neutral[300],
                             }}
                         />
                     </IconButton>
@@ -125,7 +127,7 @@ export default function GameSaveSlot({
                     <UnarchiveIcon
                         fontSize={"large"}
                         sx={{
-                            color: useTheme().palette.neutral[300],
+                            color: theme.palette.neutral[300],
                         }}
                     />
                 </IconButton>
