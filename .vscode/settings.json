@@ -1,5 +1,18 @@
 {
-  // formatter
+  "files.watcherExclude": {
+    "**/routeTree.gen.ts": true
+  },
+  "search.exclude": {
+    "**/routeTree.gen.ts": true
+  },
+  "files.readonlyInclude": {
+    "**/routeTree.gen.ts": true
+  },
+  "extensions.ignoreRecommendations": false,
+  "workbench.editor.enablePreview": true,
+  "workbench.editorAssociations": {
+    "*.md": "vscode.markdown.preview.editor"
+  },
   "[javascript]": {
     "editor.defaultFormatter": "biomejs.biome",
     "editor.formatOnSave": true
@@ -16,16 +29,19 @@
     "editor.defaultFormatter": "biomejs.biome",
     "editor.formatOnSave": true
   },
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome",
+    "editor.formatOnSave": true
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome",
+    "editor.formatOnSave": true
+  },
   "[css]": {
     "editor.defaultFormatter": "biomejs.biome",
     "editor.formatOnSave": true
   },
   "[html]": {
-    "editor.defaultFormatter": "biomejs.biome",
-    "editor.formatOnSave": true,
-    "prettier.tabWidth": 2
-  },
-  "[json]": {
     "editor.defaultFormatter": "biomejs.biome",
     "editor.formatOnSave": true
   },
@@ -42,11 +58,5 @@
   // does fetch when he does Pull
   "git.fetchOnPull": true,
   // move file
-  "js/ts.updateImportsOnFileMove.enabled": "always",
-  // olther
-  "extensions.ignoreRecommendations": false,
-  "workbench.editor.enablePreview": true,
-  "workbench.editorAssociations": {
-    "*.md": "vscode.markdown.preview.editor"
-  }
+  "js/ts.updateImportsOnFileMove.enabled": "always"
 }
