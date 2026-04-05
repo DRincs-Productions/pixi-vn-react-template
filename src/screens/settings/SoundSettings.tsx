@@ -20,7 +20,7 @@ export default function SoundSettings() {
                 <FormLabel sx={{ typography: "title-sm" }}>{t("master_volume") || "Master"}</FormLabel>
                 <FormHelperText sx={{ typography: "body-sm" }}>{t("master_volume_description")}</FormHelperText>
             </Box>
-            <Stack direction='row' alignItems='center' spacing={1}>
+            <Stack direction="row" alignItems="center" spacing={1}>
                 <IconButton onClick={() => toggleMasterMuted()}>
                     {masterMuted ? <VolumeOffIcon /> : <VolumeUpIcon />}
                 </IconButton>
@@ -32,7 +32,7 @@ export default function SoundSettings() {
                     sx={{ flex: 1 }}
                     step={1}
                 />
-                <Box component='span' sx={{ minWidth: 36, textAlign: "right" }}>
+                <Box component="span" sx={{ minWidth: 36, textAlign: "right" }}>
                     {masterVolume}%
                 </Box>
             </Stack>

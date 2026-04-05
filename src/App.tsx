@@ -16,7 +16,7 @@ const Home = lazy(async () => {
 const ErrorFallback: ComponentType<FallbackProps> = ({ error, resetErrorBoundary }) => {
     return (
         <div
-            role='alert'
+            role="alert"
             style={{
                 pointerEvents: "auto",
                 backgroundColor: "black",

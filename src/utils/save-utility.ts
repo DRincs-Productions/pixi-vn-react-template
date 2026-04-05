@@ -31,7 +31,7 @@ export async function loadSave(saveData: GameSaveData, navigate: NavigateFunctio
 
 export async function saveGameToIndexDB(
     info: Partial<GameSaveData> & { id?: number } = {},
-    data = createGameSave()
+    data = createGameSave(),
 ): Promise<GameSaveData & { id: number }> {
     const { image = await canvas.extractImage(), ...rest } = info;
     let item = {

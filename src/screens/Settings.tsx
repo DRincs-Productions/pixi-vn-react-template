@@ -43,7 +43,7 @@ export default function Settings() {
 
     return (
         <Drawer
-            variant='plain'
+            variant="plain"
             open={open}
             onClose={editOpen}
             sx={{
@@ -95,16 +95,16 @@ export default function Settings() {
                             </Box>
                         </RadioGroup>
                     </FormControl>
-                    <Typography level='title-md' fontWeight='bold'>
+                    <Typography level="title-md" fontWeight="bold">
                         {t("dialogues")}
                     </Typography>
                     <DialoguesSettings />
 
-                    <Typography level='title-md' fontWeight='bold'>
+                    <Typography level="title-md" fontWeight="bold">
                         {t("sound")}
                     </Typography>
                     <SoundSettings />
-                    <Typography level='title-md' fontWeight='bold'>
+                    <Typography level="title-md" fontWeight="bold">
                         {t("display")}
                     </Typography>
                     <FullScreenSettings />

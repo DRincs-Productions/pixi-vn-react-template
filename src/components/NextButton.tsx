@@ -21,14 +21,14 @@ export default function NextButton() {
             hideNextButton
                 ? `motion-opacity-out-0 motion-translate-y-out-[50%]`
                 : `motion-opacity-in-0 motion-translate-y-in-[50%]`,
-        [hideNextButton]
+        [hideNextButton],
     );
 
     return (
         <Button
-            variant='solid'
-            color='primary'
-            size='sm'
+            variant="solid"
+            color="primary"
+            size="sm"
             disabled={goBackLoading}
             loading={nextStepLoading}
             sx={{

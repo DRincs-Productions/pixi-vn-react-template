@@ -17,14 +17,14 @@ function HistoryList({ searchString }: { searchString?: string }) {
     const { data = [] } = useQueryNarrativeHistory({ searchString });
 
     return (
-        <Stack spacing={2} justifyContent='flex-end'>
+        <Stack spacing={2} justifyContent="flex-end">
             {data.map((data, index) => {
                 return (
                     <React.Fragment key={"history" + index}>
-                        <Stack direction='row' spacing={1.5}>
-                            <Avatar size='sm' src={data.icon} />
+                        <Stack direction="row" spacing={1.5}>
+                            <Avatar size="sm" src={data.icon} />
                             <Box sx={{ flex: 1 }}>
-                                {data.character && <Typography level='title-sm'>{data.character}</Typography>}
+                                {data.character && <Typography level="title-sm">{data.character}</Typography>}
                                 <Markdown
                                     remarkPlugins={[remarkGfm]}
                                     rehypePlugins={[rehypeRaw]}
@@ -42,7 +42,7 @@ function HistoryList({ searchString }: { searchString?: string }) {
                                 </Markdown>
                             </Box>
                         </Stack>
-                        <Stack direction='row' spacing={0.5}>
+                        <Stack direction="row" spacing={0.5}>
                             <Box sx={{ flex: 1 }}>
                                 {data.choices &&
                                     data.choices.map((choice, index) => {
@@ -53,7 +53,7 @@ function HistoryList({ searchString }: { searchString?: string }) {
                                             return (
                                                 <Chip
                                                     key={"choices-success" + index}
-                                                    color='success'
+                                                    color="success"
                                                     endDecorator={<CheckIcon />}
                                                 >
                                                     {choice.text}
@@ -61,13 +61,13 @@ function HistoryList({ searchString }: { searchString?: string }) {
                                             );
                                         }
                                         return (
-                                            <Chip key={"choices" + index} color='primary'>
+                                            <Chip key={"choices" + index} color="primary">
                                                 {choice.text}
                                             </Chip>
                                         );
                                     })}
                                 {data.inputValue && (
-                                    <Chip key={"choices-success" + index} color='neutral'>
+                                    <Chip key={"choices-success" + index} color="neutral">
                                         {data.inputValue.toString()}
                                     </Chip>
                                 )}
@@ -108,7 +108,7 @@ export default function HistoryScreen() {
                     }}
                 >
                     <Stack sx={{ mb: 2 }}>
-                        <Typography level='h2'>{t("history")}</Typography>
+                        <Typography level="h2">{t("history")}</Typography>
                     </Stack>
                     <Input
                         placeholder={t("search")}
@@ -119,7 +119,7 @@ export default function HistoryScreen() {
                     />
                 </Stack>
             }
-            minWidth='80%'
+            minWidth="80%"
             sx={{
                 minHeight: "50%",
             }}

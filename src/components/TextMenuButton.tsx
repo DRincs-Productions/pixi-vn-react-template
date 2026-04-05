@@ -1,4 +1,4 @@
-import { Link, LinkProps, LinkTypeMap, Typography, useTheme } from "@mui/joy";
+import { Link, type LinkProps, type LinkTypeMap, Typography, useTheme } from "@mui/joy";
 
 interface TextMenuButtonProps
     extends LinkProps<
@@ -14,6 +14,7 @@ interface TextMenuButtonProps
 
 export default function TextMenuButton(props: TextMenuButtonProps) {
     const { sx, children, disabled, selected, ...rest } = props;
+    const theme = useTheme();
 
     return (
         <Link
@@ -28,17 +29,15 @@ export default function TextMenuButton(props: TextMenuButtonProps) {
             <Typography
                 textColor={
                     selected
-                        ? useTheme().palette.primary[500]
+                        ? theme.palette.primary[500]
                         : disabled
-                        ? useTheme().palette.neutral[500]
-                        : useTheme().palette.neutral[300]
+                          ? theme.palette.neutral[500]
+                          : theme.palette.neutral[300]
                 }
                 sx={{
                     fontSize: { xs: "0.6rem", sm: "0.7rem", md: "0.8rem", lg: "1rem", xl: "1.1rem" },
                     userSelect: "none",
-                    textShadow: `0 0 3px ${useTheme().palette.common.black}, 0 0 5px ${
-                        useTheme().palette.common.black
-                    }`,
+                    textShadow: `0 0 3px ${theme.palette.common.black}, 0 0 5px ${theme.palette.common.black}`,
                 }}
             >
                 {children}

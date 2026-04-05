@@ -18,14 +18,14 @@ export default function SkipSettingToggle() {
     return (
         <SettingButton checked={enabled} onClick={edit}>
             <FastForwardIcon />
-            <Typography level='title-md'>{t("skip")}</Typography>
+            <Typography level="title-md">{t("skip")}</Typography>
             <Typography
                 sx={{
                     position: "absolute",
                     top: 10,
                     right: 10,
                 }}
-                level='body-md'
+                level="body-md"
             >
                 Press Space
             </Typography>

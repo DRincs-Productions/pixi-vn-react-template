@@ -12,6 +12,6 @@ export function useOpacityTranslateMotion(props: {
             `motion-opacity-${hidden ? "out" : "in"}-0 motion-translate-${
                 direction === "up" || direction === "down" ? "y" : "x"
             }-${hidden ? "out" : "in"}-[${distance * (direction === "up" || direction === "left" ? -1 : 1)}%]`,
-        [hidden, distance, direction]
+        [hidden, distance, direction],
     );
 }

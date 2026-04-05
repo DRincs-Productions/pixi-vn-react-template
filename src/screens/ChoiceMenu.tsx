@@ -29,9 +29,9 @@ export default function ChoiceMenu() {
     return (
         <Grid
             container
-            direction='column'
-            justifyContent='center'
-            alignItems='center'
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
             rowSpacing={2}
             sx={{
                 overflow: "auto",
@@ -41,13 +41,13 @@ export default function ChoiceMenu() {
                 pointerEvents: hidden ? "none" : "auto",
                 margin: 0,
             }}
-            role='menu'
+            role="menu"
         >
             {menu.map((item, index) => (
                 <Grid
                     key={"choice-" + index}
-                    justifyContent='center'
-                    alignItems='center'
+                    justifyContent="center"
+                    alignItems="center"
                     className={
                         hidden
                             ? "motion-opacity-out-0 motion-translate-y-out-[50%]"

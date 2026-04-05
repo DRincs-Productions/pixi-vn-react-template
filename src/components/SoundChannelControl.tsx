@@ -23,7 +23,7 @@ export default function SoundChannelControl({ label, alias, disabled, helper }: 
                 <FormLabel sx={{ typography: "title-sm" }}>{label}</FormLabel>
                 {helper ? <FormHelperText sx={{ typography: "body-sm" }}>{helper}</FormHelperText> : null}
             </Box>
-            <Stack direction='row' alignItems='center' spacing={1}>
+            <Stack direction="row" alignItems="center" spacing={1}>
                 <IconButton disabled={disabled} onClick={() => toggleMuted()}>
                     {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
                 </IconButton>
@@ -36,7 +36,7 @@ export default function SoundChannelControl({ label, alias, disabled, helper }: 
                     sx={{ flex: 1 }}
                     step={1}
                 />
-                <Box component='span' sx={{ minWidth: 36, textAlign: "right" }}>
+                <Box component="span" sx={{ minWidth: 36, textAlign: "right" }}>
                     {volume}%
                 </Box>
             </Stack>

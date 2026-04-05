@@ -20,7 +20,7 @@ export default function useDebouncedEffect(
          */
         enabled?: boolean;
     } = {},
-    dependencies: any[] = []
+    dependencies: any[] = [],
 ) {
     const { delay = 1000, enabled = true } = options;
 
@@ -29,5 +29,5 @@ export default function useDebouncedEffect(
             const timeout = setTimeout(callback, delay);
             return () => clearTimeout(timeout);
         }
-    }, [delay, enabled, ...dependencies]);
+    }, [delay, enabled, ...dependencies, callback]);
 }

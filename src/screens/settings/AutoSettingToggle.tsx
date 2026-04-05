@@ -18,7 +18,7 @@ export default function AutoSettingToggle() {
     return (
         <SettingButton checked={autoEnabled} onClick={editAutoEnabled}>
             <HdrAutoIcon />
-            <Typography level='title-md'>{t("auto_forward_time_restricted")}</Typography>
+            <Typography level="title-md">{t("auto_forward_time_restricted")}</Typography>
         </SettingButton>
     );
 }

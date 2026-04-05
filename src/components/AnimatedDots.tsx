@@ -1,7 +1,11 @@
 import { motion } from "motion/react";
 
 export default function AnimatedDots() {
-    const dots = [".", ".", "."]; // I caratteri da animare
+    const dots = [
+        { id: "dot-1", char: "." },
+        { id: "dot-2", char: "." },
+        { id: "dot-3", char: "." },
+    ]; // I caratteri da animare
 
     return (
         <motion.span
@@ -9,12 +13,12 @@ export default function AnimatedDots() {
             transition={{
                 staggerChildren: 0.2,
             }}
-            initial='closed'
-            animate='open'
+            initial="closed"
+            animate="open"
         >
-            {dots.map((dot, index) => (
+            {dots.map((dot) => (
                 <motion.span
-                    key={index}
+                    key={dot.id}
                     initial={{ y: 0 }}
                     variants={{
                         open: {
@@ -37,7 +41,7 @@ export default function AnimatedDots() {
                         },
                     }}
                 >
-                    {dot}
+                    {dot.char}
                 </motion.span>
             ))}
         </motion.span>

@@ -18,14 +18,14 @@ export default function HideInterfaceSettingToggle() {
     return (
         <SettingButton checked={hidden} onClick={editHidden}>
             <VisibilityOffIcon />
-            <Typography level='title-md'>{t("hide_ui")}</Typography>
+            <Typography level="title-md">{t("hide_ui")}</Typography>
             <Typography
                 sx={{
                     position: "absolute",
                     top: 10,
                     right: 10,
                 }}
-                level='body-md'
+                level="body-md"
             >
                 Alt+V
             </Typography>

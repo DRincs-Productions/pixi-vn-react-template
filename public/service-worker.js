@@ -51,10 +51,10 @@ self.addEventListener("fetch", (event) => {
                     lastUsed[url.href] = now;
                 }
                 return response;
-            } catch (err) {
+            } catch (_err) {
                 if (cached) return cached;
                 return fetch(request);
             }
-        })()
+        })(),
     );
 });

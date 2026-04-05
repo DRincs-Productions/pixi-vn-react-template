@@ -28,13 +28,13 @@ export default function TextInput() {
             open={open}
             setOpen={() => {}}
             canBeIgnored={false}
-            color='primary'
+            color="primary"
             actions={
                 <>
                     <Button
                         key={"exit"}
-                        color='primary'
-                        variant='outlined'
+                        color="primary"
+                        variant="outlined"
                         onClick={() => {
                             narration.inputValue = tempValue || currentValue;
                             setTempValue(undefined);

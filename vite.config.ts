@@ -2,16 +2,12 @@ import { vitePluginPixivn } from "@drincs/pixi-vn/vite";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import checker from "vite-plugin-checker";
 import { VitePWA } from "vite-plugin-pwa";
 
 // https://vite.dev/config/
 export default defineConfig({
     plugins: [
         react(),
-        checker({
-            typescript: true,
-        }),
         tailwindcss(),
         VitePWA({
             // you can generate the icons using: https://favicon.io/favicon-converter/

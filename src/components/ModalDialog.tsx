@@ -30,13 +30,13 @@ export default function ModalDialogCustom(props: ModalDialogCustomProps) {
     const modalVarians = useMemo(
         () => `transition-all duration-400
         ${open ? "opacity-100 backdrop-blur-sm" : "opacity-0 backdrop-blur-0"}`,
-        [open]
+        [open],
     );
     const modalDialogVarians = useMemo(
         () =>
             `transition-all duration-400
         ${open ? "opacity-100" : "opacity-0"}`,
-        [open]
+        [open],
     );
 
     return (

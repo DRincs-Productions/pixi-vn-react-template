@@ -144,7 +144,7 @@ export async function getListFromIndexDB<T extends {}>(
     options: {
         order?: { field: keyof T; direction: IDBCursorDirection };
         pagination?: { offset: number; limit: number };
-    } = {}
+    } = {},
 ): Promise<T[]> {
     return new Promise((resolve, reject) => {
         let request = indexedDB.open(INDEXED_DB_NAME);

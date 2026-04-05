@@ -13,7 +13,7 @@ export default function useEventListener<K extends keyof WindowEventMap>({
         return () => {
             window.removeEventListener(type, listener);
         };
-    }, [onkeydown]);
+    }, [type, listener]);
 
     return null;
 }

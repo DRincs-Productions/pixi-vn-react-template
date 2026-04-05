@@ -8,7 +8,7 @@ import { useLocation } from "react-router-dom";
 import TypographyShadow from "../components/TypographyShadow";
 import { MAIN_MENU_ROUTE } from "../constans";
 import useQuerySaves from "../hooks/useQuerySaves";
-import GameSaveData from "../models/GameSaveData";
+import type GameSaveData from "../models/GameSaveData";
 import { downloadGameSave } from "../utils/save-utility";
 
 export default function GameSaveSlot({
@@ -26,7 +26,8 @@ export default function GameSaveSlot({
 }) {
     const { t } = useTranslation(["ui"]);
     const { isLoading, data: saveData, isError } = useQuerySaves({ id: saveId });
-    let location = useLocation();
+    const location = useLocation();
+    const theme = useTheme();
 
     if (isLoading) {
         return (
@@ -50,13 +51,13 @@ export default function GameSaveSlot({
                 }}
             >
                 <IconButton
-                    variant='soft'
+                    variant="soft"
                     sx={{
                         height: "100%",
                         width: "100%",
                     }}
                     onClick={onSave}
-                    disabled={location.pathname == MAIN_MENU_ROUTE}
+                    disabled={location.pathname === MAIN_MENU_ROUTE}
                 >
                     <SaveAsIcon sx={{ fontSize: "3rem", opacity: 0.2 }} />
                 </IconButton>
@@ -66,7 +67,7 @@ export default function GameSaveSlot({
 
     return (
         <AspectRatio
-            objectFit='contain'
+            objectFit="contain"
             sx={{
                 borderRadius: 10,
                 margin: { xs: 1, sm: 2, md: 1, lg: 2 },
@@ -74,6 +75,7 @@ export default function GameSaveSlot({
         >
             <img
                 src={saveData.image}
+                alt={saveData.name}
                 style={{
                     backgroundColor: "#303030",
                     pointerEvents: "none",
@@ -89,7 +91,7 @@ export default function GameSaveSlot({
                     userSelect: "none",
                 }}
             >
-                <TypographyShadow level='h2'>{saveData.name}</TypographyShadow>
+                <TypographyShadow level="h2">{saveData.name}</TypographyShadow>
                 <TypographyShadow>{saveData.date.toLocaleDateString()}</TypographyShadow>
                 <TypographyShadow>{saveData.date.toLocaleTimeString()}</TypographyShadow>
                 <TypographyShadow>{`${t("save_slot")} ${saveId + 1}`}</TypographyShadow>
@@ -103,7 +105,7 @@ export default function GameSaveSlot({
                     <DownloadIcon
                         fontSize={"large"}
                         sx={{
-                            color: useTheme().palette.neutral[300],
+                            color: theme.palette.neutral[300],
                         }}
                     />
                 </IconButton>
@@ -112,7 +114,7 @@ export default function GameSaveSlot({
                         <SaveAsIcon
                             fontSize={"large"}
                             sx={{
-                                color: useTheme().palette.neutral[300],
+                                color: theme.palette.neutral[300],
                             }}
                         />
                     </IconButton>
@@ -125,13 +127,13 @@ export default function GameSaveSlot({
                     <UnarchiveIcon
                         fontSize={"large"}
                         sx={{
-                            color: useTheme().palette.neutral[300],
+                            color: theme.palette.neutral[300],
                         }}
                     />
                 </IconButton>
             </Stack>
             <Stack direction={"row"} position={"absolute"} top={10} right={10}>
-                <IconButton color='danger' size='md' onClick={onDelete}>
+                <IconButton color="danger" size="md" onClick={onDelete}>
                     <DeleteIcon fontSize={"large"} />
                 </IconButton>
             </Stack>

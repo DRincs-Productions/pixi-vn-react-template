@@ -1,4 +1,4 @@
-import { narration, stepHistory, StoredIndexedChoiceInterface } from "@drincs/pixi-vn";
+import { narration, type StoredIndexedChoiceInterface, stepHistory } from "@drincs/pixi-vn";
 import { useCallback } from "react";
 import { useShallow } from "zustand/react/shallow";
 import useInterfaceStore from "../stores/useInterfaceStore";
@@ -37,7 +37,7 @@ export default function useNarrationFunctions() {
             console.error(e);
             return;
         }
-    }, [gameProps]);
+    }, [gameProps, hidden, setHideInterface, setNextStepLoading]);
 
     const goBack = useCallback(async () => {
         setBackLoading(true);
@@ -51,7 +51,7 @@ export default function useNarrationFunctions() {
                 setBackLoading(false);
                 console.error(e);
             });
-    }, [gameProps]);
+    }, [gameProps, setBackLoading]);
 
     const selectChoice = useCallback(
         async (item: StoredIndexedChoiceInterface) => {
@@ -67,7 +67,7 @@ export default function useNarrationFunctions() {
                     console.error(e);
                 });
         },
-        [gameProps],
+        [gameProps, setNextStepLoading],
     );
 
     return {
