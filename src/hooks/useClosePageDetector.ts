@@ -26,7 +26,7 @@ export default function useClosePageDetector() {
         loadRefreshSave(navigate).then(() =>
             queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }),
         );
-    }, []);
+    }, [navigate, queryClient]);
 
     return null;
 }
