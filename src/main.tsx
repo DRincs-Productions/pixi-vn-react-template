@@ -1,16 +1,15 @@
-import { Assets, canvas, Container, drawCanvasErrorHandler, Game, sound } from "@drincs/pixi-vn";
+import { Assets, Container, canvas, drawCanvasErrorHandler, Game, sound } from "@drincs/pixi-vn";
 import "@drincs/pixi-vn-spine";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRoot } from "react-dom/client";
-import App from "./App";
 import {
     BGM_CHANNEL_NAME,
     CANVAS_UI_LAYER_NAME,
     HTML_CANVAS_LAYER_NAME,
     HTML_UI_LAYER_NAME,
     SFX_CHANNEL_NAME,
-} from "./constans";
-import "./index.css";
+} from "@/constans";
+import "@/index.css";
+import App from "@/App";
 
 // Register service worker
 if ("serviceWorker" in navigator) {
@@ -51,13 +50,7 @@ Game.init(body, {
         throw new Error("htmlLayout not found");
     }
     const reactRoot = createRoot(htmlLayout);
-    const queryClient = new QueryClient();
-
-    reactRoot.render(
-        <QueryClientProvider client={queryClient}>
-            <App />
-        </QueryClientProvider>,
-    );
+    reactRoot.render(<App />);
 });
 
 Game.onEnd(async ({ navigate }) => {

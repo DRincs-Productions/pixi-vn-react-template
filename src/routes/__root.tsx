@@ -1,0 +1,46 @@
+import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
+import { TanStackDevtools } from "@tanstack/react-devtools";
+import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
+import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import ErrorFallback from "@/components/ErrorFallback";
+import { useI18n } from "@/i18n";
+import RootProvider from "@/providers/RootProvider";
+import { defineAssets } from "@/utils/assets-utility";
+import { initializeIndexedDB } from "@/utils/indexedDB-utility";
+
+export const Route = createRootRoute({
+    component: RootComponent,
+    errorComponent: ErrorFallback,
+    loader: async () => {
+        await Promise.all([import("@/values"), import("@/labels")]);
+        await Promise.all([initializeIndexedDB(), defineAssets(), useI18n()]);
+        setupPixivnViteData();
+    },
+});
+
+function RootComponent() {
+    return (
+        <>
+            <RootProvider>
+                <Outlet />
+            </RootProvider>
+
+            <TanStackDevtools
+                config={{
+                    position: "bottom-right",
+                }}
+                plugins={[
+                    {
+                        name: "TanStack Router",
+                        render: <TanStackRouterDevtoolsPanel />,
+                    },
+                    {
+                        name: "Tanstack Query",
+                        render: <ReactQueryDevtoolsPanel />,
+                    },
+                ]}
+            />
+        </>
+    );
+}
