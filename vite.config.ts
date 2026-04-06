@@ -9,10 +9,10 @@ import { VitePWA } from "vite-plugin-pwa";
 // https://vite.dev/config/
 export default defineConfig({
     plugins: [
-        react(),
         devtools(),
-        tailwindcss(),
         tanstackRouter({ target: "react", autoCodeSplitting: true }),
+        react(),
+        tailwindcss(),
         vitePluginPixivn(),
         VitePWA({
             // you can generate the icons using: https://favicon.io/favicon-converter/
