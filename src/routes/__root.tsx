@@ -1,11 +1,14 @@
+import { Game } from "@drincs/pixi-vn";
 import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import { createRootRoute, ErrorComponent, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { useEffect } from "react";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
 import useKeyboardDetector from "@/hooks/useKeyboardDetector";
 import useEventListener from "@/hooks/useKeyDetector";
+import useMyNavigate from "@/hooks/useMyNavigate";
 import { useI18n } from "@/i18n";
 import RootProvider from "@/providers/RootProvider";
 import GameSaveScreen from "@/screens/GameSaveScreen";
@@ -27,9 +30,19 @@ export const Route = createRootRoute({
         await Promise.all([initializeIndexedDB(), defineAssets(), useI18n()]);
         setupPixivnViteData();
     },
+    notFoundComponent: () => <NotFoundRedirect />,
 });
 
+function NotFoundRedirect() {
+    const navigate = useMyNavigate();
+    useEffect(() => {
+        navigate("/");
+    }, [navigate]);
+    return null;
+}
+
 function RootComponent() {
+    const navigate = useMyNavigate();
     useKeyboardDetector();
     useClosePageDetector();
     // Prevent the user from going back to the previous page
@@ -39,6 +52,10 @@ function RootComponent() {
             window.history.forward();
         },
     });
+
+    useEffect(() => {
+        Game.onNavigate(navigate);
+    }, [navigate]);
 
     return (
         <>

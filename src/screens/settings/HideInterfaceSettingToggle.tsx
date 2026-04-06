@@ -1,7 +1,7 @@
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Typography } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "@tanstack/react-router";
 import SettingButton from "../../components/SettingButton";
 import useInterfaceStore from "../../stores/useInterfaceStore";
 

@@ -1,5 +1,4 @@
 import { canvas, Game } from "@drincs/pixi-vn";
-import { NavigateFunction } from "react-router-dom";
 import { LOADING_ROUTE, MAIN_MENU_ROUTE, NARRATION_ROUTE, REFRESH_SAVE_LOCAL_STORAGE_KEY } from "../constans";
 import GameSaveData from "../models/GameSaveData";
 import {
@@ -24,7 +23,7 @@ export function createGameSave(options?: { image?: string; name?: string }): Gam
     };
 }
 
-export async function loadSave(saveData: GameSaveData, navigate: NavigateFunction) {
+export async function loadSave(saveData: GameSaveData, navigate: (to: string | number) => void | Promise<void>) {
     await navigate(LOADING_ROUTE);
     await Game.restoreGameState(saveData.saveData, navigate);
 }
@@ -85,7 +84,7 @@ export function downloadGameSave(data: GameSaveData = createGameSave()) {
     a.click();
 }
 
-export function loadGameSaveFromFile(navigate: NavigateFunction, afterLoad?: () => void) {
+export function loadGameSaveFromFile(navigate: (to: string | number) => void | Promise<void>, afterLoad?: () => void) {
     // load the save data from a JSON file
     const input = document.createElement("input");
     input.type = "file";
@@ -121,7 +120,7 @@ export async function addRefreshSave() {
     }
 }
 
-export async function loadRefreshSave(navigate: NavigateFunction) {
+export async function loadRefreshSave(navigate: (to: string | number) => void | Promise<void>) {
     const jsonString = localStorage.getItem(REFRESH_SAVE_LOCAL_STORAGE_KEY);
     if (jsonString) {
         navigate(LOADING_ROUTE);

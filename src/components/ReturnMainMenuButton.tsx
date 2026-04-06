@@ -3,7 +3,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { Button, Stack, Typography } from "@mui/joy";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "@tanstack/react-router";
 import ModalDialogCustom from "../components/ModalDialog";
 import useMyNavigate from "../hooks/useMyNavigate";
 import useSettingsScreenStore from "../stores/useSettingsScreenStore";

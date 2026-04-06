@@ -1,18 +1,19 @@
 import { Assets } from "@drincs/pixi-vn";
-import { NavigateFunction, NavigateOptions, To, useNavigate } from "react-router-dom";
+import { useNavigate, useRouter } from "@tanstack/react-router";
 
 /**
  * https://pixi-vn.web.app/it/start/interface-navigate#block-back-forward
  */
-export default function useMyNavigate(): NavigateFunction {
+export default function useMyNavigate() {
     const navigate = useNavigate();
+    const router = useRouter();
 
-    return async (to: To | number, options?: NavigateOptions) => {
+    return async (to: string | number) => {
         if (typeof to === "number") {
-            await navigate(to);
+            router.history.go(to);
         } else {
-            Assets.backgroundLoadBundle(to as string);
-            await navigate(to, options);
+            Assets.backgroundLoadBundle(to);
+            await navigate({ to });
         }
         window.history.pushState(null, window.location.href, window.location.href);
     };

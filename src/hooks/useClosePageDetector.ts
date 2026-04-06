@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
+import { useLocation } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { LOADING_ROUTE, MAIN_MENU_ROUTE } from "../constans";
 import { addRefreshSave, loadRefreshSave } from "../utils/save-utility";
 import useEventListener from "./useKeyDetector";

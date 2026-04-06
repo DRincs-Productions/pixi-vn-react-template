@@ -4,7 +4,7 @@ import { Grid, IconButton, Stack, Theme, Typography } from "@mui/joy";
 import { Pagination, Tooltip, useMediaQuery } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "@tanstack/react-router";
 import { useShallow } from "zustand/react/shallow";
 import GameSaveSlot from "../components/GameSaveSlot";
 import ModalDialogCustom from "../components/ModalDialog";
