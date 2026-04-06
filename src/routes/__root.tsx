@@ -1,9 +1,8 @@
 import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { createRootRoute, ErrorComponent, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import ErrorFallback from "@/components/ErrorFallback";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
 import useKeyboardDetector from "@/hooks/useKeyboardDetector";
 import useEventListener from "@/hooks/useKeyDetector";
@@ -18,7 +17,11 @@ import { initializeIndexedDB } from "@/utils/indexedDB-utility";
 
 export const Route = createRootRoute({
     component: RootComponent,
-    errorComponent: ErrorFallback,
+    errorComponent: (props) => (
+        <div style={{ pointerEvents: "auto", backgroundColor: "rgba(145, 145, 145, 0.5)" }}>
+            <ErrorComponent {...props} />
+        </div>
+    ),
     loader: async () => {
         await Promise.all([import("@/values"), import("@/labels")]);
         await Promise.all([initializeIndexedDB(), defineAssets(), useI18n()]);
