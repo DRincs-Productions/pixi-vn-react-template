@@ -2,6 +2,7 @@ import { vitePluginPixivn } from "@drincs/pixi-vn/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
+import tsconfigPaths from "vite-tsconfig-paths";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
@@ -9,6 +10,7 @@ import { VitePWA } from "vite-plugin-pwa";
 // https://vite.dev/config/
 export default defineConfig({
     plugins: [
+        tsconfigPaths(),
         devtools(),
         tanstackRouter({ target: "react", autoCodeSplitting: true }),
         react(),
