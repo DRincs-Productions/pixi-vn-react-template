@@ -6,8 +6,8 @@ import { createRootRoute, ErrorComponent, Outlet } from "@tanstack/react-router"
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { useEffect } from "react";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
+import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
 import useKeyboardDetector from "@/hooks/useKeyboardDetector";
-import useEventListener from "@/hooks/useKeyDetector";
 import useMyNavigate from "@/hooks/useMyNavigate";
 import { useI18n } from "@/i18n";
 import RootProvider from "@/providers/RootProvider";
@@ -45,13 +45,7 @@ function RootComponent() {
     const navigate = useMyNavigate();
     useKeyboardDetector();
     useClosePageDetector();
-    // Prevent the user from going back to the previous page
-    useEventListener({
-        type: "popstate",
-        listener: () => {
-            window.history.forward();
-        },
-    });
+    useConfirmBackNavigation();
 
     useEffect(() => {
         Game.onNavigate(navigate);

@@ -17,7 +17,6 @@ export default function useMyNavigate() {
                 Assets.backgroundLoadBundle(to);
                 await navigate({ to });
             }
-            window.history.pushState(null, window.location.href, window.location.href);
         },
         [navigate, router],
     );
