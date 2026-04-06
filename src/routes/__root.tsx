@@ -4,8 +4,15 @@ import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import ErrorFallback from "@/components/ErrorFallback";
+import useClosePageDetector from "@/hooks/useClosePageDetector";
+import useKeyboardDetector from "@/hooks/useKeyboardDetector";
+import useEventListener from "@/hooks/useKeyDetector";
 import { useI18n } from "@/i18n";
 import RootProvider from "@/providers/RootProvider";
+import GameSaveScreen from "@/screens/GameSaveScreen";
+import SaveLoadAlert from "@/screens/modals/SaveLoadAlert";
+import OfflineScreen from "@/screens/OfflineScreen";
+import Settings from "@/screens/Settings";
 import { defineAssets } from "@/utils/assets-utility";
 import { initializeIndexedDB } from "@/utils/indexedDB-utility";
 
@@ -20,9 +27,23 @@ export const Route = createRootRoute({
 });
 
 function RootComponent() {
+    useKeyboardDetector();
+    useClosePageDetector();
+    // Prevent the user from going back to the previous page
+    useEventListener({
+        type: "popstate",
+        listener: () => {
+            window.history.forward();
+        },
+    });
+
     return (
         <>
             <RootProvider>
+                <Settings />
+                <GameSaveScreen />
+                <SaveLoadAlert />
+                <OfflineScreen />
                 <Outlet />
             </RootProvider>
 
