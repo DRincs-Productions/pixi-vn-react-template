@@ -23,7 +23,7 @@ import { useEffect, useState } from 'react';
 import { Hue, useColor } from "react-color-palette";
 import "react-color-palette/css";
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from '@tanstack/react-router';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { autoInfoState } from '../atoms/autoInfoState';
 import { hideInterfaceState } from '../atoms/hideInterfaceState';

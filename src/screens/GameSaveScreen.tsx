@@ -8,7 +8,7 @@ import { Pagination, Tooltip, useMediaQuery } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from '@tanstack/react-router';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { openGameSaveScreenState } from '../atoms/openGameSaveScreenState';
 import { saveLoadAlertState } from '../atoms/saveLoadAlertState';

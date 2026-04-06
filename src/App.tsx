@@ -1,15 +1,16 @@
-import { lazy, Suspense } from "react";
+import { RouterProvider } from "@tanstack/react-router";
+import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import LoadingScreen from "./screens/LoadingScreen";
+import { router } from "./router";
 
 export default function App() {
-    const Home = lazy(async () => import('./Home'))
     return (
         <ErrorBoundary fallback={<div>Something went wrong</div>}>
             <Suspense
                 fallback={<LoadingScreen />}
             >
-                <Home />
+                <RouterProvider router={router} />
             </Suspense>
         </ErrorBoundary >
     )
