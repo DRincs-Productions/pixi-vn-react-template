@@ -4,8 +4,8 @@ import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import { createRootRoute, ErrorComponent, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
+import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
 import useKeyboardDetector from "@/hooks/useKeyboardDetector";
-import useEventListener from "@/hooks/useKeyDetector";
 import { useI18n } from "@/i18n";
 import RootProvider from "@/providers/RootProvider";
 import GameSaveScreen from "@/screens/GameSaveScreen";
@@ -32,13 +32,7 @@ export const Route = createRootRoute({
 function RootComponent() {
     useKeyboardDetector();
     useClosePageDetector();
-    // Prevent the user from going back to the previous page
-    useEventListener({
-        type: "popstate",
-        listener: () => {
-            window.history.forward();
-        },
-    });
+    useConfirmBackNavigation();
 
     return (
         <>

@@ -1,7 +1,7 @@
 import FastForwardIcon from "@mui/icons-material/FastForward";
 import { Typography } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "@tanstack/react-router";
 import SettingButton from "../../components/SettingButton";
 import useSkipStore from "../../stores/useSkipStore";
 

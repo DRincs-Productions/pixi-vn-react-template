@@ -4,7 +4,7 @@ import SaveAsIcon from "@mui/icons-material/SaveAs";
 import UnarchiveIcon from "@mui/icons-material/Unarchive";
 import { AspectRatio, IconButton, Skeleton, Stack, useTheme } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "@tanstack/react-router";
 import TypographyShadow from "../components/TypographyShadow";
 import { MAIN_MENU_ROUTE } from "../constans";
 import useQuerySaves from "../hooks/useQuerySaves";

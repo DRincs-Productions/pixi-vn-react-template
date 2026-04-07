@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "notistack";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "@tanstack/react-router";
 import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
 import { saveGameToIndexDB } from "../utils/save-utility";
 import useEventListener from "./useKeyDetector";

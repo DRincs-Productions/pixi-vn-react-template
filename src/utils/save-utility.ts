@@ -1,7 +1,7 @@
 import { canvas, Game } from "@drincs/pixi-vn";
-import { NavigateFunction } from "react-router-dom";
-import { LOADING_ROUTE, MAIN_MENU_ROUTE, NARRATION_ROUTE, REFRESH_SAVE_LOCAL_STORAGE_KEY } from "../constans";
-import GameSaveData from "../models/GameSaveData";
+import type { UseNavigateResult } from "@tanstack/react-router";
+import { REFRESH_SAVE_LOCAL_STORAGE_KEY } from "../constans";
+import type GameSaveData from "../models/GameSaveData";
 import {
     deleteRowFromIndexDB,
     getLastRowFromIndexDB,
@@ -24,7 +24,7 @@ export function createGameSave(options?: { image?: string; name?: string }): Gam
     };
 }
 
-export async function loadSave(saveData: GameSaveData, navigate: NavigateFunction) {
+export async function loadSave(saveData: GameSaveData, navigate: UseNavigateResult<string>) {
     await navigate(LOADING_ROUTE);
     await Game.restoreGameState(saveData.saveData, navigate);
 }
@@ -34,13 +34,13 @@ export async function saveGameToIndexDB(
     data = createGameSave(),
 ): Promise<GameSaveData & { id: number }> {
     const { image = await canvas.extractImage(), ...rest } = info;
-    let item = {
+    const item = {
         ...data,
         image: image,
         ...rest,
     };
     if (item.id === undefined) {
-        let lastSave = await getLastRowFromIndexDB<GameSaveData & { id: number }>(INDEXED_DB_SAVE_TABLE);
+        const lastSave = await getLastRowFromIndexDB<GameSaveData & { id: number }>(INDEXED_DB_SAVE_TABLE);
         if (lastSave) {
             item.id = lastSave.id + 1;
         } else {
@@ -59,7 +59,7 @@ export async function getSaveFromIndexDB(id: number): Promise<(GameSaveData & { 
 }
 
 export async function getLastSaveFromIndexDB(): Promise<(GameSaveData & { id: number }) | null> {
-    let list = await getListFromIndexDB<GameSaveData & { id: number }>(INDEXED_DB_SAVE_TABLE, {
+    const list = await getListFromIndexDB<GameSaveData & { id: number }>(INDEXED_DB_SAVE_TABLE, {
         pagination: { limit: 1, offset: 0 },
         order: { field: "date", direction: "prev" },
     });
@@ -85,7 +85,7 @@ export function downloadGameSave(data: GameSaveData = createGameSave()) {
     a.click();
 }
 
-export function loadGameSaveFromFile(navigate: NavigateFunction, afterLoad?: () => void) {
+export function loadGameSaveFromFile(navigate: UseNavigateResult<string>, afterLoad?: () => void) {
     // load the save data from a JSON file
     const input = document.createElement("input");
     input.type = "file";
@@ -97,7 +97,7 @@ export function loadGameSaveFromFile(navigate: NavigateFunction, afterLoad?: () 
             reader.onload = (e) => {
                 const jsonString = e.target?.result as string;
                 navigate(LOADING_ROUTE);
-                let data: GameSaveData = JSON.parse(jsonString);
+                const data: GameSaveData = JSON.parse(jsonString);
                 // load the save data from the JSON string
                 loadSave(data, navigate)
                     .then(() => {
@@ -115,17 +115,17 @@ export function loadGameSaveFromFile(navigate: NavigateFunction, afterLoad?: () 
 
 export async function addRefreshSave() {
     const data = createGameSave();
-    let jsonString = JSON.stringify(data);
+    const jsonString = JSON.stringify(data);
     if (jsonString) {
         localStorage.setItem(REFRESH_SAVE_LOCAL_STORAGE_KEY, jsonString);
     }
 }
 
-export async function loadRefreshSave(navigate: NavigateFunction) {
+export async function loadRefreshSave(navigate: UseNavigateResult<string>) {
     const jsonString = localStorage.getItem(REFRESH_SAVE_LOCAL_STORAGE_KEY);
     if (jsonString) {
         navigate(LOADING_ROUTE);
-        let data: GameSaveData = JSON.parse(jsonString);
+        const data: GameSaveData = JSON.parse(jsonString);
 
         return loadSave(data, navigate)
             .then(() => {
