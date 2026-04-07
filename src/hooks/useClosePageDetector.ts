@@ -9,10 +9,7 @@ export default function useClosePageDetector() {
     useEventListener({
         type: "beforeunload",
         listener: async () => {
-            if (
-                (location.pathname as FileRouteTypes["fullPaths"]) === "/" ||
-                (location.pathname as FileRouteTypes["fullPaths"]) === "/loading"
-            ) {
+            if ((location.pathname as FileRouteTypes["fullPaths"]) === "/") {
                 return;
             }
             await addRefreshSave();
