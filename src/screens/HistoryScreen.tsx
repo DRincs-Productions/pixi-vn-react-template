@@ -9,7 +9,7 @@ import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import ModalDialogCustom from "../components/ModalDialog";
-import useEventListener from "../hooks/useKeyDetector";
+import useHotkeys from "../hooks/useHotkeys";
 import { useQueryNarrativeHistory } from "../hooks/useQueryInterface";
 import useHistoryScreenStore from "../stores/useHistoryScreenStore";
 
@@ -87,13 +87,8 @@ export default function HistoryScreen() {
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
 
-    useEventListener({
-        type: "keydown",
-        listener: (event) => {
-            if (event.code == "KeyH" && event.altKey) {
-                editOpen();
-            }
-        },
+    useHotkeys({
+        "Alt+h": () => editOpen(),
     });
 
     return (

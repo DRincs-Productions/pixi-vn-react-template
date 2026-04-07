@@ -13,7 +13,7 @@ import {
 import { Theme, useMediaQuery } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import ReturnMainMenuButton from "../components/ReturnMainMenuButton";
-import useEventListener from "../hooks/useKeyDetector";
+import useHotkeys from "../hooks/useHotkeys";
 import useSettingsScreenStore from "../stores/useSettingsScreenStore";
 import AutoSettingToggle from "./settings/AutoSettingToggle";
 import DialoguesSettings from "./settings/DialoguesSettings";
@@ -32,13 +32,8 @@ export default function Settings() {
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
 
-    useEventListener({
-        type: "keydown",
-        listener: (event) => {
-            if (event.code == "Escape") {
-                editOpen();
-            }
-        },
+    useHotkeys({
+        Escape: () => editOpen(),
     });
 
     return (
