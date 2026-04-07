@@ -1,8 +1,7 @@
 import { useStore } from "@tanstack/react-store";
 import { SKIP_DELAY } from "../constans";
 import { autoInfoStore } from "../stores/useAutoInfoStore";
-import { setEnabled as setSkipEnabled } from "../stores/useSkipStore";
-import { skipStore } from "../stores/useSkipStore";
+import { setEnabled as setSkipEnabled, skipStore } from "../stores/useSkipStore";
 import { typewriterStore } from "../stores/useTypewriterStore";
 import useDebouncedEffect from "./useDebouncedEffect";
 import useInterval from "./useInterval";
