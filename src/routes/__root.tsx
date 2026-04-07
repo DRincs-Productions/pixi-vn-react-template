@@ -19,8 +19,6 @@ import { initializeIndexedDB } from "@/utils/indexedDB-utility";
 export const Route = createRootRoute({
     component: RootComponent,
     pendingComponent: LoadingScreen,
-    pendingMs: 300,
-    pendingMinMs: 500,
     errorComponent: (props) => (
         <div style={{ pointerEvents: "auto", backgroundColor: "rgba(145, 145, 145, 0.5)" }}>
             <ErrorComponent {...props} />

@@ -1,6 +1,6 @@
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
-import { routeTree } from "./routeTree.gen";
 import LoadingScreen from "@/screens/LoadingScreen";
+import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
     const router = createTanStackRouter({
@@ -9,8 +9,6 @@ export function getRouter() {
         defaultPreload: "intent",
         defaultPreloadStaleTime: 0,
         defaultPendingComponent: LoadingScreen,
-        defaultPendingMs: 300,
-        defaultPendingMinMs: 500,
     });
 
     return router;
