@@ -9,6 +9,7 @@ import useKeyboardDetector from "@/hooks/useKeyboardDetector";
 import { useI18n } from "@/i18n";
 import RootProvider from "@/providers/RootProvider";
 import GameSaveScreen from "@/screens/GameSaveScreen";
+import LoadingScreen from "@/screens/LoadingScreen";
 import SaveLoadAlert from "@/screens/modals/SaveLoadAlert";
 import OfflineScreen from "@/screens/OfflineScreen";
 import Settings from "@/screens/Settings";
@@ -17,6 +18,9 @@ import { initializeIndexedDB } from "@/utils/indexedDB-utility";
 
 export const Route = createRootRoute({
     component: RootComponent,
+    pendingComponent: LoadingScreen,
+    pendingMs: 300,
+    pendingMinMs: 500,
     errorComponent: (props) => (
         <div style={{ pointerEvents: "auto", backgroundColor: "rgba(145, 145, 145, 0.5)" }}>
             <ErrorComponent {...props} />
