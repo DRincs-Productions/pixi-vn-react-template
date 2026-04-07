@@ -11,9 +11,10 @@ import {
     Typography,
 } from "@mui/joy";
 import { Theme, useMediaQuery } from "@mui/material";
+import { useHotkeys } from "@tanstack/react-hotkeys";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import ReturnMainMenuButton from "../components/ReturnMainMenuButton";
-import useHotkeys from "../hooks/useHotkeys";
 import useSettingsScreenStore from "../stores/useSettingsScreenStore";
 import AutoSettingToggle from "./settings/AutoSettingToggle";
 import DialoguesSettings from "./settings/DialoguesSettings";
@@ -32,9 +33,14 @@ export default function Settings() {
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
 
-    useHotkeys({
-        Escape: () => editOpen(),
-    });
+    const closeSettings = useCallback(() => editOpen(), [editOpen]);
+
+    useHotkeys([
+        {
+            hotkey: "Escape",
+            callback: closeSettings,
+        },
+    ]);
 
     return (
         <Drawer

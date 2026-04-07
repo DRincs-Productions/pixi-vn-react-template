@@ -3,13 +3,13 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { Box, Chip, Input, Stack, Theme, Typography } from "@mui/joy";
 import Avatar from "@mui/joy/Avatar";
 import { useMediaQuery } from "@mui/material";
-import React, { useState } from "react";
+import { useHotkeys } from "@tanstack/react-hotkeys";
+import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import ModalDialogCustom from "../components/ModalDialog";
-import useHotkeys from "../hooks/useHotkeys";
 import { useQueryNarrativeHistory } from "../hooks/useQueryInterface";
 import useHistoryScreenStore from "../stores/useHistoryScreenStore";
 
@@ -87,9 +87,14 @@ export default function HistoryScreen() {
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
 
-    useHotkeys({
-        "Alt+h": () => editOpen(),
-    });
+    const toggleHistory = useCallback(() => editOpen(), [editOpen]);
+
+    useHotkeys([
+        {
+            hotkey: "Alt+H",
+            callback: toggleHistory,
+        },
+    ]);
 
     return (
         <ModalDialogCustom
