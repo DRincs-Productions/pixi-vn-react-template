@@ -3,10 +3,10 @@ import DownloadIcon from "@mui/icons-material/Download";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import UnarchiveIcon from "@mui/icons-material/Unarchive";
 import { AspectRatio, IconButton, Skeleton, Stack, useTheme } from "@mui/joy";
+import { useLocation } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import type { FileRouteTypes } from "@/routeTree.gen";
 import TypographyShadow from "../components/TypographyShadow";
-import { MAIN_MENU_ROUTE } from "../constans";
 import useQuerySaves from "../hooks/useQuerySaves";
 import type GameSaveData from "../models/GameSaveData";
 import { downloadGameSave } from "../utils/save-utility";
@@ -57,7 +57,7 @@ export default function GameSaveSlot({
                         width: "100%",
                     }}
                     onClick={onSave}
-                    disabled={location.pathname === MAIN_MENU_ROUTE}
+                    disabled={(location.pathname as FileRouteTypes["fullPaths"]) === "/"}
                 >
                     <SaveAsIcon sx={{ fontSize: "3rem", opacity: 0.2 }} />
                 </IconButton>
@@ -109,7 +109,7 @@ export default function GameSaveSlot({
                         }}
                     />
                 </IconButton>
-                {location.pathname !== MAIN_MENU_ROUTE && (
+                {(location.pathname as FileRouteTypes["fullPaths"]) !== "/" && (
                     <IconButton onClick={() => onOverwriteSave(saveData)}>
                         <SaveAsIcon
                             fontSize={"large"}

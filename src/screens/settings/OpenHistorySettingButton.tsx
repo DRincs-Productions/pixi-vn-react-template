@@ -1,7 +1,7 @@
 import HistoryIcon from "@mui/icons-material/History";
 import { Typography } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "@tanstack/react-router";
 import SettingButton from "../../components/SettingButton";
 import useHistoryScreenStore from "../../stores/useHistoryScreenStore";
 import useSettingsScreenStore from "../../stores/useSettingsScreenStore";

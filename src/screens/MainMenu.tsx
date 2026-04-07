@@ -5,7 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import MenuButton from "../components/MenuButton";
-import { CANVAS_UI_LAYER_NAME, NARRATION_ROUTE } from "../constans";
+import { CANVAS_UI_LAYER_NAME } from "../constans";
 import useGameProps from "../hooks/useGameProps";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "../hooks/useQueryInterface";
 import useQueryLastSave from "../hooks/useQueryLastSave";
@@ -27,9 +27,9 @@ export default function MainMenu() {
 
     useEffect(() => {
         editHideInterface(false);
-        let bg = new ImageSprite({}, "background_main_menu");
+        const bg = new ImageSprite({}, "background_main_menu");
         bg.load();
-        let layer = canvas.getLayer(CANVAS_UI_LAYER_NAME);
+        const layer = canvas.getLayer(CANVAS_UI_LAYER_NAME);
         if (layer) {
             layer.addChild(bg);
         }
@@ -61,7 +61,7 @@ export default function MainMenu() {
                         return;
                     }
                     setLoading(true);
-                    loadSave(lastSave, navigate)
+                    loadSave(lastSave, (to) => navigate({ to }))
                         .then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))
                         .catch((e) => {
                             notify(t("fail_load"), { variant: "error" });
@@ -78,7 +78,7 @@ export default function MainMenu() {
             <MenuButton
                 onClick={async () => {
                     setLoading(true);
-                    await navigate(NARRATION_ROUTE);
+                    await navigate({ to: "/narration" });
                     Game.start(startLabel, gameProps)
                         .then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))
                         .finally(() => setLoading(false));

@@ -1,16 +1,15 @@
 import { Game } from "@drincs/pixi-vn";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { Button, Stack, Typography } from "@mui/joy";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
 import ModalDialogCustom from "../components/ModalDialog";
-import useMyNavigate from "../hooks/useMyNavigate";
 import useSettingsScreenStore from "../stores/useSettingsScreenStore";
 
 export default function ReturnMainMenuButton() {
     const setOpenSettings = useSettingsScreenStore((state) => state.setOpen);
-    const navigate = useMyNavigate();
+    const navigate = useNavigate();
     const [openDialog, setOpenDialog] = useState(false);
     const { t } = useTranslation(["ui"]);
 
@@ -48,7 +47,7 @@ export default function ReturnMainMenuButton() {
                             variant="outlined"
                             onClick={() => {
                                 Game.clear();
-                                navigate("/");
+                                navigate({ to: "/" });
                                 setOpenSettings(false);
                                 setOpenDialog(false);
                             }}

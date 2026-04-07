@@ -1,16 +1,15 @@
 import DownloadIcon from "@mui/icons-material/Download";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
-import { Grid, IconButton, Stack, Theme, Typography } from "@mui/joy";
+import { Grid, IconButton, Stack, type Theme, Typography } from "@mui/joy";
 import { Pagination, Tooltip, useMediaQuery } from "@mui/material";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
 import { useShallow } from "zustand/react/shallow";
+import type { FileRouteTypes } from "@/routeTree.gen";
 import GameSaveSlot from "../components/GameSaveSlot";
 import ModalDialogCustom from "../components/ModalDialog";
-import { MAIN_MENU_ROUTE } from "../constans";
 import useGameProps from "../hooks/useGameProps";
-import useMyNavigate from "../hooks/useMyNavigate";
 import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
 import { downloadGameSave, loadGameSaveFromFile } from "../utils/save-utility";
 
@@ -27,10 +26,10 @@ export default function GameSaveScreen() {
     } = useGameSaveScreenStore(useShallow((state) => state));
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
-    const navigate = useMyNavigate();
+    const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
     const gameProps = useGameProps();
-    let location = useLocation();
+    const location = useLocation();
 
     return (
         <ModalDialogCustom
@@ -57,11 +56,18 @@ export default function GameSaveScreen() {
                         <IconButton
                             size="lg"
                             onClick={() =>
-                                loadGameSaveFromFile(navigate, () => {
-                                    gameProps.invalidateInterfaceData();
-                                    enqueueSnackbar(t("success_load"), { variant: "success" });
-                                    setOpen(false);
-                                })
+                                loadGameSaveFromFile(
+                                    (to) => navigate({ to }),
+                                    (err) => {
+                                        if (err) {
+                                            enqueueSnackbar(t("allert_error_occurred"), { variant: "error" });
+                                            return;
+                                        }
+                                        gameProps.invalidateInterfaceData();
+                                        enqueueSnackbar(t("success_load"), { variant: "success" });
+                                        setOpen(false);
+                                    },
+                                )
                             }
                         >
                             <FolderOpenIcon fontSize="large" />
@@ -75,7 +81,7 @@ export default function GameSaveScreen() {
                             onClick={() => {
                                 downloadGameSave();
                             }}
-                            disabled={location.pathname == MAIN_MENU_ROUTE}
+                            disabled={(location.pathname as FileRouteTypes["fullPaths"]) === "/"}
                         >
                             <DownloadIcon fontSize="large" />
                         </IconButton>
@@ -85,7 +91,7 @@ export default function GameSaveScreen() {
             <Grid container>
                 {/* for 6 element */}
                 {Array.from({ length: 6 }).map((_, index) => {
-                    let id = page * 6 + index;
+                    const id = page * 6 + index;
                     return (
                         <Grid xs={12} sm={6} md={4} key={"ModalDialogCustom" + index}>
                             <GameSaveSlot

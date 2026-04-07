@@ -1,12 +1,12 @@
-import { StepLabelProps } from "@drincs/pixi-vn";
+import type { StepLabelProps } from "@drincs/pixi-vn";
 import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
-import useMyNavigate from "./useMyNavigate";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "./useQueryInterface";
 
 export default function useGameProps(): StepLabelProps {
-    const navigate = useMyNavigate();
+    const navigate = useNavigate();
     const { t } = useTranslation(["narration"]);
     const { t: uiTransition } = useTranslation(["ui"]);
     const { enqueueSnackbar } = useSnackbar();

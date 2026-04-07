@@ -5,12 +5,11 @@ import SaveIcon from "@mui/icons-material/Save";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import { Typography } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
 import SettingButton from "../../components/SettingButton";
 import useGameProps from "../../hooks/useGameProps";
-import useMyNavigate from "../../hooks/useMyNavigate";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
 import useGameSaveScreenStore from "../../stores/useGameSaveScreenStore";
@@ -18,7 +17,7 @@ import useSettingsScreenStore from "../../stores/useSettingsScreenStore";
 import { downloadGameSave, loadGameSaveFromFile, saveGameToIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadSettingButtons() {
-    const navigate = useMyNavigate();
+    const navigate = useNavigate();
     const { t } = useTranslation(["ui"]);
     const openLoadAlert = useGameSaveScreenStore((state) => state.editLoadAlert);
     const editOpenSaveScreen = useGameSaveScreenStore((state) => state.editOpen);
@@ -100,11 +99,18 @@ export default function SaveLoadSettingButtons() {
         <SettingButton
             key={"load_button"}
             onClick={() =>
-                loadGameSaveFromFile(navigate, () => {
-                    gameProps.invalidateInterfaceData();
-                    enqueueSnackbar(t("success_load"), { variant: "success" });
-                    setOpenSettings(false);
-                })
+                loadGameSaveFromFile(
+                    (to) => navigate({ to }),
+                    (err) => {
+                        if (err) {
+                            enqueueSnackbar(t("allert_error_occurred"), { variant: "error" });
+                            return;
+                        }
+                        gameProps.invalidateInterfaceData();
+                        enqueueSnackbar(t("success_load"), { variant: "success" });
+                        setOpenSettings(false);
+                    },
+                )
             }
         >
             <FolderOpenIcon />
