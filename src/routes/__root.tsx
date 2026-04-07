@@ -33,14 +33,9 @@ export const Route = createRootRoute({
 });
 
 function RootComponent() {
-    const navigate = useMyNavigate();
     useKeyboardDetector();
     useClosePageDetector();
     useConfirmBackNavigation();
-
-    useEffect(() => {
-        Game.onNavigate(navigate);
-    }, [navigate]);
 
     return (
         <>
