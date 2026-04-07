@@ -1,9 +1,9 @@
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import { Grid } from "@mui/joy";
-import { useState } from "react";
+import { useDebouncedValue } from "@tanstack/react-pacer";
+import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import ChoiceButton from "../components/ChoiceButton";
-import useDebouncedEffect from "../hooks/useDebouncedEffect";
 import useNarrationFunctions from "../hooks/useNarrationFunctions";
 import { useQueryChoiceMenuOptions } from "../hooks/useQueryInterface";
 import useInterfaceStore from "../stores/useInterfaceStore";
@@ -18,11 +18,10 @@ export default function ChoiceMenu() {
     const { selectChoice } = useNarrationFunctions();
     const [open, setOpen] = useState(false);
 
-    useDebouncedEffect(() => setOpen(!(hidden || menu.length == 0 || typewriterInProgress)), { delay: 100 }, [
-        hidden,
-        menu,
-        typewriterInProgress,
-    ]);
+    const [debouncedOpen] = useDebouncedValue(!(hidden || menu.length == 0 || typewriterInProgress), { wait: 100 });
+    useEffect(() => {
+        setOpen(debouncedOpen);
+    }, [debouncedOpen]);
 
     if (!open) return null;
 
