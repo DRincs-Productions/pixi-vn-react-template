@@ -1,27 +1,22 @@
-import { create } from "zustand";
+import { Store } from "@tanstack/store";
 
-type SkipStoreType = {
+type SkipState = {
     /**
      * Whether the skip is enabled
      */
     enabled: boolean;
-    /**
-     * Set the skip state
-     */
-    editEnabled: () => void;
-    /**
-     * Set the skip state
-     */
-    setEnabled: (value: boolean) => void;
 };
 
-const useSkipStore = create<SkipStoreType>((set) => ({
-    enabled: false,
-    editEnabled: () => {
-        set((state) => ({ enabled: !state.enabled }));
-    },
-    setEnabled: (value: boolean) => {
-        set({ enabled: value });
-    },
-}));
-export default useSkipStore;
+export const skipStore = new Store<SkipState>({ enabled: false });
+
+/**
+ * Toggle the skip state
+ */
+export const editEnabled = () =>
+    skipStore.setState((state) => ({ ...state, enabled: !state.enabled }));
+
+/**
+ * Set the skip state
+ */
+export const setEnabled = (value: boolean) =>
+    skipStore.setState((state) => ({ ...state, enabled: value }));

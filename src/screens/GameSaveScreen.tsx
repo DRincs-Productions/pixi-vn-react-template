@@ -3,27 +3,27 @@ import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import { Grid, IconButton, Stack, type Theme, Typography } from "@mui/joy";
 import { Pagination, Tooltip, useMediaQuery } from "@mui/material";
 import { useLocation, useNavigate } from "@tanstack/react-router";
+import { useStore } from "@tanstack/react-store";
 import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
-import { useShallow } from "zustand/react/shallow";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import GameSaveSlot from "../components/GameSaveSlot";
 import ModalDialogCustom from "../components/ModalDialog";
 import useGameProps from "../hooks/useGameProps";
-import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
+import {
+    editDeleteAlert,
+    editLoadAlert,
+    editOverwriteSaveAlert,
+    editSaveAlert,
+    gameSaveScreenStore,
+    setOpen,
+    setPage,
+} from "../stores/useGameSaveScreenStore";
 import { downloadGameSave, loadGameSaveFromFile } from "../utils/save-utility";
 
 export default function GameSaveScreen() {
-    const {
-        setOpen,
-        open,
-        page,
-        setPage,
-        editDeleteAlert: openDeleteAlert,
-        editLoadAlert: openLoadAlert,
-        editOverwriteSaveAlert: openOverwriteSaveAlert,
-        editSaveAlert: openSaveAlert,
-    } = useGameSaveScreenStore(useShallow((state) => state));
+    const open = useStore(gameSaveScreenStore, (state) => state.open);
+    const page = useStore(gameSaveScreenStore, (state) => state.page);
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
     const navigate = useNavigate();
@@ -97,16 +97,16 @@ export default function GameSaveScreen() {
                             <GameSaveSlot
                                 saveId={id}
                                 onSave={() => {
-                                    openSaveAlert(id);
+                                    editSaveAlert(id);
                                 }}
                                 onOverwriteSave={(data) => {
-                                    openOverwriteSaveAlert(id, data.name);
+                                    editOverwriteSaveAlert(id, data.name);
                                 }}
                                 onLoad={(data) => {
-                                    openLoadAlert({ ...data, id: id });
+                                    editLoadAlert({ ...data, id: id });
                                 }}
                                 onDelete={() => {
-                                    openDeleteAlert(id);
+                                    editDeleteAlert(id);
                                 }}
                             />
                         </Grid>

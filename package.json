@@ -27,7 +27,9 @@
     "@tanstack/react-query-devtools": "latest",
     "@tanstack/react-router": "latest",
     "@tanstack/react-router-devtools": "latest",
+    "@tanstack/react-store": "^0.9.3",
     "@tanstack/router-plugin": "latest",
+    "@tanstack/store": "^0.9.3",
     "es-toolkit": "^1.45.1",
     "i18next": "^26.0.3",
     "i18next-chained-backend": "^5.0.3",
@@ -43,8 +45,7 @@
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.1",
     "shade-generator": "^1.2.7",
-    "tailwindcss": "^4.2.2",
-    "zustand": "^5.0.12"
+    "tailwindcss": "^4.2.2"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.10",

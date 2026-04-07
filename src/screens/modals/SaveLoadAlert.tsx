@@ -2,6 +2,7 @@ import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import { Input, Typography } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import { useStore } from "@tanstack/react-store";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -9,19 +10,17 @@ import ModalConfirmation from "../../components/ModalConfirmation";
 import useGameProps from "../../hooks/useGameProps";
 import { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
-import useGameSaveScreenStore from "../../stores/useGameSaveScreenStore";
+import { closeAlert, gameSaveScreenStore, setOpen as setSaveScreenOpen } from "../../stores/useGameSaveScreenStore";
 import { deleteSaveFromIndexDB, loadSave, saveGameToIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadAlert() {
     const navigate = useNavigate();
-    const alertData = useGameSaveScreenStore((state) => state.alert);
-    const close = useGameSaveScreenStore((state) => state.closeAlert);
+    const alertData = useStore(gameSaveScreenStore, (state) => state.alert);
     const { t } = useTranslation(["ui"]);
     const { enqueueSnackbar } = useSnackbar();
     const queryClient = useQueryClient();
     const gameProps = useGameProps();
     const [tempSaveName, setTempSaveName] = useState<string>("");
-    const setOpenSaveScreen = useGameSaveScreenStore((state) => state.setOpen);
 
     useEffect(() => {
         if (alertData.open && (alertData.type == "save" || alertData.type == "overwrite_save")) {
@@ -32,7 +31,7 @@ export default function SaveLoadAlert() {
     return (
         <ModalConfirmation
             open={alertData.open}
-            setOpen={close}
+            setOpen={closeAlert}
             color="primary"
             head={
                 <Typography level="h4" startDecorator={<CloudDownloadIcon />}>
@@ -51,7 +50,7 @@ export default function SaveLoadAlert() {
                             .then(() => {
                                 gameProps.invalidateInterfaceData();
                                 enqueueSnackbar(t("success_load"), { variant: "success" });
-                                setOpenSaveScreen(false);
+                                setSaveScreenOpen(false);
                                 return true;
                             })
                             .catch((e) => {

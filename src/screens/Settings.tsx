@@ -11,10 +11,11 @@ import {
     Typography,
 } from "@mui/joy";
 import { Theme, useMediaQuery } from "@mui/material";
+import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
 import ReturnMainMenuButton from "../components/ReturnMainMenuButton";
 import useEventListener from "../hooks/useKeyDetector";
-import useSettingsScreenStore from "../stores/useSettingsScreenStore";
+import { editOpen, settingsScreenStore } from "../stores/useSettingsScreenStore";
 import AutoSettingToggle from "./settings/AutoSettingToggle";
 import DialoguesSettings from "./settings/DialoguesSettings";
 import DownloadFileToTranslateSettingButton from "./settings/DownloadFileToTranslateSettingButton";
@@ -27,8 +28,7 @@ import SoundSettings from "./settings/SoundSettings";
 import ThemeSettings from "./settings/ThemeSettings";
 
 export default function Settings() {
-    const open = useSettingsScreenStore((state) => state.open);
-    const editOpen = useSettingsScreenStore((state) => state.editOpen);
+    const open = useStore(settingsScreenStore, (state) => state.open);
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
 

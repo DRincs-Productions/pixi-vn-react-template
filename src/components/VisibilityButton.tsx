@@ -1,34 +1,32 @@
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { IconButton, useTheme } from "@mui/joy";
+import { useStore } from "@tanstack/react-store";
 import { useEffect, useMemo } from "react";
-import { useShallow } from "zustand/react/shallow";
 import useEventListener from "../hooks/useKeyDetector";
-import useInterfaceStore from "../stores/useInterfaceStore";
+import { editHidden, interfaceStore, show } from "../stores/useInterfaceStore";
 
 export default function VisibilityButton() {
-    const hidden = useInterfaceStore(useShallow((state) => state.hidden));
-    const editHideInterface = useInterfaceStore((state) => state.editHidden);
-    const showInterface = useInterfaceStore((state) => state.show);
+    const hidden = useStore(interfaceStore, (state) => state.hidden);
     const iconVarians = useMemo(() => (hidden ? `motion-preset-pop` : `motion-scale-out-0`), [hidden]);
 
     useEffect(() => {
         return () => {
-            showInterface();
+            show();
         };
-    }, [showInterface]);
+    }, []);
 
     useEventListener({
         type: "keyup",
         listener: (event) => {
             if (event.code == "KeyV" && event.altKey) {
-                editHideInterface();
+                editHidden();
             }
         },
     });
 
     return (
         <IconButton
-            onClick={editHideInterface}
+            onClick={editHidden}
             sx={{
                 position: "absolute",
                 top: 0,

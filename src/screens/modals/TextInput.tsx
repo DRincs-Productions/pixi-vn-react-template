@@ -1,21 +1,22 @@
 import { narration } from "@drincs/pixi-vn";
 import { Button, Input } from "@mui/joy";
+import { useStore } from "@tanstack/react-store";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
-import { useShallow } from "zustand/react/shallow";
 import ModalDialogCustom from "../../components/ModalDialog";
 import useGameProps from "../../hooks/useGameProps";
 import { useQueryDialogue, useQueryInputValue } from "../../hooks/useQueryInterface";
-import useTypewriterStore from "../../stores/useTypewriterStore";
+import { typewriterStore } from "../../stores/useTypewriterStore";
 
 export default function TextInput() {
     const { data: { animatedText: text } = {} } = useQueryDialogue();
     const { data: { isRequired, type, currentValue } = { currentValue: undefined, isRequired: false } } =
         useQueryInputValue<string | number>();
-    const open = useTypewriterStore(useShallow((state) => !state.inProgress && isRequired));
+    const typewriterInProgress = useStore(typewriterStore, (state) => state.inProgress);
+    const open = !typewriterInProgress && isRequired;
     const [tempValue, setTempValue] = useState<string | number>();
     const gameProps = useGameProps();
     const { t } = useTranslation(["ui"]);

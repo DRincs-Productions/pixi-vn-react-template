@@ -3,6 +3,7 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { Box, Chip, Input, Stack, Theme, Typography } from "@mui/joy";
 import Avatar from "@mui/joy/Avatar";
 import { useMediaQuery } from "@mui/material";
+import { useStore } from "@tanstack/react-store";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
@@ -11,7 +12,7 @@ import remarkGfm from "remark-gfm";
 import ModalDialogCustom from "../components/ModalDialog";
 import useEventListener from "../hooks/useKeyDetector";
 import { useQueryNarrativeHistory } from "../hooks/useQueryInterface";
-import useHistoryScreenStore from "../stores/useHistoryScreenStore";
+import { editOpen, historyScreenStore } from "../stores/useHistoryScreenStore";
 
 function HistoryList({ searchString }: { searchString?: string }) {
     const { data = [] } = useQueryNarrativeHistory({ searchString });
@@ -81,8 +82,7 @@ function HistoryList({ searchString }: { searchString?: string }) {
 }
 
 export default function HistoryScreen() {
-    const open = useHistoryScreenStore((state) => state.open);
-    const editOpen = useHistoryScreenStore((state) => state.editOpen);
+    const open = useStore(historyScreenStore, (state) => state.open);
     const [searchString, setSearchString] = useState("");
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));

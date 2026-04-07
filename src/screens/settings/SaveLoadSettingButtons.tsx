@@ -12,16 +12,13 @@ import SettingButton from "../../components/SettingButton";
 import useGameProps from "../../hooks/useGameProps";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
-import useGameSaveScreenStore from "../../stores/useGameSaveScreenStore";
-import useSettingsScreenStore from "../../stores/useSettingsScreenStore";
+import { editLoadAlert, editOpen as editOpenSaveScreen } from "../../stores/useGameSaveScreenStore";
+import { setOpen as setOpenSettings } from "../../stores/useSettingsScreenStore";
 import { downloadGameSave, loadGameSaveFromFile, saveGameToIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadSettingButtons() {
     const navigate = useNavigate();
     const { t } = useTranslation(["ui"]);
-    const openLoadAlert = useGameSaveScreenStore((state) => state.editLoadAlert);
-    const editOpenSaveScreen = useGameSaveScreenStore((state) => state.editOpen);
-    const setOpenSettings = useSettingsScreenStore((state) => state.setOpen);
     const queryClient = useQueryClient();
     const gameProps = useGameProps();
     const { enqueueSnackbar } = useSnackbar();
@@ -62,7 +59,7 @@ export default function SaveLoadSettingButtons() {
         <SettingButton
             key={"load_last_save_button"}
             onClick={() => {
-                lastSave && openLoadAlert(lastSave);
+                lastSave && editLoadAlert(lastSave);
                 setOpenSettings(false);
             }}
             disabled={!lastSave}

@@ -3,14 +3,13 @@ import { useSnackbar } from "notistack";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "@tanstack/react-router";
-import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
+import { editLoadAlert } from "../stores/useGameSaveScreenStore";
 import { saveGameToIndexDB } from "../utils/save-utility";
 import useEventListener from "./useKeyDetector";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "./useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "./useQuerySaves";
 
 export default function useKeyboardDetector() {
-    const setOpenLoadAlert = useGameSaveScreenStore((state) => state.editLoadAlert);
     const queryClient = useQueryClient();
     const { t } = useTranslation(["ui"]);
     const location = useLocation();
@@ -43,12 +42,12 @@ export default function useKeyboardDetector() {
                             console.log("No save to load");
                             return;
                         }
-                        setOpenLoadAlert(lastSave);
+                        editLoadAlert(lastSave);
                     }
                     break;
             }
         },
-        [location, lastSave, queryClient, t, enqueueSnackbar, setOpenLoadAlert],
+        [location, lastSave, queryClient, t, enqueueSnackbar],
     );
 
     useEventListener({ type: "keydown", listener: onkeydown });

@@ -1,18 +1,16 @@
 import { useEffect } from "react";
-import useNetworkStore from "../stores/useNetworkStore";
+import { updateOnlineStatus } from "../stores/useNetworkStore";
 
 export default function useNetworkDetector() {
-    const update = useNetworkStore((state) => state.updateOnlineStatus);
-
     useEffect(() => {
-        window.addEventListener("online", update);
-        window.addEventListener("offline", update);
+        window.addEventListener("online", updateOnlineStatus);
+        window.addEventListener("offline", updateOnlineStatus);
 
         return () => {
-            window.removeEventListener("online", update);
-            window.removeEventListener("offline", update);
+            window.removeEventListener("online", updateOnlineStatus);
+            window.removeEventListener("offline", updateOnlineStatus);
         };
-    }, [update]);
+    }, []);
 
     return null;
 }

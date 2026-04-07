@@ -1,38 +1,40 @@
 import { sound } from "@drincs/pixi-vn";
-import { create } from "zustand";
-import { ChannelSoundStore } from "./createChannelSoundStore";
+import { Store } from "@tanstack/store";
 
-const useMasterSoundStore = create<ChannelSoundStore>((set, get) => ({
+type MasterSoundState = {
+    volume: number;
+    muted: boolean;
+};
+
+export const masterSoundStore = new Store<MasterSoundState>({
     volume: localStorage.getItem(`master_volume`)
         ? parseInt(localStorage.getItem(`master_volume`)!)
         : sound.volumeAll * 100,
     muted: localStorage.getItem(`$master_muted`) ? localStorage.getItem(`master_muted`) === "true" : false,
+});
 
-    setVolume: (volume: number) => {
-        if (get().muted) {
-            get().setMuted(false);
-        }
-        sound.volumeAll = volume / 100;
-        set({ volume: Math.round(volume) });
+export const setMuted = (muted: boolean) => {
+    if (muted) {
+        sound.muteAll();
+    } else {
+        sound.unmuteAll();
+    }
+    masterSoundStore.setState((state) => ({ ...state, muted }));
+};
 
-        if (Math.round(volume) === 0 && !get().muted) {
-            get().setMuted(true);
-        }
-    },
+export const setVolume = (volume: number) => {
+    if (masterSoundStore.state.muted) {
+        setMuted(false);
+    }
+    sound.volumeAll = volume / 100;
+    masterSoundStore.setState((state) => ({ ...state, volume: Math.round(volume) }));
 
-    setMuted: (muted: boolean) => {
-        if (muted) {
-            sound.muteAll();
-        } else {
-            sound.unmuteAll();
-        }
-        set({ muted: muted });
-    },
+    if (Math.round(volume) === 0 && !masterSoundStore.state.muted) {
+        setMuted(true);
+    }
+};
 
-    toggleMuted: () => {
-        const curr = sound.toggleMuteAll();
-        get().setMuted(curr);
-    },
-}));
-
-export default useMasterSoundStore;
+export const toggleMuted = () => {
+    const curr = sound.toggleMuteAll();
+    setMuted(curr);
+};

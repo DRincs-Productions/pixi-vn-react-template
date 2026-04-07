@@ -5,29 +5,25 @@ import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Sheet from "@mui/joy/Sheet";
 import Typography from "@mui/joy/Typography";
+import { useStore } from "@tanstack/react-store";
 import { RefObject, useCallback, useMemo, useRef } from "react";
 import Markdown from "react-markdown";
 import { MarkdownTypewriterHooks } from "react-markdown-typewriter";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
-import { useShallow } from "zustand/react/shallow";
 import AnimatedDots from "../components/AnimatedDots";
 import SliderResizer from "../components/SliderResizer";
 import { useQueryDialogue } from "../hooks/useQueryInterface";
-import useDialogueCardStore from "../stores/useDialogueCardStore";
-import useInterfaceStore from "../stores/useInterfaceStore";
-import useTypewriterStore from "../stores/useTypewriterStore";
+import { dialogueCardStore, setHeight, setImageWidth } from "../stores/useDialogueCardStore";
+import { interfaceStore } from "../stores/useInterfaceStore";
+import { end, start, typewriterStore } from "../stores/useTypewriterStore";
 import ChoiceMenu from "./ChoiceMenu";
 
 export default function NarrationScreen() {
-    const {
-        height: cardHeightTemp,
-        setHeight: setCardHeight,
-        imageWidth: cardImageWidth,
-        setImageWidth: setCardImageWidth,
-    } = useDialogueCardStore(useShallow((state) => state));
+    const cardHeightTemp = useStore(dialogueCardStore, (state) => state.height);
+    const cardImageWidth = useStore(dialogueCardStore, (state) => state.imageWidth);
     const { data: { animatedText, character, text } = {} } = useQueryDialogue();
-    const hidden = useInterfaceStore((state) => state.hidden || (animatedText || text ? false : true));
+    const hidden = useStore(interfaceStore, (state) => state.hidden || (animatedText || text ? false : true));
     const cardHeight = animatedText || text ? cardHeightTemp : 0;
     const cardVarians = useMemo(
         () =>
@@ -67,7 +63,7 @@ export default function NarrationScreen() {
                     value={cardHeight}
                     onChange={(_, value) => {
                         if (typeof value === "number") {
-                            setCardHeight(value);
+                            setHeight(value);
                         }
                     }}
                     stackProps={{
@@ -131,7 +127,7 @@ export default function NarrationScreen() {
                                     if (value < 5) {
                                         value = 5;
                                     }
-                                    setCardImageWidth(value);
+                                    setImageWidth(value);
                                 }
                             }}
                             sx={{
@@ -190,9 +186,7 @@ export default function NarrationScreen() {
 }
 
 function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement | null> }) {
-    const typewriterDelay = useTypewriterStore(useShallow((state) => state.delay));
-    const startTypewriter = useTypewriterStore(useShallow((state) => state.start));
-    const endTypewriter = useTypewriterStore(useShallow((state) => state.end));
+    const typewriterDelay = useStore(typewriterStore, (state) => state.delay);
     const { data: { animatedText, text } = {} } = useQueryDialogue();
     const { mode } = useColorScheme();
 
@@ -229,10 +223,10 @@ function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDiv
                     rehypePlugins={[rehypeRaw]}
                     delay={typewriterDelay}
                     motionProps={{
-                        onAnimationStart: startTypewriter,
+                        onAnimationStart: start,
                         onAnimationComplete: (definition: "visible" | "hidden") => {
                             if (definition == "visible") {
-                                endTypewriter();
+                                end();
                             }
                         },
                         onCharacterAnimationComplete: handleCharacterAnimationComplete,

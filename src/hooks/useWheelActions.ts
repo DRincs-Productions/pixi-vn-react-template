@@ -3,7 +3,7 @@ import { narration } from "@drincs/pixi-vn/narration";
 import { throttle } from "es-toolkit";
 import { useCallback, useEffect, useRef } from "react";
 import { HTML_CANVAS_LAYER_NAME, HTML_UI_LAYER_NAME } from "../constans";
-import useStepStore from "../stores/useStepStore";
+import { setLoading } from "../stores/useStepStore";
 import useGameProps from "./useGameProps";
 
 function isScrollableElement(element: HTMLElement | null): boolean {
@@ -38,7 +38,6 @@ function isInsideRoot(target: EventTarget | null, selector: string): boolean {
 
 export function useWheelActions({ throttleMs = 300, minDelta = 20 }: { throttleMs?: number; minDelta?: number } = {}) {
     const pendingAsync = useRef(0);
-    const setLoading = useStepStore((state) => state.setLoading);
     const gameProps = useGameProps();
 
     const runAsync = async (fn: (props: StepLabelProps) => Promise<unknown>) => {
