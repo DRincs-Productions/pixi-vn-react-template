@@ -1,14 +1,13 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useLocation } from "@tanstack/react-router";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { LOADING_ROUTE, MAIN_MENU_ROUTE } from "../constans";
 import { addRefreshSave, loadRefreshSave } from "../utils/save-utility";
 import useEventListener from "./useKeyDetector";
-import useMyNavigate from "./useMyNavigate";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "./useQueryInterface";
 
 export default function useClosePageDetector() {
-    const navigate = useMyNavigate();
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
     const location = useLocation();
 
