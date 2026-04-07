@@ -30,16 +30,7 @@ export const Route = createRootRoute({
         await Promise.all([initializeIndexedDB(), defineAssets(), useI18n()]);
         setupPixivnViteData();
     },
-    notFoundComponent: () => <NotFoundRedirect />,
 });
-
-function NotFoundRedirect() {
-    const navigate = useMyNavigate();
-    useEffect(() => {
-        navigate("/");
-    }, [navigate]);
-    return null;
-}
 
 function RootComponent() {
     const navigate = useMyNavigate();
