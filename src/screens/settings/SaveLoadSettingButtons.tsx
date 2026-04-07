@@ -99,7 +99,11 @@ export default function SaveLoadSettingButtons() {
         <SettingButton
             key={"load_button"}
             onClick={() =>
-                loadGameSaveFromFile(navigate, () => {
+                loadGameSaveFromFile(navigate, (err) => {
+                    if (err) {
+                        enqueueSnackbar(t("allert_error_occurred"), { variant: "error" });
+                        return;
+                    }
                     gameProps.invalidateInterfaceData();
                     enqueueSnackbar(t("success_load"), { variant: "success" });
                     setOpenSettings(false);

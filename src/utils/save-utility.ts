@@ -25,8 +25,8 @@ export function createGameSave(options?: { image?: string; name?: string }): Gam
 }
 
 export async function loadSave(saveData: GameSaveData, navigate: UseNavigateResult<string>) {
-    await navigate(LOADING_ROUTE);
-    await Game.restoreGameState(saveData.saveData, navigate);
+    await navigate({ to: "/loading" });
+    await Game.restoreGameState(saveData.saveData, (to) => navigate({ to }));
 }
 
 export async function saveGameToIndexDB(
@@ -85,7 +85,7 @@ export function downloadGameSave(data: GameSaveData = createGameSave()) {
     a.click();
 }
 
-export function loadGameSaveFromFile(navigate: UseNavigateResult<string>, afterLoad?: () => void) {
+export function loadGameSaveFromFile(navigate: UseNavigateResult<string>, afterLoad?: (error?: Error) => void) {
     // load the save data from a JSON file
     const input = document.createElement("input");
     input.type = "file";
@@ -96,15 +96,15 @@ export function loadGameSaveFromFile(navigate: UseNavigateResult<string>, afterL
             const reader = new FileReader();
             reader.onload = (e) => {
                 const jsonString = e.target?.result as string;
-                navigate(LOADING_ROUTE);
+                navigate({ to: "/loading" });
                 const data: GameSaveData = JSON.parse(jsonString);
                 // load the save data from the JSON string
                 loadSave(data, navigate)
                     .then(() => {
-                        afterLoad && afterLoad();
+                        afterLoad?.();
                     })
-                    .catch(() => {
-                        navigate(NARRATION_ROUTE);
+                    .catch((err) => {
+                        afterLoad?.(err);
                     });
             };
             reader.readAsText(file);
@@ -124,7 +124,7 @@ export async function addRefreshSave() {
 export async function loadRefreshSave(navigate: UseNavigateResult<string>) {
     const jsonString = localStorage.getItem(REFRESH_SAVE_LOCAL_STORAGE_KEY);
     if (jsonString) {
-        navigate(LOADING_ROUTE);
+        navigate({ to: "/loading" });
         const data: GameSaveData = JSON.parse(jsonString);
 
         return loadSave(data, navigate)
@@ -132,9 +132,9 @@ export async function loadRefreshSave(navigate: UseNavigateResult<string>) {
                 localStorage.removeItem(REFRESH_SAVE_LOCAL_STORAGE_KEY);
             })
             .catch(() => {
-                navigate(MAIN_MENU_ROUTE);
+                navigate({ to: "/" });
             });
     } else {
-        navigate(MAIN_MENU_ROUTE);
+        navigate({ to: "/" });
     }
 }

@@ -6,9 +6,9 @@ import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
 import { useShallow } from "zustand/react/shallow";
+import { routePaths } from "@/constans";
 import GameSaveSlot from "../components/GameSaveSlot";
 import ModalDialogCustom from "../components/ModalDialog";
-import { MAIN_MENU_ROUTE } from "../constans";
 import useGameProps from "../hooks/useGameProps";
 import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
 import { downloadGameSave, loadGameSaveFromFile } from "../utils/save-utility";
@@ -56,7 +56,11 @@ export default function GameSaveScreen() {
                         <IconButton
                             size="lg"
                             onClick={() =>
-                                loadGameSaveFromFile(navigate, () => {
+                                loadGameSaveFromFile(navigate, (err) => {
+                                    if (err) {
+                                        enqueueSnackbar(t("allert_error_occurred"), { variant: "error" });
+                                        return;
+                                    }
                                     gameProps.invalidateInterfaceData();
                                     enqueueSnackbar(t("success_load"), { variant: "success" });
                                     setOpen(false);
@@ -74,7 +78,7 @@ export default function GameSaveScreen() {
                             onClick={() => {
                                 downloadGameSave();
                             }}
-                            disabled={location.pathname == MAIN_MENU_ROUTE}
+                            disabled={location.pathname === routePaths.IndexRoute}
                         >
                             <DownloadIcon fontSize="large" />
                         </IconButton>
