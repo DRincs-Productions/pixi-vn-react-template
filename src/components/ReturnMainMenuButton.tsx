@@ -47,7 +47,7 @@ export default function ReturnMainMenuButton() {
                             variant="outlined"
                             onClick={() => {
                                 Game.clear();
-                                navigate("/");
+                                navigate({ to: "/" });
                                 setOpenSettings(false);
                                 setOpenDialog(false);
                             }}

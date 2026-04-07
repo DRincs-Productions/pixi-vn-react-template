@@ -1,6 +1,6 @@
 import { Assets, sound } from "@drincs/pixi-vn";
 import manifest from "../assets/manifest";
-import { AUDIO_BUNDLE_NAME, MAIN_MENU_ROUTE } from "../constans";
+import { AUDIO_BUNDLE_NAME, routePaths } from "../constans";
 
 /**
  * Define all the assets that will be used in the game.
@@ -11,7 +11,7 @@ export async function defineAssets() {
     await Assets.init({ manifest });
 
     // The game will not start until these asserts are loaded.
-    await Assets.loadBundle(MAIN_MENU_ROUTE);
+    await Assets.loadBundle(routePaths.IndexRoute);
 
     // The audio bundle will be loaded in the background, so it will be available when needed, but it won't block the game start.
     sound.backgroundLoadBundle(AUDIO_BUNDLE_NAME);

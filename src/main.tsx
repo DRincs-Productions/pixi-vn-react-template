@@ -55,7 +55,7 @@ Game.init(body, {
 
 Game.onEnd(async ({ navigate }) => {
     Game.clear();
-    navigate("/");
+    navigate({ to: "/" });
 });
 
 Game.addOnError(drawCanvasErrorHandler());
