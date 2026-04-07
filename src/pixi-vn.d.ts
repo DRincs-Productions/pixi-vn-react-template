@@ -1,5 +1,6 @@
-import { TFunction } from "i18next";
-import { OptionsWithExtraProps, SnackbarKey, SnackbarMessage } from "notistack";
+import type { UseNavigateResult } from "@tanstack/react-router";
+import type { TFunction } from "i18next";
+import type { OptionsWithExtraProps, SnackbarKey, SnackbarMessage } from "notistack";
 
 declare module "@drincs/pixi-vn" {
     interface StepLabelResult {
@@ -11,7 +12,7 @@ declare module "@drincs/pixi-vn" {
          * @param route The route to navigate to.
          * @returns
          */
-        navigate: (to: string | number) => void | Promise<void>;
+        navigate: UseNavigateResult<string>;
         /**
          * Translate a key to a string.
          * @param key The key to translate.

@@ -1,14 +1,11 @@
-import { Game } from "@drincs/pixi-vn";
 import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import { createRootRoute, ErrorComponent, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import { useEffect } from "react";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
 import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
 import useKeyboardDetector from "@/hooks/useKeyboardDetector";
-import useMyNavigate from "@/hooks/useMyNavigate";
 import { useI18n } from "@/i18n";
 import RootProvider from "@/providers/RootProvider";
 import GameSaveScreen from "@/screens/GameSaveScreen";
