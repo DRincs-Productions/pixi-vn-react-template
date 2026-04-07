@@ -24,7 +24,7 @@ export default function useSkipAutoDetector() {
 
     const autoDebouncer = useDebouncer(
         () => {
-            if (autoEnabled && !skipEnabled) goNext();
+            goNext();
         },
         {
             wait: autoTime * 1000,
@@ -34,7 +34,7 @@ export default function useSkipAutoDetector() {
 
     useEffect(() => {
         autoDebouncer.maybeExecute();
-    }, [autoEnabled, skipEnabled, typewriterInProgress, autoTime, autoDebouncer]);
+    }, [autoEnabled, skipEnabled, typewriterInProgress, autoTime]);
 
     useEventListener({
         type: "keypress",
