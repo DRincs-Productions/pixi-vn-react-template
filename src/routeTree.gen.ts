@@ -10,12 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as NarrationRouteImport } from './routes/narration'
+import { Route as MainMenuRouteImport } from './routes/main-menu'
 import { Route as LoadingRouteImport } from './routes/loading'
-import { Route as IndexRouteImport } from './routes/index'
 
 const NarrationRoute = NarrationRouteImport.update({
   id: '/narration',
   path: '/narration',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MainMenuRoute = MainMenuRouteImport.update({
+  id: '/main-menu',
+  path: '/main-menu',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoadingRoute = LoadingRouteImport.update({
@@ -23,39 +28,34 @@ const LoadingRoute = LoadingRouteImport.update({
   path: '/loading',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/loading': typeof LoadingRoute
+  '/main-menu': typeof MainMenuRoute
   '/narration': typeof NarrationRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/loading': typeof LoadingRoute
+  '/main-menu': typeof MainMenuRoute
   '/narration': typeof NarrationRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/loading': typeof LoadingRoute
+  '/main-menu': typeof MainMenuRoute
   '/narration': typeof NarrationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/loading' | '/narration'
+  fullPaths: '/loading' | '/main-menu' | '/narration'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/loading' | '/narration'
-  id: '__root__' | '/' | '/loading' | '/narration'
+  to: '/loading' | '/main-menu' | '/narration'
+  id: '__root__' | '/loading' | '/main-menu' | '/narration'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   LoadingRoute: typeof LoadingRoute
+  MainMenuRoute: typeof MainMenuRoute
   NarrationRoute: typeof NarrationRoute
 }
 
@@ -68,6 +68,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NarrationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/main-menu': {
+      id: '/main-menu'
+      path: '/main-menu'
+      fullPath: '/main-menu'
+      preLoaderRoute: typeof MainMenuRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/loading': {
       id: '/loading'
       path: '/loading'
@@ -75,19 +82,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoadingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   LoadingRoute: LoadingRoute,
+  MainMenuRoute: MainMenuRoute,
   NarrationRoute: NarrationRoute,
 }
 export const routeTree = rootRouteImport
