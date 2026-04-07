@@ -15,7 +15,7 @@ import {
 } from "@mui/joy";
 import { useColorScheme as useColorSchemeMaterial } from "@mui/material";
 import { Hue, useColor } from "react-color-palette";
-import "react-color-palette/css";
+// TODO: import "react-color-palette/css";
 import { useTranslation } from "react-i18next";
 import useDebouncedEffect from "../../hooks/useDebouncedEffect";
 import { useEditColorProvider } from "../../providers/ThemeProvider";
