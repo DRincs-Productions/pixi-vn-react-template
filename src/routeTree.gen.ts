@@ -10,17 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as NarrationRouteImport } from './routes/narration'
-import { Route as LoadingRouteImport } from './routes/loading'
 import { Route as IndexRouteImport } from './routes/index'
 
 const NarrationRoute = NarrationRouteImport.update({
   id: '/narration',
   path: '/narration',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoadingRoute = LoadingRouteImport.update({
-  id: '/loading',
-  path: '/loading',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -31,31 +25,27 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/loading': typeof LoadingRoute
   '/narration': typeof NarrationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/loading': typeof LoadingRoute
   '/narration': typeof NarrationRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/loading': typeof LoadingRoute
   '/narration': typeof NarrationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/loading' | '/narration'
+  fullPaths: '/' | '/narration'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/loading' | '/narration'
-  id: '__root__' | '/' | '/loading' | '/narration'
+  to: '/' | '/narration'
+  id: '__root__' | '/' | '/narration'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LoadingRoute: typeof LoadingRoute
   NarrationRoute: typeof NarrationRoute
 }
 
@@ -66,13 +56,6 @@ declare module '@tanstack/react-router' {
       path: '/narration'
       fullPath: '/narration'
       preLoaderRoute: typeof NarrationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/loading': {
-      id: '/loading'
-      path: '/loading'
-      fullPath: '/loading'
-      preLoaderRoute: typeof LoadingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -87,7 +70,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LoadingRoute: LoadingRoute,
   NarrationRoute: NarrationRoute,
 }
 export const routeTree = rootRouteImport

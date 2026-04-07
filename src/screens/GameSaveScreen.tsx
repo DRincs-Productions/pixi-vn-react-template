@@ -56,15 +56,18 @@ export default function GameSaveScreen() {
                         <IconButton
                             size="lg"
                             onClick={() =>
-                                loadGameSaveFromFile(navigate, (err) => {
-                                    if (err) {
-                                        enqueueSnackbar(t("allert_error_occurred"), { variant: "error" });
-                                        return;
-                                    }
-                                    gameProps.invalidateInterfaceData();
-                                    enqueueSnackbar(t("success_load"), { variant: "success" });
-                                    setOpen(false);
-                                })
+                                loadGameSaveFromFile(
+                                    (to) => navigate({ to }),
+                                    (err) => {
+                                        if (err) {
+                                            enqueueSnackbar(t("allert_error_occurred"), { variant: "error" });
+                                            return;
+                                        }
+                                        gameProps.invalidateInterfaceData();
+                                        enqueueSnackbar(t("success_load"), { variant: "success" });
+                                        setOpen(false);
+                                    },
+                                )
                             }
                         >
                             <FolderOpenIcon fontSize="large" />

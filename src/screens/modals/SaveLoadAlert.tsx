@@ -47,7 +47,7 @@ export default function SaveLoadAlert() {
                 }
                 switch (alertData.type) {
                     case "load":
-                        return loadSave(alertData.data, navigate)
+                        return loadSave(alertData.data, (to) => navigate({ to }))
                             .then(() => {
                                 gameProps.invalidateInterfaceData();
                                 enqueueSnackbar(t("success_load"), { variant: "success" });
