@@ -1,5 +1,5 @@
 import type { QueryClient } from "@tanstack/react-query";
-import { createRouter as createTanStackRouter } from "@tanstack/react-router";
+import { createRouter as createTanStackRouter, ErrorComponent } from "@tanstack/react-router";
 import LoadingScreen from "@/screens/LoadingScreen";
 import { routeTree } from "./routeTree.gen";
 
@@ -15,8 +15,11 @@ export function getRouter(context: RouterContext) {
         defaultPreload: "intent",
         defaultPreloadStaleTime: 0,
         defaultPendingComponent: LoadingScreen,
-        defaultPendingMs: 300,
-        defaultPendingMinMs: 500,
+        defaultErrorComponent: (props) => (
+            <div style={{ pointerEvents: "auto", backgroundColor: "rgba(145, 145, 145, 0.5)" }}>
+                <ErrorComponent {...props} />
+            </div>
+        ),
     });
 
     return router;

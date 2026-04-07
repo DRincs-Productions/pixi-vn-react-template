@@ -1,7 +1,7 @@
 import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
-import { createRootRouteWithContext, ErrorComponent, Outlet, redirect } from "@tanstack/react-router";
+import { createRootRouteWithContext, Outlet, redirect } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
 import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
@@ -22,13 +22,6 @@ import { loadRefreshSave } from "@/utils/save-utility";
 export const Route = createRootRouteWithContext<RouterContext>()({
     component: RootComponent,
     pendingComponent: LoadingScreen,
-    pendingMs: 300,
-    pendingMinMs: 500,
-    errorComponent: (props) => (
-        <div style={{ pointerEvents: "auto", backgroundColor: "rgba(145, 145, 145, 0.5)" }}>
-            <ErrorComponent {...props} />
-        </div>
-    ),
     loader: async ({ context }) => {
         await Promise.all([import("@/values"), import("@/labels")]);
         await Promise.all([initializeIndexedDB(), defineAssets(), useI18n()]);
@@ -61,11 +54,11 @@ function RootComponent() {
                 }}
                 plugins={[
                     {
-                        name: "TanStack Router",
+                        name: "UI screens",
                         render: <TanStackRouterDevtoolsPanel />,
                     },
                     {
-                        name: "Tanstack Query",
+                        name: "UI cache",
                         render: <ReactQueryDevtoolsPanel />,
                     },
                 ]}
