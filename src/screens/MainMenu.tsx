@@ -61,7 +61,7 @@ export default function MainMenu() {
                         return;
                     }
                     setLoading(true);
-                    loadSave(lastSave, navigate)
+                    loadSave(lastSave, (to) => navigate({ to }))
                         .then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))
                         .catch((e) => {
                             notify(t("fail_load"), { variant: "error" });

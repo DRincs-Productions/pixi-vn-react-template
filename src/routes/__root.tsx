@@ -8,8 +8,8 @@ import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
 import useKeyboardDetector from "@/hooks/useKeyboardDetector";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "@/hooks/useQueryInterface";
 import { useI18n } from "@/i18n";
-import type { RouterContext } from "@/router";
 import RootProvider from "@/providers/RootProvider";
+import type { RouterContext } from "@/router";
 import GameSaveScreen from "@/screens/GameSaveScreen";
 import LoadingScreen from "@/screens/LoadingScreen";
 import SaveLoadAlert from "@/screens/modals/SaveLoadAlert";
@@ -17,8 +17,7 @@ import OfflineScreen from "@/screens/OfflineScreen";
 import Settings from "@/screens/Settings";
 import { defineAssets } from "@/utils/assets-utility";
 import { initializeIndexedDB } from "@/utils/indexedDB-utility";
-import { loadRefreshSaveForLoader } from "@/utils/save-utility";
-import type { FileRouteTypes } from "@/routeTree.gen";
+import { loadRefreshSave } from "@/utils/save-utility";
 
 export const Route = createRootRouteWithContext<RouterContext>()({
     component: RootComponent,
@@ -34,14 +33,9 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         await Promise.all([import("@/values"), import("@/labels")]);
         await Promise.all([initializeIndexedDB(), defineAssets(), useI18n()]);
         setupPixivnViteData();
-        const targetRoute = await loadRefreshSaveForLoader();
-        await context.queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
-        const validRoutes: FileRouteTypes["fullPaths"][] = ["/", "/loading", "/narration"];
-        const to = validRoutes.includes(targetRoute as FileRouteTypes["fullPaths"])
-            ? (targetRoute as FileRouteTypes["fullPaths"])
-            : "/";
-        if (targetRoute !== null) {
-            throw redirect({ to });
+        const isRefreshSaveExist = await loadRefreshSave((to) => redirect({ to }));
+        if (isRefreshSaveExist) {
+            await context.queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
         }
     },
 });
