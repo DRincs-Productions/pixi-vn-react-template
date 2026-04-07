@@ -1,7 +1,7 @@
 import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
-import { createRootRouteWithContext, ErrorComponent, Outlet, redirect } from "@tanstack/react-router";
+import { createRootRouteWithContext, Outlet, redirect } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
 import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
