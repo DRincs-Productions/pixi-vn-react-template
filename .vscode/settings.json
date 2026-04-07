@@ -47,7 +47,6 @@
   },
   // reorganise imports
   "editor.codeActionsOnSave": {
-    "source.organizeImports": "explicit",
     "source.organizeImports.biome": "explicit",
     "source.fixAll.biome": "explicit"
   },
