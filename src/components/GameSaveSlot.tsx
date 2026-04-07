@@ -5,7 +5,7 @@ import UnarchiveIcon from "@mui/icons-material/Unarchive";
 import { AspectRatio, IconButton, Skeleton, Stack, useTheme } from "@mui/joy";
 import { useLocation } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { routePaths } from "@/constans";
+import type { FileRouteTypes } from "@/routeTree.gen";
 import TypographyShadow from "../components/TypographyShadow";
 import useQuerySaves from "../hooks/useQuerySaves";
 import type GameSaveData from "../models/GameSaveData";
@@ -57,7 +57,7 @@ export default function GameSaveSlot({
                         width: "100%",
                     }}
                     onClick={onSave}
-                    disabled={location.pathname === routePaths.IndexRoute}
+                    disabled={(location.pathname as FileRouteTypes["fullPaths"]) === "/"}
                 >
                     <SaveAsIcon sx={{ fontSize: "3rem", opacity: 0.2 }} />
                 </IconButton>
@@ -109,7 +109,7 @@ export default function GameSaveSlot({
                         }}
                     />
                 </IconButton>
-                {location.pathname !== routePaths.IndexRoute && (
+                {(location.pathname as FileRouteTypes["fullPaths"]) !== "/" && (
                     <IconButton onClick={() => onOverwriteSave(saveData)}>
                         <SaveAsIcon
                             fontSize={"large"}

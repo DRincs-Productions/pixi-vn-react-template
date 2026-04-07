@@ -1,5 +1,6 @@
 import type { AssetsManifest } from "@drincs/pixi-vn";
-import { AUDIO_BUNDLE_NAME, routePaths } from "@/constans";
+import { AUDIO_BUNDLE_NAME } from "@/constans";
+import type { FileRouteTypes } from "@/routeTree.gen";
 import secondPart from "../labels/secondPart";
 import startLabel from "../labels/startLabel";
 
@@ -24,7 +25,7 @@ const manifest: AssetsManifest = {
         },
         // screens
         {
-            name: routePaths.IndexRoute,
+            name: "/" as FileRouteTypes["fullPaths"],
             assets: [
                 {
                     alias: "background_main_menu",

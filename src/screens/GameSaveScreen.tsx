@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
 import { useShallow } from "zustand/react/shallow";
-import { routePaths } from "@/constans";
+import type { FileRouteTypes } from "@/routeTree.gen";
 import GameSaveSlot from "../components/GameSaveSlot";
 import ModalDialogCustom from "../components/ModalDialog";
 import useGameProps from "../hooks/useGameProps";
@@ -78,7 +78,7 @@ export default function GameSaveScreen() {
                             onClick={() => {
                                 downloadGameSave();
                             }}
-                            disabled={location.pathname === routePaths.IndexRoute}
+                            disabled={(location.pathname as FileRouteTypes["fullPaths"]) === "/"}
                         >
                             <DownloadIcon fontSize="large" />
                         </IconButton>
