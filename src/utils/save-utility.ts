@@ -138,3 +138,22 @@ export async function loadRefreshSave(navigate: UseNavigateResult<string>) {
         navigate({ to: "/" });
     }
 }
+
+export async function loadRefreshSaveForLoader(): Promise<string | null> {
+    const jsonString = localStorage.getItem(REFRESH_SAVE_LOCAL_STORAGE_KEY);
+    if (!jsonString) {
+        return null;
+    }
+    const data: GameSaveData = JSON.parse(jsonString);
+    // targetRoute is captured via callback because restoreGameState calls navigate internally
+    let targetRoute = "/";
+    try {
+        await Game.restoreGameState(data.saveData, (to) => {
+            targetRoute = to;
+        });
+        localStorage.removeItem(REFRESH_SAVE_LOCAL_STORAGE_KEY);
+    } catch {
+        // on error, fall back to main menu
+    }
+    return targetRoute;
+}
