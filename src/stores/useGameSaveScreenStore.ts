@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import GameSaveData from "../models/GameSaveData";
+import type GameSaveData from "../models/GameSaveData";
 
 type GameSaveScreenStoreType = {
     /**
@@ -9,7 +9,7 @@ type GameSaveScreenStoreType = {
     /**
      * Open the save screen
      */
-    editOpen: () => void;
+    toggleOpen: () => void;
     /**
      * Set the open state of the save screen
      */
@@ -74,7 +74,7 @@ const useGameSaveScreenStore = create<GameSaveScreenStoreType>((set) => ({
         set({ page: value });
     },
     open: false,
-    editOpen: () => set((state) => ({ open: !state.open })),
+    toggleOpen: () => set((state) => ({ open: !state.open })),
     setOpen: (value: boolean) => set({ open: value }),
     alert: {
         open: false,

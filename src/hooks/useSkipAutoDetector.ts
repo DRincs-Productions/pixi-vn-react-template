@@ -1,3 +1,5 @@
+import { useHotkeys } from "@tanstack/react-hotkeys";
+import { useCallback } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { SKIP_DELAY } from "../constans";
 import useAutoInfoStore from "../stores/useAutoInfoStore";
@@ -5,7 +7,6 @@ import useSkipStore from "../stores/useSkipStore";
 import useTypewriterStore from "../stores/useTypewriterStore";
 import useDebouncedEffect from "./useDebouncedEffect";
 import useInterval from "./useInterval";
-import useEventListener from "./useKeyDetector";
 import useNarrationFunctions from "./useNarrationFunctions";
 
 export default function useSkipAutoDetector() {
@@ -30,23 +31,18 @@ export default function useSkipAutoDetector() {
         [autoEnabled, skipEnabled, goNext],
     );
 
-    useEventListener({
-        type: "keypress",
-        listener: (event) => {
-            if (event.code == "Enter" || event.code == "Space") {
-                setSkipEnabled(true);
-            }
-        },
-    });
-    useEventListener({
-        type: "keyup",
-        listener: (event) => {
-            if (event.code == "Enter" || event.code == "Space") {
-                setSkipEnabled(false);
-                goNext();
-            }
-        },
-    });
+    const onSkipKeyDown = useCallback(() => setSkipEnabled(true), [setSkipEnabled]);
+    const onSkipKeyUp = useCallback(() => {
+        setSkipEnabled(false);
+        goNext();
+    }, [setSkipEnabled, goNext]);
+
+    useHotkeys([
+        { hotkey: "Enter", callback: onSkipKeyDown },
+        { hotkey: "Space", callback: onSkipKeyDown, options: { preventDefault: true } },
+        { hotkey: "Enter", callback: onSkipKeyUp, options: { eventType: "keyup" } },
+        { hotkey: "Space", callback: onSkipKeyUp, options: { eventType: "keyup", preventDefault: true } },
+    ]);
 
     return null;
 }

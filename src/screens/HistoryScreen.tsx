@@ -1,15 +1,15 @@
 import CheckIcon from "@mui/icons-material/Check";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import { Box, Chip, Input, Stack, Theme, Typography } from "@mui/joy";
+import { Box, Chip, Input, Stack, type Theme, Typography } from "@mui/joy";
 import Avatar from "@mui/joy/Avatar";
 import { useMediaQuery } from "@mui/material";
+import { useHotkeys } from "@tanstack/react-hotkeys";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import ModalDialogCustom from "../components/ModalDialog";
-import useEventListener from "../hooks/useKeyDetector";
 import { useQueryNarrativeHistory } from "../hooks/useQueryInterface";
 import useHistoryScreenStore from "../stores/useHistoryScreenStore";
 
@@ -82,24 +82,23 @@ function HistoryList({ searchString }: { searchString?: string }) {
 
 export default function HistoryScreen() {
     const open = useHistoryScreenStore((state) => state.open);
-    const editOpen = useHistoryScreenStore((state) => state.editOpen);
+    const toggleOpen = useHistoryScreenStore((state) => state.toggleOpen);
     const [searchString, setSearchString] = useState("");
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
 
-    useEventListener({
-        type: "keydown",
-        listener: (event) => {
-            if (event.code == "KeyH" && event.altKey) {
-                editOpen();
-            }
+    useHotkeys([
+        {
+            hotkey: "Control+H",
+            callback: toggleOpen,
+            options: { preventDefault: true },
         },
-    });
+    ]);
 
     return (
         <ModalDialogCustom
             open={open}
-            setOpen={editOpen}
+            setOpen={toggleOpen}
             layout={smScreen ? "fullscreen" : "center"}
             head={
                 <Stack
