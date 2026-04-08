@@ -14,15 +14,15 @@ import remarkGfm from "remark-gfm";
 import AnimatedDots from "../components/AnimatedDots";
 import SliderResizer from "../components/SliderResizer";
 import { useQueryDialogue } from "../hooks/useQueryInterface";
-import { InterfaceStore } from "../stores/useInterfaceStore";
+import { InterfaceSettings } from "../stores/interface-settings-store";
 import { TypewriterStore } from "../stores/useTypewriterStore";
 import ChoiceMenu from "./ChoiceMenu";
 
 export default function NarrationScreen() {
-    const cardHeightTemp = useStore(InterfaceStore.store, (state) => state.dialogueCardHeight);
-    const cardImageWidth = useStore(InterfaceStore.store, (state) => state.dialogueCardImageWidth);
+    const cardHeightTemp = useStore(InterfaceSettings.store, (state) => state.dialogueCardHeight);
+    const cardImageWidth = useStore(InterfaceSettings.store, (state) => state.dialogueCardImageWidth);
     const { data: { animatedText, character, text } = {} } = useQueryDialogue();
-    const hidden = useStore(InterfaceStore.store, (state) => state.hidden || (animatedText || text ? false : true));
+    const hidden = useStore(InterfaceSettings.store, (state) => state.hidden || (animatedText || text ? false : true));
     const cardHeight = animatedText || text ? cardHeightTemp : 0;
     const cardVarians = useMemo(
         () =>
@@ -62,7 +62,7 @@ export default function NarrationScreen() {
                     value={cardHeight}
                     onChange={(_, value) => {
                         if (typeof value === "number") {
-                            InterfaceStore.setDialogueCardHeight(value);
+                            InterfaceSettings.setDialogueCardHeight(value);
                         }
                     }}
                     stackProps={{
@@ -126,7 +126,7 @@ export default function NarrationScreen() {
                                     if (value < 5) {
                                         value = 5;
                                     }
-                                    InterfaceStore.setDialogueCardImageWidth(value);
+                                    InterfaceSettings.setDialogueCardImageWidth(value);
                                 }
                             }}
                             sx={{

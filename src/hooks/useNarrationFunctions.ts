@@ -1,19 +1,19 @@
 import { narration, type StoredIndexedChoiceInterface, stepHistory } from "@drincs/pixi-vn";
 import { useStore } from "@tanstack/react-store";
 import { useCallback } from "react";
-import { InterfaceStore } from "../stores/useInterfaceStore";
+import { InterfaceSettings } from "../stores/interface-settings-store";
 import { StepStore } from "../stores/useStepStore";
 import useGameProps from "./useGameProps";
 
 export default function useNarrationFunctions() {
-    const hidden = useStore(InterfaceStore.store, (state) => state.hidden);
+    const hidden = useStore(InterfaceSettings.store, (state) => state.hidden);
     const gameProps = useGameProps();
 
     const goNext = useCallback(async () => {
         StepStore.setLoading(true);
         try {
             if (hidden) {
-                InterfaceStore.setHidden(false);
+                InterfaceSettings.setHidden(false);
             }
             if (!narration.canContinue) {
                 StepStore.setLoading(false);

@@ -4,8 +4,8 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useNarrationFunctions from "../hooks/useNarrationFunctions";
 import { useQueryCanGoNext } from "../hooks/useQueryInterface";
+import { InterfaceSettings } from "../stores/interface-settings-store";
 import { SkipSettings } from "../stores/skip-settings-store";
-import { InterfaceStore } from "../stores/useInterfaceStore";
 import { StepStore } from "../stores/useStepStore";
 
 export default function NextButton() {
@@ -13,7 +13,7 @@ export default function NextButton() {
     const nextStepLoading = useStore(StepStore.store, (state) => state.loading);
     const goBackLoading = useStore(StepStore.store, (state) => state.backLoading);
     const { data: canContinue = false } = useQueryCanGoNext();
-    const hideNextButton = useStore(InterfaceStore.store, (state) => state.hidden || !canContinue);
+    const hideNextButton = useStore(InterfaceSettings.store, (state) => state.hidden || !canContinue);
     const { goNext } = useNarrationFunctions();
     const { t } = useTranslation(["ui"]);
     const varians = useMemo(

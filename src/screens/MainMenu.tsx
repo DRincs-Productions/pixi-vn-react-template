@@ -10,8 +10,8 @@ import useGameProps from "../hooks/useGameProps";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "../hooks/useQueryInterface";
 import useQueryLastSave from "../hooks/useQueryLastSave";
 import startLabel from "../labels/startLabel";
+import { InterfaceSettings } from "../stores/interface-settings-store";
 import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
-import { InterfaceStore } from "../stores/useInterfaceStore";
 import { SettingsScreenStore } from "../stores/useSettingsScreenStore";
 import { loadSave } from "../utils/save-utility";
 
@@ -23,7 +23,7 @@ export default function MainMenu() {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        InterfaceStore.setHidden(false);
+        InterfaceSettings.setHidden(false);
         const bg = new ImageSprite({}, "background_main_menu");
         bg.load();
         const layer = canvas.getLayer(CANVAS_UI_LAYER_NAME);

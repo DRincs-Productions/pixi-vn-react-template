@@ -11,17 +11,17 @@ import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastS
 import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
 import { useWheelActions } from "../hooks/useWheelActions";
 import { AutoSettings } from "../stores/auto-settings-store";
+import { InterfaceSettings } from "../stores/interface-settings-store";
 import { SkipSettings } from "../stores/skip-settings-store";
 import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
 import { HistoryScreenStore } from "../stores/useHistoryScreenStore";
-import { InterfaceStore } from "../stores/useInterfaceStore";
 import { SettingsScreenStore } from "../stores/useSettingsScreenStore";
 import { StepStore } from "../stores/useStepStore";
 import { saveGameToIndexDB } from "../utils/save-utility";
 
 export default function QuickTools() {
     const { t } = useTranslation(["ui"]);
-    const hidden = useStore(InterfaceStore.store, (state) => state.hidden);
+    const hidden = useStore(InterfaceSettings.store, (state) => state.hidden);
     const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
     const autoEnabled = useStore(AutoSettings.store, (state) => state.enabled);
     const { enqueueSnackbar } = useSnackbar();

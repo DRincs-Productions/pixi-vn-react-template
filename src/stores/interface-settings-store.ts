@@ -1,6 +1,6 @@
 import { Store } from "@tanstack/store";
 
-type InterfaceStoreState = {
+type InterfaceState = {
     /**
      * Whether the interface is hidden
      */
@@ -15,17 +15,11 @@ type InterfaceStoreState = {
     dialogueCardImageWidth: number;
 };
 
-function parseIntOrDefault(key: string, fallback: number) {
-    const raw = localStorage.getItem(key);
-    const n = Number.parseInt(raw ?? String(fallback), 10);
-    return Number.isFinite(n) ? n : fallback;
-}
-
-export namespace InterfaceStore {
-    export const store = new Store<InterfaceStoreState>({
+export namespace InterfaceSettings {
+    export const store = new Store<InterfaceState>({
         hidden: false,
-        dialogueCardHeight: parseIntOrDefault("dialogue_card_height", 30),
-        dialogueCardImageWidth: parseIntOrDefault("dialogue_card_image_width", 16),
+        dialogueCardHeight: Number(localStorage.getItem("dialogue_card_height") ?? 30),
+        dialogueCardImageWidth: Number(localStorage.getItem("dialogue_card_image_width") ?? 16),
     });
 
     /**
