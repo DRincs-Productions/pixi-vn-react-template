@@ -6,24 +6,20 @@ export type ChannelSoundState = {
     muted: boolean;
 };
 
-export namespace ChannelSoundStore {
+export namespace ChannelSound {
     const storeCache = new Map<string, Store<ChannelSoundState>>();
 
     export function getStore(alias: string): Store<ChannelSoundState> {
-        if (!storeCache.has(alias)) {
-            storeCache.set(
-                alias,
-                new Store<ChannelSoundState>({
-                    volume: localStorage.getItem(`${alias}_volume`)
-                        ? parseInt(localStorage.getItem(`${alias}_volume`)!)
-                        : sound.findChannel(alias).volume * 100,
-                    muted: localStorage.getItem(`${alias}_muted`)
-                        ? localStorage.getItem(`${alias}_muted`) === "true"
-                        : sound.findChannel(alias).muted,
-                }),
-            );
+        let store = storeCache.get(alias);
+        if (store) {
+            return store;
         }
-        return storeCache.get(alias)!;
+        store = new Store<ChannelSoundState>({
+            volume: Number(localStorage.getItem(`${alias}_volume`) ?? sound.findChannel(alias).volume * 100),
+            muted: Boolean(localStorage.getItem(`${alias}_muted`) ?? sound.findChannel(alias).muted),
+        });
+        storeCache.set(alias, store);
+        return store;
     }
 
     export function setVolume(alias: string, volume: number) {
