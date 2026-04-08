@@ -6,7 +6,7 @@ import CardContent from "@mui/joy/CardContent";
 import Sheet from "@mui/joy/Sheet";
 import Typography from "@mui/joy/Typography";
 import { useStore } from "@tanstack/react-store";
-import { RefObject, useCallback, useMemo, useRef } from "react";
+import { type RefObject, useCallback, useMemo, useRef } from "react";
 import Markdown from "react-markdown";
 import { MarkdownTypewriterHooks } from "react-markdown-typewriter";
 import rehypeRaw from "rehype-raw";
@@ -14,14 +14,14 @@ import remarkGfm from "remark-gfm";
 import AnimatedDots from "../components/AnimatedDots";
 import SliderResizer from "../components/SliderResizer";
 import { useQueryDialogue } from "../hooks/useQueryInterface";
-import { DialogueCardStore } from "../stores/useDialogueCardStore";
+import { DialogueCardSettings } from "../stores/dialogue-card-settings-store";
 import { InterfaceStore } from "../stores/useInterfaceStore";
 import { TypewriterStore } from "../stores/useTypewriterStore";
 import ChoiceMenu from "./ChoiceMenu";
 
 export default function NarrationScreen() {
-    const cardHeightTemp = useStore(DialogueCardStore.store, (state) => state.height);
-    const cardImageWidth = useStore(DialogueCardStore.store, (state) => state.imageWidth);
+    const cardHeightTemp = useStore(DialogueCardSettings.store, (state) => state.height);
+    const cardImageWidth = useStore(DialogueCardSettings.store, (state) => state.imageWidth);
     const { data: { animatedText, character, text } = {} } = useQueryDialogue();
     const hidden = useStore(InterfaceStore.store, (state) => state.hidden || (animatedText || text ? false : true));
     const cardHeight = animatedText || text ? cardHeightTemp : 0;
@@ -63,7 +63,7 @@ export default function NarrationScreen() {
                     value={cardHeight}
                     onChange={(_, value) => {
                         if (typeof value === "number") {
-                            DialogueCardStore.setHeight(value);
+                            DialogueCardSettings.setHeight(value);
                         }
                     }}
                     stackProps={{
@@ -127,7 +127,7 @@ export default function NarrationScreen() {
                                     if (value < 5) {
                                         value = 5;
                                     }
-                                    DialogueCardStore.setImageWidth(value);
+                                    DialogueCardSettings.setImageWidth(value);
                                 }
                             }}
                             sx={{
@@ -192,7 +192,7 @@ function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDiv
 
     const handleCharacterAnimationComplete = useCallback((ref: { current: HTMLSpanElement | null }) => {
         if (paragraphRef.current && ref.current) {
-            let scrollTop = ref.current.offsetTop - paragraphRef.current.clientHeight / 2;
+            const scrollTop = ref.current.offsetTop - paragraphRef.current.clientHeight / 2;
             paragraphRef.current.scrollTo({
                 top: scrollTop,
                 behavior: "auto",

@@ -1,6 +1,6 @@
 import { Store } from "@tanstack/store";
 
-type DialogueCardStoreState = {
+type DialogueCardSettingsState = {
     /**
      * Height of the dialogue card
      */
@@ -11,14 +11,10 @@ type DialogueCardStoreState = {
     imageWidth: number;
 };
 
-export namespace DialogueCardStore {
-    export const store = new Store<DialogueCardStoreState>({
-        height: localStorage.getItem("dialogue_card_height")
-            ? parseInt(localStorage.getItem("dialogue_card_height")!)
-            : 30,
-        imageWidth: localStorage.getItem("dialogue_card_image_width")
-            ? parseInt(localStorage.getItem("dialogue_card_image_width")!)
-            : 16,
+export namespace DialogueCardSettings {
+    export const store = new Store<DialogueCardSettingsState>({
+        height: Number(localStorage.getItem("dialogue_card_height") ?? 30),
+        imageWidth: Number(localStorage.getItem("dialogue_card_image_width") ?? 16),
     });
 
     /**
