@@ -1,73 +1,70 @@
 import { narration, type StoredIndexedChoiceInterface, stepHistory } from "@drincs/pixi-vn";
+import { useStore } from "@tanstack/react-store";
 import { useCallback } from "react";
-import { useShallow } from "zustand/react/shallow";
-import useInterfaceStore from "../stores/useInterfaceStore";
-import useStepStore from "../stores/useStepStore";
+import { interfaceStore, setInterfaceHidden } from "../stores/useInterfaceStore";
+import { setStepBackLoading, setStepLoading } from "../stores/useStepStore";
 import useGameProps from "./useGameProps";
 
 export default function useNarrationFunctions() {
-    const setNextStepLoading = useStepStore(useShallow((state) => state.setLoading));
-    const setBackLoading = useStepStore((state) => state.setBackLoading);
-    const hidden = useInterfaceStore(useShallow((state) => state.hidden));
-    const setHideInterface = useInterfaceStore((state) => state.setHidden);
+    const hidden = useStore(interfaceStore, (state) => state.hidden);
     const gameProps = useGameProps();
 
     const goNext = useCallback(async () => {
-        setNextStepLoading(true);
+        setStepLoading(true);
         try {
             if (hidden) {
-                setHideInterface(false);
+                setInterfaceHidden(false);
             }
             if (!narration.canContinue) {
-                setNextStepLoading(false);
+                setStepLoading(false);
                 return;
             }
             return narration
                 .continue(gameProps)
                 .then(() => {
                     gameProps.invalidateInterfaceData();
-                    setNextStepLoading(false);
+                    setStepLoading(false);
                 })
                 .catch((e) => {
-                    setNextStepLoading(false);
+                    setStepLoading(false);
                     console.error(e);
                 });
         } catch (e) {
-            setNextStepLoading(false);
+            setStepLoading(false);
             console.error(e);
             return;
         }
-    }, [gameProps, hidden, setHideInterface, setNextStepLoading]);
+    }, [gameProps, hidden]);
 
     const goBack = useCallback(async () => {
-        setBackLoading(true);
+        setStepBackLoading(true);
         return stepHistory
             .back(gameProps)
             .then(() => {
-                setBackLoading(false);
+                setStepBackLoading(false);
                 gameProps.invalidateInterfaceData();
             })
             .catch((e) => {
-                setBackLoading(false);
+                setStepBackLoading(false);
                 console.error(e);
             });
-    }, [gameProps, setBackLoading]);
+    }, [gameProps]);
 
     const selectChoice = useCallback(
         async (item: StoredIndexedChoiceInterface) => {
-            setNextStepLoading(true);
+            setStepLoading(true);
             return narration
                 .selectChoice(item, gameProps)
                 .then(() => {
                     gameProps.invalidateInterfaceData();
-                    setNextStepLoading(false);
+                    setStepLoading(false);
                 })
                 .catch((e) => {
-                    setNextStepLoading(false);
+                    setStepLoading(false);
                     console.error(e);
                 });
         },
-        [gameProps, setNextStepLoading],
+        [gameProps],
     );
 
     return {

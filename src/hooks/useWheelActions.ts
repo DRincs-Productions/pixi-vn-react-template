@@ -3,7 +3,7 @@ import { narration } from "@drincs/pixi-vn/narration";
 import { useThrottler } from "@tanstack/react-pacer";
 import { useEffect, useRef } from "react";
 import { HTML_CANVAS_LAYER_NAME, HTML_UI_LAYER_NAME } from "../constans";
-import useStepStore from "../stores/useStepStore";
+import { setStepLoading } from "../stores/useStepStore";
 import useGameProps from "./useGameProps";
 
 function isScrollableElement(element: HTMLElement | null): boolean {
@@ -38,17 +38,16 @@ function isInsideRoot(target: EventTarget | null, selector: string): boolean {
 
 export function useWheelActions({ throttleMs = 300, minDelta = 20 }: { throttleMs?: number; minDelta?: number } = {}) {
     const pendingAsync = useRef(0);
-    const setLoading = useStepStore((state) => state.setLoading);
     const gameProps = useGameProps();
 
     const runAsync = async (fn: (props: StepLabelProps) => Promise<unknown>) => {
         try {
             pendingAsync.current += 1;
-            setLoading(pendingAsync.current > 0);
+            setStepLoading(pendingAsync.current > 0);
             await fn(gameProps);
         } finally {
             pendingAsync.current -= 1;
-            setLoading(pendingAsync.current > 0);
+            setStepLoading(pendingAsync.current > 0);
             if (pendingAsync.current === 0) {
                 gameProps.invalidateInterfaceData();
             }

@@ -12,16 +12,13 @@ import SettingButton from "../../components/SettingButton";
 import useGameProps from "../../hooks/useGameProps";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
-import useGameSaveScreenStore from "../../stores/useGameSaveScreenStore";
-import useSettingsScreenStore from "../../stores/useSettingsScreenStore";
+import { editLoadAlert, toggleGameSaveScreenOpen } from "../../stores/useGameSaveScreenStore";
+import { setSettingsScreenOpen } from "../../stores/useSettingsScreenStore";
 import { downloadGameSave, loadGameSaveFromFile, saveGameToIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadSettingButtons() {
     const navigate = useNavigate();
     const { t } = useTranslation(["ui"]);
-    const openLoadAlert = useGameSaveScreenStore((state) => state.editLoadAlert);
-    const toggleOpenSaveScreen = useGameSaveScreenStore((state) => state.toggleOpen);
-    const setOpenSettings = useSettingsScreenStore((state) => state.setOpen);
     const queryClient = useQueryClient();
     const gameProps = useGameProps();
     const { enqueueSnackbar } = useSnackbar();
@@ -62,8 +59,8 @@ export default function SaveLoadSettingButtons() {
         <SettingButton
             key={"load_last_save_button"}
             onClick={() => {
-                lastSave && openLoadAlert(lastSave);
-                setOpenSettings(false);
+                lastSave && editLoadAlert(lastSave);
+                setSettingsScreenOpen(false);
             }}
             disabled={!lastSave}
         >
@@ -83,8 +80,8 @@ export default function SaveLoadSettingButtons() {
         <SettingButton
             key={"save_load_button"}
             onClick={() => {
-                toggleOpenSaveScreen();
-                setOpenSettings(false);
+                toggleGameSaveScreenOpen();
+                setSettingsScreenOpen(false);
             }}
         >
             <SaveIcon />
@@ -108,7 +105,7 @@ export default function SaveLoadSettingButtons() {
                         }
                         gameProps.invalidateInterfaceData();
                         enqueueSnackbar(t("success_load"), { variant: "success" });
-                        setOpenSettings(false);
+                        setSettingsScreenOpen(false);
                     },
                 )
             }

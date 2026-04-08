@@ -1,7 +1,9 @@
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { Box, FormHelperText, FormLabel, IconButton, Slider, Stack } from "@mui/joy";
-import createChannelSoundStore from "../stores/createChannelSoundStore";
+import { useStore } from "@tanstack/react-store";
+import { useMemo } from "react";
+import { getChannelStore, setChannelVolume, toggleChannelMuted } from "../stores/createChannelSoundStore";
 
 type Props = {
     label: string;
@@ -11,11 +13,9 @@ type Props = {
 };
 
 export default function SoundChannelControl({ label, alias, disabled, helper }: Props) {
-    const storeHook = createChannelSoundStore(alias);
-    const volume = storeHook((s) => s.volume);
-    const muted = storeHook((s) => s.muted);
-    const setVolume = storeHook((s) => s.setVolume);
-    const toggleMuted = storeHook((s) => s.toggleMuted);
+    const store = useMemo(() => getChannelStore(alias), [alias]);
+    const volume = useStore(store, (s) => s.volume);
+    const muted = useStore(store, (s) => s.muted);
 
     return (
         <>
@@ -24,14 +24,14 @@ export default function SoundChannelControl({ label, alias, disabled, helper }: 
                 {helper ? <FormHelperText sx={{ typography: "body-sm" }}>{helper}</FormHelperText> : null}
             </Box>
             <Stack direction="row" alignItems="center" spacing={1}>
-                <IconButton disabled={disabled} onClick={() => toggleMuted()}>
+                <IconButton disabled={disabled} onClick={() => toggleChannelMuted(alias)}>
                     {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
                 </IconButton>
                 <Slider
                     min={0}
                     max={100}
                     value={volume}
-                    onChange={(_, v) => setVolume(Array.isArray(v) ? v[0] : (v as number))}
+                    onChange={(_, v) => setChannelVolume(alias, Array.isArray(v) ? v[0] : (v as number))}
                     disabled={disabled}
                     sx={{ flex: 1 }}
                     step={1}

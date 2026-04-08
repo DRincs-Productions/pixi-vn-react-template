@@ -1,19 +1,19 @@
 import { Button } from "@mui/joy";
+import { useStore } from "@tanstack/react-store";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useNarrationFunctions from "../hooks/useNarrationFunctions";
 import { useQueryCanGoNext } from "../hooks/useQueryInterface";
-import useInterfaceStore from "../stores/useInterfaceStore";
-import useSkipStore from "../stores/useSkipStore";
-import useStepStore from "../stores/useStepStore";
+import { interfaceStore } from "../stores/useInterfaceStore";
+import { setSkipEnabled, skipStore } from "../stores/useSkipStore";
+import { stepStore } from "../stores/useStepStore";
 
 export default function NextButton() {
-    const skipEnabled = useSkipStore((state) => state.enabled);
-    const setSkipEnabled = useSkipStore((state) => state.setEnabled);
-    const nextStepLoading = useStepStore((state) => state.loading);
-    const goBackLoading = useStepStore((state) => state.backLoading);
+    const skipEnabled = useStore(skipStore, (state) => state.enabled);
+    const nextStepLoading = useStore(stepStore, (state) => state.loading);
+    const goBackLoading = useStore(stepStore, (state) => state.backLoading);
     const { data: canContinue = false } = useQueryCanGoNext();
-    const hideNextButton = useInterfaceStore((state) => state.hidden || !canContinue);
+    const hideNextButton = useStore(interfaceStore, (state) => state.hidden || !canContinue);
     const { goNext } = useNarrationFunctions();
     const { t } = useTranslation(["ui"]);
     const varians = useMemo(

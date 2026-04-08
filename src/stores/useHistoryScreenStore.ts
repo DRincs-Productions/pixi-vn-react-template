@@ -1,23 +1,24 @@
-import { create } from "zustand";
+import { Store } from "@tanstack/store";
 
-type HistoryScreenType = {
+type HistoryScreenState = {
     /**
      * Whether the screen is open
      */
     open: boolean;
-    /**
-     * Open the screen
-     */
-    toggleOpen: () => void;
-    /**
-     * Set the open state of the screen
-     */
-    setOpen: (value: boolean) => void;
 };
 
-const useHistoryScreenStore = create<HistoryScreenType>((set) => ({
-    open: false,
-    toggleOpen: () => set((state) => ({ open: !state.open })),
-    setOpen: (value: boolean) => set({ open: value }),
-}));
-export default useHistoryScreenStore;
+export const historyScreenStore = new Store<HistoryScreenState>({ open: false });
+
+/**
+ * Toggle the open state of the history screen
+ */
+export function toggleHistoryScreenOpen() {
+    historyScreenStore.setState((state) => ({ ...state, open: !state.open }));
+}
+
+/**
+ * Set the open state of the history screen
+ */
+export function setHistoryScreenOpen(value: boolean) {
+    historyScreenStore.setState((state) => ({ ...state, open: value }));
+}

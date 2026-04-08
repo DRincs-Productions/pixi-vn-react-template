@@ -1,20 +1,20 @@
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import { Grid } from "@mui/joy";
 import { useDebouncedValue } from "@tanstack/react-pacer";
+import { useStore } from "@tanstack/react-store";
 import { useEffect, useState } from "react";
-import { useShallow } from "zustand/react/shallow";
 import ChoiceButton from "../components/ChoiceButton";
 import useNarrationFunctions from "../hooks/useNarrationFunctions";
 import { useQueryChoiceMenuOptions } from "../hooks/useQueryInterface";
-import useInterfaceStore from "../stores/useInterfaceStore";
-import useStepStore from "../stores/useStepStore";
-import useTypewriterStore from "../stores/useTypewriterStore";
+import { interfaceStore } from "../stores/useInterfaceStore";
+import { stepStore } from "../stores/useStepStore";
+import { typewriterStore } from "../stores/useTypewriterStore";
 
 export default function ChoiceMenu() {
-    const nextStepLoading = useStepStore((state) => state.loading);
+    const nextStepLoading = useStore(stepStore, (state) => state.loading);
     const { data: menu = [] } = useQueryChoiceMenuOptions();
-    const typewriterInProgress = useTypewriterStore(useShallow((state) => state.inProgress));
-    const hidden = useInterfaceStore(useShallow((state) => state.hidden));
+    const typewriterInProgress = useStore(typewriterStore, (state) => state.inProgress);
+    const hidden = useStore(interfaceStore, (state) => state.hidden);
     const { selectChoice } = useNarrationFunctions();
     const [open, setOpen] = useState(false);
 

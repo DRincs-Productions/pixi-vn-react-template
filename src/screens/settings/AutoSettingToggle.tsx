@@ -1,14 +1,14 @@
 import HdrAutoIcon from "@mui/icons-material/HdrAuto";
 import { Typography } from "@mui/joy";
-import { useTranslation } from "react-i18next";
+import { useStore } from "@tanstack/react-store";
 import { useLocation } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import SettingButton from "../../components/SettingButton";
-import useAutoInfoStore from "../../stores/useAutoInfoStore";
+import { autoInfoStore, editAutoEnabled } from "../../stores/useAutoInfoStore";
 
 export default function AutoSettingToggle() {
     const { t } = useTranslation(["ui"]);
-    const autoEnabled = useAutoInfoStore((state) => state.enabled);
-    const editAutoEnabled = useAutoInfoStore((state) => state.editEnabled);
+    const autoEnabled = useStore(autoInfoStore, (state) => state.enabled);
 
     const location = useLocation();
     if (location.pathname === "/") {

@@ -1,41 +1,44 @@
-import { create } from "zustand";
+import { Store } from "@tanstack/store";
 
-type TypewriterStoreType = {
+type TypewriterStoreState = {
     /**
      * The delay in milliseconds between each character
      */
     delay: number;
     /**
-     * Set the delay in milliseconds between each character
-     */
-    setDelay: (value: number) => void;
-    /**
-     * The delay in milliseconds between each character
+     * Whether the typewriter effect is in progress
      */
     inProgress: boolean;
-    /**
-     * Start the typewriter effect
-     */
-    start: () => void;
-    /**
-     * End the typewriter effect
-     */
-    end: () => void;
 };
 
-const useTypewriterStore = create<TypewriterStoreType>((set) => ({
+export const typewriterStore = new Store<TypewriterStoreState>({
     delay:
         typeof localStorage.getItem("typewriter_delay_millisecond") === "number"
             ? parseInt(localStorage.getItem("typewriter_delay_millisecond")!)
             : 10,
-    setDelay: (value: number) => {
-        if (typeof value === "number") {
-            localStorage.setItem("typewriter_delay_millisecond", value.toString());
-            set({ delay: value });
-        }
-    },
     inProgress: false,
-    start: () => set({ inProgress: true }),
-    end: () => set({ inProgress: false }),
-}));
-export default useTypewriterStore;
+});
+
+/**
+ * Set the delay in milliseconds between each character
+ */
+export function setTypewriterDelay(value: number) {
+    if (typeof value === "number") {
+        localStorage.setItem("typewriter_delay_millisecond", value.toString());
+        typewriterStore.setState((state) => ({ ...state, delay: value }));
+    }
+}
+
+/**
+ * Start the typewriter effect
+ */
+export function startTypewriter() {
+    typewriterStore.setState((state) => ({ ...state, inProgress: true }));
+}
+
+/**
+ * End the typewriter effect
+ */
+export function endTypewriter() {
+    typewriterStore.setState((state) => ({ ...state, inProgress: false }));
+}

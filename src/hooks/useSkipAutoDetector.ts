@@ -1,20 +1,19 @@
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useDebouncer } from "@tanstack/react-pacer";
+import { useStore } from "@tanstack/react-store";
 import { useCallback, useEffect } from "react";
-import { useShallow } from "zustand/react/shallow";
 import { SKIP_DELAY } from "../constans";
-import useAutoInfoStore from "../stores/useAutoInfoStore";
-import useSkipStore from "../stores/useSkipStore";
-import useTypewriterStore from "../stores/useTypewriterStore";
+import { autoInfoStore } from "../stores/useAutoInfoStore";
+import { setSkipEnabled, skipStore } from "../stores/useSkipStore";
+import { typewriterStore } from "../stores/useTypewriterStore";
 import useInterval from "./useInterval";
 import useNarrationFunctions from "./useNarrationFunctions";
 
 export default function useSkipAutoDetector() {
-    const skipEnabled = useSkipStore(useShallow((state) => state.enabled));
-    const setSkipEnabled = useSkipStore((state) => state.setEnabled);
-    const autoEnabled = useAutoInfoStore(useShallow((state) => state.enabled));
-    const autoTime = useAutoInfoStore(useShallow((state) => state.time));
-    const typewriterInProgress = useTypewriterStore(useShallow((state) => state.inProgress));
+    const skipEnabled = useStore(skipStore, (state) => state.enabled);
+    const autoEnabled = useStore(autoInfoStore, (state) => state.enabled);
+    const autoTime = useStore(autoInfoStore, (state) => state.time);
+    const typewriterInProgress = useStore(typewriterStore, (state) => state.inProgress);
     const { goNext } = useNarrationFunctions();
 
     useInterval(goNext, {

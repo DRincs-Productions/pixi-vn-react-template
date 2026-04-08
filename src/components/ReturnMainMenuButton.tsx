@@ -5,10 +5,9 @@ import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ModalDialogCustom from "../components/ModalDialog";
-import useSettingsScreenStore from "../stores/useSettingsScreenStore";
+import { setSettingsScreenOpen } from "../stores/useSettingsScreenStore";
 
 export default function ReturnMainMenuButton() {
-    const setOpenSettings = useSettingsScreenStore((state) => state.setOpen);
     const navigate = useNavigate();
     const [openDialog, setOpenDialog] = useState(false);
     const { t } = useTranslation(["ui"]);
@@ -48,7 +47,7 @@ export default function ReturnMainMenuButton() {
                             onClick={() => {
                                 Game.clear();
                                 navigate({ to: "/" });
-                                setOpenSettings(false);
+                                setSettingsScreenOpen(false);
                                 setOpenDialog(false);
                             }}
                             startDecorator={<ExitToAppIcon />}

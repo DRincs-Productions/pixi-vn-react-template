@@ -1,23 +1,24 @@
-import { create } from "zustand";
+import { Store } from "@tanstack/store";
 
-type SettingsScreenType = {
+type SettingsScreenState = {
     /**
      * Whether the screen is open
      */
     open: boolean;
-    /**
-     * Open the screen
-     */
-    toggleOpen: () => void;
-    /**
-     * Set the open state of the screen
-     */
-    setOpen: (value: boolean) => void;
 };
 
-const useSettingsScreenStore = create<SettingsScreenType>((set) => ({
-    open: false,
-    toggleOpen: () => set((state) => ({ open: !state.open })),
-    setOpen: (value: boolean) => set({ open: value }),
-}));
-export default useSettingsScreenStore;
+export const settingsScreenStore = new Store<SettingsScreenState>({ open: false });
+
+/**
+ * Toggle the open state of the settings screen
+ */
+export function toggleSettingsScreenOpen() {
+    settingsScreenStore.setState((state) => ({ ...state, open: !state.open }));
+}
+
+/**
+ * Set the open state of the settings screen
+ */
+export function setSettingsScreenOpen(value: boolean) {
+    settingsScreenStore.setState((state) => ({ ...state, open: value }));
+}

@@ -2,17 +2,16 @@ import { sound } from "@drincs/pixi-vn";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { Box, FormHelperText, FormLabel, IconButton, Slider, Stack } from "@mui/joy";
+import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
 import SoundChannelControl from "../../components/SoundChannelControl";
-import useMasterSoundStore from "../../stores/useMasterSoundStore";
+import { masterSoundStore, setMasterVolume, toggleMasterMuted } from "../../stores/useMasterSoundStore";
 
 export default function SoundSettings() {
     const { t } = useTranslation(["ui"]);
 
-    const masterVolume = useMasterSoundStore((s) => s.volume);
-    const setMasterVolume = useMasterSoundStore((s) => s.setVolume);
-    const masterMuted = useMasterSoundStore((s) => s.muted);
-    const toggleMasterMuted = useMasterSoundStore((s) => s.toggleMuted);
+    const masterVolume = useStore(masterSoundStore, (s) => s.volume);
+    const masterMuted = useStore(masterSoundStore, (s) => s.muted);
 
     return (
         <Stack spacing={1} sx={{ p: 1 }}>

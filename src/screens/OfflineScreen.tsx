@@ -1,12 +1,13 @@
 import SignalWifiBadIcon from "@mui/icons-material/SignalWifiBad";
 import { Box } from "@mui/joy";
 import Modal from "@mui/joy/Modal";
+import { useStore } from "@tanstack/react-store";
 import useNetworkDetector from "../hooks/useNetworkDetector";
-import useNetworkStore from "../stores/useNetworkStore";
+import { networkStore } from "../stores/useNetworkStore";
 
 export default function OfflineScreen() {
     useNetworkDetector();
-    const open = useNetworkStore((state) => !state.isOnline);
+    const open = useStore(networkStore, (state) => !state.isOnline);
 
     return (
         <Modal

@@ -1,32 +1,30 @@
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { IconButton, useTheme } from "@mui/joy";
 import { useHotkeys } from "@tanstack/react-hotkeys";
+import { useStore } from "@tanstack/react-store";
 import { useEffect, useMemo } from "react";
-import { useShallow } from "zustand/react/shallow";
-import useInterfaceStore from "../stores/useInterfaceStore";
+import { interfaceStore, showInterface, toggleInterfaceHidden } from "../stores/useInterfaceStore";
 
 export default function VisibilityButton() {
-    const hidden = useInterfaceStore(useShallow((state) => state.hidden));
-    const toggleHidden = useInterfaceStore((state) => state.toggleHidden);
-    const showInterface = useInterfaceStore((state) => state.show);
+    const hidden = useStore(interfaceStore, (state) => state.hidden);
     const iconVarians = useMemo(() => (hidden ? `motion-preset-pop` : `motion-scale-out-0`), [hidden]);
 
     useEffect(() => {
         return () => {
             showInterface();
         };
-    }, [showInterface]);
+    }, []);
 
     useHotkeys([
         {
             hotkey: "Control+V",
-            callback: toggleHidden,
+            callback: toggleInterfaceHidden,
         },
     ]);
 
     return (
         <IconButton
-            onClick={toggleHidden}
+            onClick={toggleInterfaceHidden}
             sx={{
                 position: "absolute",
                 top: 0,
