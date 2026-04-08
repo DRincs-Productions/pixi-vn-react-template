@@ -14,14 +14,13 @@ import remarkGfm from "remark-gfm";
 import AnimatedDots from "../components/AnimatedDots";
 import SliderResizer from "../components/SliderResizer";
 import { useQueryDialogue } from "../hooks/useQueryInterface";
-import { DialogueCardSettings } from "../stores/dialogue-card-settings-store";
 import { InterfaceStore } from "../stores/useInterfaceStore";
 import { TypewriterStore } from "../stores/useTypewriterStore";
 import ChoiceMenu from "./ChoiceMenu";
 
 export default function NarrationScreen() {
-    const cardHeightTemp = useStore(DialogueCardSettings.store, (state) => state.height);
-    const cardImageWidth = useStore(DialogueCardSettings.store, (state) => state.imageWidth);
+    const cardHeightTemp = useStore(InterfaceStore.store, (state) => state.dialogueCardHeight);
+    const cardImageWidth = useStore(InterfaceStore.store, (state) => state.dialogueCardImageWidth);
     const { data: { animatedText, character, text } = {} } = useQueryDialogue();
     const hidden = useStore(InterfaceStore.store, (state) => state.hidden || (animatedText || text ? false : true));
     const cardHeight = animatedText || text ? cardHeightTemp : 0;
@@ -63,7 +62,7 @@ export default function NarrationScreen() {
                     value={cardHeight}
                     onChange={(_, value) => {
                         if (typeof value === "number") {
-                            DialogueCardSettings.setHeight(value);
+                            InterfaceStore.setDialogueCardHeight(value);
                         }
                     }}
                     stackProps={{
@@ -127,7 +126,7 @@ export default function NarrationScreen() {
                                     if (value < 5) {
                                         value = 5;
                                     }
-                                    DialogueCardSettings.setImageWidth(value);
+                                    InterfaceStore.setDialogueCardImageWidth(value);
                                 }
                             }}
                             sx={{
