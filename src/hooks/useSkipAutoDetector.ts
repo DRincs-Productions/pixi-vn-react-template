@@ -44,9 +44,9 @@ export default function useSkipAutoDetector() {
 
     useHotkeys([
         { hotkey: "Enter", callback: onSkipKeyDown },
-        { hotkey: "Space", callback: onSkipKeyDown, options: { preventDefault: true } },
+        { hotkey: "Space", callback: onSkipKeyDown },
         { hotkey: "Enter", callback: onSkipKeyUp, options: { eventType: "keyup" } },
-        { hotkey: "Space", callback: onSkipKeyUp, options: { eventType: "keyup", preventDefault: true } },
+        { hotkey: "Space", callback: onSkipKeyUp, options: { eventType: "keyup" } },
     ]);
 
     return null;
