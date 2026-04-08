@@ -1,6 +1,6 @@
 import { Store } from "@tanstack/store";
 
-type StoreType = {
+type SkipSettingsState = {
     /**
      * Whether the skip is enabled
      */
@@ -8,7 +8,7 @@ type StoreType = {
 };
 
 export namespace SkipSettings {
-    export const store = new Store<StoreType>({ enabled: false });
+    export const store = new Store<SkipSettingsState>({ enabled: false });
 
     /**
      * Toggle the skip state
