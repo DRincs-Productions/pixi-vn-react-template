@@ -62,6 +62,7 @@ export default function useSaveHotkeys(): null {
         {
             hotkey: "F5",
             callback: quickSave,
+            options: { preventDefault: true },
         },
         {
             hotkey: "Control+S",
@@ -71,6 +72,7 @@ export default function useSaveHotkeys(): null {
         {
             hotkey: "F9",
             callback: quickLoad,
+            options: { preventDefault: true },
         },
         {
             hotkey: "Control+L",

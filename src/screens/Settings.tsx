@@ -10,9 +10,8 @@ import {
     Sheet,
     Typography,
 } from "@mui/joy";
-import { Theme, useMediaQuery } from "@mui/material";
+import { type Theme, useMediaQuery } from "@mui/material";
 import { useHotkeys } from "@tanstack/react-hotkeys";
-import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import ReturnMainMenuButton from "../components/ReturnMainMenuButton";
 import useSettingsScreenStore from "../stores/useSettingsScreenStore";
@@ -29,16 +28,15 @@ import ThemeSettings from "./settings/ThemeSettings";
 
 export default function Settings() {
     const open = useSettingsScreenStore((state) => state.open);
-    const editOpen = useSettingsScreenStore((state) => state.editOpen);
+    const toggleOpen = useSettingsScreenStore((state) => state.toggleOpen);
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
-
-    const closeSettings = useCallback(() => editOpen(), [editOpen]);
 
     useHotkeys([
         {
             hotkey: "Escape",
-            callback: closeSettings,
+            callback: toggleOpen,
+            options: { preventDefault: true },
         },
     ]);
 
@@ -46,7 +44,7 @@ export default function Settings() {
         <Drawer
             variant="plain"
             open={open}
-            onClose={editOpen}
+            onClose={toggleOpen}
             sx={{
                 "& .MuiDrawer-content": {
                     width: smScreen ? "100%" : 600,

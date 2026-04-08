@@ -8,7 +8,7 @@ type InterfaceStoreType = {
     /**
      * Toggle the interface visibility
      */
-    editHidden: () => void;
+    toggleHidden: () => void;
     /**
      * Set the interface visibility
      */
@@ -21,7 +21,7 @@ type InterfaceStoreType = {
 
 const useInterfaceStore = create<InterfaceStoreType>((set) => ({
     hidden: false,
-    editHidden: () => set((state) => ({ hidden: !state.hidden })),
+    toggleHidden: () => set((state) => ({ hidden: !state.hidden })),
     setHidden: (value: boolean) => set({ hidden: value }),
     show: () => set(() => ({ hidden: false })),
 }));
