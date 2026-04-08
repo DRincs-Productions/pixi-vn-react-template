@@ -1,20 +1,19 @@
-import { create } from "zustand";
+import { Store } from "@tanstack/store";
 
-type NetworkStoreType = {
+type NetworkStoreState = {
     /**
      * Whether the user is online or not
      */
     isOnline: boolean;
+};
+
+export namespace NetworkStore {
+    export const store = new Store<NetworkStoreState>({ isOnline: navigator.onLine });
+
     /**
      * Update the online status
      */
-    updateOnlineStatus: () => void;
-};
-
-const useNetworkStore = create<NetworkStoreType>((set) => ({
-    isOnline: navigator.onLine,
-    updateOnlineStatus: () => {
-        set({ isOnline: navigator.onLine });
-    },
-}));
-export default useNetworkStore;
+    export function updateOnlineStatus() {
+        store.setState((state) => ({ ...state, isOnline: navigator.onLine }));
+    }
+}

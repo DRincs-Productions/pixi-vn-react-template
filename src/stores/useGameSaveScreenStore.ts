@@ -1,112 +1,125 @@
-import { create } from "zustand";
+import { Store } from "@tanstack/store";
 import type GameSaveData from "../models/GameSaveData";
 
-type GameSaveScreenStoreType = {
+type GameSaveScreenAlert =
+    | {
+          open: false;
+          data?: any;
+          type?: string;
+          deafultName?: string;
+      }
+    | {
+          open: true;
+          data: GameSaveData & { id: number };
+          type: "load";
+      }
+    | {
+          open: true;
+          data: number;
+          type: "overwrite_save" | "save";
+          deafultName: string;
+      }
+    | {
+          open: true;
+          data: number;
+          type: "delete";
+      };
+
+type GameSaveScreenStoreState = {
     /**
      * Whether the save screen is open
      */
     open: boolean;
     /**
-     * Open the save screen
-     */
-    toggleOpen: () => void;
-    /**
-     * Set the open state of the save screen
-     */
-    setOpen: (value: boolean) => void;
-    /**
      * The current page of the save screen
      */
     page: number;
+    alert: GameSaveScreenAlert;
+};
+
+export namespace GameSaveScreenStore {
+    export const store = new Store<GameSaveScreenStoreState>({
+        page: localStorage.getItem("save_screen_page")
+            ? parseInt(localStorage.getItem("save_screen_page") as string)
+            : 0,
+        open: false,
+        alert: { open: false },
+    });
+
+    /**
+     * Toggle the open state of the save screen
+     */
+    export function toggleOpen() {
+        store.setState((state) => ({ ...state, open: !state.open }));
+    }
+
+    /**
+     * Set the open state of the save screen
+     */
+    export function setOpen(value: boolean) {
+        store.setState((state) => ({ ...state, open: value }));
+    }
+
     /**
      * Set the page of the save screen
      */
-    setPage: (value: number) => void;
-    alert:
-        | {
-              open: false;
-              data?: any;
-              type?: string;
-              deafultName?: string;
-          }
-        | {
-              open: true;
-              data: GameSaveData & { id: number };
-              type: "load";
-          }
-        | {
-              open: true;
-              data: number;
-              type: "overwrite_save" | "save";
-              deafultName: string;
-          }
-        | {
-              open: true;
-              data: number;
-              type: "delete";
-          };
+    export function setPage(value: number) {
+        localStorage.setItem("save_screen_page", value.toString());
+        store.setState((state) => ({ ...state, page: value }));
+    }
+
     /**
      * Open the load alert
      */
-    editLoadAlert: (data: GameSaveData & { id: number }) => void;
+    export function editLoadAlert(data: GameSaveData & { id: number }) {
+        store.setState((state) => {
+            if (state.alert.open) {
+                return { ...state, alert: { open: false } };
+            }
+            return { ...state, alert: { open: true, data, type: "load" } };
+        });
+    }
+
     /**
      * Open the save alert
      */
-    editSaveAlert: (data: number, deafultName?: string) => void;
+    export function editSaveAlert(data: number, deafultName?: string) {
+        store.setState((state) => {
+            if (state.alert.open) {
+                return { ...state, alert: { open: false } };
+            }
+            return { ...state, alert: { open: true, data, type: "save", deafultName: deafultName || "" } };
+        });
+    }
+
     /**
      * Open the overwrite save alert
      */
-    editOverwriteSaveAlert: (data: number, deafultName: string) => void;
+    export function editOverwriteSaveAlert(data: number, deafultName: string) {
+        store.setState((state) => {
+            if (state.alert.open) {
+                return { ...state, alert: { open: false } };
+            }
+            return { ...state, alert: { open: true, data, type: "overwrite_save", deafultName } };
+        });
+    }
+
     /**
      * Open the delete alert
      */
-    editDeleteAlert: (data: number) => void;
+    export function editDeleteAlert(data: number) {
+        store.setState((state) => {
+            if (state.alert.open) {
+                return { ...state, alert: { open: false } };
+            }
+            return { ...state, alert: { open: true, data, type: "delete" } };
+        });
+    }
+
     /**
      * Close the alert
      */
-    closeAlert: () => void;
-};
-
-const useGameSaveScreenStore = create<GameSaveScreenStoreType>((set) => ({
-    page: localStorage.getItem("save_screen_page") ? parseInt(localStorage.getItem("save_screen_page") as string) : 0,
-    setPage: (value: number) => {
-        localStorage.setItem("save_screen_page", value.toString());
-        set({ page: value });
-    },
-    open: false,
-    toggleOpen: () => set((state) => ({ open: !state.open })),
-    setOpen: (value: boolean) => set({ open: value }),
-    alert: {
-        open: false,
-    },
-    editLoadAlert: (data: GameSaveData & { id: number }) =>
-        set((state) => {
-            if (state.alert.open) {
-                return { alert: { open: false } };
-            }
-            return { alert: { open: true, data, type: "load" } };
-        }),
-    editSaveAlert: (data: number, deafultName?: string) =>
-        set((state) => {
-            if (state.alert.open) {
-                return { alert: { open: false } };
-            }
-            return { alert: { open: true, data, type: "save", deafultName: deafultName || "" } };
-        }),
-    editOverwriteSaveAlert: (data: number, deafultName: string) =>
-        set((state) => {
-            if (state.alert.open) {
-                return { alert: { open: false } };
-            }
-            return { alert: { open: true, data, type: "overwrite_save", deafultName } };
-        }),
-    editDeleteAlert: (data: number) =>
-        set((state) => {
-            if (state.alert.open) {
-                return { alert: { open: false } };
-            }
-            return { alert: { open: true, data, type: "delete" } };
-        }),
-    closeAlert: () => set(() => ({ alert: { open: false } })),
-}));
-export default useGameSaveScreenStore;
+    export function closeAlert() {
+        store.setState((state) => ({ ...state, alert: { open: false } }));
+    }
+}

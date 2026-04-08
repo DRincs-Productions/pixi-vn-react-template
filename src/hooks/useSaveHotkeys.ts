@@ -4,7 +4,7 @@ import { useLocation } from "@tanstack/react-router";
 import { useSnackbar } from "notistack";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
+import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
 import { saveGameToIndexDB } from "../utils/save-utility";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "./useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "./useQuerySaves";
@@ -25,7 +25,6 @@ import { SAVES_USE_QUEY_KEY } from "./useQuerySaves";
  * only for side effects (registering hotkeys).
  */
 export default function useSaveHotkeys(): null {
-    const setOpenLoadAlert = useGameSaveScreenStore((state) => state.editLoadAlert);
     const queryClient = useQueryClient();
     const { t } = useTranslation(["ui"]);
     const location = useLocation();
@@ -53,8 +52,8 @@ export default function useSaveHotkeys(): null {
             console.log("No save to load");
             return;
         }
-        setOpenLoadAlert(lastSave);
-    }, [lastSave, setOpenLoadAlert]);
+        GameSaveScreenStore.editLoadAlert(lastSave);
+    }, [lastSave]);
 
     useHotkeys([
         {

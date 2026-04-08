@@ -5,29 +5,24 @@ import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Sheet from "@mui/joy/Sheet";
 import Typography from "@mui/joy/Typography";
-import { RefObject, useCallback, useMemo, useRef } from "react";
+import { useStore } from "@tanstack/react-store";
+import { type RefObject, useCallback, useMemo, useRef } from "react";
 import Markdown from "react-markdown";
 import { MarkdownTypewriterHooks } from "react-markdown-typewriter";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
-import { useShallow } from "zustand/react/shallow";
 import AnimatedDots from "../components/AnimatedDots";
 import SliderResizer from "../components/SliderResizer";
 import { useQueryDialogue } from "../hooks/useQueryInterface";
-import useDialogueCardStore from "../stores/useDialogueCardStore";
-import useInterfaceStore from "../stores/useInterfaceStore";
-import useTypewriterStore from "../stores/useTypewriterStore";
+import { InterfaceSettings } from "../stores/interface-settings-store";
+import { TypewriterSettings } from "../stores/typewriter-settings-store";
 import ChoiceMenu from "./ChoiceMenu";
 
 export default function NarrationScreen() {
-    const {
-        height: cardHeightTemp,
-        setHeight: setCardHeight,
-        imageWidth: cardImageWidth,
-        setImageWidth: setCardImageWidth,
-    } = useDialogueCardStore(useShallow((state) => state));
+    const cardHeightTemp = useStore(InterfaceSettings.store, (state) => state.dialogueCardHeight);
+    const cardImageWidth = useStore(InterfaceSettings.store, (state) => state.dialogueCardImageWidth);
     const { data: { animatedText, character, text } = {} } = useQueryDialogue();
-    const hidden = useInterfaceStore((state) => state.hidden || (animatedText || text ? false : true));
+    const hidden = useStore(InterfaceSettings.store, (state) => state.hidden || (animatedText || text ? false : true));
     const cardHeight = animatedText || text ? cardHeightTemp : 0;
     const cardVarians = useMemo(
         () =>
@@ -67,7 +62,7 @@ export default function NarrationScreen() {
                     value={cardHeight}
                     onChange={(_, value) => {
                         if (typeof value === "number") {
-                            setCardHeight(value);
+                            InterfaceSettings.setDialogueCardHeight(value);
                         }
                     }}
                     stackProps={{
@@ -131,7 +126,7 @@ export default function NarrationScreen() {
                                     if (value < 5) {
                                         value = 5;
                                     }
-                                    setCardImageWidth(value);
+                                    InterfaceSettings.setDialogueCardImageWidth(value);
                                 }
                             }}
                             sx={{
@@ -190,15 +185,13 @@ export default function NarrationScreen() {
 }
 
 function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement | null> }) {
-    const typewriterDelay = useTypewriterStore(useShallow((state) => state.delay));
-    const startTypewriter = useTypewriterStore(useShallow((state) => state.start));
-    const endTypewriter = useTypewriterStore(useShallow((state) => state.end));
+    const typewriterDelay = useStore(TypewriterSettings.store, (state) => state.delay);
     const { data: { animatedText, text } = {} } = useQueryDialogue();
     const { mode } = useColorScheme();
 
     const handleCharacterAnimationComplete = useCallback((ref: { current: HTMLSpanElement | null }) => {
         if (paragraphRef.current && ref.current) {
-            let scrollTop = ref.current.offsetTop - paragraphRef.current.clientHeight / 2;
+            const scrollTop = ref.current.offsetTop - paragraphRef.current.clientHeight / 2;
             paragraphRef.current.scrollTo({
                 top: scrollTop,
                 behavior: "auto",
@@ -229,10 +222,10 @@ function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDiv
                     rehypePlugins={[rehypeRaw]}
                     delay={typewriterDelay}
                     motionProps={{
-                        onAnimationStart: startTypewriter,
+                        onAnimationStart: TypewriterSettings.start,
                         onAnimationComplete: (definition: "visible" | "hidden") => {
                             if (definition == "visible") {
-                                endTypewriter();
+                                TypewriterSettings.end();
                             }
                         },
                         onCharacterAnimationComplete: handleCharacterAnimationComplete,

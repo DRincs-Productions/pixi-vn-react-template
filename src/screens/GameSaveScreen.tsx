@@ -2,28 +2,20 @@ import DownloadIcon from "@mui/icons-material/Download";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import { Grid, IconButton, Stack, type Theme, Typography } from "@mui/joy";
 import { Pagination, Tooltip, useMediaQuery } from "@mui/material";
+import { useStore } from "@tanstack/react-store";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
-import { useShallow } from "zustand/react/shallow";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import GameSaveSlot from "../components/GameSaveSlot";
 import ModalDialogCustom from "../components/ModalDialog";
 import useGameProps from "../hooks/useGameProps";
-import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
+import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
 import { downloadGameSave, loadGameSaveFromFile } from "../utils/save-utility";
 
 export default function GameSaveScreen() {
-    const {
-        setOpen,
-        open,
-        page,
-        setPage,
-        editDeleteAlert: openDeleteAlert,
-        editLoadAlert: openLoadAlert,
-        editOverwriteSaveAlert: openOverwriteSaveAlert,
-        editSaveAlert: openSaveAlert,
-    } = useGameSaveScreenStore(useShallow((state) => state));
+    const open = useStore(GameSaveScreenStore.store, (state) => state.open);
+    const page = useStore(GameSaveScreenStore.store, (state) => state.page);
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
     const navigate = useNavigate();
@@ -34,7 +26,7 @@ export default function GameSaveScreen() {
     return (
         <ModalDialogCustom
             open={open}
-            setOpen={setOpen}
+            setOpen={GameSaveScreenStore.setOpen}
             layout={smScreen ? "fullscreen" : "center"}
             head={<Typography level="h2">{`${t("save")}/${t("load")}`}</Typography>}
             minWidth="80%"
@@ -65,7 +57,7 @@ export default function GameSaveScreen() {
                                         }
                                         gameProps.invalidateInterfaceData();
                                         enqueueSnackbar(t("success_load"), { variant: "success" });
-                                        setOpen(false);
+                                        GameSaveScreenStore.setOpen(false);
                                     },
                                 )
                             }
@@ -97,16 +89,16 @@ export default function GameSaveScreen() {
                             <GameSaveSlot
                                 saveId={id}
                                 onSave={() => {
-                                    openSaveAlert(id);
+                                    GameSaveScreenStore.editSaveAlert(id);
                                 }}
                                 onOverwriteSave={(data) => {
-                                    openOverwriteSaveAlert(id, data.name);
+                                    GameSaveScreenStore.editOverwriteSaveAlert(id, data.name);
                                 }}
                                 onLoad={(data) => {
-                                    openLoadAlert({ ...data, id: id });
+                                    GameSaveScreenStore.editLoadAlert({ ...data, id: id });
                                 }}
                                 onDelete={() => {
-                                    openDeleteAlert(id);
+                                    GameSaveScreenStore.editDeleteAlert(id);
                                 }}
                             />
                         </Grid>
@@ -117,7 +109,7 @@ export default function GameSaveScreen() {
                 count={999}
                 siblingCount={smScreen ? 2 : 7}
                 page={page + 1}
-                onChange={(_event, value) => setPage(value - 1)}
+                onChange={(_event, value) => GameSaveScreenStore.setPage(value - 1)}
                 sx={{
                     position: "absolute",
                     bottom: 7,

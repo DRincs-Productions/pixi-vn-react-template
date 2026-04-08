@@ -1,4 +1,4 @@
-import { CharacterInterface, CharacterStoredClass } from "@drincs/pixi-vn";
+import { type CharacterInterface, CharacterStoredClass } from "@drincs/pixi-vn";
 
 export default class Character extends CharacterStoredClass implements CharacterInterface {
     /**

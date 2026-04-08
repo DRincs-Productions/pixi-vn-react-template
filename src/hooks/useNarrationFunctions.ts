@@ -1,73 +1,70 @@
 import { narration, type StoredIndexedChoiceInterface, stepHistory } from "@drincs/pixi-vn";
+import { useStore } from "@tanstack/react-store";
 import { useCallback } from "react";
-import { useShallow } from "zustand/react/shallow";
-import useInterfaceStore from "../stores/useInterfaceStore";
-import useStepStore from "../stores/useStepStore";
+import { GameStatus } from "../stores/game-status-store";
+import { InterfaceSettings } from "../stores/interface-settings-store";
 import useGameProps from "./useGameProps";
 
 export default function useNarrationFunctions() {
-    const setNextStepLoading = useStepStore(useShallow((state) => state.setLoading));
-    const setBackLoading = useStepStore((state) => state.setBackLoading);
-    const hidden = useInterfaceStore(useShallow((state) => state.hidden));
-    const setHideInterface = useInterfaceStore((state) => state.setHidden);
+    const hidden = useStore(InterfaceSettings.store, (state) => state.hidden);
     const gameProps = useGameProps();
 
     const goNext = useCallback(async () => {
-        setNextStepLoading(true);
+        GameStatus.setLoading(true);
         try {
             if (hidden) {
-                setHideInterface(false);
+                InterfaceSettings.setHidden(false);
             }
             if (!narration.canContinue) {
-                setNextStepLoading(false);
+                GameStatus.setLoading(false);
                 return;
             }
             return narration
                 .continue(gameProps)
                 .then(() => {
                     gameProps.invalidateInterfaceData();
-                    setNextStepLoading(false);
+                    GameStatus.setLoading(false);
                 })
                 .catch((e) => {
-                    setNextStepLoading(false);
+                    GameStatus.setLoading(false);
                     console.error(e);
                 });
         } catch (e) {
-            setNextStepLoading(false);
+            GameStatus.setLoading(false);
             console.error(e);
             return;
         }
-    }, [gameProps, hidden, setHideInterface, setNextStepLoading]);
+    }, [gameProps, hidden]);
 
     const goBack = useCallback(async () => {
-        setBackLoading(true);
+        GameStatus.setLoading(true);
         return stepHistory
             .back(gameProps)
             .then(() => {
-                setBackLoading(false);
+                GameStatus.setLoading(false);
                 gameProps.invalidateInterfaceData();
             })
             .catch((e) => {
-                setBackLoading(false);
+                GameStatus.setLoading(false);
                 console.error(e);
             });
-    }, [gameProps, setBackLoading]);
+    }, [gameProps]);
 
     const selectChoice = useCallback(
         async (item: StoredIndexedChoiceInterface) => {
-            setNextStepLoading(true);
+            GameStatus.setLoading(true);
             return narration
                 .selectChoice(item, gameProps)
                 .then(() => {
                     gameProps.invalidateInterfaceData();
-                    setNextStepLoading(false);
+                    GameStatus.setLoading(false);
                 })
                 .catch((e) => {
-                    setNextStepLoading(false);
+                    GameStatus.setLoading(false);
                     console.error(e);
                 });
         },
-        [gameProps, setNextStepLoading],
+        [gameProps],
     );
 
     return {

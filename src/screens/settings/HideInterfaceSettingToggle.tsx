@@ -1,14 +1,14 @@
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Typography } from "@mui/joy";
 import { useLocation } from "@tanstack/react-router";
+import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
 import SettingButton from "../../components/SettingButton";
-import useInterfaceStore from "../../stores/useInterfaceStore";
+import { InterfaceSettings } from "../../stores/interface-settings-store";
 
 export default function HideInterfaceSettingToggle() {
     const { t } = useTranslation(["ui"]);
-    const hidden = useInterfaceStore((state) => state.hidden);
-    const editHidden = useInterfaceStore((state) => state.toggleHidden);
+    const hidden = useStore(InterfaceSettings.store, (state) => state.hidden);
 
     const location = useLocation();
     if (location.pathname === "/") {
@@ -16,7 +16,7 @@ export default function HideInterfaceSettingToggle() {
     }
 
     return (
-        <SettingButton checked={hidden} onClick={editHidden}>
+        <SettingButton checked={hidden} onClick={InterfaceSettings.toggleHidden}>
             <VisibilityOffIcon />
             <Typography level="title-md">{t("hide_ui")}</Typography>
             <Typography

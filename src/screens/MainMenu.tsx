@@ -10,15 +10,12 @@ import useGameProps from "../hooks/useGameProps";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "../hooks/useQueryInterface";
 import useQueryLastSave from "../hooks/useQueryLastSave";
 import startLabel from "../labels/startLabel";
-import useGameSaveScreenStore from "../stores/useGameSaveScreenStore";
-import useInterfaceStore from "../stores/useInterfaceStore";
-import useSettingsScreenStore from "../stores/useSettingsScreenStore";
+import { InterfaceSettings } from "../stores/interface-settings-store";
+import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
+import { SettingsScreenStore } from "../stores/useSettingsScreenStore";
 import { loadSave } from "../utils/save-utility";
 
 export default function MainMenu() {
-    const setOpenSettings = useSettingsScreenStore((state) => state.setOpen);
-    const editHideInterface = useInterfaceStore((state) => state.setHidden);
-    const toggleSaveScreen = useGameSaveScreenStore((state) => state.toggleOpen);
     const queryClient = useQueryClient();
     const { data: lastSave = null, isLoading } = useQueryLastSave();
     const gameProps = useGameProps();
@@ -26,7 +23,7 @@ export default function MainMenu() {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        editHideInterface(false);
+        InterfaceSettings.setHidden(false);
         const bg = new ImageSprite({}, "background_main_menu");
         bg.load();
         const layer = canvas.getLayer(CANVAS_UI_LAYER_NAME);
@@ -88,10 +85,10 @@ export default function MainMenu() {
             >
                 {t("start")}
             </MenuButton>
-            <MenuButton onClick={toggleSaveScreen} transitionDelay={0.3} disabled={loading}>
+            <MenuButton onClick={GameSaveScreenStore.toggleOpen} transitionDelay={0.3} disabled={loading}>
                 {t("load")}
             </MenuButton>
-            <MenuButton onClick={() => setOpenSettings(true)} transitionDelay={0.4}>
+            <MenuButton onClick={() => SettingsScreenStore.setOpen(true)} transitionDelay={0.4}>
                 {t("settings")}
             </MenuButton>
             {loading && (

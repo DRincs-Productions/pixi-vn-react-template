@@ -1,0 +1,43 @@
+import { Store } from "@tanstack/store";
+
+type TypewriterStorage = {
+    /**
+     * The delay in milliseconds between each character
+     */
+    delay: number;
+    /**
+     * Whether the typewriter effect is in progress
+     */
+    inProgress: boolean;
+};
+
+export namespace TypewriterSettings {
+    export const store = new Store<TypewriterStorage>({
+        delay: Number(localStorage.getItem("typewriter_delay_millisecond") ?? 10),
+        inProgress: false,
+    });
+
+    /**
+     * Set the delay in milliseconds between each character
+     */
+    export function setDelay(value: number) {
+        if (typeof value === "number") {
+            localStorage.setItem("typewriter_delay_millisecond", value.toString());
+            store.setState((state) => ({ ...state, delay: value }));
+        }
+    }
+
+    /**
+     * Start the typewriter effect
+     */
+    export function start() {
+        store.setState((state) => ({ ...state, inProgress: true }));
+    }
+
+    /**
+     * End the typewriter effect
+     */
+    export function end() {
+        store.setState((state) => ({ ...state, inProgress: false }));
+    }
+}

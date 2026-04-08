@@ -3,13 +3,11 @@ import { Typography } from "@mui/joy";
 import { useLocation } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import SettingButton from "../../components/SettingButton";
-import useHistoryScreenStore from "../../stores/useHistoryScreenStore";
-import useSettingsScreenStore from "../../stores/useSettingsScreenStore";
+import { HistoryScreenStore } from "../../stores/useHistoryScreenStore";
+import { SettingsScreenStore } from "../../stores/useSettingsScreenStore";
 
 export default function OpenHistorySettingButton() {
     const { t } = useTranslation(["ui"]);
-    const openSettings = useSettingsScreenStore((state) => state.setOpen);
-    const toggleOpenHistory = useHistoryScreenStore((state) => state.toggleOpen);
 
     const location = useLocation();
     if (location.pathname === "/") {
@@ -19,8 +17,8 @@ export default function OpenHistorySettingButton() {
     return (
         <SettingButton
             onClick={() => {
-                toggleOpenHistory();
-                openSettings(false);
+                HistoryScreenStore.toggleOpen();
+                SettingsScreenStore.setOpen(false);
             }}
         >
             <HistoryIcon />

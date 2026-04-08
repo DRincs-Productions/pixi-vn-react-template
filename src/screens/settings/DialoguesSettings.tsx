@@ -1,16 +1,14 @@
 import { Box, FormHelperText, FormLabel, Slider } from "@mui/joy";
+import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
-import { useShallow } from "zustand/react/shallow";
-import useAutoInfoStore from "../../stores/useAutoInfoStore";
-import useTypewriterStore from "../../stores/useTypewriterStore";
+import { AutoSettings } from "../../stores/auto-settings-store";
+import { TypewriterSettings } from "../../stores/typewriter-settings-store";
 
 export default function DialoguesSettings() {
-    const typewriterDelay = useTypewriterStore(useShallow((state) => state.delay));
-    const setTypewriterDelay = useTypewriterStore(useShallow((state) => state.setDelay));
+    const typewriterDelay = useStore(TypewriterSettings.store, (state) => state.delay);
     const { t } = useTranslation(["ui"]);
-    const autoEnabled = useAutoInfoStore((state) => state.enabled);
-    const setAutoTime = useAutoInfoStore((state) => state.setTime);
-    const autoTime = useAutoInfoStore((state) => state.time);
+    const autoEnabled = useStore(AutoSettings.store, (state) => state.enabled);
+    const autoTime = useStore(AutoSettings.store, (state) => state.time);
 
     return (
         <>
@@ -45,7 +43,7 @@ export default function DialoguesSettings() {
                         return `${index}ms`;
                     }}
                     onChange={(_, value) => {
-                        setTypewriterDelay((value as number) || 0);
+                        TypewriterSettings.setDelay((value as number) || 0);
                     }}
                 />
             </Box>
@@ -82,7 +80,7 @@ export default function DialoguesSettings() {
                     min={1}
                     disabled={!autoEnabled}
                     valueLabelFormat={(index) => index + "s"}
-                    onChange={(_, value) => setAutoTime(value as number)}
+                    onChange={(_, value) => AutoSettings.setTime(value as number)}
                 />
             </Box>
         </>

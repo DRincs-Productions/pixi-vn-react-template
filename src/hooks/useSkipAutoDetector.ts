@@ -1,20 +1,19 @@
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useDebouncer } from "@tanstack/react-pacer";
+import { useStore } from "@tanstack/react-store";
 import { useCallback, useEffect } from "react";
-import { useShallow } from "zustand/react/shallow";
 import { SKIP_DELAY } from "../constans";
-import useAutoInfoStore from "../stores/useAutoInfoStore";
-import useSkipStore from "../stores/useSkipStore";
-import useTypewriterStore from "../stores/useTypewriterStore";
+import { AutoSettings } from "../stores/auto-settings-store";
+import { SkipSettings } from "../stores/skip-settings-store";
+import { TypewriterSettings } from "../stores/typewriter-settings-store";
 import useInterval from "./useInterval";
 import useNarrationFunctions from "./useNarrationFunctions";
 
 export default function useSkipAutoDetector() {
-    const skipEnabled = useSkipStore(useShallow((state) => state.enabled));
-    const setSkipEnabled = useSkipStore((state) => state.setEnabled);
-    const autoEnabled = useAutoInfoStore(useShallow((state) => state.enabled));
-    const autoTime = useAutoInfoStore(useShallow((state) => state.time));
-    const typewriterInProgress = useTypewriterStore(useShallow((state) => state.inProgress));
+    const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
+    const autoEnabled = useStore(AutoSettings.store, (state) => state.enabled);
+    const autoTime = useStore(AutoSettings.store, (state) => state.time);
+    const typewriterInProgress = useStore(TypewriterSettings.store, (state) => state.inProgress);
     const { goNext } = useNarrationFunctions();
 
     useInterval(goNext, {
@@ -36,11 +35,11 @@ export default function useSkipAutoDetector() {
         autoDebouncer.maybeExecute();
     }, [autoEnabled, skipEnabled, typewriterInProgress, autoTime]);
 
-    const onSkipKeyDown = useCallback(() => setSkipEnabled(true), [setSkipEnabled]);
+    const onSkipKeyDown = useCallback(() => SkipSettings.setEnabled(true), []);
     const onSkipKeyUp = useCallback(() => {
-        setSkipEnabled(false);
+        SkipSettings.setEnabled(false);
         goNext();
-    }, [setSkipEnabled, goNext]);
+    }, [goNext]);
 
     useHotkeys([
         { hotkey: "Enter", callback: onSkipKeyDown },
