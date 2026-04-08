@@ -1,19 +1,19 @@
 import { Store } from "@tanstack/store";
 
-type SkipStoreState = {
+type StoreType = {
     /**
      * Whether the skip is enabled
      */
     enabled: boolean;
 };
 
-export namespace SkipStore {
-    export const store = new Store<SkipStoreState>({ enabled: false });
+export namespace SkipSettings {
+    export const store = new Store<StoreType>({ enabled: false });
 
     /**
      * Toggle the skip state
      */
-    export function editEnabled() {
+    export function toggleEnabled() {
         store.setState((state) => ({ ...state, enabled: !state.enabled }));
     }
 

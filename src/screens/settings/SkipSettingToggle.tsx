@@ -1,14 +1,14 @@
 import FastForwardIcon from "@mui/icons-material/FastForward";
 import { Typography } from "@mui/joy";
-import { useStore } from "@tanstack/react-store";
 import { useLocation } from "@tanstack/react-router";
+import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
 import SettingButton from "../../components/SettingButton";
-import { SkipStore } from "../../stores/useSkipStore";
+import { SkipSettings } from "../../stores/skip-settings-store";
 
 export default function SkipSettingToggle() {
     const { t } = useTranslation(["ui"]);
-    const enabled = useStore(SkipStore.store, (state) => state.enabled);
+    const enabled = useStore(SkipSettings.store, (state) => state.enabled);
 
     const location = useLocation();
     if (location.pathname === "/") {
@@ -16,7 +16,7 @@ export default function SkipSettingToggle() {
     }
 
     return (
-        <SettingButton checked={enabled} onClick={SkipStore.editEnabled}>
+        <SettingButton checked={enabled} onClick={SkipSettings.toggleEnabled}>
             <FastForwardIcon />
             <Typography level="title-md">{t("skip")}</Typography>
             <Typography

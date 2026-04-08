@@ -4,12 +4,12 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useNarrationFunctions from "../hooks/useNarrationFunctions";
 import { useQueryCanGoNext } from "../hooks/useQueryInterface";
+import { SkipSettings } from "../stores/skip-settings-store";
 import { InterfaceStore } from "../stores/useInterfaceStore";
-import { SkipStore } from "../stores/useSkipStore";
 import { StepStore } from "../stores/useStepStore";
 
 export default function NextButton() {
-    const skipEnabled = useStore(SkipStore.store, (state) => state.enabled);
+    const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
     const nextStepLoading = useStore(StepStore.store, (state) => state.loading);
     const goBackLoading = useStore(StepStore.store, (state) => state.backLoading);
     const { data: canContinue = false } = useQueryCanGoNext();
@@ -41,7 +41,7 @@ export default function NextButton() {
             }}
             onClick={() => {
                 if (skipEnabled) {
-                    SkipStore.setEnabled(false);
+                    SkipSettings.setEnabled(false);
                 }
                 goNext();
             }}

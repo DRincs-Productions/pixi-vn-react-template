@@ -10,19 +10,19 @@ import { useQueryCanGoBack } from "../hooks/useQueryInterface";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
 import { useWheelActions } from "../hooks/useWheelActions";
+import { SkipSettings } from "../stores/skip-settings-store";
 import { AutoInfoStore } from "../stores/useAutoInfoStore";
 import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
 import { HistoryScreenStore } from "../stores/useHistoryScreenStore";
 import { InterfaceStore } from "../stores/useInterfaceStore";
 import { SettingsScreenStore } from "../stores/useSettingsScreenStore";
-import { SkipStore } from "../stores/useSkipStore";
 import { StepStore } from "../stores/useStepStore";
 import { saveGameToIndexDB } from "../utils/save-utility";
 
 export default function QuickTools() {
     const { t } = useTranslation(["ui"]);
     const hidden = useStore(InterfaceStore.store, (state) => state.hidden);
-    const skipEnabled = useStore(SkipStore.store, (state) => state.enabled);
+    const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
     const autoEnabled = useStore(AutoInfoStore.store, (state) => state.enabled);
     const { enqueueSnackbar } = useSnackbar();
     const queryClient = useQueryClient();
@@ -58,7 +58,7 @@ export default function QuickTools() {
             <TextMenuButton
                 onClick={() => {
                     if (skipEnabled) {
-                        SkipStore.setEnabled(false);
+                        SkipSettings.setEnabled(false);
                     }
                     goBack();
                 }}
@@ -72,7 +72,7 @@ export default function QuickTools() {
             </TextMenuButton>
             <TextMenuButton
                 selected={skipEnabled}
-                onClick={SkipStore.editEnabled}
+                onClick={SkipSettings.toggleEnabled}
                 sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
                 {t("skip")}
