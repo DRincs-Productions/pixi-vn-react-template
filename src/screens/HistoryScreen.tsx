@@ -12,7 +12,7 @@ import remarkGfm from "remark-gfm";
 import ModalDialogCustom from "../components/ModalDialog";
 import { useQueryNarrativeHistory } from "../hooks/useQueryInterface";
 import { useStore } from "@tanstack/react-store";
-import { historyScreenStore, toggleHistoryScreenOpen } from "../stores/useHistoryScreenStore";
+import { HistoryScreenStore } from "../stores/useHistoryScreenStore";
 
 function HistoryList({ searchString }: { searchString?: string }) {
     const { data = [] } = useQueryNarrativeHistory({ searchString });
@@ -82,7 +82,7 @@ function HistoryList({ searchString }: { searchString?: string }) {
 }
 
 export default function HistoryScreen() {
-    const open = useStore(historyScreenStore, (state) => state.open);
+    const open = useStore(HistoryScreenStore.store, (state) => state.open);
     const [searchString, setSearchString] = useState("");
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
@@ -90,14 +90,14 @@ export default function HistoryScreen() {
     useHotkeys([
         {
             hotkey: "Control+H",
-            callback: toggleHistoryScreenOpen,
+            callback: HistoryScreenStore.toggleOpen,
         },
     ]);
 
     return (
         <ModalDialogCustom
             open={open}
-            setOpen={toggleHistoryScreenOpen}
+            setOpen={HistoryScreenStore.toggleOpen}
             layout={smScreen ? "fullscreen" : "center"}
             head={
                 <Stack

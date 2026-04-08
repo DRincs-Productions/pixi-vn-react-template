@@ -4,7 +4,7 @@ import { useLocation } from "@tanstack/react-router";
 import { useSnackbar } from "notistack";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { editLoadAlert } from "../stores/useGameSaveScreenStore";
+import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
 import { saveGameToIndexDB } from "../utils/save-utility";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "./useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "./useQuerySaves";
@@ -52,7 +52,7 @@ export default function useSaveHotkeys(): null {
             console.log("No save to load");
             return;
         }
-        editLoadAlert(lastSave);
+        GameSaveScreenStore.editLoadAlert(lastSave);
     }, [lastSave]);
 
     useHotkeys([

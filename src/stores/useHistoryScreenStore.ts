@@ -7,18 +7,20 @@ type HistoryScreenState = {
     open: boolean;
 };
 
-export const historyScreenStore = new Store<HistoryScreenState>({ open: false });
+export namespace HistoryScreenStore {
+    export const store = new Store<HistoryScreenState>({ open: false });
 
-/**
- * Toggle the open state of the history screen
- */
-export function toggleHistoryScreenOpen() {
-    historyScreenStore.setState((state) => ({ ...state, open: !state.open }));
-}
+    /**
+     * Toggle the open state of the history screen
+     */
+    export function toggleOpen() {
+        store.setState((state) => ({ ...state, open: !state.open }));
+    }
 
-/**
- * Set the open state of the history screen
- */
-export function setHistoryScreenOpen(value: boolean) {
-    historyScreenStore.setState((state) => ({ ...state, open: value }));
+    /**
+     * Set the open state of the history screen
+     */
+    export function setOpen(value: boolean) {
+        store.setState((state) => ({ ...state, open: value }));
+    }
 }

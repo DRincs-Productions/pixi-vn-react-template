@@ -3,17 +3,17 @@ import { useDebouncer } from "@tanstack/react-pacer";
 import { useStore } from "@tanstack/react-store";
 import { useCallback, useEffect } from "react";
 import { SKIP_DELAY } from "../constans";
-import { autoInfoStore } from "../stores/useAutoInfoStore";
-import { setSkipEnabled, skipStore } from "../stores/useSkipStore";
-import { typewriterStore } from "../stores/useTypewriterStore";
+import { AutoInfoStore } from "../stores/useAutoInfoStore";
+import { SkipStore } from "../stores/useSkipStore";
+import { TypewriterStore } from "../stores/useTypewriterStore";
 import useInterval from "./useInterval";
 import useNarrationFunctions from "./useNarrationFunctions";
 
 export default function useSkipAutoDetector() {
-    const skipEnabled = useStore(skipStore, (state) => state.enabled);
-    const autoEnabled = useStore(autoInfoStore, (state) => state.enabled);
-    const autoTime = useStore(autoInfoStore, (state) => state.time);
-    const typewriterInProgress = useStore(typewriterStore, (state) => state.inProgress);
+    const skipEnabled = useStore(SkipStore.store, (state) => state.enabled);
+    const autoEnabled = useStore(AutoInfoStore.store, (state) => state.enabled);
+    const autoTime = useStore(AutoInfoStore.store, (state) => state.time);
+    const typewriterInProgress = useStore(TypewriterStore.store, (state) => state.inProgress);
     const { goNext } = useNarrationFunctions();
 
     useInterval(goNext, {
@@ -35,11 +35,11 @@ export default function useSkipAutoDetector() {
         autoDebouncer.maybeExecute();
     }, [autoEnabled, skipEnabled, typewriterInProgress, autoTime]);
 
-    const onSkipKeyDown = useCallback(() => setSkipEnabled(true), [setSkipEnabled]);
+    const onSkipKeyDown = useCallback(() => SkipStore.setEnabled(true), []);
     const onSkipKeyUp = useCallback(() => {
-        setSkipEnabled(false);
+        SkipStore.setEnabled(false);
         goNext();
-    }, [setSkipEnabled, goNext]);
+    }, [goNext]);
 
     useHotkeys([
         { hotkey: "Enter", callback: onSkipKeyDown },

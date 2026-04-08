@@ -1,14 +1,14 @@
 import { Box, FormHelperText, FormLabel, Slider } from "@mui/joy";
 import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
-import { autoInfoStore, setAutoTime } from "../../stores/useAutoInfoStore";
-import { setTypewriterDelay, typewriterStore } from "../../stores/useTypewriterStore";
+import { AutoInfoStore } from "../../stores/useAutoInfoStore";
+import { TypewriterStore } from "../../stores/useTypewriterStore";
 
 export default function DialoguesSettings() {
-    const typewriterDelay = useStore(typewriterStore, (state) => state.delay);
+    const typewriterDelay = useStore(TypewriterStore.store, (state) => state.delay);
     const { t } = useTranslation(["ui"]);
-    const autoEnabled = useStore(autoInfoStore, (state) => state.enabled);
-    const autoTime = useStore(autoInfoStore, (state) => state.time);
+    const autoEnabled = useStore(AutoInfoStore.store, (state) => state.enabled);
+    const autoTime = useStore(AutoInfoStore.store, (state) => state.time);
 
     return (
         <>
@@ -43,7 +43,7 @@ export default function DialoguesSettings() {
                         return `${index}ms`;
                     }}
                     onChange={(_, value) => {
-                        setTypewriterDelay((value as number) || 0);
+                        TypewriterStore.setDelay((value as number) || 0);
                     }}
                 />
             </Box>
@@ -80,7 +80,7 @@ export default function DialoguesSettings() {
                     min={1}
                     disabled={!autoEnabled}
                     valueLabelFormat={(index) => index + "s"}
-                    onChange={(_, value) => setAutoTime(value as number)}
+                    onChange={(_, value) => AutoInfoStore.setTime(value as number)}
                 />
             </Box>
         </>

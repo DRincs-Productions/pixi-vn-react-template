@@ -7,11 +7,13 @@ type NetworkStoreState = {
     isOnline: boolean;
 };
 
-export const networkStore = new Store<NetworkStoreState>({ isOnline: navigator.onLine });
+export namespace NetworkStore {
+    export const store = new Store<NetworkStoreState>({ isOnline: navigator.onLine });
 
-/**
- * Update the online status
- */
-export function updateOnlineStatus() {
-    networkStore.setState((state) => ({ ...state, isOnline: navigator.onLine }));
+    /**
+     * Update the online status
+     */
+    export function updateOnlineStatus() {
+        store.setState((state) => ({ ...state, isOnline: navigator.onLine }));
+    }
 }

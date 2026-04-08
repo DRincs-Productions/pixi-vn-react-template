@@ -37,85 +37,89 @@ type GameSaveScreenStoreState = {
     alert: GameSaveScreenAlert;
 };
 
-export const gameSaveScreenStore = new Store<GameSaveScreenStoreState>({
-    page: localStorage.getItem("save_screen_page") ? parseInt(localStorage.getItem("save_screen_page") as string) : 0,
-    open: false,
-    alert: { open: false },
-});
-
-/**
- * Toggle the open state of the save screen
- */
-export function toggleGameSaveScreenOpen() {
-    gameSaveScreenStore.setState((state) => ({ ...state, open: !state.open }));
-}
-
-/**
- * Set the open state of the save screen
- */
-export function setGameSaveScreenOpen(value: boolean) {
-    gameSaveScreenStore.setState((state) => ({ ...state, open: value }));
-}
-
-/**
- * Set the page of the save screen
- */
-export function setGameSaveScreenPage(value: number) {
-    localStorage.setItem("save_screen_page", value.toString());
-    gameSaveScreenStore.setState((state) => ({ ...state, page: value }));
-}
-
-/**
- * Open the load alert
- */
-export function editLoadAlert(data: GameSaveData & { id: number }) {
-    gameSaveScreenStore.setState((state) => {
-        if (state.alert.open) {
-            return { ...state, alert: { open: false } };
-        }
-        return { ...state, alert: { open: true, data, type: "load" } };
+export namespace GameSaveScreenStore {
+    export const store = new Store<GameSaveScreenStoreState>({
+        page: localStorage.getItem("save_screen_page")
+            ? parseInt(localStorage.getItem("save_screen_page") as string)
+            : 0,
+        open: false,
+        alert: { open: false },
     });
-}
 
-/**
- * Open the save alert
- */
-export function editSaveAlert(data: number, deafultName?: string) {
-    gameSaveScreenStore.setState((state) => {
-        if (state.alert.open) {
-            return { ...state, alert: { open: false } };
-        }
-        return { ...state, alert: { open: true, data, type: "save", deafultName: deafultName || "" } };
-    });
-}
+    /**
+     * Toggle the open state of the save screen
+     */
+    export function toggleOpen() {
+        store.setState((state) => ({ ...state, open: !state.open }));
+    }
 
-/**
- * Open the overwrite save alert
- */
-export function editOverwriteSaveAlert(data: number, deafultName: string) {
-    gameSaveScreenStore.setState((state) => {
-        if (state.alert.open) {
-            return { ...state, alert: { open: false } };
-        }
-        return { ...state, alert: { open: true, data, type: "overwrite_save", deafultName } };
-    });
-}
+    /**
+     * Set the open state of the save screen
+     */
+    export function setOpen(value: boolean) {
+        store.setState((state) => ({ ...state, open: value }));
+    }
 
-/**
- * Open the delete alert
- */
-export function editDeleteAlert(data: number) {
-    gameSaveScreenStore.setState((state) => {
-        if (state.alert.open) {
-            return { ...state, alert: { open: false } };
-        }
-        return { ...state, alert: { open: true, data, type: "delete" } };
-    });
-}
+    /**
+     * Set the page of the save screen
+     */
+    export function setPage(value: number) {
+        localStorage.setItem("save_screen_page", value.toString());
+        store.setState((state) => ({ ...state, page: value }));
+    }
 
-/**
- * Close the alert
- */
-export function closeGameSaveAlert() {
-    gameSaveScreenStore.setState((state) => ({ ...state, alert: { open: false } }));
+    /**
+     * Open the load alert
+     */
+    export function editLoadAlert(data: GameSaveData & { id: number }) {
+        store.setState((state) => {
+            if (state.alert.open) {
+                return { ...state, alert: { open: false } };
+            }
+            return { ...state, alert: { open: true, data, type: "load" } };
+        });
+    }
+
+    /**
+     * Open the save alert
+     */
+    export function editSaveAlert(data: number, deafultName?: string) {
+        store.setState((state) => {
+            if (state.alert.open) {
+                return { ...state, alert: { open: false } };
+            }
+            return { ...state, alert: { open: true, data, type: "save", deafultName: deafultName || "" } };
+        });
+    }
+
+    /**
+     * Open the overwrite save alert
+     */
+    export function editOverwriteSaveAlert(data: number, deafultName: string) {
+        store.setState((state) => {
+            if (state.alert.open) {
+                return { ...state, alert: { open: false } };
+            }
+            return { ...state, alert: { open: true, data, type: "overwrite_save", deafultName } };
+        });
+    }
+
+    /**
+     * Open the delete alert
+     */
+    export function editDeleteAlert(data: number) {
+        store.setState((state) => {
+            if (state.alert.open) {
+                return { ...state, alert: { open: false } };
+            }
+            return { ...state, alert: { open: true, data, type: "delete" } };
+        });
+    }
+
+    /**
+     * Close the alert
+     */
+    export function closeAlert() {
+        store.setState((state) => ({ ...state, alert: { open: false } }));
+    }
 }

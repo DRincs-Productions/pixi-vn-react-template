@@ -10,9 +10,9 @@ import useGameProps from "../hooks/useGameProps";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "../hooks/useQueryInterface";
 import useQueryLastSave from "../hooks/useQueryLastSave";
 import startLabel from "../labels/startLabel";
-import { toggleGameSaveScreenOpen } from "../stores/useGameSaveScreenStore";
-import { setInterfaceHidden } from "../stores/useInterfaceStore";
-import { setSettingsScreenOpen } from "../stores/useSettingsScreenStore";
+import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
+import { InterfaceStore } from "../stores/useInterfaceStore";
+import { SettingsScreenStore } from "../stores/useSettingsScreenStore";
 import { loadSave } from "../utils/save-utility";
 
 export default function MainMenu() {
@@ -23,7 +23,7 @@ export default function MainMenu() {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setInterfaceHidden(false);
+        InterfaceStore.setHidden(false);
         const bg = new ImageSprite({}, "background_main_menu");
         bg.load();
         const layer = canvas.getLayer(CANVAS_UI_LAYER_NAME);
@@ -85,10 +85,10 @@ export default function MainMenu() {
             >
                 {t("start")}
             </MenuButton>
-            <MenuButton onClick={toggleGameSaveScreenOpen} transitionDelay={0.3} disabled={loading}>
+            <MenuButton onClick={GameSaveScreenStore.toggleOpen} transitionDelay={0.3} disabled={loading}>
                 {t("load")}
             </MenuButton>
-            <MenuButton onClick={() => setSettingsScreenOpen(true)} transitionDelay={0.4}>
+            <MenuButton onClick={() => SettingsScreenStore.setOpen(true)} transitionDelay={0.4}>
                 {t("settings")}
             </MenuButton>
             {loading && (

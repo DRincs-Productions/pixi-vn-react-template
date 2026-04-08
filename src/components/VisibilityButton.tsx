@@ -3,28 +3,28 @@ import { IconButton, useTheme } from "@mui/joy";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useStore } from "@tanstack/react-store";
 import { useEffect, useMemo } from "react";
-import { interfaceStore, showInterface, toggleInterfaceHidden } from "../stores/useInterfaceStore";
+import { InterfaceStore } from "../stores/useInterfaceStore";
 
 export default function VisibilityButton() {
-    const hidden = useStore(interfaceStore, (state) => state.hidden);
+    const hidden = useStore(InterfaceStore.store, (state) => state.hidden);
     const iconVarians = useMemo(() => (hidden ? `motion-preset-pop` : `motion-scale-out-0`), [hidden]);
 
     useEffect(() => {
         return () => {
-            showInterface();
+            InterfaceStore.show();
         };
     }, []);
 
     useHotkeys([
         {
             hotkey: "Control+V",
-            callback: toggleInterfaceHidden,
+            callback: InterfaceStore.toggleHidden,
         },
     ]);
 
     return (
         <IconButton
-            onClick={toggleInterfaceHidden}
+            onClick={InterfaceStore.toggleHidden}
             sx={{
                 position: "absolute",
                 top: 0,

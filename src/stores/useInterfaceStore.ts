@@ -7,25 +7,27 @@ type InterfaceStoreState = {
     hidden: boolean;
 };
 
-export const interfaceStore = new Store<InterfaceStoreState>({ hidden: false });
+export namespace InterfaceStore {
+    export const store = new Store<InterfaceStoreState>({ hidden: false });
 
-/**
- * Toggle the interface visibility
- */
-export function toggleInterfaceHidden() {
-    interfaceStore.setState((state) => ({ ...state, hidden: !state.hidden }));
-}
+    /**
+     * Toggle the interface visibility
+     */
+    export function toggleHidden() {
+        store.setState((state) => ({ ...state, hidden: !state.hidden }));
+    }
 
-/**
- * Set the interface visibility
- */
-export function setInterfaceHidden(value: boolean) {
-    interfaceStore.setState((state) => ({ ...state, hidden: value }));
-}
+    /**
+     * Set the interface visibility
+     */
+    export function setHidden(value: boolean) {
+        store.setState((state) => ({ ...state, hidden: value }));
+    }
 
-/**
- * Set the interface visibility to true
- */
-export function showInterface() {
-    interfaceStore.setState((state) => ({ ...state, hidden: false }));
+    /**
+     * Show the interface (set hidden to false)
+     */
+    export function show() {
+        store.setState((state) => ({ ...state, hidden: false }));
+    }
 }

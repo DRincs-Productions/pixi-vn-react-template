@@ -10,12 +10,12 @@ import ModalConfirmation from "../../components/ModalConfirmation";
 import useGameProps from "../../hooks/useGameProps";
 import { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
-import { closeGameSaveAlert, gameSaveScreenStore, setGameSaveScreenOpen } from "../../stores/useGameSaveScreenStore";
+import { GameSaveScreenStore } from "../../stores/useGameSaveScreenStore";
 import { deleteSaveFromIndexDB, loadSave, saveGameToIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadAlert() {
     const navigate = useNavigate();
-    const alertData = useStore(gameSaveScreenStore, (state) => state.alert);
+    const alertData = useStore(GameSaveScreenStore.store, (state) => state.alert);
     const { t } = useTranslation(["ui"]);
     const { enqueueSnackbar } = useSnackbar();
     const queryClient = useQueryClient();
@@ -31,7 +31,7 @@ export default function SaveLoadAlert() {
     return (
         <ModalConfirmation
             open={alertData.open}
-            setOpen={closeGameSaveAlert}
+            setOpen={GameSaveScreenStore.closeAlert}
             color="primary"
             head={
                 <Typography level="h4" startDecorator={<CloudDownloadIcon />}>
@@ -50,7 +50,7 @@ export default function SaveLoadAlert() {
                             .then(() => {
                                 gameProps.invalidateInterfaceData();
                                 enqueueSnackbar(t("success_load"), { variant: "success" });
-                                setGameSaveScreenOpen(false);
+                                GameSaveScreenStore.setOpen(false);
                                 return true;
                             })
                             .catch((e) => {

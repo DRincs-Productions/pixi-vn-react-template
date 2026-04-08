@@ -7,18 +7,20 @@ type SkipStoreState = {
     enabled: boolean;
 };
 
-export const skipStore = new Store<SkipStoreState>({ enabled: false });
+export namespace SkipStore {
+    export const store = new Store<SkipStoreState>({ enabled: false });
 
-/**
- * Toggle the skip state
- */
-export function editSkipEnabled() {
-    skipStore.setState((state) => ({ ...state, enabled: !state.enabled }));
-}
+    /**
+     * Toggle the skip state
+     */
+    export function editEnabled() {
+        store.setState((state) => ({ ...state, enabled: !state.enabled }));
+    }
 
-/**
- * Set the skip state
- */
-export function setSkipEnabled(value: boolean) {
-    skipStore.setState((state) => ({ ...state, enabled: value }));
+    /**
+     * Set the skip state
+     */
+    export function setEnabled(value: boolean) {
+        store.setState((state) => ({ ...state, enabled: value }));
+    }
 }

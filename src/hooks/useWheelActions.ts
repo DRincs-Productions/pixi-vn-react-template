@@ -3,7 +3,7 @@ import { narration } from "@drincs/pixi-vn/narration";
 import { useThrottler } from "@tanstack/react-pacer";
 import { useEffect, useRef } from "react";
 import { HTML_CANVAS_LAYER_NAME, HTML_UI_LAYER_NAME } from "../constans";
-import { setStepLoading } from "../stores/useStepStore";
+import { StepStore } from "../stores/useStepStore";
 import useGameProps from "./useGameProps";
 
 function isScrollableElement(element: HTMLElement | null): boolean {
@@ -43,11 +43,11 @@ export function useWheelActions({ throttleMs = 300, minDelta = 20 }: { throttleM
     const runAsync = async (fn: (props: StepLabelProps) => Promise<unknown>) => {
         try {
             pendingAsync.current += 1;
-            setStepLoading(pendingAsync.current > 0);
+            StepStore.setLoading(pendingAsync.current > 0);
             await fn(gameProps);
         } finally {
             pendingAsync.current -= 1;
-            setStepLoading(pendingAsync.current > 0);
+            StepStore.setLoading(pendingAsync.current > 0);
             if (pendingAsync.current === 0) {
                 gameProps.invalidateInterfaceData();
             }

@@ -7,18 +7,20 @@ type SettingsScreenState = {
     open: boolean;
 };
 
-export const settingsScreenStore = new Store<SettingsScreenState>({ open: false });
+export namespace SettingsScreenStore {
+    export const store = new Store<SettingsScreenState>({ open: false });
 
-/**
- * Toggle the open state of the settings screen
- */
-export function toggleSettingsScreenOpen() {
-    settingsScreenStore.setState((state) => ({ ...state, open: !state.open }));
-}
+    /**
+     * Toggle the open state of the settings screen
+     */
+    export function toggleOpen() {
+        store.setState((state) => ({ ...state, open: !state.open }));
+    }
 
-/**
- * Set the open state of the settings screen
- */
-export function setSettingsScreenOpen(value: boolean) {
-    settingsScreenStore.setState((state) => ({ ...state, open: value }));
+    /**
+     * Set the open state of the settings screen
+     */
+    export function setOpen(value: boolean) {
+        store.setState((state) => ({ ...state, open: value }));
+    }
 }

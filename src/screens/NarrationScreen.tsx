@@ -14,16 +14,16 @@ import remarkGfm from "remark-gfm";
 import AnimatedDots from "../components/AnimatedDots";
 import SliderResizer from "../components/SliderResizer";
 import { useQueryDialogue } from "../hooks/useQueryInterface";
-import { dialogueCardStore, setDialogueCardHeight, setDialogueCardImageWidth } from "../stores/useDialogueCardStore";
-import { interfaceStore } from "../stores/useInterfaceStore";
-import { endTypewriter, startTypewriter, typewriterStore } from "../stores/useTypewriterStore";
+import { DialogueCardStore } from "../stores/useDialogueCardStore";
+import { InterfaceStore } from "../stores/useInterfaceStore";
+import { TypewriterStore } from "../stores/useTypewriterStore";
 import ChoiceMenu from "./ChoiceMenu";
 
 export default function NarrationScreen() {
-    const cardHeightTemp = useStore(dialogueCardStore, (state) => state.height);
-    const cardImageWidth = useStore(dialogueCardStore, (state) => state.imageWidth);
+    const cardHeightTemp = useStore(DialogueCardStore.store, (state) => state.height);
+    const cardImageWidth = useStore(DialogueCardStore.store, (state) => state.imageWidth);
     const { data: { animatedText, character, text } = {} } = useQueryDialogue();
-    const hidden = useStore(interfaceStore, (state) => state.hidden || (animatedText || text ? false : true));
+    const hidden = useStore(InterfaceStore.store, (state) => state.hidden || (animatedText || text ? false : true));
     const cardHeight = animatedText || text ? cardHeightTemp : 0;
     const cardVarians = useMemo(
         () =>
@@ -63,7 +63,7 @@ export default function NarrationScreen() {
                     value={cardHeight}
                     onChange={(_, value) => {
                         if (typeof value === "number") {
-                            setDialogueCardHeight(value);
+                            DialogueCardStore.setHeight(value);
                         }
                     }}
                     stackProps={{
@@ -127,7 +127,7 @@ export default function NarrationScreen() {
                                     if (value < 5) {
                                         value = 5;
                                     }
-                                    setDialogueCardImageWidth(value);
+                                    DialogueCardStore.setImageWidth(value);
                                 }
                             }}
                             sx={{
@@ -186,7 +186,7 @@ export default function NarrationScreen() {
 }
 
 function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement | null> }) {
-    const typewriterDelay = useStore(typewriterStore, (state) => state.delay);
+    const typewriterDelay = useStore(TypewriterStore.store, (state) => state.delay);
     const { data: { animatedText, text } = {} } = useQueryDialogue();
     const { mode } = useColorScheme();
 
@@ -223,10 +223,10 @@ function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDiv
                     rehypePlugins={[rehypeRaw]}
                     delay={typewriterDelay}
                     motionProps={{
-                        onAnimationStart: startTypewriter,
+                        onAnimationStart: TypewriterStore.start,
                         onAnimationComplete: (definition: "visible" | "hidden") => {
                             if (definition == "visible") {
-                                endTypewriter();
+                                TypewriterStore.end();
                             }
                         },
                         onCharacterAnimationComplete: handleCharacterAnimationComplete,

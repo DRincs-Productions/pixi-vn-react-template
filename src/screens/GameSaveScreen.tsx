@@ -10,20 +10,12 @@ import type { FileRouteTypes } from "@/routeTree.gen";
 import GameSaveSlot from "../components/GameSaveSlot";
 import ModalDialogCustom from "../components/ModalDialog";
 import useGameProps from "../hooks/useGameProps";
-import {
-    editDeleteAlert,
-    editLoadAlert,
-    editOverwriteSaveAlert,
-    editSaveAlert,
-    gameSaveScreenStore,
-    setGameSaveScreenOpen,
-    setGameSaveScreenPage,
-} from "../stores/useGameSaveScreenStore";
+import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
 import { downloadGameSave, loadGameSaveFromFile } from "../utils/save-utility";
 
 export default function GameSaveScreen() {
-    const open = useStore(gameSaveScreenStore, (state) => state.open);
-    const page = useStore(gameSaveScreenStore, (state) => state.page);
+    const open = useStore(GameSaveScreenStore.store, (state) => state.open);
+    const page = useStore(GameSaveScreenStore.store, (state) => state.page);
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
     const navigate = useNavigate();
@@ -34,7 +26,7 @@ export default function GameSaveScreen() {
     return (
         <ModalDialogCustom
             open={open}
-            setOpen={setGameSaveScreenOpen}
+            setOpen={GameSaveScreenStore.setOpen}
             layout={smScreen ? "fullscreen" : "center"}
             head={<Typography level="h2">{`${t("save")}/${t("load")}`}</Typography>}
             minWidth="80%"
@@ -65,7 +57,7 @@ export default function GameSaveScreen() {
                                         }
                                         gameProps.invalidateInterfaceData();
                                         enqueueSnackbar(t("success_load"), { variant: "success" });
-                                        setGameSaveScreenOpen(false);
+                                        GameSaveScreenStore.setOpen(false);
                                     },
                                 )
                             }
@@ -97,16 +89,16 @@ export default function GameSaveScreen() {
                             <GameSaveSlot
                                 saveId={id}
                                 onSave={() => {
-                                    editSaveAlert(id);
+                                    GameSaveScreenStore.editSaveAlert(id);
                                 }}
                                 onOverwriteSave={(data) => {
-                                    editOverwriteSaveAlert(id, data.name);
+                                    GameSaveScreenStore.editOverwriteSaveAlert(id, data.name);
                                 }}
                                 onLoad={(data) => {
-                                    editLoadAlert({ ...data, id: id });
+                                    GameSaveScreenStore.editLoadAlert({ ...data, id: id });
                                 }}
                                 onDelete={() => {
-                                    editDeleteAlert(id);
+                                    GameSaveScreenStore.editDeleteAlert(id);
                                 }}
                             />
                         </Grid>
@@ -117,7 +109,7 @@ export default function GameSaveScreen() {
                 count={999}
                 siblingCount={smScreen ? 2 : 7}
                 page={page + 1}
-                onChange={(_event, value) => setGameSaveScreenPage(value - 1)}
+                onChange={(_event, value) => GameSaveScreenStore.setPage(value - 1)}
                 sx={{
                     position: "absolute",
                     bottom: 7,

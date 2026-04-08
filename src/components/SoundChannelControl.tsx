@@ -3,7 +3,7 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { Box, FormHelperText, FormLabel, IconButton, Slider, Stack } from "@mui/joy";
 import { useStore } from "@tanstack/react-store";
 import { useMemo } from "react";
-import { getChannelStore, setChannelVolume, toggleChannelMuted } from "../stores/createChannelSoundStore";
+import { ChannelSoundStore } from "../stores/createChannelSoundStore";
 
 type Props = {
     label: string;
@@ -13,7 +13,7 @@ type Props = {
 };
 
 export default function SoundChannelControl({ label, alias, disabled, helper }: Props) {
-    const store = useMemo(() => getChannelStore(alias), [alias]);
+    const store = useMemo(() => ChannelSoundStore.getStore(alias), [alias]);
     const volume = useStore(store, (s) => s.volume);
     const muted = useStore(store, (s) => s.muted);
 
@@ -24,14 +24,14 @@ export default function SoundChannelControl({ label, alias, disabled, helper }: 
                 {helper ? <FormHelperText sx={{ typography: "body-sm" }}>{helper}</FormHelperText> : null}
             </Box>
             <Stack direction="row" alignItems="center" spacing={1}>
-                <IconButton disabled={disabled} onClick={() => toggleChannelMuted(alias)}>
+                <IconButton disabled={disabled} onClick={() => ChannelSoundStore.toggleMuted(alias)}>
                     {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
                 </IconButton>
                 <Slider
                     min={0}
                     max={100}
                     value={volume}
-                    onChange={(_, v) => setChannelVolume(alias, Array.isArray(v) ? v[0] : (v as number))}
+                    onChange={(_, v) => ChannelSoundStore.setVolume(alias, Array.isArray(v) ? v[0] : (v as number))}
                     disabled={disabled}
                     sx={{ flex: 1 }}
                     step={1}

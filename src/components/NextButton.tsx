@@ -4,16 +4,16 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useNarrationFunctions from "../hooks/useNarrationFunctions";
 import { useQueryCanGoNext } from "../hooks/useQueryInterface";
-import { interfaceStore } from "../stores/useInterfaceStore";
-import { setSkipEnabled, skipStore } from "../stores/useSkipStore";
-import { stepStore } from "../stores/useStepStore";
+import { InterfaceStore } from "../stores/useInterfaceStore";
+import { SkipStore } from "../stores/useSkipStore";
+import { StepStore } from "../stores/useStepStore";
 
 export default function NextButton() {
-    const skipEnabled = useStore(skipStore, (state) => state.enabled);
-    const nextStepLoading = useStore(stepStore, (state) => state.loading);
-    const goBackLoading = useStore(stepStore, (state) => state.backLoading);
+    const skipEnabled = useStore(SkipStore.store, (state) => state.enabled);
+    const nextStepLoading = useStore(StepStore.store, (state) => state.loading);
+    const goBackLoading = useStore(StepStore.store, (state) => state.backLoading);
     const { data: canContinue = false } = useQueryCanGoNext();
-    const hideNextButton = useStore(interfaceStore, (state) => state.hidden || !canContinue);
+    const hideNextButton = useStore(InterfaceStore.store, (state) => state.hidden || !canContinue);
     const { goNext } = useNarrationFunctions();
     const { t } = useTranslation(["ui"]);
     const varians = useMemo(
@@ -41,7 +41,7 @@ export default function NextButton() {
             }}
             onClick={() => {
                 if (skipEnabled) {
-                    setSkipEnabled(false);
+                    SkipStore.setEnabled(false);
                 }
                 goNext();
             }}
