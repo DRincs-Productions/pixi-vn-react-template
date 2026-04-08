@@ -8,10 +8,8 @@ type MasterSoundState = {
 
 export namespace MasterSoundStore {
     export const store = new Store<MasterSoundState>({
-        volume: localStorage.getItem(`master_volume`)
-            ? parseInt(localStorage.getItem(`master_volume`)!)
-            : sound.volumeAll * 100,
-        muted: localStorage.getItem(`$master_muted`) ? localStorage.getItem(`master_muted`) === "true" : false,
+        volume: Number(localStorage.getItem(`master_volume`) ?? sound.volumeAll * 100),
+        muted: Boolean(localStorage.getItem(`master_muted`) ?? false),
     });
 
     export function setVolume(volume: number) {
@@ -19,6 +17,7 @@ export namespace MasterSoundStore {
             setMuted(false);
         }
         sound.volumeAll = volume / 100;
+        localStorage.setItem(`master_volume`, volume.toString());
         store.setState((state) => ({ ...state, volume: Math.round(volume) }));
 
         if (Math.round(volume) === 0 && !store.state.muted) {
@@ -32,6 +31,7 @@ export namespace MasterSoundStore {
         } else {
             sound.unmuteAll();
         }
+        localStorage.setItem(`master_muted`, muted.toString());
         store.setState((state) => ({ ...state, muted }));
     }
 
