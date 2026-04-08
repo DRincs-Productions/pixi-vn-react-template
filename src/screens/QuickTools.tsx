@@ -85,6 +85,7 @@ export default function QuickTools() {
             </TextMenuButton>
             <TextMenuButton
                 selected={autoEnabled}
+                disabled={skipEnabled}
                 onClick={editAutoEnabled}
                 sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
