@@ -3,16 +3,16 @@ import { useDebouncer } from "@tanstack/react-pacer";
 import { useStore } from "@tanstack/react-store";
 import { useCallback, useEffect } from "react";
 import { SKIP_DELAY } from "../constans";
+import { AutoSettings } from "../stores/auto-settings-store";
 import { SkipSettings } from "../stores/skip-settings-store";
-import { AutoInfoStore } from "../stores/useAutoInfoStore";
 import { TypewriterStore } from "../stores/useTypewriterStore";
 import useInterval from "./useInterval";
 import useNarrationFunctions from "./useNarrationFunctions";
 
 export default function useSkipAutoDetector() {
     const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
-    const autoEnabled = useStore(AutoInfoStore.store, (state) => state.enabled);
-    const autoTime = useStore(AutoInfoStore.store, (state) => state.time);
+    const autoEnabled = useStore(AutoSettings.store, (state) => state.enabled);
+    const autoTime = useStore(AutoSettings.store, (state) => state.time);
     const typewriterInProgress = useStore(TypewriterStore.store, (state) => state.inProgress);
     const { goNext } = useNarrationFunctions();
 

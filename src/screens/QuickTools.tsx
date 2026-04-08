@@ -10,8 +10,8 @@ import { useQueryCanGoBack } from "../hooks/useQueryInterface";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
 import { useWheelActions } from "../hooks/useWheelActions";
+import { AutoSettings } from "../stores/auto-settings-store";
 import { SkipSettings } from "../stores/skip-settings-store";
-import { AutoInfoStore } from "../stores/useAutoInfoStore";
 import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
 import { HistoryScreenStore } from "../stores/useHistoryScreenStore";
 import { InterfaceStore } from "../stores/useInterfaceStore";
@@ -23,7 +23,7 @@ export default function QuickTools() {
     const { t } = useTranslation(["ui"]);
     const hidden = useStore(InterfaceStore.store, (state) => state.hidden);
     const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
-    const autoEnabled = useStore(AutoInfoStore.store, (state) => state.enabled);
+    const autoEnabled = useStore(AutoSettings.store, (state) => state.enabled);
     const { enqueueSnackbar } = useSnackbar();
     const queryClient = useQueryClient();
     const { data: lastSave = null } = useQueryLastSave();
@@ -80,7 +80,7 @@ export default function QuickTools() {
             <TextMenuButton
                 selected={autoEnabled}
                 disabled={skipEnabled}
-                onClick={AutoInfoStore.editEnabled}
+                onClick={AutoSettings.toggleEnabled}
                 sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
                 {t("auto_forward_time_restricted")}

@@ -1,6 +1,6 @@
 import { Store } from "@tanstack/store";
 
-type AutoInfoStoreState = {
+type AutoSettingsState = {
     /**
      * Whether auto forward is enabled
      */
@@ -11,16 +11,16 @@ type AutoInfoStoreState = {
     time: number;
 };
 
-export namespace AutoInfoStore {
-    export const store = new Store<AutoInfoStoreState>({
+export namespace AutoSettings {
+    export const store = new Store<AutoSettingsState>({
         enabled: false,
-        time: localStorage.getItem("auto_forward_second") ? parseInt(localStorage.getItem("auto_forward_second")!) : 1,
+        time: Number(localStorage.getItem("auto_forward_second") ?? 1),
     });
 
     /**
-     * Enable or disable auto forward
+     * Toggle the auto forward state
      */
-    export function editEnabled() {
+    export function toggleEnabled() {
         store.setState((state) => ({ ...state, enabled: !state.enabled }));
     }
 
