@@ -6,12 +6,12 @@ import { useEffect, useState } from "react";
 import ChoiceButton from "../components/ChoiceButton";
 import useNarrationFunctions from "../hooks/useNarrationFunctions";
 import { useQueryChoiceMenuOptions } from "../hooks/useQueryInterface";
+import { GameStatus } from "../stores/game-status-store";
 import { InterfaceSettings } from "../stores/interface-settings-store";
-import { StepStore } from "../stores/useStepStore";
 import { TypewriterStore } from "../stores/useTypewriterStore";
 
 export default function ChoiceMenu() {
-    const nextStepLoading = useStore(StepStore.store, (state) => state.loading);
+    const nextStepLoading = useStore(GameStatus.store, (state) => state.loading);
     const { data: menu = [] } = useQueryChoiceMenuOptions();
     const typewriterInProgress = useStore(TypewriterStore.store, (state) => state.inProgress);
     const hidden = useStore(InterfaceSettings.store, (state) => state.hidden);

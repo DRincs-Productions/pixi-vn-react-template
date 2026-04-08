@@ -11,12 +11,12 @@ import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastS
 import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
 import { useWheelActions } from "../hooks/useWheelActions";
 import { AutoSettings } from "../stores/auto-settings-store";
+import { GameStatus } from "../stores/game-status-store";
 import { InterfaceSettings } from "../stores/interface-settings-store";
 import { SkipSettings } from "../stores/skip-settings-store";
 import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
 import { HistoryScreenStore } from "../stores/useHistoryScreenStore";
 import { SettingsScreenStore } from "../stores/useSettingsScreenStore";
-import { StepStore } from "../stores/useStepStore";
 import { saveGameToIndexDB } from "../utils/save-utility";
 
 export default function QuickTools() {
@@ -28,7 +28,7 @@ export default function QuickTools() {
     const queryClient = useQueryClient();
     const { data: lastSave = null } = useQueryLastSave();
     const { data: canGoBack = null } = useQueryCanGoBack();
-    const nextStepLoading = useStore(StepStore.store, (state) => state.loading);
+    const nextStepLoading = useStore(GameStatus.store, (state) => state.loading);
     const { goBack } = useNarrationFunctions();
     useWheelActions();
     const textMenuVarians = useMemo(
