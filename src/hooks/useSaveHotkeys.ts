@@ -23,8 +23,6 @@ import { SAVES_USE_QUEY_KEY } from "./useQuerySaves";
  *
  * This hook accepts no parameters and returns `null` because it is used
  * only for side effects (registering hotkeys).
- *
- * @returns {null}
  */
 export default function useSaveHotkeys(): null {
     const setOpenLoadAlert = useGameSaveScreenStore((state) => state.editLoadAlert);

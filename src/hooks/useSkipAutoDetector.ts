@@ -5,7 +5,6 @@ import useSkipStore from "../stores/useSkipStore";
 import useTypewriterStore from "../stores/useTypewriterStore";
 import useDebouncedEffect from "./useDebouncedEffect";
 import useInterval from "./useInterval";
-import useEventListener from "./useKeyDetector";
 import useNarrationFunctions from "./useNarrationFunctions";
 
 export default function useSkipAutoDetector() {
