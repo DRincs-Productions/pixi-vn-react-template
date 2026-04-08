@@ -19,9 +19,9 @@ import useStepStore from "../stores/useStepStore";
 import { saveGameToIndexDB } from "../utils/save-utility";
 
 export default function QuickTools() {
-    const editOpenSettings = useSettingsScreenStore((state) => state.editOpen);
-    const editOpenHistory = useHistoryScreenStore((state) => state.editOpen);
-    const editOpenSaveScreen = useGameSaveScreenStore((state) => state.editOpen);
+    const toggleOpenSettings = useSettingsScreenStore((state) => state.toggleOpen);
+    const toggleOpenHistory = useHistoryScreenStore((state) => state.toggleOpen);
+    const toggleOpenSaveScreen = useGameSaveScreenStore((state) => state.toggleOpen);
     const setOpenLoadAlert = useGameSaveScreenStore((state) => state.editLoadAlert);
     const { t } = useTranslation(["ui"]);
     const hidden = useInterfaceStore((state) => state.hidden);
@@ -73,7 +73,7 @@ export default function QuickTools() {
             >
                 {t("back")}
             </TextMenuButton>
-            <TextMenuButton onClick={editOpenHistory} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
+            <TextMenuButton onClick={toggleOpenHistory} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
                 {t("history")}
             </TextMenuButton>
             <TextMenuButton
@@ -90,7 +90,7 @@ export default function QuickTools() {
             >
                 {t("auto_forward_time_restricted")}
             </TextMenuButton>
-            <TextMenuButton onClick={editOpenSaveScreen} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
+            <TextMenuButton onClick={toggleOpenSaveScreen} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
                 {t(`${t("save")}/${t("load")}`)}
             </TextMenuButton>
             <TextMenuButton
@@ -116,7 +116,7 @@ export default function QuickTools() {
             >
                 {t("load_last_save_restricted")}
             </TextMenuButton>
-            <TextMenuButton onClick={editOpenSettings} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
+            <TextMenuButton onClick={toggleOpenSettings} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
                 {t("settings_restricted")}
             </TextMenuButton>
         </Stack>

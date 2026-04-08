@@ -10,10 +10,10 @@ import {
     Sheet,
     Typography,
 } from "@mui/joy";
-import { Theme, useMediaQuery } from "@mui/material";
+import { type Theme, useMediaQuery } from "@mui/material";
+import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useTranslation } from "react-i18next";
 import ReturnMainMenuButton from "../components/ReturnMainMenuButton";
-import useEventListener from "../hooks/useKeyDetector";
 import useSettingsScreenStore from "../stores/useSettingsScreenStore";
 import AutoSettingToggle from "./settings/AutoSettingToggle";
 import DialoguesSettings from "./settings/DialoguesSettings";
@@ -28,24 +28,23 @@ import ThemeSettings from "./settings/ThemeSettings";
 
 export default function Settings() {
     const open = useSettingsScreenStore((state) => state.open);
-    const editOpen = useSettingsScreenStore((state) => state.editOpen);
+    const toggleOpen = useSettingsScreenStore((state) => state.toggleOpen);
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
 
-    useEventListener({
-        type: "keydown",
-        listener: (event) => {
-            if (event.code == "Escape") {
-                editOpen();
-            }
+    useHotkeys([
+        {
+            hotkey: "Escape",
+            callback: toggleOpen,
+            options: { preventDefault: true },
         },
-    });
+    ]);
 
     return (
         <Drawer
             variant="plain"
             open={open}
-            onClose={editOpen}
+            onClose={toggleOpen}
             sx={{
                 "& .MuiDrawer-content": {
                     width: smScreen ? "100%" : 600,

@@ -20,7 +20,7 @@ export default function SaveLoadSettingButtons() {
     const navigate = useNavigate();
     const { t } = useTranslation(["ui"]);
     const openLoadAlert = useGameSaveScreenStore((state) => state.editLoadAlert);
-    const editOpenSaveScreen = useGameSaveScreenStore((state) => state.editOpen);
+    const toggleOpenSaveScreen = useGameSaveScreenStore((state) => state.toggleOpen);
     const setOpenSettings = useSettingsScreenStore((state) => state.setOpen);
     const queryClient = useQueryClient();
     const gameProps = useGameProps();
@@ -55,7 +55,7 @@ export default function SaveLoadSettingButtons() {
                     }}
                     level="body-md"
                 >
-                    Alt+S
+                    Ctrl+S
                 </Typography>
             </SettingButton>
         ),
@@ -77,13 +77,13 @@ export default function SaveLoadSettingButtons() {
                 }}
                 level="body-md"
             >
-                Alt+L
+                Ctrl+L
             </Typography>
         </SettingButton>,
         <SettingButton
             key={"save_load_button"}
             onClick={() => {
-                editOpenSaveScreen();
+                toggleOpenSaveScreen();
                 setOpenSettings(false);
             }}
         >

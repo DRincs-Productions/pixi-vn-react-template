@@ -8,7 +8,7 @@ type HistoryScreenType = {
     /**
      * Open the screen
      */
-    editOpen: () => void;
+    toggleOpen: () => void;
     /**
      * Set the open state of the screen
      */
@@ -17,7 +17,7 @@ type HistoryScreenType = {
 
 const useHistoryScreenStore = create<HistoryScreenType>((set) => ({
     open: false,
-    editOpen: () => set((state) => ({ open: !state.open })),
+    toggleOpen: () => set((state) => ({ open: !state.open })),
     setOpen: (value: boolean) => set({ open: value }),
 }));
 export default useHistoryScreenStore;

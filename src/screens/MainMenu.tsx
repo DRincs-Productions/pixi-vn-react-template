@@ -18,7 +18,7 @@ import { loadSave } from "../utils/save-utility";
 export default function MainMenu() {
     const setOpenSettings = useSettingsScreenStore((state) => state.setOpen);
     const editHideInterface = useInterfaceStore((state) => state.setHidden);
-    const editSaveScreen = useGameSaveScreenStore((state) => state.editOpen);
+    const toggleSaveScreen = useGameSaveScreenStore((state) => state.toggleOpen);
     const queryClient = useQueryClient();
     const { data: lastSave = null, isLoading } = useQueryLastSave();
     const gameProps = useGameProps();
@@ -88,7 +88,7 @@ export default function MainMenu() {
             >
                 {t("start")}
             </MenuButton>
-            <MenuButton onClick={editSaveScreen} transitionDelay={0.3} disabled={loading}>
+            <MenuButton onClick={toggleSaveScreen} transitionDelay={0.3} disabled={loading}>
                 {t("load")}
             </MenuButton>
             <MenuButton onClick={() => setOpenSettings(true)} transitionDelay={0.4}>

@@ -1,7 +1,7 @@
 import HistoryIcon from "@mui/icons-material/History";
 import { Typography } from "@mui/joy";
-import { useTranslation } from "react-i18next";
 import { useLocation } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import SettingButton from "../../components/SettingButton";
 import useHistoryScreenStore from "../../stores/useHistoryScreenStore";
 import useSettingsScreenStore from "../../stores/useSettingsScreenStore";
@@ -9,7 +9,7 @@ import useSettingsScreenStore from "../../stores/useSettingsScreenStore";
 export default function OpenHistorySettingButton() {
     const { t } = useTranslation(["ui"]);
     const openSettings = useSettingsScreenStore((state) => state.setOpen);
-    const editOpenHistory = useHistoryScreenStore((state) => state.editOpen);
+    const toggleOpenHistory = useHistoryScreenStore((state) => state.toggleOpen);
 
     const location = useLocation();
     if (location.pathname === "/") {
@@ -19,7 +19,7 @@ export default function OpenHistorySettingButton() {
     return (
         <SettingButton
             onClick={() => {
-                editOpenHistory();
+                toggleOpenHistory();
                 openSettings(false);
             }}
         >
@@ -33,7 +33,7 @@ export default function OpenHistorySettingButton() {
                 }}
                 level="body-md"
             >
-                Alt+H
+                Ctrl+H
             </Typography>
         </SettingButton>
     );
