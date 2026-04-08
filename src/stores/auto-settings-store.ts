@@ -13,7 +13,7 @@ type AutoSettingsState = {
 
 export namespace AutoSettings {
     export const store = new Store<AutoSettingsState>({
-        enabled: false,
+        enabled: Boolean(localStorage.getItem("auto_forward_enabled") ?? false),
         time: Number(localStorage.getItem("auto_forward_second") ?? 1),
     });
 
@@ -21,16 +21,17 @@ export namespace AutoSettings {
      * Toggle the auto forward state
      */
     export function toggleEnabled() {
-        store.setState((state) => ({ ...state, enabled: !state.enabled }));
+        store.setState((state) => {
+            localStorage.setItem("auto_forward_enabled", (!state.enabled).toString());
+            return { ...state, enabled: !state.enabled };
+        });
     }
 
     /**
      * Set the time to wait before auto forwarding
      */
     export function setTime(value: number) {
-        if (value) {
-            localStorage.setItem("auto_forward_second", value.toString());
-            store.setState((state) => ({ ...state, time: value }));
-        }
+        localStorage.setItem("auto_forward_second", value.toString());
+        store.setState((state) => ({ ...state, time: value }));
     }
 }
