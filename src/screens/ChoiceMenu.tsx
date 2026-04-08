@@ -8,12 +8,12 @@ import useNarrationFunctions from "../hooks/useNarrationFunctions";
 import { useQueryChoiceMenuOptions } from "../hooks/useQueryInterface";
 import { GameStatus } from "../stores/game-status-store";
 import { InterfaceSettings } from "../stores/interface-settings-store";
-import { TypewriterStore } from "../stores/useTypewriterStore";
+import { TypewriterSettings } from "../stores/typewriter-settings-store";
 
 export default function ChoiceMenu() {
     const nextStepLoading = useStore(GameStatus.store, (state) => state.loading);
     const { data: menu = [] } = useQueryChoiceMenuOptions();
-    const typewriterInProgress = useStore(TypewriterStore.store, (state) => state.inProgress);
+    const typewriterInProgress = useStore(TypewriterSettings.store, (state) => state.inProgress);
     const hidden = useStore(InterfaceSettings.store, (state) => state.hidden);
     const { selectChoice } = useNarrationFunctions();
     const [open, setOpen] = useState(false);

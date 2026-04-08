@@ -5,7 +5,7 @@ import { useCallback, useEffect } from "react";
 import { SKIP_DELAY } from "../constans";
 import { AutoSettings } from "../stores/auto-settings-store";
 import { SkipSettings } from "../stores/skip-settings-store";
-import { TypewriterStore } from "../stores/useTypewriterStore";
+import { TypewriterSettings } from "../stores/typewriter-settings-store";
 import useInterval from "./useInterval";
 import useNarrationFunctions from "./useNarrationFunctions";
 
@@ -13,7 +13,7 @@ export default function useSkipAutoDetector() {
     const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
     const autoEnabled = useStore(AutoSettings.store, (state) => state.enabled);
     const autoTime = useStore(AutoSettings.store, (state) => state.time);
-    const typewriterInProgress = useStore(TypewriterStore.store, (state) => state.inProgress);
+    const typewriterInProgress = useStore(TypewriterSettings.store, (state) => state.inProgress);
     const { goNext } = useNarrationFunctions();
 
     useInterval(goNext, {

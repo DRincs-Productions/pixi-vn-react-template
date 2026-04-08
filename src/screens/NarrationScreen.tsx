@@ -15,7 +15,7 @@ import AnimatedDots from "../components/AnimatedDots";
 import SliderResizer from "../components/SliderResizer";
 import { useQueryDialogue } from "../hooks/useQueryInterface";
 import { InterfaceSettings } from "../stores/interface-settings-store";
-import { TypewriterStore } from "../stores/useTypewriterStore";
+import { TypewriterSettings } from "../stores/typewriter-settings-store";
 import ChoiceMenu from "./ChoiceMenu";
 
 export default function NarrationScreen() {
@@ -185,7 +185,7 @@ export default function NarrationScreen() {
 }
 
 function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement | null> }) {
-    const typewriterDelay = useStore(TypewriterStore.store, (state) => state.delay);
+    const typewriterDelay = useStore(TypewriterSettings.store, (state) => state.delay);
     const { data: { animatedText, text } = {} } = useQueryDialogue();
     const { mode } = useColorScheme();
 
@@ -222,10 +222,10 @@ function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDiv
                     rehypePlugins={[rehypeRaw]}
                     delay={typewriterDelay}
                     motionProps={{
-                        onAnimationStart: TypewriterStore.start,
+                        onAnimationStart: TypewriterSettings.start,
                         onAnimationComplete: (definition: "visible" | "hidden") => {
                             if (definition == "visible") {
-                                TypewriterStore.end();
+                                TypewriterSettings.end();
                             }
                         },
                         onCharacterAnimationComplete: handleCharacterAnimationComplete,

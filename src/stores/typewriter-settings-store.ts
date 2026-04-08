@@ -1,6 +1,6 @@
 import { Store } from "@tanstack/store";
 
-type TypewriterStoreState = {
+type TypewriterStorage = {
     /**
      * The delay in milliseconds between each character
      */
@@ -11,12 +11,9 @@ type TypewriterStoreState = {
     inProgress: boolean;
 };
 
-export namespace TypewriterStore {
-    export const store = new Store<TypewriterStoreState>({
-        delay:
-            typeof localStorage.getItem("typewriter_delay_millisecond") === "number"
-                ? parseInt(localStorage.getItem("typewriter_delay_millisecond")!)
-                : 10,
+export namespace TypewriterSettings {
+    export const store = new Store<TypewriterStorage>({
+        delay: Number(localStorage.getItem("typewriter_delay_millisecond") ?? 10),
         inProgress: false,
     });
 

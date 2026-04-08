@@ -2,10 +2,10 @@ import { Box, FormHelperText, FormLabel, Slider } from "@mui/joy";
 import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
 import { AutoSettings } from "../../stores/auto-settings-store";
-import { TypewriterStore } from "../../stores/useTypewriterStore";
+import { TypewriterSettings } from "../../stores/typewriter-settings-store";
 
 export default function DialoguesSettings() {
-    const typewriterDelay = useStore(TypewriterStore.store, (state) => state.delay);
+    const typewriterDelay = useStore(TypewriterSettings.store, (state) => state.delay);
     const { t } = useTranslation(["ui"]);
     const autoEnabled = useStore(AutoSettings.store, (state) => state.enabled);
     const autoTime = useStore(AutoSettings.store, (state) => state.time);
@@ -43,7 +43,7 @@ export default function DialoguesSettings() {
                         return `${index}ms`;
                     }}
                     onChange={(_, value) => {
-                        TypewriterStore.setDelay((value as number) || 0);
+                        TypewriterSettings.setDelay((value as number) || 0);
                     }}
                 />
             </Box>

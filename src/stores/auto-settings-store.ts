@@ -1,6 +1,6 @@
 import { Store } from "@tanstack/store";
 
-type AutoSettingsState = {
+type AutoSettingsStore = {
     /**
      * Whether auto forward is enabled
      */
@@ -12,7 +12,7 @@ type AutoSettingsState = {
 };
 
 export namespace AutoSettings {
-    export const store = new Store<AutoSettingsState>({
+    export const store = new Store<AutoSettingsStore>({
         enabled: Boolean(localStorage.getItem("auto_forward_enabled") ?? false),
         time: Number(localStorage.getItem("auto_forward_second") ?? 1),
     });

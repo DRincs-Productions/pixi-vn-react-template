@@ -1,6 +1,6 @@
 import { Store } from "@tanstack/store";
 
-type GameStatusState = {
+type GameStatusStore = {
     /**
      * If the step is loading
      */
@@ -8,7 +8,7 @@ type GameStatusState = {
 };
 
 export namespace GameStatus {
-    export const store = new Store<GameStatusState>({ loading: false });
+    export const store = new Store<GameStatusStore>({ loading: false });
 
     /**
      * Set the loading state of the step

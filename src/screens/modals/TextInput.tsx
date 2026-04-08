@@ -9,13 +9,13 @@ import remarkGfm from "remark-gfm";
 import ModalDialogCustom from "../../components/ModalDialog";
 import useGameProps from "../../hooks/useGameProps";
 import { useQueryDialogue, useQueryInputValue } from "../../hooks/useQueryInterface";
-import { TypewriterStore } from "../../stores/useTypewriterStore";
+import { TypewriterSettings } from "../../stores/typewriter-settings-store";
 
 export default function TextInput() {
     const { data: { animatedText: text } = {} } = useQueryDialogue();
     const { data: { isRequired, type, currentValue } = { currentValue: undefined, isRequired: false } } =
         useQueryInputValue<string | number>();
-    const open = useStore(TypewriterStore.store, (state) => !state.inProgress && isRequired);
+    const open = useStore(TypewriterSettings.store, (state) => !state.inProgress && isRequired);
     const [tempValue, setTempValue] = useState<string | number>();
     const gameProps = useGameProps();
     const { t } = useTranslation(["ui"]);
