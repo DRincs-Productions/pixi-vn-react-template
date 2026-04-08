@@ -57,7 +57,6 @@ function RootComponent() {
                     {
                         name: "UI screens",
                         render: <TanStackRouterDevtoolsPanel />,
-                        defaultOpen: true,
                     },
                     { ...hotkeysDevtoolsPlugin(), name: "Hotkeys" },
                     {
