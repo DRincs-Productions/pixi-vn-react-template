@@ -54,11 +54,12 @@ function RootComponent() {
                     position: "bottom-right",
                 }}
                 plugins={[
-                    { ...hotkeysDevtoolsPlugin(), name: "Hotkeys" },
                     {
                         name: "UI screens",
                         render: <TanStackRouterDevtoolsPanel />,
+                        defaultOpen: true,
                     },
+                    { ...hotkeysDevtoolsPlugin(), name: "Hotkeys" },
                     {
                         name: "UI cache",
                         render: <ReactQueryDevtoolsPanel />,
