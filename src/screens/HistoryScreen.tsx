@@ -91,7 +91,6 @@ export default function HistoryScreen() {
         {
             hotkey: "Control+H",
             callback: toggleOpen,
-            options: { preventDefault: true },
         },
     ]);
 

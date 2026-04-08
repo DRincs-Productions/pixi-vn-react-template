@@ -1,11 +1,11 @@
 import { useHotkeys } from "@tanstack/react-hotkeys";
-import { useCallback } from "react";
+import { useDebouncer } from "@tanstack/react-pacer";
+import { useCallback, useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { SKIP_DELAY } from "../constans";
 import useAutoInfoStore from "../stores/useAutoInfoStore";
 import useSkipStore from "../stores/useSkipStore";
 import useTypewriterStore from "../stores/useTypewriterStore";
-import useDebouncedEffect from "./useDebouncedEffect";
 import useInterval from "./useInterval";
 import useNarrationFunctions from "./useNarrationFunctions";
 
@@ -22,14 +22,19 @@ export default function useSkipAutoDetector() {
         enabled: skipEnabled,
     });
 
-    useDebouncedEffect(
-        () => autoEnabled && !skipEnabled && goNext(),
+    const autoDebouncer = useDebouncer(
+        () => {
+            goNext();
+        },
         {
-            delay: autoTime * 1000,
+            wait: autoTime * 1000,
             enabled: autoEnabled && !skipEnabled && !typewriterInProgress,
         },
-        [autoEnabled, skipEnabled, goNext],
     );
+
+    useEffect(() => {
+        autoDebouncer.maybeExecute();
+    }, [autoEnabled, skipEnabled, typewriterInProgress, autoTime]);
 
     const onSkipKeyDown = useCallback(() => setSkipEnabled(true), [setSkipEnabled]);
     const onSkipKeyUp = useCallback(() => {
@@ -39,9 +44,9 @@ export default function useSkipAutoDetector() {
 
     useHotkeys([
         { hotkey: "Enter", callback: onSkipKeyDown },
-        { hotkey: "Space", callback: onSkipKeyDown, options: { preventDefault: true } },
+        { hotkey: "Space", callback: onSkipKeyDown },
         { hotkey: "Enter", callback: onSkipKeyUp, options: { eventType: "keyup" } },
-        { hotkey: "Space", callback: onSkipKeyUp, options: { eventType: "keyup", preventDefault: true } },
+        { hotkey: "Space", callback: onSkipKeyUp, options: { eventType: "keyup" } },
     ]);
 
     return null;

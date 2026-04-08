@@ -36,7 +36,6 @@ export default function Settings() {
         {
             hotkey: "Escape",
             callback: toggleOpen,
-            options: { preventDefault: true },
         },
     ]);
 

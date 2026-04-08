@@ -21,7 +21,6 @@ export default function VisibilityButton() {
         {
             hotkey: "Control+V",
             callback: toggleHidden,
-            options: { preventDefault: true },
         },
     ]);
 

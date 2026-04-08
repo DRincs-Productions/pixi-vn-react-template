@@ -1,7 +1,7 @@
 import { stepHistory, StepLabelProps } from "@drincs/pixi-vn";
 import { narration } from "@drincs/pixi-vn/narration";
-import { throttle } from "es-toolkit";
-import { useCallback, useEffect, useRef } from "react";
+import { useThrottler } from "@tanstack/react-pacer";
+import { useEffect, useRef } from "react";
 import { HTML_CANVAS_LAYER_NAME, HTML_UI_LAYER_NAME } from "../constans";
 import useStepStore from "../stores/useStepStore";
 import useGameProps from "./useGameProps";
@@ -55,8 +55,8 @@ export function useWheelActions({ throttleMs = 300, minDelta = 20 }: { throttleM
         }
     };
 
-    const handleWheel = useCallback(
-        throttle(async (event: WheelEvent) => {
+    const handleWheel = useThrottler(
+        async (event: WheelEvent) => {
             if (!(isInsideRoot(event.target, HTML_UI_LAYER_NAME) || isInsideRoot(event.target, HTML_CANVAS_LAYER_NAME)))
                 return;
             if (hasScrollableParent(event.target)) return;
@@ -78,18 +78,17 @@ export function useWheelActions({ throttleMs = 300, minDelta = 20 }: { throttleM
                 // ⬇️ Scroll down
                 await runAsync(stepHistory.back.bind(stepHistory));
             }
-        }, throttleMs),
-        [throttleMs, minDelta],
+        },
+        { wait: throttleMs },
     );
 
     useEffect(() => {
-        window.addEventListener("wheel", handleWheel, { passive: false });
+        window.addEventListener("wheel", handleWheel.maybeExecute, { passive: false });
 
         return () => {
-            window.removeEventListener("wheel", handleWheel);
-            handleWheel.cancel();
+            window.removeEventListener("wheel", handleWheel.maybeExecute);
         };
-    }, [handleWheel]);
+    }, [handleWheel.maybeExecute]);
 
     return null;
 }

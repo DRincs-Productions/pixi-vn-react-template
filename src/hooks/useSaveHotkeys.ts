@@ -60,22 +60,18 @@ export default function useSaveHotkeys(): null {
         {
             hotkey: "F5",
             callback: quickSave,
-            options: { preventDefault: true },
         },
         {
             hotkey: "Control+S",
             callback: quickSave,
-            options: { preventDefault: true },
         },
         {
             hotkey: "F9",
             callback: quickLoad,
-            options: { preventDefault: true },
         },
         {
             hotkey: "Control+L",
             callback: quickLoad,
-            options: { preventDefault: true },
         },
     ]);
 
