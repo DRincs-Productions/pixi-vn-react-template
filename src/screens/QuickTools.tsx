@@ -16,7 +16,6 @@ import { GameStatus } from "../stores/game-status-store";
 import { InterfaceSettings } from "../stores/interface-settings-store";
 import { SkipSettings } from "../stores/skip-settings-store";
 import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
-import { HistoryScreenStore } from "../stores/useHistoryScreenStore";
 import { saveGameToIndexDB } from "../utils/save-utility";
 
 export default function QuickTools() {
@@ -68,7 +67,7 @@ export default function QuickTools() {
             >
                 {t("back")}
             </TextMenuButton>
-            <TextMenuButton onClick={HistoryScreenStore.toggleOpen} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
+            <TextMenuButton onClick={() => navigate({ search: ((prev: any) => ({ ...prev, history: true })) as any })} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
                 {t("history")}
             </TextMenuButton>
             <TextMenuButton
