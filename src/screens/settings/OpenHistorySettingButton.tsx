@@ -4,7 +4,6 @@ import { useLocation } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import SettingButton from "../../components/SettingButton";
 import { HistoryScreenStore } from "../../stores/useHistoryScreenStore";
-import { SettingsScreenStore } from "../../stores/useSettingsScreenStore";
 
 export default function OpenHistorySettingButton() {
     const { t } = useTranslation(["ui"]);
@@ -15,12 +14,7 @@ export default function OpenHistorySettingButton() {
     }
 
     return (
-        <SettingButton
-            onClick={() => {
-                HistoryScreenStore.toggleOpen();
-                SettingsScreenStore.setOpen(false);
-            }}
-        >
+        <SettingButton onClick={HistoryScreenStore.toggleOpen}>
             <HistoryIcon />
             <Typography level="title-md">{t("history")}</Typography>
             <Typography

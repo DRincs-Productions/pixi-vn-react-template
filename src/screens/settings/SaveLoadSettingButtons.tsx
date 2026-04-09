@@ -13,7 +13,6 @@ import useGameProps from "../../hooks/useGameProps";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
 import { GameSaveScreenStore } from "../../stores/useGameSaveScreenStore";
-import { SettingsScreenStore } from "../../stores/useSettingsScreenStore";
 import { downloadGameSave, loadGameSaveFromFile, saveGameToIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadSettingButtons() {
@@ -58,10 +57,7 @@ export default function SaveLoadSettingButtons() {
         ),
         <SettingButton
             key={"load_last_save_button"}
-            onClick={() => {
-                lastSave && GameSaveScreenStore.editLoadAlert(lastSave);
-                SettingsScreenStore.setOpen(false);
-            }}
+            onClick={() => lastSave && GameSaveScreenStore.editLoadAlert(lastSave)}
             disabled={!lastSave}
         >
             <FileUploadIcon />
@@ -77,13 +73,7 @@ export default function SaveLoadSettingButtons() {
                 Ctrl+L
             </Typography>
         </SettingButton>,
-        <SettingButton
-            key={"save_load_button"}
-            onClick={() => {
-                GameSaveScreenStore.toggleOpen();
-                SettingsScreenStore.setOpen(false);
-            }}
-        >
+        <SettingButton key={"save_load_button"} onClick={GameSaveScreenStore.toggleOpen}>
             <SaveIcon />
             <Typography level="title-md">{t(`${t("save")}/${t("load")}`)}</Typography>
         </SettingButton>,
@@ -105,7 +95,6 @@ export default function SaveLoadSettingButtons() {
                         }
                         gameProps.invalidateInterfaceData();
                         enqueueSnackbar(t("success_load"), { variant: "success" });
-                        SettingsScreenStore.setOpen(false);
                     },
                 )
             }

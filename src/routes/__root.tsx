@@ -20,7 +20,15 @@ import { defineAssets } from "@/utils/assets-utility";
 import { initializeIndexedDB } from "@/utils/indexedDB-utility";
 import { loadRefreshSave } from "@/utils/save-utility";
 
+type Search = {
+    /**
+     * Whether the settings page is open.
+     */
+    settings?: boolean;
+};
+
 export const Route = createRootRouteWithContext<RouterContext>()({
+    validateSearch: (search: Search): Search => search,
     component: RootComponent,
     pendingComponent: LoadingScreen,
     loader: async ({ context }) => {

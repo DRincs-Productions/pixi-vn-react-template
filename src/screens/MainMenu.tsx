@@ -12,7 +12,6 @@ import useQueryLastSave from "../hooks/useQueryLastSave";
 import startLabel from "../labels/startLabel";
 import { InterfaceSettings } from "../stores/interface-settings-store";
 import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
-import { SettingsScreenStore } from "../stores/useSettingsScreenStore";
 import { loadSave } from "../utils/save-utility";
 
 export default function MainMenu() {
@@ -88,7 +87,10 @@ export default function MainMenu() {
             <MenuButton onClick={GameSaveScreenStore.toggleOpen} transitionDelay={0.3} disabled={loading}>
                 {t("load")}
             </MenuButton>
-            <MenuButton onClick={() => SettingsScreenStore.setOpen(true)} transitionDelay={0.4}>
+            <MenuButton
+                onClick={() => navigate({ search: ((prev: any) => ({ ...prev, settings: true })) as any })}
+                transitionDelay={0.4}
+            >
                 {t("settings")}
             </MenuButton>
             {loading && (

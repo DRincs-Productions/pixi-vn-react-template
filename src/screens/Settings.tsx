@@ -12,10 +12,10 @@ import {
 } from "@mui/joy";
 import { type Theme, useMediaQuery } from "@mui/material";
 import { useHotkeys } from "@tanstack/react-hotkeys";
-import { useStore } from "@tanstack/react-store";
+import { useNavigate, useSearch } from "@tanstack/react-router";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import ReturnMainMenuButton from "../components/ReturnMainMenuButton";
-import { SettingsScreenStore } from "../stores/useSettingsScreenStore";
 import AutoSettingToggle from "./settings/AutoSettingToggle";
 import DialoguesSettings from "./settings/DialoguesSettings";
 import DownloadFileToTranslateSettingButton from "./settings/DownloadFileToTranslateSettingButton";
@@ -28,14 +28,19 @@ import SoundSettings from "./settings/SoundSettings";
 import ThemeSettings from "./settings/ThemeSettings";
 
 export default function Settings() {
-    const open = useStore(SettingsScreenStore.store, (state) => state.open);
+    const { settings: open = false } = useSearch({ from: "__root__" });
+    const navigate = useNavigate();
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
+    const toggleOpen = useCallback(
+        () => navigate({ search: ((prev: any) => ({ ...prev, settings: !prev.settings })) as any }),
+        [navigate],
+    );
 
     useHotkeys([
         {
             hotkey: "Escape",
-            callback: SettingsScreenStore.toggleOpen,
+            callback: toggleOpen,
         },
     ]);
 
@@ -43,7 +48,7 @@ export default function Settings() {
         <Drawer
             variant="plain"
             open={open}
-            onClose={SettingsScreenStore.toggleOpen}
+            onClose={toggleOpen}
             sx={{
                 "& .MuiDrawer-content": {
                     width: smScreen ? "100%" : 600,
