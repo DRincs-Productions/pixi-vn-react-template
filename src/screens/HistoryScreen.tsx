@@ -4,15 +4,14 @@ import { Box, Chip, Input, Stack, type Theme, Typography } from "@mui/joy";
 import Avatar from "@mui/joy/Avatar";
 import { useMediaQuery } from "@mui/material";
 import { useHotkeys } from "@tanstack/react-hotkeys";
-import React, { useState } from "react";
+import { useNavigate, useSearch } from "@tanstack/react-router";
+import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import ModalDialogCustom from "../components/ModalDialog";
 import { useQueryNarrativeHistory } from "../hooks/useQueryInterface";
-import { useStore } from "@tanstack/react-store";
-import { HistoryScreenStore } from "../stores/useHistoryScreenStore";
 
 function HistoryList({ searchString }: { searchString?: string }) {
     const { data = [] } = useQueryNarrativeHistory({ searchString });
@@ -82,22 +81,27 @@ function HistoryList({ searchString }: { searchString?: string }) {
 }
 
 export default function HistoryScreen() {
-    const open = useStore(HistoryScreenStore.store, (state) => state.open);
+    const { history: open = false } = useSearch({ from: "__root__" });
+    const navigate = useNavigate();
     const [searchString, setSearchString] = useState("");
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
+    const toggleOpen = useCallback(
+        () => navigate({ search: ((prev: any) => ({ ...prev, history: !prev.history })) as any }),
+        [navigate],
+    );
 
     useHotkeys([
         {
             hotkey: "Control+H",
-            callback: HistoryScreenStore.toggleOpen,
+            callback: toggleOpen,
         },
     ]);
 
     return (
         <ModalDialogCustom
             open={open}
-            setOpen={HistoryScreenStore.toggleOpen}
+            setOpen={toggleOpen}
             layout={smScreen ? "fullscreen" : "center"}
             head={
                 <Stack

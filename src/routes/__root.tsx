@@ -12,6 +12,7 @@ import { useI18n } from "@/i18n";
 import RootProvider from "@/providers/RootProvider";
 import type { RouterContext } from "@/router";
 import GameSaveScreen from "@/screens/GameSaveScreen";
+import HistoryScreen from "@/screens/HistoryScreen";
 import LoadingScreen from "@/screens/LoadingScreen";
 import SaveLoadAlert from "@/screens/modals/SaveLoadAlert";
 import OfflineScreen from "@/screens/OfflineScreen";
@@ -25,6 +26,10 @@ type Search = {
      * Whether the settings page is open.
      */
     settings?: boolean;
+    /**
+     * Whether the history page is open.
+     */
+    history?: boolean;
     /**
      * Whether the saves page is open.
      */
@@ -55,6 +60,7 @@ function RootComponent() {
         <>
             <RootProvider>
                 <Settings />
+                <HistoryScreen />
                 <GameSaveScreen />
                 <SaveLoadAlert />
                 <OfflineScreen />
