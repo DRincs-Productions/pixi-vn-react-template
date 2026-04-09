@@ -113,7 +113,7 @@ export default function QuickTools() {
                 {t("load_last_save_restricted")}
             </TextMenuButton>
             <TextMenuButton
-                onClick={() => navigate({ search: ((prev: any) => ({ ...prev, settings: !prev.settings })) as any })}
+                onClick={() => navigate({ search: ((prev: any) => ({ ...prev, settings: true })) as any })}
                 sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
                 {t("settings_restricted")}

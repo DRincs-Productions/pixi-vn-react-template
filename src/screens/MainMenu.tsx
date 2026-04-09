@@ -88,7 +88,7 @@ export default function MainMenu() {
                 {t("load")}
             </MenuButton>
             <MenuButton
-                onClick={() => navigate({ search: ((prev: any) => ({ ...prev, settings: !prev.settings })) as any })}
+                onClick={() => navigate({ search: ((prev: any) => ({ ...prev, settings: true })) as any })}
                 transitionDelay={0.4}
             >
                 {t("settings")}
