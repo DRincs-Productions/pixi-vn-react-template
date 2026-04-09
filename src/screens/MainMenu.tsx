@@ -73,7 +73,7 @@ export default function MainMenu() {
             <MenuButton
                 onClick={async () => {
                     setLoading(true);
-                    await navigate({ to: "/narration" });
+                    await navigate({ to: "/game/narration" });
                     Game.start(startLabel, gameProps)
                         .then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))
                         .finally(() => setLoading(false));

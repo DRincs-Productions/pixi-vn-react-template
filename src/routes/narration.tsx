@@ -1,31 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
-import NextButton from "../components/NextButton";
-import VisibilityButton from "../components/VisibilityButton";
-import useSkipAutoDetector from "../hooks/useSkipAutoDetector";
-import HistoryScreen from "../screens/HistoryScreen";
-import TextInput from "../screens/modals/TextInput";
-import NarrationScreen from "../screens/NarrationScreen";
-import QuickTools from "../screens/QuickTools";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
+// Redirect for old versions that used /narration
 export const Route = createFileRoute("/narration")({
-    component: NarrationElement,
+    beforeLoad: () => {
+        throw redirect({ to: "/game/narration" });
+    },
+    component: () => null,
 });
-
-function NarrationElement() {
-    return (
-        <>
-            <HistoryScreen />
-            <NarrationScreen />
-            <QuickTools />
-            <TextInput />
-            <NextButton />
-            <NarrationDetectors />
-            <VisibilityButton />
-        </>
-    );
-}
-
-function NarrationDetectors() {
-    useSkipAutoDetector();
-    return <></>;
-}
