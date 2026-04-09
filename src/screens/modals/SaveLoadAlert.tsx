@@ -50,7 +50,7 @@ export default function SaveLoadAlert() {
                             .then(() => {
                                 gameProps.invalidateInterfaceData();
                                 enqueueSnackbar(t("success_load"), { variant: "success" });
-                                GameSaveScreenStore.setOpen(false);
+                                navigate({ search: ((prev: any) => ({ ...prev, saves: undefined })) as any });
                                 return true;
                             })
                             .catch((e) => {

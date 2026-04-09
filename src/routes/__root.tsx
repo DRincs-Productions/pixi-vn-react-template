@@ -25,6 +25,10 @@ type Search = {
      * Whether the settings page is open.
      */
     settings?: boolean;
+    /**
+     * Whether the saves page is open.
+     */
+    saves?: boolean;
 };
 
 export const Route = createRootRouteWithContext<RouterContext>()({

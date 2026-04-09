@@ -27,10 +27,6 @@ type GameSaveScreenAlert =
 
 type GameSaveScreenStoreState = {
     /**
-     * Whether the save screen is open
-     */
-    open: boolean;
-    /**
      * The current page of the save screen
      */
     page: number;
@@ -42,23 +38,8 @@ export namespace GameSaveScreenStore {
         page: localStorage.getItem("save_screen_page")
             ? parseInt(localStorage.getItem("save_screen_page") as string)
             : 0,
-        open: false,
         alert: { open: false },
     });
-
-    /**
-     * Toggle the open state of the save screen
-     */
-    export function toggleOpen() {
-        store.setState((state) => ({ ...state, open: !state.open }));
-    }
-
-    /**
-     * Set the open state of the save screen
-     */
-    export function setOpen(value: boolean) {
-        store.setState((state) => ({ ...state, open: value }));
-    }
 
     /**
      * Set the page of the save screen

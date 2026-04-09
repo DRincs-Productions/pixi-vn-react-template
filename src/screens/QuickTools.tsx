@@ -86,7 +86,7 @@ export default function QuickTools() {
             >
                 {t("auto_forward_time_restricted")}
             </TextMenuButton>
-            <TextMenuButton onClick={GameSaveScreenStore.toggleOpen} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
+            <TextMenuButton onClick={() => navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any })} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
                 {t(`${t("save")}/${t("load")}`)}
             </TextMenuButton>
             <TextMenuButton

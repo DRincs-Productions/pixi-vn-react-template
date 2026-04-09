@@ -11,7 +11,6 @@ import { INTERFACE_DATA_USE_QUEY_KEY } from "../hooks/useQueryInterface";
 import useQueryLastSave from "../hooks/useQueryLastSave";
 import startLabel from "../labels/startLabel";
 import { InterfaceSettings } from "../stores/interface-settings-store";
-import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
 import { loadSave } from "../utils/save-utility";
 
 export default function MainMenu() {
@@ -84,7 +83,7 @@ export default function MainMenu() {
             >
                 {t("start")}
             </MenuButton>
-            <MenuButton onClick={GameSaveScreenStore.toggleOpen} transitionDelay={0.3} disabled={loading}>
+            <MenuButton onClick={() => navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any })} transitionDelay={0.3} disabled={loading}>
                 {t("load")}
             </MenuButton>
             <MenuButton

@@ -73,7 +73,7 @@ export default function SaveLoadSettingButtons() {
                 Ctrl+L
             </Typography>
         </SettingButton>,
-        <SettingButton key={"save_load_button"} onClick={GameSaveScreenStore.toggleOpen}>
+        <SettingButton key={"save_load_button"} onClick={() => navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any })}>
             <SaveIcon />
             <Typography level="title-md">{t(`${t("save")}/${t("load")}`)}</Typography>
         </SettingButton>,
