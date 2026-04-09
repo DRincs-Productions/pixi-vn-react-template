@@ -57,16 +57,7 @@ export default function SaveLoadSettingButtons() {
         ),
         <SettingButton
             key={"load_last_save_button"}
-            onClick={() => {
-                lastSave && GameSaveScreenStore.editLoadAlert(lastSave);
-                navigate({
-                    search: ((prev: { settings?: true }): { settings?: true } => {
-                        const { settings: _, ...rest } = prev;
-                        return rest;
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    }) as any,
-                });
-            }}
+            onClick={() => lastSave && GameSaveScreenStore.editLoadAlert(lastSave)}
             disabled={!lastSave}
         >
             <FileUploadIcon />
@@ -82,19 +73,7 @@ export default function SaveLoadSettingButtons() {
                 Ctrl+L
             </Typography>
         </SettingButton>,
-        <SettingButton
-            key={"save_load_button"}
-            onClick={() => {
-                GameSaveScreenStore.toggleOpen();
-                navigate({
-                    search: ((prev: { settings?: true }): { settings?: true } => {
-                        const { settings: _, ...rest } = prev;
-                        return rest;
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    }) as any,
-                });
-            }}
-        >
+        <SettingButton key={"save_load_button"} onClick={GameSaveScreenStore.toggleOpen}>
             <SaveIcon />
             <Typography level="title-md">{t(`${t("save")}/${t("load")}`)}</Typography>
         </SettingButton>,
@@ -116,13 +95,6 @@ export default function SaveLoadSettingButtons() {
                         }
                         gameProps.invalidateInterfaceData();
                         enqueueSnackbar(t("success_load"), { variant: "success" });
-                        navigate({
-                            search: ((prev: { settings?: true }): { settings?: true } => {
-                                const { settings: _, ...rest } = prev;
-                                return rest;
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            }) as any,
-                        });
                     },
                 )
             }
