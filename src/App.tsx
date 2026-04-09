@@ -4,7 +4,7 @@ import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { routeTree } from "@/routeTree.gen";
 
 const queryClient = new QueryClient();
-export const router = createRouter({
+const router = createRouter({
     routeTree,
     defaultPreload: "intent",
     scrollRestoration: true,

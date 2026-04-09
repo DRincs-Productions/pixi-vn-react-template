@@ -1,6 +1,7 @@
 import { Stack } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
 import { useStore } from "@tanstack/react-store";
+import { useNavigate } from "@tanstack/react-router";
 import { useSnackbar } from "notistack";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -16,7 +17,6 @@ import { InterfaceSettings } from "../stores/interface-settings-store";
 import { SkipSettings } from "../stores/skip-settings-store";
 import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
 import { HistoryScreenStore } from "../stores/useHistoryScreenStore";
-import { SettingsScreenStore } from "../stores/useSettingsScreenStore";
 import { saveGameToIndexDB } from "../utils/save-utility";
 
 export default function QuickTools() {
@@ -30,6 +30,7 @@ export default function QuickTools() {
     const { data: canGoBack = null } = useQueryCanGoBack();
     const nextStepLoading = useStore(GameStatus.store, (state) => state.loading);
     const { goBack } = useNarrationFunctions();
+    const navigate = useNavigate();
     useWheelActions();
     const textMenuVarians = useMemo(
         () =>
@@ -111,7 +112,18 @@ export default function QuickTools() {
             >
                 {t("load_last_save_restricted")}
             </TextMenuButton>
-            <TextMenuButton onClick={SettingsScreenStore.toggleOpen} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
+            <TextMenuButton
+                onClick={() =>
+                    navigate({
+                        search: ((prev: { settings?: true }): { settings?: true } => ({
+                            ...prev,
+                            settings: true,
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        })) as any,
+                    })
+                }
+                sx={{ pointerEvents: !hidden ? "auto" : "none" }}
+            >
                 {t("settings_restricted")}
             </TextMenuButton>
         </Stack>

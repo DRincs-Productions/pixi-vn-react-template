@@ -13,7 +13,6 @@ import useGameProps from "../../hooks/useGameProps";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
 import { GameSaveScreenStore } from "../../stores/useGameSaveScreenStore";
-import { SettingsScreenStore } from "../../stores/useSettingsScreenStore";
 import { downloadGameSave, loadGameSaveFromFile, saveGameToIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadSettingButtons() {
@@ -60,7 +59,13 @@ export default function SaveLoadSettingButtons() {
             key={"load_last_save_button"}
             onClick={() => {
                 lastSave && GameSaveScreenStore.editLoadAlert(lastSave);
-                SettingsScreenStore.setOpen(false);
+                navigate({
+                    search: ((prev: { settings?: true }): { settings?: true } => {
+                        const { settings: _, ...rest } = prev;
+                        return rest;
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    }) as any,
+                });
             }}
             disabled={!lastSave}
         >
@@ -81,7 +86,13 @@ export default function SaveLoadSettingButtons() {
             key={"save_load_button"}
             onClick={() => {
                 GameSaveScreenStore.toggleOpen();
-                SettingsScreenStore.setOpen(false);
+                navigate({
+                    search: ((prev: { settings?: true }): { settings?: true } => {
+                        const { settings: _, ...rest } = prev;
+                        return rest;
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    }) as any,
+                });
             }}
         >
             <SaveIcon />
@@ -105,7 +116,13 @@ export default function SaveLoadSettingButtons() {
                         }
                         gameProps.invalidateInterfaceData();
                         enqueueSnackbar(t("success_load"), { variant: "success" });
-                        SettingsScreenStore.setOpen(false);
+                        navigate({
+                            search: ((prev: { settings?: true }): { settings?: true } => {
+                                const { settings: _, ...rest } = prev;
+                                return rest;
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            }) as any,
+                        });
                     },
                 )
             }

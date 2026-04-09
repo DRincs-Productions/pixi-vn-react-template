@@ -2,6 +2,7 @@ import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
 import { Box, CircularProgress } from "@mui/joy";
 import Stack from "@mui/joy/Stack";
 import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import MenuButton from "../components/MenuButton";
@@ -12,11 +13,11 @@ import useQueryLastSave from "../hooks/useQueryLastSave";
 import startLabel from "../labels/startLabel";
 import { InterfaceSettings } from "../stores/interface-settings-store";
 import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
-import { SettingsScreenStore } from "../stores/useSettingsScreenStore";
 import { loadSave } from "../utils/save-utility";
 
 export default function MainMenu() {
     const queryClient = useQueryClient();
+    const routerNavigate = useNavigate();
     const { data: lastSave = null, isLoading } = useQueryLastSave();
     const gameProps = useGameProps();
     const { uiTransition: t, navigate, notify } = gameProps;
@@ -88,7 +89,18 @@ export default function MainMenu() {
             <MenuButton onClick={GameSaveScreenStore.toggleOpen} transitionDelay={0.3} disabled={loading}>
                 {t("load")}
             </MenuButton>
-            <MenuButton onClick={() => SettingsScreenStore.setOpen(true)} transitionDelay={0.4}>
+            <MenuButton
+                onClick={() =>
+                    routerNavigate({
+                        search: ((prev: { settings?: true }): { settings?: true } => ({
+                            ...prev,
+                            settings: true,
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        })) as any,
+                    })
+                }
+                transitionDelay={0.4}
+            >
                 {t("settings")}
             </MenuButton>
             {loading && (
