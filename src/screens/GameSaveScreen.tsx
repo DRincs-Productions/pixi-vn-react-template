@@ -3,7 +3,8 @@ import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import { Grid, IconButton, Stack, type Theme, Typography } from "@mui/joy";
 import { Pagination, Tooltip, useMediaQuery } from "@mui/material";
 import { useStore } from "@tanstack/react-store";
-import { useLocation, useNavigate } from "@tanstack/react-router";
+import { useLocation, useNavigate, useSearch } from "@tanstack/react-router";
+import { useCallback } from "react";
 import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
 import type { FileRouteTypes } from "@/routeTree.gen";
@@ -14,19 +15,23 @@ import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
 import { downloadGameSave, loadGameSaveFromFile } from "../utils/save-utility";
 
 export default function GameSaveScreen() {
-    const open = useStore(GameSaveScreenStore.store, (state) => state.open);
+    const { saves: open = false } = useSearch({ from: "__root__" });
+    const navigate = useNavigate();
     const page = useStore(GameSaveScreenStore.store, (state) => state.page);
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
-    const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
     const gameProps = useGameProps();
     const location = useLocation();
+    const setOpen = useCallback(
+        (value: boolean) => navigate({ search: ((prev: any) => ({ ...prev, saves: value || undefined })) as any }),
+        [navigate],
+    );
 
     return (
         <ModalDialogCustom
             open={open}
-            setOpen={GameSaveScreenStore.setOpen}
+            setOpen={setOpen}
             layout={smScreen ? "fullscreen" : "center"}
             head={<Typography level="h2">{`${t("save")}/${t("load")}`}</Typography>}
             minWidth="80%"
@@ -57,7 +62,7 @@ export default function GameSaveScreen() {
                                         }
                                         gameProps.invalidateInterfaceData();
                                         enqueueSnackbar(t("success_load"), { variant: "success" });
-                                        GameSaveScreenStore.setOpen(false);
+                                        setOpen(false);
                                     },
                                 )
                             }
