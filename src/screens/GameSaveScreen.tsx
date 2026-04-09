@@ -2,10 +2,10 @@ import DownloadIcon from "@mui/icons-material/Download";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import { Grid, IconButton, Stack, type Theme, Typography } from "@mui/joy";
 import { Pagination, Tooltip, useMediaQuery } from "@mui/material";
-import { useStore } from "@tanstack/react-store";
 import { useLocation, useNavigate, useSearch } from "@tanstack/react-router";
-import { useCallback } from "react";
+import { useStore } from "@tanstack/react-store";
 import { useSnackbar } from "notistack";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import GameSaveSlot from "../components/GameSaveSlot";
@@ -24,7 +24,7 @@ export default function GameSaveScreen() {
     const gameProps = useGameProps();
     const location = useLocation();
     const setOpen = useCallback(
-        (value: boolean) => navigate({ search: ((prev: any) => ({ ...prev, saves: value || undefined })) as any }),
+        (value: boolean) => navigate({ search: ((prev: any) => ({ ...prev, saves: value })) as any }),
         [navigate],
     );
 
@@ -90,7 +90,7 @@ export default function GameSaveScreen() {
                 {Array.from({ length: 6 }).map((_, index) => {
                     const id = page * 6 + index;
                     return (
-                        <Grid xs={12} sm={6} md={4} key={"ModalDialogCustom" + index}>
+                        <Grid xs={12} sm={6} md={4} key={`ModalDialogCustom${id}`}>
                             <GameSaveSlot
                                 saveId={id}
                                 onSave={() => {
