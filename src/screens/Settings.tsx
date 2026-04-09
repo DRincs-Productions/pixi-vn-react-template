@@ -12,7 +12,7 @@ import {
 } from "@mui/joy";
 import { type Theme, useMediaQuery } from "@mui/material";
 import { useHotkeys } from "@tanstack/react-hotkeys";
-import { useStore } from "@tanstack/react-store";
+import { useSearch } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import ReturnMainMenuButton from "../components/ReturnMainMenuButton";
 import { SettingsScreenStore } from "../stores/useSettingsScreenStore";
@@ -28,14 +28,15 @@ import SoundSettings from "./settings/SoundSettings";
 import ThemeSettings from "./settings/ThemeSettings";
 
 export default function Settings() {
-    const open = useStore(SettingsScreenStore.store, (state) => state.open);
+    const { settings } = useSearch({ from: "__root__" });
+    const open = settings === true;
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
 
     useHotkeys([
         {
             hotkey: "Escape",
-            callback: SettingsScreenStore.toggleOpen,
+            callback: () => SettingsScreenStore.setOpen(false),
         },
     ]);
 
@@ -43,7 +44,7 @@ export default function Settings() {
         <Drawer
             variant="plain"
             open={open}
-            onClose={SettingsScreenStore.toggleOpen}
+            onClose={() => SettingsScreenStore.setOpen(false)}
             sx={{
                 "& .MuiDrawer-content": {
                     width: smScreen ? "100%" : 600,

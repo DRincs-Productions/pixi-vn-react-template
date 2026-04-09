@@ -21,6 +21,10 @@ import { initializeIndexedDB } from "@/utils/indexedDB-utility";
 import { loadRefreshSave } from "@/utils/save-utility";
 
 export const Route = createRootRouteWithContext<RouterContext>()({
+    validateSearch: (search: Record<string, unknown>): { settings?: true } => {
+        if (search.settings === true) return { settings: true };
+        return {};
+    },
     component: RootComponent,
     pendingComponent: LoadingScreen,
     loader: async ({ context }) => {
