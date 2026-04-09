@@ -1,7 +1,7 @@
 import { Stack } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
-import { useStore } from "@tanstack/react-store";
 import { useNavigate } from "@tanstack/react-router";
+import { useStore } from "@tanstack/react-store";
 import { useSnackbar } from "notistack";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -113,15 +113,7 @@ export default function QuickTools() {
                 {t("load_last_save_restricted")}
             </TextMenuButton>
             <TextMenuButton
-                onClick={() =>
-                    navigate({
-                        search: ((prev: { settings?: true }): { settings?: true } => ({
-                            ...prev,
-                            settings: true,
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        })) as any,
-                    })
-                }
+                onClick={() => navigate({ search: ((prev: any) => ({ ...prev, settings: !prev.settings })) as any })}
                 sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
                 {t("settings_restricted")}
