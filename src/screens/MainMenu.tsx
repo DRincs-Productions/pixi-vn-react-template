@@ -2,7 +2,6 @@ import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
 import { Box, CircularProgress } from "@mui/joy";
 import Stack from "@mui/joy/Stack";
 import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import MenuButton from "../components/MenuButton";
@@ -17,7 +16,6 @@ import { loadSave } from "../utils/save-utility";
 
 export default function MainMenu() {
     const queryClient = useQueryClient();
-    const routerNavigate = useNavigate();
     const { data: lastSave = null, isLoading } = useQueryLastSave();
     const gameProps = useGameProps();
     const { uiTransition: t, navigate, notify } = gameProps;
@@ -90,15 +88,7 @@ export default function MainMenu() {
                 {t("load")}
             </MenuButton>
             <MenuButton
-                onClick={() =>
-                    routerNavigate({
-                        search: ((prev: { settings?: true }): { settings?: true } => ({
-                            ...prev,
-                            settings: true,
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        })) as any,
-                    })
-                }
+                onClick={() => navigate({ search: ((prev: any) => ({ ...prev, settings: !prev.settings })) as any })}
                 transitionDelay={0.4}
             >
                 {t("settings")}
