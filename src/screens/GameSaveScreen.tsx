@@ -1,4 +1,3 @@
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import DownloadIcon from "@mui/icons-material/Download";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import { Grid, IconButton, Input, Stack, type Theme, Typography } from "@mui/joy";
@@ -16,7 +15,7 @@ import useGameProps from "../hooks/useGameProps";
 import { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
 import type GameSaveData from "../models/GameSaveData";
-import { useConfirmDialog } from "../providers/ConfirmDialogProvider";
+import { useAlertDialog } from "../providers/AlertDialogProvider";
 import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
 import {
     deleteSaveFromIndexDB,
@@ -55,7 +54,7 @@ export default function GameSaveScreen() {
     const gameProps = useGameProps();
     const location = useLocation();
     const queryClient = useQueryClient();
-    const { openConfirmDialog } = useConfirmDialog();
+    const { openAlertDialog } = useAlertDialog();
     const tempSaveNameRef = useRef<string>("");
 
     const setOpen = useCallback(
@@ -65,19 +64,11 @@ export default function GameSaveScreen() {
 
     const handleLoad = useCallback(
         (data: GameSaveData & { id: number }) => {
-            openConfirmDialog({
-                head: (
-                    <Typography level="h4" startDecorator={<CloudDownloadIcon />}>
-                        {t("load")}
-                    </Typography>
-                ),
-                content: (
-                    <Typography>
-                        {t("you_sure_to_load_save", {
-                            name: data.name || `${t("save_slot")} ${data.id}`,
-                        })}
-                    </Typography>
-                ),
+            openAlertDialog({
+                head: t("load"),
+                content: t("you_sure_to_load_save", {
+                    name: data.name || `${t("save_slot")} ${data.id}`,
+                }),
                 onConfirm: () =>
                     loadSave(data, (to) => navigate({ to }))
                         .then(() => {
@@ -93,18 +84,14 @@ export default function GameSaveScreen() {
                         }),
             });
         },
-        [openConfirmDialog, t, navigate, gameProps, enqueueSnackbar],
+        [openAlertDialog, t, navigate, gameProps, enqueueSnackbar],
     );
 
     const handleDelete = useCallback(
         (id: number) => {
-            openConfirmDialog({
-                head: (
-                    <Typography level="h4" startDecorator={<CloudDownloadIcon />}>
-                        {t("delete")}
-                    </Typography>
-                ),
-                content: <Typography>{t("you_sure_to_delete_save", { name: `${t("save_slot")} ${id}` })}</Typography>,
+            openAlertDialog({
+                head: t("delete"),
+                content: t("you_sure_to_delete_save", { name: `${t("save_slot")} ${id}` }),
                 onConfirm: () =>
                     deleteSaveFromIndexDB(id)
                         .then(() => {
@@ -120,21 +107,17 @@ export default function GameSaveScreen() {
                         }),
             });
         },
-        [openConfirmDialog, t, queryClient, enqueueSnackbar],
+        [openAlertDialog, t, queryClient, enqueueSnackbar],
     );
 
     const handleSave = useCallback(
         (id: number, defaultName?: string) => {
             tempSaveNameRef.current = defaultName || "";
-            openConfirmDialog({
-                head: (
-                    <Typography level="h4" startDecorator={<CloudDownloadIcon />}>
-                        {t("save")}
-                    </Typography>
-                ),
+            openAlertDialog({
+                head: t("save"),
                 content: (
                     <>
-                        <Typography>{t("save_as")}</Typography>
+                        {t("save_as")}
                         <SaveNameInput
                             initialValue={defaultName || ""}
                             onValueChange={(v) => {
@@ -158,7 +141,7 @@ export default function GameSaveScreen() {
                         }),
             });
         },
-        [openConfirmDialog, t, queryClient, enqueueSnackbar],
+        [openAlertDialog, t, queryClient, enqueueSnackbar],
     );
 
     return (

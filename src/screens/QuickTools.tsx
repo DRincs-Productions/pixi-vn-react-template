@@ -1,5 +1,4 @@
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import { Stack, Typography } from "@mui/joy";
+import { Stack } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
@@ -13,7 +12,7 @@ import { useQueryCanGoBack } from "../hooks/useQueryInterface";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
 import { useWheelActions } from "../hooks/useWheelActions";
-import { useConfirmDialog } from "../providers/ConfirmDialogProvider";
+import { useAlertDialog } from "../providers/AlertDialogProvider";
 import { AutoSettings } from "../stores/auto-settings-store";
 import { GameStatus } from "../stores/game-status-store";
 import { InterfaceSettings } from "../stores/interface-settings-store";
@@ -32,7 +31,7 @@ export default function QuickTools() {
     const nextStepLoading = useStore(GameStatus.store, (state) => state.loading);
     const { goBack } = useNarrationFunctions();
     const navigate = useNavigate();
-    const { openConfirmDialog } = useConfirmDialog();
+    const { openAlertDialog } = useAlertDialog();
     const gameProps = useGameProps();
     useWheelActions();
     const textMenuVarians = useMemo(
@@ -117,19 +116,11 @@ export default function QuickTools() {
             <TextMenuButton
                 onClick={() => {
                     if (!lastSave) return;
-                    openConfirmDialog({
-                        head: (
-                            <Typography level="h4" startDecorator={<CloudDownloadIcon />}>
-                                {t("load")}
-                            </Typography>
-                        ),
-                        content: (
-                            <Typography>
-                                {t("you_sure_to_load_save", {
-                                    name: lastSave.name || `${t("save_slot")} ${lastSave.id}`,
-                                })}
-                            </Typography>
-                        ),
+                    openAlertDialog({
+                        head: t("load"),
+                        content: t("you_sure_to_load_save", {
+                            name: lastSave.name || `${t("save_slot")} ${lastSave.id}`,
+                        }),
                         onConfirm: () =>
                             loadSave(lastSave, (to) => navigate({ to }))
                                 .then(() => {

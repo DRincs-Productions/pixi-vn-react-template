@@ -1,4 +1,3 @@
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import DownloadIcon from "@mui/icons-material/Download";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
@@ -13,7 +12,7 @@ import SettingButton from "../../components/SettingButton";
 import useGameProps from "../../hooks/useGameProps";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
-import { useConfirmDialog } from "../../providers/ConfirmDialogProvider";
+import { useAlertDialog } from "../../providers/AlertDialogProvider";
 import { downloadGameSave, loadGameSaveFromFile, loadSave, saveGameToIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadSettingButtons() {
@@ -24,7 +23,7 @@ export default function SaveLoadSettingButtons() {
     const { enqueueSnackbar } = useSnackbar();
     const { data: lastSave = null } = useQueryLastSave();
     const location = useLocation();
-    const { openConfirmDialog } = useConfirmDialog();
+    const { openAlertDialog } = useAlertDialog();
 
     return [
         location.pathname === "/" ? null : (
@@ -61,19 +60,11 @@ export default function SaveLoadSettingButtons() {
             key={"load_last_save_button"}
             onClick={() => {
                 if (!lastSave) return;
-                openConfirmDialog({
-                    head: (
-                        <Typography level="h4" startDecorator={<CloudDownloadIcon />}>
-                            {t("load")}
-                        </Typography>
-                    ),
-                    content: (
-                        <Typography>
-                            {t("you_sure_to_load_save", {
-                                name: lastSave.name || `${t("save_slot")} ${lastSave.id}`,
-                            })}
-                        </Typography>
-                    ),
+                openAlertDialog({
+                    head: t("load"),
+                    content: t("you_sure_to_load_save", {
+                        name: lastSave.name || `${t("save_slot")} ${lastSave.id}`,
+                    }),
                     onConfirm: () =>
                         loadSave(lastSave, (to) => navigate({ to }))
                             .then(() => {

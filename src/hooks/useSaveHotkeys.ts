@@ -1,12 +1,10 @@
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import { Typography } from "@mui/joy";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useSnackbar } from "notistack";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useConfirmDialog } from "../providers/ConfirmDialogProvider";
+import { useAlertDialog } from "../providers/AlertDialogProvider";
 import { loadSave, saveGameToIndexDB } from "../utils/save-utility";
 import useGameProps from "./useGameProps";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "./useQueryLastSave";
@@ -34,7 +32,7 @@ export default function useSaveHotkeys(): null {
     const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
     const { data: lastSave = null } = useQueryLastSave();
-    const { openConfirmDialog } = useConfirmDialog();
+    const { openAlertDialog } = useAlertDialog();
     const gameProps = useGameProps();
 
     const quickSave = useCallback(() => {
@@ -58,19 +56,11 @@ export default function useSaveHotkeys(): null {
             console.log("No save to load");
             return;
         }
-        openConfirmDialog({
-            head: (
-                <Typography level="h4" startDecorator={<CloudDownloadIcon />}>
-                    {t("load")}
-                </Typography>
-            ),
-            content: (
-                <Typography>
-                    {t("you_sure_to_load_save", {
-                        name: lastSave.name || `${t("save_slot")} ${lastSave.id}`,
-                    })}
-                </Typography>
-            ),
+        openAlertDialog({
+            head: t("load"),
+            content: t("you_sure_to_load_save", {
+                name: lastSave.name || `${t("save_slot")} ${lastSave.id}`,
+            }),
             onConfirm: () =>
                 loadSave(lastSave, (to) => navigate({ to }))
                     .then(() => {
@@ -84,7 +74,7 @@ export default function useSaveHotkeys(): null {
                         return false;
                     }),
         });
-    }, [lastSave, openConfirmDialog, t, navigate, gameProps, enqueueSnackbar]);
+    }, [lastSave, openAlertDialog, t, navigate, gameProps, enqueueSnackbar]);
 
     useHotkeys([
         {
