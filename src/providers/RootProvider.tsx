@@ -1,5 +1,6 @@
 import { HotkeysProvider } from "@tanstack/react-hotkeys";
 import { SnackbarProvider } from "notistack";
+import { ConfirmDialogProvider } from "./ConfirmDialogProvider";
 import MyThemeProvider from "./ThemeProvider";
 
 export default function RootProvider({ children }: { children: React.ReactNode }) {
@@ -16,7 +17,7 @@ export default function RootProvider({ children }: { children: React.ReactNode }
                         hotkey: { preventDefault: true },
                     }}
                 >
-                    {children}
+                    <ConfirmDialogProvider>{children}</ConfirmDialogProvider>
                 </HotkeysProvider>
             </SnackbarProvider>
         </MyThemeProvider>

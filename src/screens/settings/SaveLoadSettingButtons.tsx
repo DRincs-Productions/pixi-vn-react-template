@@ -1,3 +1,4 @@
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import DownloadIcon from "@mui/icons-material/Download";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
@@ -12,8 +13,8 @@ import SettingButton from "../../components/SettingButton";
 import useGameProps from "../../hooks/useGameProps";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
-import { GameSaveScreenStore } from "../../stores/useGameSaveScreenStore";
-import { downloadGameSave, loadGameSaveFromFile, saveGameToIndexDB } from "../../utils/save-utility";
+import { useConfirmDialog } from "../../providers/ConfirmDialogProvider";
+import { downloadGameSave, loadGameSaveFromFile, loadSave, saveGameToIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadSettingButtons() {
     const navigate = useNavigate();
@@ -23,6 +24,7 @@ export default function SaveLoadSettingButtons() {
     const { enqueueSnackbar } = useSnackbar();
     const { data: lastSave = null } = useQueryLastSave();
     const location = useLocation();
+    const { openConfirmDialog } = useConfirmDialog();
 
     return [
         location.pathname === "/" ? null : (
@@ -57,7 +59,35 @@ export default function SaveLoadSettingButtons() {
         ),
         <SettingButton
             key={"load_last_save_button"}
-            onClick={() => lastSave && GameSaveScreenStore.editLoadAlert(lastSave)}
+            onClick={() => {
+                if (!lastSave) return;
+                openConfirmDialog({
+                    head: (
+                        <Typography level="h4" startDecorator={<CloudDownloadIcon />}>
+                            {t("load")}
+                        </Typography>
+                    ),
+                    content: (
+                        <Typography>
+                            {t("you_sure_to_load_save", {
+                                name: lastSave.name || `${t("save_slot")} ${lastSave.id}`,
+                            })}
+                        </Typography>
+                    ),
+                    onConfirm: () =>
+                        loadSave(lastSave, (to) => navigate({ to }))
+                            .then(() => {
+                                gameProps.invalidateInterfaceData();
+                                enqueueSnackbar(t("success_load"), { variant: "success" });
+                                return true;
+                            })
+                            .catch((e) => {
+                                enqueueSnackbar(t("fail_load"), { variant: "error" });
+                                console.error(e);
+                                return false;
+                            }),
+                });
+            }}
             disabled={!lastSave}
         >
             <FileUploadIcon />
@@ -73,7 +103,10 @@ export default function SaveLoadSettingButtons() {
                 Ctrl+L
             </Typography>
         </SettingButton>,
-        <SettingButton key={"save_load_button"} onClick={() => navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any })}>
+        <SettingButton
+            key={"save_load_button"}
+            onClick={() => navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any })}
+        >
             <SaveIcon />
             <Typography level="title-md">{t(`${t("save")}/${t("load")}`)}</Typography>
         </SettingButton>,

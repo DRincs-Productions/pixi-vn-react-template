@@ -1,4 +1,5 @@
-import { Stack } from "@mui/joy";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import { Stack, Typography } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
@@ -6,17 +7,18 @@ import { useSnackbar } from "notistack";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import TextMenuButton from "../components/TextMenuButton";
+import useGameProps from "../hooks/useGameProps";
 import useNarrationFunctions from "../hooks/useNarrationFunctions";
 import { useQueryCanGoBack } from "../hooks/useQueryInterface";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
 import { useWheelActions } from "../hooks/useWheelActions";
+import { useConfirmDialog } from "../providers/ConfirmDialogProvider";
 import { AutoSettings } from "../stores/auto-settings-store";
 import { GameStatus } from "../stores/game-status-store";
 import { InterfaceSettings } from "../stores/interface-settings-store";
 import { SkipSettings } from "../stores/skip-settings-store";
-import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
-import { saveGameToIndexDB } from "../utils/save-utility";
+import { loadSave, saveGameToIndexDB } from "../utils/save-utility";
 
 export default function QuickTools() {
     const { t } = useTranslation(["ui"]);
@@ -30,6 +32,8 @@ export default function QuickTools() {
     const nextStepLoading = useStore(GameStatus.store, (state) => state.loading);
     const { goBack } = useNarrationFunctions();
     const navigate = useNavigate();
+    const { openConfirmDialog } = useConfirmDialog();
+    const gameProps = useGameProps();
     useWheelActions();
     const textMenuVarians = useMemo(
         () =>
@@ -67,7 +71,10 @@ export default function QuickTools() {
             >
                 {t("back")}
             </TextMenuButton>
-            <TextMenuButton onClick={() => navigate({ search: ((prev: any) => ({ ...prev, history: true })) as any })} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
+            <TextMenuButton
+                onClick={() => navigate({ search: ((prev: any) => ({ ...prev, history: true })) as any })}
+                sx={{ pointerEvents: !hidden ? "auto" : "none" }}
+            >
                 {t("history")}
             </TextMenuButton>
             <TextMenuButton
@@ -85,7 +92,10 @@ export default function QuickTools() {
             >
                 {t("auto_forward_time_restricted")}
             </TextMenuButton>
-            <TextMenuButton onClick={() => navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any })} sx={{ pointerEvents: !hidden ? "auto" : "none" }}>
+            <TextMenuButton
+                onClick={() => navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any })}
+                sx={{ pointerEvents: !hidden ? "auto" : "none" }}
+            >
                 {t(`${t("save")}/${t("load")}`)}
             </TextMenuButton>
             <TextMenuButton
@@ -105,7 +115,35 @@ export default function QuickTools() {
                 {t("quick_save_restricted")}
             </TextMenuButton>
             <TextMenuButton
-                onClick={() => lastSave && GameSaveScreenStore.editLoadAlert(lastSave)}
+                onClick={() => {
+                    if (!lastSave) return;
+                    openConfirmDialog({
+                        head: (
+                            <Typography level="h4" startDecorator={<CloudDownloadIcon />}>
+                                {t("load")}
+                            </Typography>
+                        ),
+                        content: (
+                            <Typography>
+                                {t("you_sure_to_load_save", {
+                                    name: lastSave.name || `${t("save_slot")} ${lastSave.id}`,
+                                })}
+                            </Typography>
+                        ),
+                        onConfirm: () =>
+                            loadSave(lastSave, (to) => navigate({ to }))
+                                .then(() => {
+                                    gameProps.invalidateInterfaceData();
+                                    enqueueSnackbar(t("success_load"), { variant: "success" });
+                                    return true;
+                                })
+                                .catch((e) => {
+                                    enqueueSnackbar(t("fail_load"), { variant: "error" });
+                                    console.error(e);
+                                    return false;
+                                }),
+                    });
+                }}
                 disabled={!lastSave}
                 sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
