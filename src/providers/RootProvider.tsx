@@ -1,7 +1,7 @@
 import { HotkeysProvider } from "@tanstack/react-hotkeys";
 import { Toaster } from "@/components/ui/sonner";
-import { AlertDialogProvider } from "./AlertDialogProvider";
-import MyThemeProvider from "./ThemeProvider";
+import { AlertDialogProvider } from "@/providers/AlertDialogProvider";
+import MyThemeProvider from "@/providers/ThemeProvider";
 
 export default function RootProvider({ children }: { children: React.ReactNode }) {
     return (
