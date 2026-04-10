@@ -5,7 +5,7 @@ import { Pagination, Tooltip, useMediaQuery } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate, useSearch } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import type { FileRouteTypes } from "@/routeTree.gen";
@@ -17,6 +17,7 @@ import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
 import type GameSaveData from "../models/GameSaveData";
 import { useAlertDialog } from "../providers/AlertDialogProvider";
 import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
+import { OpenScreens } from "../stores/open-screens-store";
 import {
     deleteSaveFromIndexDB,
     downloadGameSave,
@@ -45,7 +46,8 @@ function SaveNameInput({
 }
 
 export default function GameSaveScreen() {
-    const { saves: open = false } = useSearch({ from: "__root__" });
+    const { saves: openFromSearch = false } = useSearch({ from: "__root__" });
+    const open = useStore(OpenScreens.store, (state) => state.saves);
     const navigate = useNavigate();
     const page = useStore(GameSaveScreenStore.store, (state) => state.page);
     const { t } = useTranslation(["ui"]);
@@ -56,8 +58,15 @@ export default function GameSaveScreen() {
     const { openAlertDialog } = useAlertDialog();
     const tempSaveNameRef = useRef<string>("");
 
+    useEffect(() => {
+        OpenScreens.setSaves(openFromSearch);
+    }, [openFromSearch]);
+
     const setOpen = useCallback(
-        (value: boolean) => navigate({ search: ((prev: any) => ({ ...prev, saves: value })) as any }),
+        (value: boolean) => {
+            OpenScreens.setSaves(value);
+            navigate({ search: ((prev: any) => ({ ...prev, saves: value })) as any });
+        },
         [navigate],
     );
 
@@ -73,6 +82,7 @@ export default function GameSaveScreen() {
                         .then(() => {
                             gameProps.invalidateInterfaceData();
                             toast.success(t("success_load"));
+                            OpenScreens.setSaves(false);
                             navigate({ search: ((prev: any) => ({ ...prev, saves: undefined })) as any });
                             return true;
                         })

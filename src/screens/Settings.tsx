@@ -13,8 +13,10 @@ import {
 import { type Theme, useMediaQuery } from "@mui/material";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useNavigate, useSearch } from "@tanstack/react-router";
-import { useCallback } from "react";
+import { useStore } from "@tanstack/react-store";
+import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { OpenScreens } from "../stores/open-screens-store";
 import ReturnMainMenuButton from "../components/ReturnMainMenuButton";
 import AutoSettingToggle from "./settings/AutoSettingToggle";
 import DialoguesSettings from "./settings/DialoguesSettings";
@@ -28,14 +30,21 @@ import SoundSettings from "./settings/SoundSettings";
 import ThemeSettings from "./settings/ThemeSettings";
 
 export default function Settings() {
-    const { settings: open = false } = useSearch({ from: "__root__" });
+    const { settings: openFromSearch = false } = useSearch({ from: "__root__" });
+    const open = useStore(OpenScreens.store, (state) => state.settings);
     const navigate = useNavigate();
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
-    const toggleOpen = useCallback(
-        () => navigate({ search: ((prev: any) => ({ ...prev, settings: !prev.settings })) as any }),
-        [navigate],
-    );
+
+    useEffect(() => {
+        OpenScreens.setSettings(openFromSearch);
+    }, [openFromSearch]);
+
+    const toggleOpen = useCallback(() => {
+        const newValue = !OpenScreens.store.state.settings;
+        OpenScreens.setSettings(newValue);
+        navigate({ search: ((prev: any) => ({ ...prev, settings: newValue })) as any });
+    }, [navigate]);
 
     useHotkeys([
         {

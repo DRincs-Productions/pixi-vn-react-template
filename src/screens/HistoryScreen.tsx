@@ -5,13 +5,15 @@ import Avatar from "@mui/joy/Avatar";
 import { useMediaQuery } from "@mui/material";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useNavigate, useSearch } from "@tanstack/react-router";
-import React, { useCallback, useState } from "react";
+import { useStore } from "@tanstack/react-store";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import ModalDialogCustom from "../components/ModalDialog";
 import { useQueryNarrativeHistory } from "../hooks/useQueryInterface";
+import { OpenScreens } from "../stores/open-screens-store";
 
 function HistoryList({ searchString }: { searchString?: string }) {
     const { data = [] } = useQueryNarrativeHistory({ searchString });
@@ -81,15 +83,22 @@ function HistoryList({ searchString }: { searchString?: string }) {
 }
 
 export default function HistoryScreen() {
-    const { history: open = false } = useSearch({ from: "/game" });
+    const { history: openFromSearch = false } = useSearch({ from: "/game" });
+    const open = useStore(OpenScreens.store, (state) => state.history);
     const navigate = useNavigate();
     const [searchString, setSearchString] = useState("");
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
-    const toggleOpen = useCallback(
-        () => navigate({ search: ((prev: any) => ({ ...prev, history: !prev.history })) as any }),
-        [navigate],
-    );
+
+    useEffect(() => {
+        OpenScreens.setHistory(openFromSearch);
+    }, [openFromSearch]);
+
+    const toggleOpen = useCallback(() => {
+        const newValue = !OpenScreens.store.state.history;
+        OpenScreens.setHistory(newValue);
+        navigate({ search: ((prev: any) => ({ ...prev, history: newValue })) as any });
+    }, [navigate]);
 
     useHotkeys([
         {

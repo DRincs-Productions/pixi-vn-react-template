@@ -14,6 +14,7 @@ import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLa
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
 import { useAlertDialog } from "../../providers/AlertDialogProvider";
 import { downloadGameSave, loadGameSaveFromFile, loadSave, saveGameToIndexDB } from "../../utils/save-utility";
+import { OpenScreens } from "../../stores/open-screens-store";
 
 export default function SaveLoadSettingButtons() {
     const navigate = useNavigate();
@@ -95,7 +96,10 @@ export default function SaveLoadSettingButtons() {
         </SettingButton>,
         <SettingButton
             key={"save_load_button"}
-            onClick={() => navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any })}
+            onClick={() => {
+                OpenScreens.setSaves(true);
+                navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any });
+            }}
         >
             <SaveIcon />
             <Typography level="title-md">{t(`${t("save")}/${t("load")}`)}</Typography>

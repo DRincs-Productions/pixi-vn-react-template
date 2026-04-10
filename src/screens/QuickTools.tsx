@@ -16,6 +16,7 @@ import { useAlertDialog } from "../providers/AlertDialogProvider";
 import { AutoSettings } from "../stores/auto-settings-store";
 import { GameStatus } from "../stores/game-status-store";
 import { InterfaceSettings } from "../stores/interface-settings-store";
+import { OpenScreens } from "../stores/open-screens-store";
 import { SkipSettings } from "../stores/skip-settings-store";
 import { loadSave, saveGameToIndexDB } from "../utils/save-utility";
 
@@ -70,7 +71,10 @@ export default function QuickTools() {
                 {t("back")}
             </TextMenuButton>
             <TextMenuButton
-                onClick={() => navigate({ search: ((prev: any) => ({ ...prev, history: true })) as any })}
+                onClick={() => {
+                    OpenScreens.setHistory(true);
+                    navigate({ search: ((prev: any) => ({ ...prev, history: true })) as any });
+                }}
                 sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
                 {t("history")}
@@ -91,7 +95,10 @@ export default function QuickTools() {
                 {t("auto_forward_time_restricted")}
             </TextMenuButton>
             <TextMenuButton
-                onClick={() => navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any })}
+                onClick={() => {
+                    OpenScreens.setSaves(true);
+                    navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any });
+                }}
                 sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
                 {t(`${t("save")}/${t("load")}`)}
@@ -140,7 +147,10 @@ export default function QuickTools() {
                 {t("load_last_save_restricted")}
             </TextMenuButton>
             <TextMenuButton
-                onClick={() => navigate({ search: ((prev: any) => ({ ...prev, settings: true })) as any })}
+                onClick={() => {
+                    OpenScreens.setSettings(true);
+                    navigate({ search: ((prev: any) => ({ ...prev, settings: true })) as any });
+                }}
                 sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
                 {t("settings_restricted")}

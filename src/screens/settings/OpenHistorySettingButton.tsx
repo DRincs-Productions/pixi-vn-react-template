@@ -3,6 +3,7 @@ import { Typography } from "@mui/joy";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import SettingButton from "../../components/SettingButton";
+import { OpenScreens } from "../../stores/open-screens-store";
 
 export default function OpenHistorySettingButton() {
     const { t } = useTranslation(["ui"]);
@@ -13,7 +14,13 @@ export default function OpenHistorySettingButton() {
     }
 
     return (
-        <SettingButton onClick={() => navigate({ search: ((prev: any) => ({ ...prev, settings: false, history: true })) as any })}>
+        <SettingButton
+            onClick={() => {
+                OpenScreens.setSettings(false);
+                OpenScreens.setHistory(true);
+                navigate({ search: ((prev: any) => ({ ...prev, settings: false, history: true })) as any });
+            }}
+        >
             <HistoryIcon />
             <Typography level="title-md">{t("history")}</Typography>
             <Typography
