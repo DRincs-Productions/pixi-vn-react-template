@@ -17,7 +17,7 @@ export default function MainMenu() {
     const queryClient = useQueryClient();
     const { data: lastSave = null, isLoading } = useQueryLastSave();
     const gameProps = useGameProps();
-    const { uiTransition: t, navigate, notify } = gameProps;
+    const { uiTransition: t, navigate, toast } = gameProps;
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -59,7 +59,7 @@ export default function MainMenu() {
                     loadSave(lastSave, (to) => navigate({ to }))
                         .then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))
                         .catch((e) => {
-                            notify(t("fail_load"), { variant: "error" });
+                            toast.error(t("fail_load"));
                             console.error(e);
                         })
                         .finally(() => setLoading(false));
@@ -83,7 +83,11 @@ export default function MainMenu() {
             >
                 {t("start")}
             </MenuButton>
-            <MenuButton onClick={() => navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any })} transitionDelay={0.3} disabled={loading}>
+            <MenuButton
+                onClick={() => navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any })}
+                transitionDelay={0.3}
+                disabled={loading}
+            >
                 {t("load")}
             </MenuButton>
             <MenuButton

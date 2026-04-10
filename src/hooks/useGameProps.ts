@@ -15,7 +15,7 @@ export default function useGameProps(): StepLabelProps {
         navigate,
         t,
         uiTransition,
-        notify: toast,
+        toast,
         invalidateInterfaceData: async (delay: number = 0) => {
             if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay));
             return await queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });

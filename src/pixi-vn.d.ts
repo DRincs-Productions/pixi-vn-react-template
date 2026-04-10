@@ -27,11 +27,9 @@ declare module "@drincs/pixi-vn" {
         uiTransition: TFunction<[string], undefined>;
         /**
          * Show a notification.
-         * @param message The message to show.
-         * @param variant The variant of the notification.
-         * @returns
+         * @param message The message to show in the notification.
          */
-        notify: typeof toast;
+        toast: typeof toast;
         /**
          * Invalidate the interface data.
          * This will cause the interface to be reloaded and the data to be fetched again.
