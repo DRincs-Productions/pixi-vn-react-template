@@ -13,7 +13,9 @@ export default function OpenHistorySettingButton() {
     }
 
     return (
-        <SettingButton onClick={() => navigate({ search: ((prev: any) => ({ ...prev, settings: false, history: true })) as any })}>
+        <SettingButton
+            onClick={() => navigate({ search: ((prev: any) => ({ ...prev, settings: false, history: true })) as any })}
+        >
             <HistoryIcon />
             <Typography level="title-md">{t("history")}</Typography>
             <Typography
