@@ -5,7 +5,6 @@ import { Pagination, Tooltip, useMediaQuery } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate, useSearch } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
-import { useSnackbar } from "notistack";
 import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { FileRouteTypes } from "@/routeTree.gen";
@@ -16,6 +15,7 @@ import { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
 import type GameSaveData from "../models/GameSaveData";
 import { useAlertDialog } from "../providers/AlertDialogProvider";
+import { useSnackbar } from "../providers/NotificationProvider";
 import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
 import {
     deleteSaveFromIndexDB,

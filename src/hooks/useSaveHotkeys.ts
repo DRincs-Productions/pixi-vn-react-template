@@ -1,10 +1,10 @@
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { useSnackbar } from "notistack";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useAlertDialog } from "../providers/AlertDialogProvider";
+import { useSnackbar } from "../providers/NotificationProvider";
 import { loadSave, saveGameToIndexDB } from "../utils/save-utility";
 import useGameProps from "./useGameProps";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "./useQueryLastSave";

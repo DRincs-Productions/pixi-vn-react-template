@@ -2,7 +2,6 @@ import { Stack } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
-import { useSnackbar } from "notistack";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import TextMenuButton from "../components/TextMenuButton";
@@ -13,6 +12,7 @@ import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastS
 import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
 import { useWheelActions } from "../hooks/useWheelActions";
 import { useAlertDialog } from "../providers/AlertDialogProvider";
+import { useSnackbar } from "../providers/NotificationProvider";
 import { AutoSettings } from "../stores/auto-settings-store";
 import { GameStatus } from "../stores/game-status-store";
 import { InterfaceSettings } from "../stores/interface-settings-store";

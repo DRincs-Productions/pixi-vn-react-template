@@ -6,13 +6,13 @@ import SaveAsIcon from "@mui/icons-material/SaveAs";
 import { Typography } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
 import SettingButton from "../../components/SettingButton";
 import useGameProps from "../../hooks/useGameProps";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
 import { useAlertDialog } from "../../providers/AlertDialogProvider";
+import { useSnackbar } from "../../providers/NotificationProvider";
 import { downloadGameSave, loadGameSaveFromFile, loadSave, saveGameToIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadSettingButtons() {
