@@ -5,9 +5,9 @@ import { Pagination, Tooltip, useMediaQuery } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate, useSearch } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
-import { useSnackbar } from "notistack";
 import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import GameSaveSlot from "../components/GameSaveSlot";
 import ModalDialogCustom from "../components/ModalDialog";
@@ -50,7 +50,6 @@ export default function GameSaveScreen() {
     const page = useStore(GameSaveScreenStore.store, (state) => state.page);
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
-    const { enqueueSnackbar } = useSnackbar();
     const gameProps = useGameProps();
     const location = useLocation();
     const queryClient = useQueryClient();
@@ -73,18 +72,18 @@ export default function GameSaveScreen() {
                     loadSave(data, (to) => navigate({ to }))
                         .then(() => {
                             gameProps.invalidateInterfaceData();
-                            enqueueSnackbar(t("success_load"), { variant: "success" });
+                            toast.success(t("success_load"));
                             navigate({ search: ((prev: any) => ({ ...prev, saves: undefined })) as any });
                             return true;
                         })
                         .catch((e) => {
-                            enqueueSnackbar(t("fail_load"), { variant: "error" });
+                            toast.error(t("fail_load"));
                             console.error(e);
                             return false;
                         }),
             });
         },
-        [openAlertDialog, t, navigate, gameProps, enqueueSnackbar],
+        [openAlertDialog, t, navigate, gameProps],
     );
 
     const handleDelete = useCallback(
@@ -97,17 +96,17 @@ export default function GameSaveScreen() {
                         .then(() => {
                             queryClient.setQueryData([SAVES_USE_QUEY_KEY, id], null);
                             queryClient.invalidateQueries({ queryKey: [LAST_SAVE_USE_QUEY_KEY] });
-                            enqueueSnackbar(t("success_delete"), { variant: "success" });
+                            toast.success(t("success_delete"));
                             return true;
                         })
                         .catch((e) => {
-                            enqueueSnackbar(t("fail_delete"), { variant: "error" });
+                            toast.error(t("fail_delete"));
                             console.error(e);
                             return false;
                         }),
             });
         },
-        [openAlertDialog, t, queryClient, enqueueSnackbar],
+        [openAlertDialog, t, queryClient],
     );
 
     const handleSave = useCallback(
@@ -131,17 +130,17 @@ export default function GameSaveScreen() {
                         .then((save) => {
                             queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
                             queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
-                            enqueueSnackbar(t("success_save"), { variant: "success" });
+                            toast.success(t("success_save"));
                             return true;
                         })
                         .catch((e) => {
-                            enqueueSnackbar(t("fail_save"), { variant: "error" });
+                            toast.error(t("fail_save"));
                             console.error(e);
                             return false;
                         }),
             });
         },
-        [openAlertDialog, t, queryClient, enqueueSnackbar],
+        [openAlertDialog, t, queryClient],
     );
 
     return (
@@ -173,11 +172,11 @@ export default function GameSaveScreen() {
                                     (to) => navigate({ to }),
                                     (err) => {
                                         if (err) {
-                                            enqueueSnackbar(t("allert_error_occurred"), { variant: "error" });
+                                            toast.error(t("allert_error_occurred"));
                                             return;
                                         }
                                         gameProps.invalidateInterfaceData();
-                                        enqueueSnackbar(t("success_load"), { variant: "success" });
+                                        toast.success(t("success_load"));
                                         setOpen(false);
                                     },
                                 )

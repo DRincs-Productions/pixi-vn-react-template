@@ -1,6 +1,6 @@
 import type { UseNavigateResult } from "@tanstack/react-router";
 import type { TFunction } from "i18next";
-import type { OptionsWithExtraProps, SnackbarKey, SnackbarMessage } from "notistack";
+import type { toast } from "sonner";
 
 declare module "@drincs/pixi-vn" {
     interface StepLabelResult {
@@ -27,14 +27,9 @@ declare module "@drincs/pixi-vn" {
         uiTransition: TFunction<[string], undefined>;
         /**
          * Show a notification.
-         * @param message The message to show.
-         * @param variant The variant of the notification.
-         * @returns
+         * @param message The message to show in the notification.
          */
-        notify: (
-            message: SnackbarMessage,
-            options?: OptionsWithExtraProps<"default" | "error" | "success" | "warning" | "info">,
-        ) => SnackbarKey;
+        toast: typeof toast;
         /**
          * Invalidate the interface data.
          * This will cause the interface to be reloaded and the data to be fetched again.

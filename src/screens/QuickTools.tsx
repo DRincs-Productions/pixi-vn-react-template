@@ -2,9 +2,9 @@ import { Stack } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
-import { useSnackbar } from "notistack";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import TextMenuButton from "../components/TextMenuButton";
 import useGameProps from "../hooks/useGameProps";
 import useNarrationFunctions from "../hooks/useNarrationFunctions";
@@ -24,7 +24,6 @@ export default function QuickTools() {
     const hidden = useStore(InterfaceSettings.store, (state) => state.hidden);
     const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
     const autoEnabled = useStore(AutoSettings.store, (state) => state.enabled);
-    const { enqueueSnackbar } = useSnackbar();
     const queryClient = useQueryClient();
     const { data: lastSave = null } = useQueryLastSave();
     const { data: canGoBack = null } = useQueryCanGoBack();
@@ -103,10 +102,10 @@ export default function QuickTools() {
                         .then((save) => {
                             queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
                             queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
-                            enqueueSnackbar(t("success_save"), { variant: "success" });
+                            toast.success(t("success_save"));
                         })
                         .catch(() => {
-                            enqueueSnackbar(t("fail_save"), { variant: "error" });
+                            toast.error(t("fail_save"));
                         });
                 }}
                 sx={{ pointerEvents: !hidden ? "auto" : "none" }}
@@ -125,11 +124,11 @@ export default function QuickTools() {
                             loadSave(lastSave, (to) => navigate({ to }))
                                 .then(() => {
                                     gameProps.invalidateInterfaceData();
-                                    enqueueSnackbar(t("success_load"), { variant: "success" });
+                                    toast.success(t("success_load"));
                                     return true;
                                 })
                                 .catch((e) => {
-                                    enqueueSnackbar(t("fail_load"), { variant: "error" });
+                                    toast.error(t("fail_load"));
                                     console.error(e);
                                     return false;
                                 }),

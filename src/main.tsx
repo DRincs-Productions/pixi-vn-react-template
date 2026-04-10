@@ -59,8 +59,8 @@ Game.onEnd(async ({ navigate }) => {
 });
 
 Game.addOnError(drawCanvasErrorHandler());
-Game.addOnError((error, { notify, uiTransition }) => {
-    notify && uiTransition && notify(uiTransition("allert_error_occurred"), { variant: "error" });
+Game.addOnError((error, { toast, uiTransition }) => {
+    toast && uiTransition && toast.error(uiTransition("allert_error_occurred"));
     console.error(`Error occurred`, error);
 });
 
