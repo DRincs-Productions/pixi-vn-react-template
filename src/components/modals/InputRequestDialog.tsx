@@ -26,7 +26,7 @@ export default function InputRequestDialog() {
     }, [open, currentValue]);
 
     return (
-        <Dialog open={open}>
+        <Dialog open={open} dismissible={false}>
             <DialogContent showCloseButton={false}>
                 {text && (
                     <Markdown
@@ -45,7 +45,7 @@ export default function InputRequestDialog() {
                     onChange={(e) => {
                         let value: string | number = e.target.value;
                         if (e.target.type === "number") {
-                            value = e.target.valueAsNumber;
+                            value = e.target.valueAsNumber as number;
                         }
                         setTempValue(value);
                     }}
