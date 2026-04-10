@@ -12,7 +12,7 @@ export default function RootProvider({ children }: { children: React.ReactNode }
                 }}
             >
                 <AlertDialogProvider>{children}</AlertDialogProvider>
-                <Toaster />
+                <Toaster position="top-center" />
             </HotkeysProvider>
         </MyThemeProvider>
     );
