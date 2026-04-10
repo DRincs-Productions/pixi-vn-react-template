@@ -25,11 +25,12 @@ export interface NotificationContextType {
 const DEFAULT_DURATION = 3000;
 const EXIT_ANIMATION_MS = 300;
 
+let _idCounter = 0;
 function generateId(): string {
     if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
         return crypto.randomUUID();
     }
-    return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+    return `notification-${++_idCounter}`;
 }
 
 const NotificationContext = createContext<NotificationContextType | null>(null);
@@ -92,7 +93,11 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     return (
         <NotificationContext.Provider value={{ enqueueSnackbar }}>
             {children}
-            <div className="fixed top-4 left-4 z-50 flex flex-col gap-2 w-80 max-w-[calc(100vw-2rem)]">
+            <div
+                role="status"
+                aria-live="polite"
+                className="fixed top-4 left-4 z-50 flex flex-col gap-2 w-80 max-w-[calc(100vw-2rem)]"
+            >
                 {notifications.map((n) => (
                     <NotificationToast key={n.id} item={n} onDismiss={dismiss} />
                 ))}
