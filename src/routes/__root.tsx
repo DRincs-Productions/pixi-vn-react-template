@@ -13,7 +13,6 @@ import RootProvider from "@/providers/RootProvider";
 import type { RouterContext } from "@/router";
 import GameSaveScreen from "@/screens/GameSaveScreen";
 import LoadingScreen from "@/screens/LoadingScreen";
-import SaveLoadAlert from "@/screens/modals/SaveLoadAlert";
 import OfflineScreen from "@/screens/OfflineScreen";
 import Settings from "@/screens/Settings";
 import { defineAssets } from "@/utils/assets-utility";
@@ -46,17 +45,21 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     },
 });
 
-function RootComponent() {
+function RootSetup() {
     useSaveHotkeys();
+    return null;
+}
+
+function RootComponent() {
     useClosePageDetector();
     useConfirmBackNavigation();
 
     return (
         <>
             <RootProvider>
+                <RootSetup />
                 <Settings />
                 <GameSaveScreen />
-                <SaveLoadAlert />
                 <OfflineScreen />
                 <Outlet />
             </RootProvider>

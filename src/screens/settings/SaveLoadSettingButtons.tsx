@@ -12,8 +12,8 @@ import SettingButton from "../../components/SettingButton";
 import useGameProps from "../../hooks/useGameProps";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
-import { GameSaveScreenStore } from "../../stores/useGameSaveScreenStore";
-import { downloadGameSave, loadGameSaveFromFile, saveGameToIndexDB } from "../../utils/save-utility";
+import { useAlertDialog } from "../../providers/AlertDialogProvider";
+import { downloadGameSave, loadGameSaveFromFile, loadSave, saveGameToIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadSettingButtons() {
     const navigate = useNavigate();
@@ -23,6 +23,7 @@ export default function SaveLoadSettingButtons() {
     const { enqueueSnackbar } = useSnackbar();
     const { data: lastSave = null } = useQueryLastSave();
     const location = useLocation();
+    const { openAlertDialog } = useAlertDialog();
 
     return [
         location.pathname === "/" ? null : (
@@ -57,7 +58,27 @@ export default function SaveLoadSettingButtons() {
         ),
         <SettingButton
             key={"load_last_save_button"}
-            onClick={() => lastSave && GameSaveScreenStore.editLoadAlert(lastSave)}
+            onClick={() => {
+                if (!lastSave) return;
+                openAlertDialog({
+                    head: t("load"),
+                    content: t("you_sure_to_load_save", {
+                        name: lastSave.name || `${t("save_slot")} ${lastSave.id}`,
+                    }),
+                    onConfirm: () =>
+                        loadSave(lastSave, (to) => navigate({ to }))
+                            .then(() => {
+                                gameProps.invalidateInterfaceData();
+                                enqueueSnackbar(t("success_load"), { variant: "success" });
+                                return true;
+                            })
+                            .catch((e) => {
+                                enqueueSnackbar(t("fail_load"), { variant: "error" });
+                                console.error(e);
+                                return false;
+                            }),
+                });
+            }}
             disabled={!lastSave}
         >
             <FileUploadIcon />
@@ -73,7 +94,10 @@ export default function SaveLoadSettingButtons() {
                 Ctrl+L
             </Typography>
         </SettingButton>,
-        <SettingButton key={"save_load_button"} onClick={() => navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any })}>
+        <SettingButton
+            key={"save_load_button"}
+            onClick={() => navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any })}
+        >
             <SaveIcon />
             <Typography level="title-md">{t(`${t("save")}/${t("load")}`)}</Typography>
         </SettingButton>,

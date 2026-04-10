@@ -1,11 +1,12 @@
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
-import { useLocation } from "@tanstack/react-router";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useSnackbar } from "notistack";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
-import { saveGameToIndexDB } from "../utils/save-utility";
+import { useAlertDialog } from "../providers/AlertDialogProvider";
+import { loadSave, saveGameToIndexDB } from "../utils/save-utility";
+import useGameProps from "./useGameProps";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "./useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "./useQuerySaves";
 
@@ -28,8 +29,11 @@ export default function useSaveHotkeys(): null {
     const queryClient = useQueryClient();
     const { t } = useTranslation(["ui"]);
     const location = useLocation();
+    const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
     const { data: lastSave = null } = useQueryLastSave();
+    const { openAlertDialog } = useAlertDialog();
+    const gameProps = useGameProps();
 
     const quickSave = useCallback(() => {
         if (location.pathname === "/") {
@@ -52,8 +56,25 @@ export default function useSaveHotkeys(): null {
             console.log("No save to load");
             return;
         }
-        GameSaveScreenStore.editLoadAlert(lastSave);
-    }, [lastSave]);
+        openAlertDialog({
+            head: t("load"),
+            content: t("you_sure_to_load_save", {
+                name: lastSave.name || `${t("save_slot")} ${lastSave.id}`,
+            }),
+            onConfirm: () =>
+                loadSave(lastSave, (to) => navigate({ to }))
+                    .then(() => {
+                        gameProps.invalidateInterfaceData();
+                        enqueueSnackbar(t("success_load"), { variant: "success" });
+                        return true;
+                    })
+                    .catch((e) => {
+                        enqueueSnackbar(t("fail_load"), { variant: "error" });
+                        console.error(e);
+                        return false;
+                    }),
+        });
+    }, [lastSave, openAlertDialog, t, navigate, gameProps, enqueueSnackbar]);
 
     useHotkeys([
         {
