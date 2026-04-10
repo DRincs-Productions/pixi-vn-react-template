@@ -1,14 +1,13 @@
-import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
-import { Grid } from "@mui/joy";
 import { useDebouncedValue } from "@tanstack/react-pacer";
 import { useStore } from "@tanstack/react-store";
+import { CornerDownLeft } from "lucide-react";
 import { useEffect, useState } from "react";
-import ChoiceButton from "../components/ChoiceButton";
-import useNarrationFunctions from "../hooks/useNarrationFunctions";
-import { useQueryChoiceMenuOptions } from "../hooks/useQueryInterface";
-import { GameStatus } from "../stores/game-status-store";
-import { InterfaceSettings } from "../stores/interface-settings-store";
-import { TypewriterSettings } from "../stores/typewriter-settings-store";
+import { Button } from "../ui/button";
+import useNarrationFunctions from "../../hooks/useNarrationFunctions";
+import { useQueryChoiceMenuOptions } from "../../hooks/useQueryInterface";
+import { GameStatus } from "../../stores/game-status-store";
+import { InterfaceSettings } from "../../stores/interface-settings-store";
+import { TypewriterSettings } from "../../stores/typewriter-settings-store";
 
 export default function ChoiceMenu() {
     const nextStepLoading = useStore(GameStatus.store, (state) => state.loading);
@@ -26,50 +25,35 @@ export default function ChoiceMenu() {
     if (!open) return null;
 
     return (
-        <Grid
-            container
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-            rowSpacing={2}
-            sx={{
-                overflow: "auto",
-                height: "100%",
-                gap: 1,
-                width: "100%",
-                pointerEvents: hidden ? "none" : "auto",
-                margin: 0,
-            }}
+        <div
+            className="flex flex-col items-center justify-center gap-2 w-full h-full overflow-auto"
+            style={{ pointerEvents: hidden ? "none" : "auto" }}
             role="menu"
         >
             {menu.map((item, index) => (
-                <Grid
+                <div
                     key={"choice-" + index}
-                    justifyContent="center"
-                    alignItems="center"
                     className={
                         hidden
                             ? "motion-opacity-out-0 motion-translate-y-out-[50%]"
                             : `motion-opacity-in-0 motion-translate-y-in-[50%] motion-delay-[${index * 200}ms]`
                     }
                 >
-                    <ChoiceButton
-                        loading={nextStepLoading}
+                    <Button
+                        disabled={nextStepLoading}
                         onClick={() =>
                             selectChoice(item).then(() => {
                                 setOpen(false);
                             })
                         }
-                        sx={{
-                            left: 0,
-                            right: 0,
-                        }}
-                        startDecorator={item.type === "close" ? <KeyboardReturnIcon /> : undefined}
+                        size="sm"
+                        variant="outline"
                     >
+                        {item.type === "close" && <CornerDownLeft />}
                         {item.text}
-                    </ChoiceButton>
-                </Grid>
+                    </Button>
+                </div>
             ))}
-        </Grid>
+        </div>
     );
 }
