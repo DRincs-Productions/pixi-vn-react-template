@@ -1,7 +1,6 @@
 import type { UseNavigateResult } from "@tanstack/react-router";
 import type { TFunction } from "i18next";
-import type { ReactNode } from "react";
-import type { NotificationOptions } from "./providers/NotificationProvider";
+import type { toast } from "sonner";
 
 declare module "@drincs/pixi-vn" {
     interface StepLabelResult {
@@ -32,7 +31,7 @@ declare module "@drincs/pixi-vn" {
          * @param variant The variant of the notification.
          * @returns
          */
-        notify: (message: ReactNode, options?: NotificationOptions) => string;
+        notify: typeof toast;
         /**
          * Invalidate the interface data.
          * This will cause the interface to be reloaded and the data to be fetched again.

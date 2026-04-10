@@ -7,12 +7,12 @@ import { Typography } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import SettingButton from "../../components/SettingButton";
 import useGameProps from "../../hooks/useGameProps";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
 import { useAlertDialog } from "../../providers/AlertDialogProvider";
-import { useSnackbar } from "../../providers/NotificationProvider";
 import { downloadGameSave, loadGameSaveFromFile, loadSave, saveGameToIndexDB } from "../../utils/save-utility";
 
 export default function SaveLoadSettingButtons() {
@@ -20,7 +20,6 @@ export default function SaveLoadSettingButtons() {
     const { t } = useTranslation(["ui"]);
     const queryClient = useQueryClient();
     const gameProps = useGameProps();
-    const { enqueueSnackbar } = useSnackbar();
     const { data: lastSave = null } = useQueryLastSave();
     const location = useLocation();
     const { openAlertDialog } = useAlertDialog();
@@ -34,10 +33,10 @@ export default function SaveLoadSettingButtons() {
                         .then((save) => {
                             queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
                             queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
-                            enqueueSnackbar(t("success_save"), { variant: "success" });
+                            toast.success(t("success_save"));
                         })
                         .catch(() => {
-                            enqueueSnackbar(t("fail_save"), { variant: "error" });
+                            toast.error(t("fail_save"));
                         });
                 }}
                 disabled={location.pathname === "/"}
@@ -69,11 +68,11 @@ export default function SaveLoadSettingButtons() {
                         loadSave(lastSave, (to) => navigate({ to }))
                             .then(() => {
                                 gameProps.invalidateInterfaceData();
-                                enqueueSnackbar(t("success_load"), { variant: "success" });
+                                toast.success(t("success_load"));
                                 return true;
                             })
                             .catch((e) => {
-                                enqueueSnackbar(t("fail_load"), { variant: "error" });
+                                toast.error(t("fail_load"));
                                 console.error(e);
                                 return false;
                             }),
@@ -114,11 +113,11 @@ export default function SaveLoadSettingButtons() {
                     (to) => navigate({ to }),
                     (err) => {
                         if (err) {
-                            enqueueSnackbar(t("allert_error_occurred"), { variant: "error" });
+                            toast.error(t("allert_error_occurred"));
                             return;
                         }
                         gameProps.invalidateInterfaceData();
-                        enqueueSnackbar(t("success_load"), { variant: "success" });
+                        toast.success(t("success_load"));
                     },
                 )
             }
