@@ -12,11 +12,9 @@ import {
 } from "@mui/joy";
 import { type Theme, useMediaQuery } from "@mui/material";
 import { useHotkeys } from "@tanstack/react-hotkeys";
-import { useNavigate, useSearch } from "@tanstack/react-router";
-import { useStore } from "@tanstack/react-store";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { OpenScreens } from "../stores/open-screens-store";
+import { useSearchParamState, useSetSearchParamState } from "../hooks/useSearchParamState";
 import ReturnMainMenuButton from "../components/ReturnMainMenuButton";
 import AutoSettingToggle from "./settings/AutoSettingToggle";
 import DialoguesSettings from "./settings/DialoguesSettings";
@@ -30,21 +28,14 @@ import SoundSettings from "./settings/SoundSettings";
 import ThemeSettings from "./settings/ThemeSettings";
 
 export default function Settings() {
-    const { settings: openFromSearch = false } = useSearch({ from: "__root__" });
-    const open = useStore(OpenScreens.store, (state) => state.settings);
-    const navigate = useNavigate();
+    const open = useSearchParamState<boolean>("settings");
+    const setOpen = useSetSearchParamState<boolean>("settings");
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
 
-    useEffect(() => {
-        OpenScreens.setSettings(openFromSearch);
-    }, [openFromSearch]);
-
     const toggleOpen = useCallback(() => {
-        const newValue = !OpenScreens.store.state.settings;
-        OpenScreens.setSettings(newValue);
-        navigate({ search: ((prev: any) => ({ ...prev, settings: newValue })) as any });
-    }, [navigate]);
+        setOpen(open ? undefined : true);
+    }, [open, setOpen]);
 
     useHotkeys([
         {
@@ -56,7 +47,7 @@ export default function Settings() {
     return (
         <Drawer
             variant="plain"
-            open={open}
+            open={open ?? false}
             onClose={toggleOpen}
             sx={{
                 "& .MuiDrawer-content": {
