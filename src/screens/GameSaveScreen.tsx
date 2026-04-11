@@ -3,7 +3,7 @@ import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import { Grid, IconButton, Input, Stack, type Theme, Typography } from "@mui/joy";
 import { Pagination, Tooltip, useMediaQuery } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
-import { useLocation, useNavigate, useSearch } from "@tanstack/react-router";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
 import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -14,6 +14,7 @@ import ModalDialogCustom from "../components/ModalDialog";
 import useGameProps from "../hooks/useGameProps";
 import { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
+import { useSearchParamState, useSetSearchParamState } from "../hooks/useSearchParamState";
 import type GameSaveData from "../models/GameSaveData";
 import { useAlertDialog } from "../providers/AlertDialogProvider";
 import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
@@ -45,7 +46,8 @@ function SaveNameInput({
 }
 
 export default function GameSaveScreen() {
-    const { saves: open = false } = useSearch({ from: "__root__" });
+    const open = useSearchParamState<boolean>("saves");
+    const setOpen = useSetSearchParamState<boolean>("saves");
     const navigate = useNavigate();
     const page = useStore(GameSaveScreenStore.store, (state) => state.page);
     const { t } = useTranslation(["ui"]);
@@ -55,11 +57,6 @@ export default function GameSaveScreen() {
     const queryClient = useQueryClient();
     const { openAlertDialog } = useAlertDialog();
     const tempSaveNameRef = useRef<string>("");
-
-    const setOpen = useCallback(
-        (value: boolean) => navigate({ search: ((prev: any) => ({ ...prev, saves: value })) as any }),
-        [navigate],
-    );
 
     const handleLoad = useCallback(
         (data: GameSaveData & { id: number }) => {
@@ -73,7 +70,7 @@ export default function GameSaveScreen() {
                         .then(() => {
                             gameProps.invalidateInterfaceData();
                             toast.success(t("success_load"));
-                            navigate({ search: ((prev: any) => ({ ...prev, saves: undefined })) as any });
+                            setOpen(undefined);
                             return true;
                         })
                         .catch((e) => {
@@ -145,7 +142,7 @@ export default function GameSaveScreen() {
 
     return (
         <ModalDialogCustom
-            open={open}
+            open={open ?? false}
             setOpen={setOpen}
             layout={smScreen ? "fullscreen" : "center"}
             head={<Typography level="h2">{`${t("save")}/${t("load")}`}</Typography>}
@@ -177,7 +174,7 @@ export default function GameSaveScreen() {
                                         }
                                         gameProps.invalidateInterfaceData();
                                         toast.success(t("success_load"));
-                                        setOpen(false);
+                                        setOpen(undefined);
                                     },
                                 )
                             }
