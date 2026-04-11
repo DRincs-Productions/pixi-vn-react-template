@@ -1,7 +1,7 @@
 import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
 import { useQueryClient } from "@tanstack/react-query";
+import { CirclePlay, Play, Save, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
-import { CirclePlay, FolderOpen, Play, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
@@ -106,7 +106,7 @@ export default function MainMenu() {
                         variant="outline"
                         className={menuButtonClass}
                     >
-                        <FolderOpen className="size-4" />
+                        <Save className="size-4" />
                         {t("load")}
                     </Button>
 
