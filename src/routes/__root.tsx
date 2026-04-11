@@ -2,7 +2,7 @@ import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { hotkeysDevtoolsPlugin } from "@tanstack/react-hotkeys-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
-import { createRootRouteWithContext, Outlet, redirect } from "@tanstack/react-router";
+import { createRootRouteWithContext, ErrorComponent, Outlet, redirect } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
 import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
@@ -43,6 +43,11 @@ export const Route = createRootRouteWithContext<RouterContext>()({
             await context.queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
         }
     },
+    errorComponent: (props) => (
+        <div className="bg-background pointer-events-auto hover:text-foreground">
+            <ErrorComponent {...props} />
+        </div>
+    ),
 });
 
 function RootSetup() {
