@@ -17,16 +17,26 @@ export default function InputRequestDialog() {
     const { data: { isRequired, type, currentValue } = { currentValue: undefined, isRequired: false } } =
         useQueryInputValue<string | number>();
     const open = useStore(TypewriterSettings.store, (state) => !state.inProgress && isRequired);
+    const [debouncedOpen, setDebouncedOpen] = useState(false);
     const [tempValue, setTempValue] = useState<string | number>();
     const gameProps = useGameProps();
     const { t } = useTranslation(["ui"]);
+
+    useEffect(() => {
+        if (!open) {
+            setDebouncedOpen(false);
+            return;
+        }
+        const timeout = setTimeout(() => setDebouncedOpen(true), 50);
+        return () => clearTimeout(timeout);
+    }, [open]);
 
     useEffect(() => {
         setTempValue(currentValue);
     }, [currentValue]);
 
     return (
-        <Dialog open={open}>
+        <Dialog open={debouncedOpen}>
             <DialogContent showCloseButton={false}>
                 {text && (
                     <Markdown
