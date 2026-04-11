@@ -106,15 +106,15 @@ export default function QuickTools() {
             </TextMenuButton>
             <TextMenuButton
                 onClick={() => {
-                    saveGameToIndexDB()
-                        .then((save) => {
-                            queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
-                            queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
-                            toast.success(t("success_save"));
-                        })
-                        .catch(() => {
-                            toast.error(t("fail_save"));
-                        });
+                    const savePromise = saveGameToIndexDB().then((save) => {
+                        queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
+                        queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
+                    });
+                    toast.promise(savePromise, {
+                        loading: t("save"),
+                        success: t("success_save"),
+                        error: t("fail_save"),
+                    });
                 }}
                 sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
