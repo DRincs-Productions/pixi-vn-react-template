@@ -1,6 +1,7 @@
 import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { CirclePlay, FolderOpen, Play, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
@@ -45,8 +46,8 @@ export default function MainMenu() {
 
     return (
         <div className="relative h-full w-full flex items-center justify-start p-3 sm:p-6 md:p-10">
-            {/* Buttons card – semi-transparent */}
-            <Card className="w-full max-w-xs sm:max-w-sm bg-background/50 backdrop-blur-sm">
+            {/* Buttons card – semi-transparent, fade-in from left on mount */}
+            <Card className="w-full max-w-xs sm:max-w-sm bg-background/50 backdrop-blur-sm animate-in fade-in slide-in-from-left-10 duration-500 ease-out fill-mode-both">
                 <CardContent className="flex flex-col gap-2 pt-4">
                     <Button
                         onClick={() => {
@@ -74,7 +75,9 @@ export default function MainMenu() {
                                 <Spinner className="size-4" />
                                 <span className="sr-only">Loading</span>
                             </>
-                        ) : null}
+                        ) : (
+                            <CirclePlay className="size-4" />
+                        )}
                         {t("continue")}
                     </Button>
 
@@ -93,6 +96,7 @@ export default function MainMenu() {
                         disabled={loading}
                         className={menuButtonClass}
                     >
+                        <Play className="size-4" />
                         {t("start")}
                     </Button>
 
@@ -102,6 +106,7 @@ export default function MainMenu() {
                         variant="outline"
                         className={menuButtonClass}
                     >
+                        <FolderOpen className="size-4" />
                         {t("load")}
                     </Button>
 
@@ -111,6 +116,7 @@ export default function MainMenu() {
                         variant="outline"
                         className={menuButtonClass}
                     >
+                        <Settings className="size-4" />
                         {t("settings")}
                     </Button>
 
