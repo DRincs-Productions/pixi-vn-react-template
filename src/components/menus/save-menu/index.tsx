@@ -7,8 +7,7 @@ import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import ModalDialogCustom from "@/components/ModalDialog";
-import GameSaveSlot from "@/components/menus/save-menu/save-slots";
-import useSaveMenuActions from "@/components/menus/save-menu/use-save-menu-actions";
+import SaveSlot from "@/components/menus/save-menu/save-slots";
 import useGameProps from "@/hooks/useGameProps";
 import { useSearchParamState, useSetSearchParamState } from "@/hooks/useSearchParamState";
 import { GameSaveScreenStore } from "@/lib/stores/useGameSaveScreenStore";
@@ -24,7 +23,6 @@ export default function GameSaveMenu() {
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
     const gameProps = useGameProps();
     const location = useLocation();
-    const { handleLoad, handleDelete, handleSave } = useSaveMenuActions();
 
     return (
         <ModalDialogCustom
@@ -89,13 +87,7 @@ export default function GameSaveMenu() {
                     const id = page * 6 + index;
                     return (
                         <Grid xs={12} sm={6} md={4} key={`ModalDialogCustom${id}`}>
-                            <GameSaveSlot
-                                saveId={id}
-                                onSave={() => handleSave(id)}
-                                onOverwriteSave={(data) => handleSave(id, data.name)}
-                                onLoad={(data) => handleLoad({ ...data, id })}
-                                onDelete={() => handleDelete(id)}
-                            />
+                            <SaveSlot saveId={id} />
                         </Grid>
                     );
                 })}

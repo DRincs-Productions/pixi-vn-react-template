@@ -1,138 +1,101 @@
-import DeleteIcon from "@mui/icons-material/Delete";
-import DownloadIcon from "@mui/icons-material/Download";
-import SaveAsIcon from "@mui/icons-material/SaveAs";
-import UnarchiveIcon from "@mui/icons-material/Unarchive";
-import { AspectRatio, IconButton, Skeleton, Stack, useTheme } from "@mui/joy";
+import { ArchiveRestore, Download, Save, Trash2 } from "lucide-react";
 import { useLocation } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import TypographyShadow from "@/components/TypographyShadow";
+import useSaveMenuActions from "@/components/menus/save-menu/use-save-menu-actions";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import useQuerySaves from "@/hooks/useQuerySaves";
-import type GameSaveData from "@/models/GameSaveData";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import { downloadGameSave } from "@/utils/save-utility";
 
-export default function GameSaveSlot({
-    saveId,
-    onDelete,
-    onLoad,
-    onOverwriteSave,
-    onSave,
-}: {
-    saveId: number;
-    onDelete: () => Promise<void> | void;
-    onSave: () => Promise<void> | void;
-    onOverwriteSave: (data: GameSaveData) => Promise<void> | void;
-    onLoad: (saveData: GameSaveData) => Promise<void> | void;
-}) {
+const textShadow = "0 0 3px #111827, 0 0 5px #111827";
+
+export default function SaveSlot({ saveId }: { saveId: number }) {
     const { t } = useTranslation(["ui"]);
     const { isLoading, data: saveData, isError } = useQuerySaves({ id: saveId });
     const location = useLocation();
-    const theme = useTheme();
+    const { handleLoad, handleDelete, handleSave } = useSaveMenuActions();
+
+    const isHome = (location.pathname as FileRouteTypes["fullPaths"]) === "/";
 
     if (isLoading) {
         return (
-            <AspectRatio
-                sx={{
-                    borderRadius: 10,
-                    margin: { xs: 1, sm: 2, md: 1, lg: 2 },
-                }}
-            >
-                <Skeleton />
+            <AspectRatio ratio={16 / 9} className="m-2 rounded-xl sm:m-4 md:m-2 lg:m-4">
+                <Skeleton className="absolute inset-0 rounded-xl" />
             </AspectRatio>
         );
     }
 
     if (!saveData || isError) {
         return (
-            <AspectRatio
-                sx={{
-                    borderRadius: 10,
-                    margin: { xs: 1, sm: 2, md: 1, lg: 2 },
-                }}
-            >
-                <IconButton
-                    variant="soft"
-                    sx={{
-                        height: "100%",
-                        width: "100%",
-                    }}
-                    onClick={onSave}
-                    disabled={(location.pathname as FileRouteTypes["fullPaths"]) === "/"}
+            <AspectRatio ratio={16 / 9} className="m-2 rounded-xl sm:m-4 md:m-2 lg:m-4">
+                <Button
+                    variant="ghost"
+                    className="absolute inset-0 h-full w-full"
+                    onClick={() => handleSave(saveId)}
+                    disabled={isHome}
+                    aria-label={t("save")}
                 >
-                    <SaveAsIcon sx={{ fontSize: "3rem", opacity: 0.2 }} />
-                </IconButton>
+                    <Save className="size-12 opacity-20" />
+                </Button>
             </AspectRatio>
         );
     }
 
     return (
-        <AspectRatio
-            objectFit="contain"
-            sx={{
-                borderRadius: 10,
-                margin: { xs: 1, sm: 2, md: 1, lg: 2 },
-            }}
-        >
+        <AspectRatio ratio={16 / 9} className="m-2 overflow-hidden rounded-xl sm:m-4 md:m-2 lg:m-4">
             <img
                 src={saveData.image}
                 alt={saveData.name}
-                style={{
-                    backgroundColor: "#303030",
-                    pointerEvents: "none",
-                    userSelect: "none",
-                }}
+                className="absolute inset-0 size-full object-contain"
+                style={{ backgroundColor: "#303030", pointerEvents: "none", userSelect: "none" }}
             />
-            <Stack
-                position={"absolute"}
-                top={10}
-                left={10}
-                sx={{
-                    pointerEvents: "none",
-                    userSelect: "none",
-                }}
-            >
-                <TypographyShadow level="h2">{saveData.name}</TypographyShadow>
-                <TypographyShadow>{saveData.date.toLocaleDateString()}</TypographyShadow>
-                <TypographyShadow>{saveData.date.toLocaleTimeString()}</TypographyShadow>
-                <TypographyShadow>{`${t("save_slot")} ${saveId + 1}`}</TypographyShadow>
-            </Stack>
-            <Stack direction={"row"} position={"absolute"} bottom={10} right={10}>
-                <IconButton onClick={() => downloadGameSave(saveData)}>
-                    <DownloadIcon
-                        fontSize={"large"}
-                        sx={{
-                            color: theme.palette.neutral[300],
-                        }}
-                    />
-                </IconButton>
-                {(location.pathname as FileRouteTypes["fullPaths"]) !== "/" && (
-                    <IconButton onClick={() => onOverwriteSave(saveData)}>
-                        <SaveAsIcon
-                            fontSize={"large"}
-                            sx={{
-                                color: theme.palette.neutral[300],
-                            }}
-                        />
-                    </IconButton>
+            {/* top-left metadata */}
+            <div className="absolute top-2.5 left-2.5 flex flex-col gap-0.5 select-none pointer-events-none">
+                <span className="text-base font-semibold text-neutral-300" style={{ textShadow }}>
+                    {saveData.name}
+                </span>
+                <span className="text-sm text-neutral-300" style={{ textShadow }}>
+                    {saveData.date.toLocaleDateString()}
+                </span>
+                <span className="text-sm text-neutral-300" style={{ textShadow }}>
+                    {saveData.date.toLocaleTimeString()}
+                </span>
+                <span className="text-sm text-neutral-300" style={{ textShadow }}>
+                    {`${t("save_slot")} ${saveId + 1}`}
+                </span>
+            </div>
+            {/* top-right delete */}
+            <div className="absolute top-2.5 right-2.5">
+                <Button variant="destructive" size="icon" onClick={() => handleDelete(saveId)} aria-label={t("delete")}>
+                    <Trash2 />
+                </Button>
+            </div>
+            {/* bottom-right actions */}
+            <div className="absolute bottom-2.5 right-2.5 flex flex-row gap-1">
+                <Button variant="ghost" size="icon" onClick={() => downloadGameSave(saveData)} aria-label={t("save_to_file")}>
+                    <Download className="text-neutral-300" />
+                </Button>
+                {!isHome && (
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleSave(saveId, saveData.name)}
+                        aria-label={t("save")}
+                    >
+                        <Save className="text-neutral-300" />
+                    </Button>
                 )}
-                <IconButton
-                    onClick={() => {
-                        onLoad(saveData);
-                    }}
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleLoad({ ...saveData, id: saveId })}
+                    aria-label={t("load")}
                 >
-                    <UnarchiveIcon
-                        fontSize={"large"}
-                        sx={{
-                            color: theme.palette.neutral[300],
-                        }}
-                    />
-                </IconButton>
-            </Stack>
-            <Stack direction={"row"} position={"absolute"} top={10} right={10}>
-                <IconButton color="danger" size="md" onClick={onDelete}>
-                    <DeleteIcon fontSize={"large"} />
-                </IconButton>
-            </Stack>
+                    <ArchiveRestore className="text-neutral-300" />
+                </Button>
+            </div>
         </AspectRatio>
     );
 }
