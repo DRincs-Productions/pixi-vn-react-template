@@ -61,7 +61,7 @@ export default function MainMenu() {
         } else if (direction === "end") {
             next = items.length - 1;
         }
-        if (next >= 0 && next < items.length) {
+        if (next !== -1) {
             items[next].focus();
         }
     }
