@@ -9,9 +9,9 @@ import remarkGfm from "remark-gfm";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import useGameProps from "../../hooks/useGameProps";
-import { useQueryDialogue, useQueryInputValue } from "../../hooks/useQueryInterface";
-import { TypewriterSettings } from "../../stores/typewriter-settings-store";
+import useGameProps from "@/hooks/useGameProps";
+import { useQueryDialogue, useQueryInputValue } from "@/hooks/useQueryInterface";
+import { TypewriterSettings } from "@/stores/typewriter-settings-store";
 
 export default function InputRequestDialog() {
     const { data: { animatedText: text } = {} } = useQueryDialogue();
