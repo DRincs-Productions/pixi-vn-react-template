@@ -76,18 +76,22 @@ export default function MainMenu() {
         {
             hotkey: "ArrowDown",
             callback: () => focusMenuItem("down"),
+            options: { preventDefault: true },
         },
         {
             hotkey: "ArrowUp",
             callback: () => focusMenuItem("up"),
+            options: { preventDefault: true },
         },
         {
             hotkey: "Home",
             callback: () => focusMenuItem("home"),
+            options: { preventDefault: true },
         },
         {
             hotkey: "End",
             callback: () => focusMenuItem("end"),
+            options: { preventDefault: true },
         },
     ]);
 
