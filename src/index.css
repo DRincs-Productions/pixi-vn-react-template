@@ -5,7 +5,6 @@
 
 @custom-variant dark (&:is(.dark *));
 @plugin "@tailwindcss/typography";
-@plugin "tailwindcss-motion";
 
 :root {
   --background: oklch(1 0 0);

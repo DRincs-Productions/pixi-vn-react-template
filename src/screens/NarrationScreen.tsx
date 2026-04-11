@@ -33,22 +33,22 @@ export default function NarrationScreen() {
     const cardVarians = useMemo(
         () =>
             hidden
-                ? `motion-opacity-out-0 motion-translate-y-out-[50%]`
-                : `motion-opacity-in-0 motion-translate-y-in-[50%]`,
+                ? `animate-out fade-out-0 slide-out-to-bottom-1/2`
+                : `animate-in fade-in-0 slide-in-from-bottom-1/2`,
         [hidden],
     );
     const sliderVarians = useMemo(
         () =>
             hidden
-                ? `motion-duration-200/opacity motion-opacity-out-0 motion-translate-y-out-[25%]`
-                : `motion-opacity-in-0 motion-translate-y-in-[25%]`,
+                ? `duration-200 animate-out fade-out-0 slide-out-to-bottom-[25%]`
+                : `animate-in fade-in-0 slide-in-from-bottom-[25%]`,
         [hidden],
     );
     const cardImageVarians = useMemo(
         () =>
             !hidden && character?.icon
-                ? `motion-opacity-in-0 motion-translate-x-in-[-5%]`
-                : `motion-opacity-out-0`,
+                ? `animate-in fade-in-0 slide-in-from-left-[5%]`
+                : `animate-out fade-out-0`,
         [hidden, character?.icon],
     );
     const paragraphRef = useRef<HTMLDivElement>(null);
@@ -129,7 +129,7 @@ export default function NarrationScreen() {
                                     height: "100%",
                                     minWidth: `${cardImageWidth}%`,
                                 }}
-                                className={`motion-scale-x-in-0`}
+                                className={`animate-in zoom-in-95`}
                             >
                                 <img src={character.icon} loading="lazy" alt="" />
                             </AspectRatio>
@@ -167,8 +167,8 @@ export default function NarrationScreen() {
                                 }}
                                 className={
                                     character && character.name
-                                        ? `motion-opacity-in-0 motion-translate-x-in-[-3%]`
-                                        : `motion-opacity-out-0`
+                                        ? `animate-in fade-in-0 slide-in-from-left-[3%]`
+                                        : `animate-out fade-out-0`
                                 }
                             >
                                 {`${character?.name || ""} ${character?.surname || ""}`}

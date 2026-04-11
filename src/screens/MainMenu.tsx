@@ -116,7 +116,7 @@ export default function MainMenu() {
                         bottom: 0,
                         padding: 0.5,
                     }}
-                    className="motion-preset-pop"
+                    className="animate-in zoom-in-95 fade-in-0"
                 >
                     <CircularProgress />
                 </Box>
