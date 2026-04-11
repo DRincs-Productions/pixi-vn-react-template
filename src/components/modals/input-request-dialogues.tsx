@@ -1,7 +1,8 @@
 import { narration } from "@drincs/pixi-vn";
+import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useDebouncedValue } from "@tanstack/react-pacer";
 import { useStore } from "@tanstack/react-store";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
@@ -30,14 +31,18 @@ export function InputRequestDialog() {
 
     const canConfirm = tempValue !== undefined && tempValue !== "";
 
-    const submitInputValue = () => {
+    const submitInputValue = useCallback(() => {
         if (!canConfirm) {
             return;
         }
         narration.inputValue = tempValue || currentValue;
         setTempValue(undefined);
         gameProps.invalidateInterfaceData();
-    };
+    }, [canConfirm, currentValue, gameProps, tempValue]);
+
+    useHotkeys([
+        { hotkey: "Enter", callback: submitInputValue, options: { enabled: open ?? false } },
+    ]);
 
     return (
         <Dialog open={open}>
@@ -63,12 +68,6 @@ export function InputRequestDialog() {
                                 break;
                             default:
                                 setTempValue(e.target.value);
-                        }
-                    }}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                            e.preventDefault();
-                            submitInputValue();
                         }
                     }}
                 />
