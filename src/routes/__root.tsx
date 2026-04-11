@@ -9,6 +9,7 @@ import {
     redirect,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import GameSaveMenu from "@/components/menus/save-menu";
 import RootProvider from "@/components/providers/RootProvider";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
 import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
@@ -17,7 +18,6 @@ import useSaveHotkeys from "@/hooks/useSaveHotkeys";
 import { useI18n } from "@/i18n";
 import { SearchParams } from "@/lib/stores/search-param-store";
 import type { RouterContext } from "@/router";
-import GameSaveScreen from "@/screens/GameSaveScreen";
 import LoadingScreen from "@/screens/LoadingScreen";
 import OfflineScreen from "@/screens/OfflineScreen";
 import Settings from "@/screens/Settings";
@@ -61,7 +61,7 @@ function RootComponent() {
             <RootProvider>
                 <RootSetup />
                 <Settings />
-                <GameSaveScreen />
+                <GameSaveMenu />
                 <OfflineScreen />
                 <Outlet />
             </RootProvider>

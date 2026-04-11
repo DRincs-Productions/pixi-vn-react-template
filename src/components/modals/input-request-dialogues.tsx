@@ -40,9 +40,7 @@ export function InputRequestDialog() {
         gameProps.invalidateInterfaceData();
     }, [canConfirm, currentValue, gameProps, tempValue]);
 
-    useHotkeys([
-        { hotkey: "Enter", callback: submitInputValue, options: { enabled: open } },
-    ]);
+    useHotkeys([{ hotkey: "Enter", callback: submitInputValue, options: { enabled: open } }]);
 
     return (
         <Dialog open={open}>
@@ -72,10 +70,7 @@ export function InputRequestDialog() {
                     }}
                 />
                 <DialogFooter>
-                    <Button
-                        disabled={!canConfirm}
-                        onClick={submitInputValue}
-                    >
+                    <Button disabled={!canConfirm} onClick={submitInputValue}>
                         {t("confirm")}
                     </Button>
                 </DialogFooter>

@@ -1,7 +1,8 @@
 import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
 import { useQueryClient } from "@tanstack/react-query";
 import { CirclePlay, Play, Save, Settings } from "lucide-react";
-import { KeyboardEvent, useEffect, useRef, useState } from "react";
+import { type KeyboardEvent, useEffect, useRef, useState } from "react";
+import packageJson from "@/../package.json";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
@@ -14,7 +15,6 @@ import startLabel from "@/labels/startLabel";
 import { InterfaceSettings } from "@/lib/stores/interface-settings-store";
 import { cn } from "@/lib/utils";
 import { loadSave } from "@/utils/save-utility";
-import packageJson from "../../../package.json";
 
 const menuButtonClass = "justify-start hover:scale-105 transition-transform duration-150 ease-out";
 
@@ -35,7 +35,9 @@ export default function MainMenu() {
     function getMenuItems(): HTMLButtonElement[] {
         if (!menuRef.current) return [];
         return Array.from(
-            menuRef.current.querySelectorAll<HTMLButtonElement>("button[role='menuitem']:not(:disabled)"),
+            menuRef.current.querySelectorAll<HTMLButtonElement>(
+                "button[role='menuitem']:not(:disabled)",
+            ),
         );
     }
 

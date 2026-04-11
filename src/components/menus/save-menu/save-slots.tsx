@@ -5,11 +5,11 @@ import UnarchiveIcon from "@mui/icons-material/Unarchive";
 import { AspectRatio, IconButton, Skeleton, Stack, useTheme } from "@mui/joy";
 import { useLocation } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
+import TypographyShadow from "@/components/TypographyShadow";
+import useQuerySaves from "@/hooks/useQuerySaves";
+import type GameSaveData from "@/models/GameSaveData";
 import type { FileRouteTypes } from "@/routeTree.gen";
-import TypographyShadow from "../components/TypographyShadow";
-import useQuerySaves from "../hooks/useQuerySaves";
-import type GameSaveData from "../models/GameSaveData";
-import { downloadGameSave } from "../utils/save-utility";
+import { downloadGameSave } from "@/utils/save-utility";
 
 export default function GameSaveSlot({
     saveId,
@@ -97,11 +97,7 @@ export default function GameSaveSlot({
                 <TypographyShadow>{`${t("save_slot")} ${saveId + 1}`}</TypographyShadow>
             </Stack>
             <Stack direction={"row"} position={"absolute"} bottom={10} right={10}>
-                <IconButton
-                    onClick={() => {
-                        downloadGameSave(saveData);
-                    }}
-                >
+                <IconButton onClick={() => downloadGameSave(saveData)}>
                     <DownloadIcon
                         fontSize={"large"}
                         sx={{

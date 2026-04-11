@@ -8,25 +8,25 @@ import { useStore } from "@tanstack/react-store";
 import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import ModalDialogCustom from "@/components/ModalDialog";
+import GameSaveSlot from "@/components/menus/save-menu/save-slots";
+import { useAlertDialog } from "@/components/providers/AlertDialogProvider";
+import useGameProps from "@/hooks/useGameProps";
+import { LAST_SAVE_USE_QUEY_KEY } from "@/hooks/useQueryLastSave";
+import { SAVES_USE_QUEY_KEY } from "@/hooks/useQuerySaves";
+import { useSearchParamState, useSetSearchParamState } from "@/hooks/useSearchParamState";
+import { GameSaveScreenStore } from "@/lib/stores/useGameSaveScreenStore";
+import type GameSaveData from "@/models/GameSaveData";
 import type { FileRouteTypes } from "@/routeTree.gen";
-import GameSaveSlot from "../components/GameSaveSlot";
-import ModalDialogCustom from "../components/ModalDialog";
-import { useAlertDialog } from "../components/providers/AlertDialogProvider";
-import useGameProps from "../hooks/useGameProps";
-import { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastSave";
-import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
-import { useSearchParamState, useSetSearchParamState } from "../hooks/useSearchParamState";
-import { GameSaveScreenStore } from "../lib/stores/useGameSaveScreenStore";
-import type GameSaveData from "../models/GameSaveData";
 import {
     deleteSaveFromIndexDB,
     downloadGameSave,
     loadGameSaveFromFile,
     loadSave,
     saveGameToIndexDB,
-} from "../utils/save-utility";
+} from "@/utils/save-utility";
 
-function SaveNameInput({
+function SaveForm({
     initialValue,
     onValueChange,
 }: {
@@ -45,7 +45,7 @@ function SaveNameInput({
     );
 }
 
-export default function GameSaveScreen() {
+export default function GameSaveMenu() {
     const open = useSearchParamState<boolean>("saves");
     const setOpen = useSetSearchParamState<boolean>("saves");
     const navigate = useNavigate();
@@ -114,7 +114,7 @@ export default function GameSaveScreen() {
                 content: (
                     <>
                         {t("save_as")}
-                        <SaveNameInput
+                        <SaveForm
                             initialValue={defaultName || ""}
                             onValueChange={(v) => {
                                 tempSaveNameRef.current = v;
