@@ -1,4 +1,5 @@
 import { narration } from "@drincs/pixi-vn";
+import { useDebouncedValue } from "@tanstack/react-pacer";
 import { useStore } from "@tanstack/react-store";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,19 +18,10 @@ export default function InputRequestDialog() {
     const { data: { isRequired, type, currentValue } = { currentValue: undefined, isRequired: false } } =
         useQueryInputValue<string | number>();
     const open = useStore(TypewriterSettings.store, (state) => !state.inProgress && isRequired);
-    const [debouncedOpen, setDebouncedOpen] = useState(false);
+    const [debouncedOpen] = useDebouncedValue(open, { wait: 50 });
     const [tempValue, setTempValue] = useState<string | number>();
     const gameProps = useGameProps();
     const { t } = useTranslation(["ui"]);
-
-    useEffect(() => {
-        if (!open) {
-            setDebouncedOpen(false);
-            return;
-        }
-        const timeout = setTimeout(() => setDebouncedOpen(true), 50);
-        return () => clearTimeout(timeout);
-    }, [open]);
 
     useEffect(() => {
         setTempValue(currentValue);
