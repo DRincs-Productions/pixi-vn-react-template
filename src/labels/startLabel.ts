@@ -125,7 +125,7 @@ const startLabel = newLabel(
         async () => {
             await showImageContainer("sly", ["fm01-body", "fm01-eyes-upset", "fm01-mouth-smile01"]);
             narration.dialogGlue = true;
-            narration.dialogue = `<span class="inline-block animate-bounce">Hey</span>, you, ${mc.name}- be nice to our little brother,`;
+            narration.dialogue = `<span class="inline-block animate-in slide-in-from-bottom-1/4 repeat-infinite direction-alternate animation-duration-700">Hey</span>, you, ${mc.name}- be nice to our little brother,`;
         },
         async () => {
             await showImageContainer("sly", ["fm01-body", "fm01-eyes-smile", "fm01-mouth-grin00"]);

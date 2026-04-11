@@ -13,7 +13,7 @@ export default function OfflineScreen() {
         <Modal
             keepMounted
             open={open}
-            className="animate-in fade-in-0"
+            className="animate-in blur-in-md fade-in-0"
             sx={{
                 backdropFilter: "blur(10px)",
             }}

@@ -129,7 +129,7 @@ export default function NarrationScreen() {
                                     height: "100%",
                                     minWidth: `${cardImageWidth}%`,
                                 }}
-                                className={`animate-in zoom-in-95`}
+                                className={`animate-in zoom-in`}
                             >
                                 <img src={character.icon} loading="lazy" alt="" />
                             </AspectRatio>
