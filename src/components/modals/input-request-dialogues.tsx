@@ -28,6 +28,17 @@ export function InputRequestDialog() {
         setTempValue(currentValue);
     }, [currentValue]);
 
+    const canConfirm = tempValue !== undefined && tempValue !== "";
+
+    const submitInputValue = () => {
+        if (!canConfirm) {
+            return;
+        }
+        narration.inputValue = tempValue || currentValue;
+        setTempValue(undefined);
+        gameProps.invalidateInterfaceData();
+    };
+
     return (
         <Dialog open={open}>
             <DialogContent showCloseButton={false}>
@@ -54,15 +65,17 @@ export function InputRequestDialog() {
                                 setTempValue(e.target.value);
                         }
                     }}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            e.preventDefault();
+                            submitInputValue();
+                        }
+                    }}
                 />
                 <DialogFooter>
                     <Button
-                        disabled={tempValue === undefined || tempValue === ""}
-                        onClick={() => {
-                            narration.inputValue = tempValue || currentValue;
-                            setTempValue(undefined);
-                            gameProps.invalidateInterfaceData();
-                        }}
+                        disabled={!canConfirm}
+                        onClick={submitInputValue}
                     >
                         {t("confirm")}
                     </Button>
