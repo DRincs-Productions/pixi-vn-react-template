@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-import InputRequestDialog from "@/components/modals/InputRequestDialog";
+import { InputRequestDialog } from "@/components/modals/input-request-dialogues";
 
 type Search = {
     /**

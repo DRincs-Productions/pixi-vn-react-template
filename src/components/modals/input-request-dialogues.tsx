@@ -13,12 +13,13 @@ import useGameProps from "@/hooks/useGameProps";
 import { useQueryDialogue, useQueryInputValue } from "@/hooks/useQueryInterface";
 import { TypewriterSettings } from "@/stores/typewriter-settings-store";
 
-export default function InputRequestDialog() {
+export function InputRequestDialog() {
     const { data: { animatedText: text } = {} } = useQueryDialogue();
-    const { data: { isRequired, type, currentValue } = { currentValue: undefined, isRequired: false } } =
-        useQueryInputValue<string | number>();
-    const open = useStore(TypewriterSettings.store, (state) => !state.inProgress && isRequired);
-    const [debouncedOpen] = useDebouncedValue(open, { wait: 50 });
+    const {
+        data: { isRequired, type, currentValue } = { currentValue: undefined, isRequired: false },
+    } = useQueryInputValue<string | number>();
+    const isTyping = useStore(TypewriterSettings.store, (state) => state.inProgress);
+    const [open] = useDebouncedValue(!isTyping && isRequired, { wait: 50 });
     const [tempValue, setTempValue] = useState<string | number>();
     const gameProps = useGameProps();
     const { t } = useTranslation(["ui"]);
@@ -28,7 +29,7 @@ export default function InputRequestDialog() {
     }, [currentValue]);
 
     return (
-        <Dialog open={debouncedOpen}>
+        <Dialog open={open}>
             <DialogContent showCloseButton={false}>
                 {text && (
                     <Markdown
