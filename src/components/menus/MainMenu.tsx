@@ -43,14 +43,6 @@ export default function MainMenu() {
         );
     }
 
-    function focusMenuItemByIndex(next: number) {
-        const items = getMenuItems();
-        if (!items.length) return;
-
-        if (next < 0 || next >= items.length) return;
-        items[next].focus();
-    }
-
     /** Arrow-key navigation between menu items. */
     function focusMenuItem(direction: "up" | "down" | "home" | "end") {
         const items = getMenuItems();
@@ -69,31 +61,36 @@ export default function MainMenu() {
         } else if (direction === "end") {
             next = items.length - 1;
         }
-        focusMenuItemByIndex(next);
+        if (next >= 0 && next < items.length) {
+            items[next].focus();
+        }
     }
 
-    useHotkeys([
-        {
-            hotkey: "ArrowDown",
-            callback: () => focusMenuItem("down"),
-            options: { preventDefault: true },
-        },
-        {
-            hotkey: "ArrowUp",
-            callback: () => focusMenuItem("up"),
-            options: { preventDefault: true },
-        },
-        {
-            hotkey: "Home",
-            callback: () => focusMenuItem("home"),
-            options: { preventDefault: true },
-        },
-        {
-            hotkey: "End",
-            callback: () => focusMenuItem("end"),
-            options: { preventDefault: true },
-        },
-    ]);
+    useHotkeys(
+        [
+            {
+                hotkey: "ArrowDown",
+                callback: () => focusMenuItem("down"),
+                options: { preventDefault: true },
+            },
+            {
+                hotkey: "ArrowUp",
+                callback: () => focusMenuItem("up"),
+                options: { preventDefault: true },
+            },
+            {
+                hotkey: "Home",
+                callback: () => focusMenuItem("home"),
+                options: { preventDefault: true },
+            },
+            {
+                hotkey: "End",
+                callback: () => focusMenuItem("end"),
+                options: { preventDefault: true },
+            },
+        ],
+        { target: menuRef },
+    );
 
     useEffect(() => {
         InterfaceSettings.setHidden(false);
