@@ -50,7 +50,9 @@ export default function useSaveFileActions() {
         (id: number) => {
             openAlertDialog({
                 head: t("delete"),
-                content: t("you_sure_to_delete_save", { name: `${t("save_slot")} ${String(id + 1).padStart(2, "0")}` }),
+                content: t("you_sure_to_delete_save", {
+                    name: `${t("save_slot")} ${String(id + 1).padStart(2, "0")}`,
+                }),
                 onConfirm: () =>
                     deleteSaveFromIndexDB(id)
                         .then(() => {

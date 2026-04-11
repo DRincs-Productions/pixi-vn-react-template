@@ -1,5 +1,5 @@
-import { ArchiveRestore, Download, Save, Trash2 } from "lucide-react";
 import { useLocation } from "@tanstack/react-router";
+import { ArchiveRestore, Download, Save, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import useSaveFileActions from "@/components/menus/save-menu/use-save-menu-actions";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -68,13 +68,23 @@ export default function SaveFile({ saveId }: { saveId: number }) {
             </div>
             {/* top-right delete */}
             <div className="absolute top-2.5 right-2.5">
-                <Button variant="destructive" size="icon" onClick={() => handleDelete(saveId)} aria-label={t("delete")}>
+                <Button
+                    variant="destructive"
+                    size="icon"
+                    onClick={() => handleDelete(saveId)}
+                    aria-label={t("delete")}
+                >
                     <Trash2 />
                 </Button>
             </div>
             {/* bottom-right actions */}
             <div className="absolute bottom-2.5 right-2.5 flex flex-row gap-1">
-                <Button variant="ghost" size="icon" onClick={() => downloadGameSave(saveData)} aria-label={t("save_to_file")}>
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => downloadGameSave(saveData)}
+                    aria-label={t("save_to_file")}
+                >
                     <Download className="text-neutral-300" />
                 </Button>
                 {!isHome && (
