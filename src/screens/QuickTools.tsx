@@ -5,6 +5,7 @@ import { useStore } from "@tanstack/react-store";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { useAlertDialog } from "../components/providers/AlertDialogProvider";
 import TextMenuButton from "../components/TextMenuButton";
 import useGameProps from "../hooks/useGameProps";
 import useNarrationFunctions from "../hooks/useNarrationFunctions";
@@ -13,7 +14,6 @@ import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastS
 import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
 import { useSetSearchParamState } from "../hooks/useSearchParamState";
 import { useWheelActions } from "../hooks/useWheelActions";
-import { useAlertDialog } from "../providers/AlertDialogProvider";
 import { AutoSettings } from "../stores/auto-settings-store";
 import { GameStatus } from "../stores/game-status-store";
 import { InterfaceSettings } from "../stores/interface-settings-store";

@@ -14,12 +14,12 @@ import {
     useColorScheme,
 } from "@mui/joy";
 import { useColorScheme as useColorSchemeMaterial } from "@mui/material";
+import { useDebouncedValue } from "@tanstack/react-pacer";
+import { useEffect } from "react";
 import { Hue, useColor } from "react-color-palette";
 // TODO: import "react-color-palette/css";
 import { useTranslation } from "react-i18next";
-import { useDebouncedValue } from "@tanstack/react-pacer";
-import { useEffect } from "react";
-import { useEditColorProvider } from "../../providers/ThemeProvider";
+import { useEditColorProvider } from "../../components/providers/ThemeProvider";
 
 export default function ThemeSettings() {
     const { mode, setMode } = useColorScheme();
@@ -37,7 +37,9 @@ export default function ThemeSettings() {
         <>
             <Box>
                 <FormLabel sx={{ typography: "title-sm" }}>{t("theme_mode")}</FormLabel>
-                <FormHelperText sx={{ typography: "body-sm" }}>{t("theme_mode_description")}</FormHelperText>
+                <FormHelperText sx={{ typography: "body-sm" }}>
+                    {t("theme_mode_description")}
+                </FormHelperText>
             </Box>
             <ToggleButtonGroup
                 value={mode}
@@ -73,7 +75,9 @@ export default function ThemeSettings() {
 
             <Box>
                 <FormLabel sx={{ typography: "title-sm" }}>{t("primary_color")}</FormLabel>
-                <FormHelperText sx={{ typography: "body-sm" }}>{t("primary_color_description")}</FormHelperText>
+                <FormHelperText sx={{ typography: "body-sm" }}>
+                    {t("primary_color_description")}
+                </FormHelperText>
             </Box>
             <Box
                 sx={{
@@ -85,7 +89,9 @@ export default function ThemeSettings() {
 
             <Box>
                 <FormLabel sx={{ typography: "title-sm" }}>{t("solid_color")}</FormLabel>
-                <FormHelperText sx={{ typography: "body-sm" }}>{t("solid_color_description")}</FormHelperText>
+                <FormHelperText sx={{ typography: "body-sm" }}>
+                    {t("solid_color_description")}
+                </FormHelperText>
             </Box>
             <ToggleButtonGroup
                 value={solidColor}

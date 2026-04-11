@@ -8,13 +8,18 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { useAlertDialog } from "../../components/providers/AlertDialogProvider";
 import SettingButton from "../../components/SettingButton";
 import useGameProps from "../../hooks/useGameProps";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
 import { useSetSearchParamState } from "../../hooks/useSearchParamState";
-import { useAlertDialog } from "../../providers/AlertDialogProvider";
-import { downloadGameSave, loadGameSaveFromFile, loadSave, saveGameToIndexDB } from "../../utils/save-utility";
+import {
+    downloadGameSave,
+    loadGameSaveFromFile,
+    loadSave,
+    saveGameToIndexDB,
+} from "../../utils/save-utility";
 
 export default function SaveLoadSettingButtons() {
     const navigate = useNavigate();
@@ -105,7 +110,11 @@ export default function SaveLoadSettingButtons() {
             <Typography level="title-md">{t(`${t("save")}/${t("load")}`)}</Typography>
         </SettingButton>,
         location.pathname === "/" ? null : (
-            <SettingButton key={"save_to_file"} onClick={() => downloadGameSave()} disabled={location.pathname === "/"}>
+            <SettingButton
+                key={"save_to_file"}
+                onClick={() => downloadGameSave()}
+                disabled={location.pathname === "/"}
+            >
                 <DownloadIcon />
                 <Typography level="title-md">{t("save_to_file")}</Typography>
             </SettingButton>

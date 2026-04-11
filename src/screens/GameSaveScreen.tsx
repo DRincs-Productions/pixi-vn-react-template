@@ -11,12 +11,12 @@ import { toast } from "sonner";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import GameSaveSlot from "../components/GameSaveSlot";
 import ModalDialogCustom from "../components/ModalDialog";
+import { useAlertDialog } from "../components/providers/AlertDialogProvider";
 import useGameProps from "../hooks/useGameProps";
 import { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
 import { useSearchParamState, useSetSearchParamState } from "../hooks/useSearchParamState";
 import type GameSaveData from "../models/GameSaveData";
-import { useAlertDialog } from "../providers/AlertDialogProvider";
 import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
 import {
     deleteSaveFromIndexDB,
@@ -123,7 +123,10 @@ export default function GameSaveScreen() {
                     </>
                 ),
                 onConfirm: () => {
-                    const savePromise = saveGameToIndexDB({ id, name: tempSaveNameRef.current }).then((save) => {
+                    const savePromise = saveGameToIndexDB({
+                        id,
+                        name: tempSaveNameRef.current,
+                    }).then((save) => {
                         queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
                         queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
                     });
