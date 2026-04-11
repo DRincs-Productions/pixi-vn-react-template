@@ -2,7 +2,7 @@ import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { hotkeysDevtoolsPlugin } from "@tanstack/react-hotkeys-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
-import { createRootRouteWithContext, Outlet, redirect } from "@tanstack/react-router";
+import { createRootRouteWithContext, ErrorComponent, Outlet, redirect } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
 import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
@@ -15,23 +15,13 @@ import GameSaveScreen from "@/screens/GameSaveScreen";
 import LoadingScreen from "@/screens/LoadingScreen";
 import OfflineScreen from "@/screens/OfflineScreen";
 import Settings from "@/screens/Settings";
+import { SearchParams } from "@/stores/search-param-store";
 import { defineAssets } from "@/utils/assets-utility";
 import { initializeIndexedDB } from "@/utils/indexedDB-utility";
 import { loadRefreshSave } from "@/utils/save-utility";
 
-type Search = {
-    /**
-     * Whether the settings page is open.
-     */
-    settings?: boolean;
-    /**
-     * Whether the saves page is open.
-     */
-    saves?: boolean;
-};
-
 export const Route = createRootRouteWithContext<RouterContext>()({
-    validateSearch: (search: Search): Search => search,
+    validateSearch: (search) => SearchParams.setMany(search),
     component: RootComponent,
     pendingComponent: LoadingScreen,
     loader: async ({ context }) => {
@@ -43,6 +33,11 @@ export const Route = createRootRouteWithContext<RouterContext>()({
             await context.queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] });
         }
     },
+    errorComponent: (props) => (
+        <div className="bg-background pointer-events-auto hover:text-foreground">
+            <ErrorComponent {...props} />
+        </div>
+    ),
 });
 
 function RootSetup() {

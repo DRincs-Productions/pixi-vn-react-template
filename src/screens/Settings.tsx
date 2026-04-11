@@ -12,9 +12,9 @@ import {
 } from "@mui/joy";
 import { type Theme, useMediaQuery } from "@mui/material";
 import { useHotkeys } from "@tanstack/react-hotkeys";
-import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { useSearchParamState, useSetSearchParamState } from "../hooks/useSearchParamState";
 import ReturnMainMenuButton from "../components/ReturnMainMenuButton";
 import AutoSettingToggle from "./settings/AutoSettingToggle";
 import DialoguesSettings from "./settings/DialoguesSettings";
@@ -28,14 +28,14 @@ import SoundSettings from "./settings/SoundSettings";
 import ThemeSettings from "./settings/ThemeSettings";
 
 export default function Settings() {
-    const { settings: open = false } = useSearch({ from: "__root__" });
-    const navigate = useNavigate();
+    const open = useSearchParamState<boolean>("settings");
+    const setOpen = useSetSearchParamState<boolean>("settings");
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
-    const toggleOpen = useCallback(
-        () => navigate({ search: ((prev: any) => ({ ...prev, settings: !prev.settings })) as any }),
-        [navigate],
-    );
+
+    const toggleOpen = useCallback(() => {
+        setOpen(open ? undefined : true);
+    }, [open, setOpen]);
 
     useHotkeys([
         {
@@ -47,7 +47,7 @@ export default function Settings() {
     return (
         <Drawer
             variant="plain"
-            open={open}
+            open={open ?? false}
             onClose={toggleOpen}
             sx={{
                 "& .MuiDrawer-content": {

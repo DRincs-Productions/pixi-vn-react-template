@@ -1,20 +1,25 @@
 import HistoryIcon from "@mui/icons-material/History";
 import { Typography } from "@mui/joy";
-import { useLocation, useNavigate } from "@tanstack/react-router";
+import { useLocation } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import SettingButton from "../../components/SettingButton";
+import { useSetSearchParamState } from "../../hooks/useSearchParamState";
 
 export default function OpenHistorySettingButton() {
     const { t } = useTranslation(["ui"]);
-    const navigate = useNavigate();
     const location = useLocation();
+    const setSettings = useSetSearchParamState<boolean>("settings");
+    const setHistory = useSetSearchParamState<boolean>("history");
     if (!location.pathname.startsWith("/game")) {
         return null;
     }
 
     return (
         <SettingButton
-            onClick={() => navigate({ search: ((prev: any) => ({ ...prev, settings: false, history: true })) as any })}
+            onClick={() => {
+                setSettings(undefined);
+                setHistory(true);
+            }}
         >
             <HistoryIcon />
             <Typography level="title-md">{t("history")}</Typography>

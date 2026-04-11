@@ -4,7 +4,6 @@ import { Box, Chip, Input, Stack, type Theme, Typography } from "@mui/joy";
 import Avatar from "@mui/joy/Avatar";
 import { useMediaQuery } from "@mui/material";
 import { useHotkeys } from "@tanstack/react-hotkeys";
-import { useNavigate, useSearch } from "@tanstack/react-router";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
@@ -12,6 +11,7 @@ import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import ModalDialogCustom from "../components/ModalDialog";
 import { useQueryNarrativeHistory } from "../hooks/useQueryInterface";
+import { useSearchParamState, useSetSearchParamState } from "../hooks/useSearchParamState";
 
 function HistoryList({ searchString }: { searchString?: string }) {
     const { data = [] } = useQueryNarrativeHistory({ searchString });
@@ -81,15 +81,15 @@ function HistoryList({ searchString }: { searchString?: string }) {
 }
 
 export default function HistoryScreen() {
-    const { history: open = false } = useSearch({ from: "/game" });
-    const navigate = useNavigate();
+    const open = useSearchParamState<boolean>("history");
+    const setOpen = useSetSearchParamState<boolean>("history");
     const [searchString, setSearchString] = useState("");
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
-    const toggleOpen = useCallback(
-        () => navigate({ search: ((prev: any) => ({ ...prev, history: !prev.history })) as any }),
-        [navigate],
-    );
+
+    const toggleOpen = useCallback(() => {
+        setOpen(open ? undefined : true);
+    }, [open, setOpen]);
 
     useHotkeys([
         {
@@ -100,8 +100,8 @@ export default function HistoryScreen() {
 
     return (
         <ModalDialogCustom
-            open={open}
-            setOpen={toggleOpen}
+            open={open ?? false}
+            setOpen={setOpen}
             layout={smScreen ? "fullscreen" : "center"}
             head={
                 <Stack

@@ -11,6 +11,7 @@ import useNarrationFunctions from "../hooks/useNarrationFunctions";
 import { useQueryCanGoBack } from "../hooks/useQueryInterface";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
+import { useSetSearchParamState } from "../hooks/useSearchParamState";
 import { useWheelActions } from "../hooks/useWheelActions";
 import { useAlertDialog } from "../providers/AlertDialogProvider";
 import { AutoSettings } from "../stores/auto-settings-store";
@@ -33,6 +34,9 @@ export default function QuickTools() {
     const { openAlertDialog } = useAlertDialog();
     const gameProps = useGameProps();
     useWheelActions();
+    const setHistory = useSetSearchParamState<boolean>("history");
+    const setSaves = useSetSearchParamState<boolean>("saves");
+    const setSettings = useSetSearchParamState<boolean>("settings");
     const textMenuVarians = useMemo(
         () =>
             hidden
@@ -70,7 +74,9 @@ export default function QuickTools() {
                 {t("back")}
             </TextMenuButton>
             <TextMenuButton
-                onClick={() => navigate({ search: ((prev: any) => ({ ...prev, history: true })) as any })}
+                onClick={() => {
+                    setHistory(true);
+                }}
                 sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
                 {t("history")}
@@ -91,7 +97,9 @@ export default function QuickTools() {
                 {t("auto_forward_time_restricted")}
             </TextMenuButton>
             <TextMenuButton
-                onClick={() => navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any })}
+                onClick={() => {
+                    setSaves(true);
+                }}
                 sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
                 {t(`${t("save")}/${t("load")}`)}
@@ -140,7 +148,9 @@ export default function QuickTools() {
                 {t("load_last_save_restricted")}
             </TextMenuButton>
             <TextMenuButton
-                onClick={() => navigate({ search: ((prev: any) => ({ ...prev, settings: true })) as any })}
+                onClick={() => {
+                    setSettings(true);
+                }}
                 sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
                 {t("settings_restricted")}
