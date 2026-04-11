@@ -12,7 +12,7 @@ import { useSetSearchParamState } from "@/hooks/useSearchParamState";
 import type GameSaveData from "@/models/GameSaveData";
 import { deleteSaveFromIndexDB, loadSave, saveGameToIndexDB } from "@/utils/save-utility";
 
-export default function useSaveFileActions() {
+export default function useSaveActions() {
     const setOpen = useSetSearchParamState<boolean>("saves");
     const navigate = useNavigate();
     const { t } = useTranslation(["ui"]);

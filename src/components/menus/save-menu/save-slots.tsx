@@ -1,20 +1,20 @@
 import { useLocation } from "@tanstack/react-router";
 import { Download, Save, SquarePen, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import useSaveFileActions from "@/components/menus/save-menu/use-save-menu-actions";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import useQuerySaves from "@/hooks/useQuerySaves";
+import useSaveActions from "@/hooks/useSaveActions";
 import { cn, overlayTextShadowClass } from "@/lib/utils";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import { downloadGameSave } from "@/utils/save-utility";
 
-export default function SaveFile({ saveId }: { saveId: number }) {
+export default function SavSlot({ saveId }: { saveId: number }) {
     const { t } = useTranslation(["ui"]);
     const { isLoading, data: saveData, isError } = useQuerySaves({ id: saveId });
     const location = useLocation();
-    const { handleLoad, handleDelete, handleSave } = useSaveFileActions();
+    const { handleLoad, handleDelete, handleSave } = useSaveActions();
 
     const isHome = (location.pathname as FileRouteTypes["fullPaths"]) === "/";
 

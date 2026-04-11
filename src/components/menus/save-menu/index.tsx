@@ -1,9 +1,9 @@
-import { Download, FolderOpen } from "lucide-react";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
+import { Download, FolderOpen } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import SaveFile from "@/components/menus/save-menu/save-slots";
+import SavSlot from "@/components/menus/save-menu/save-slots";
 import { Button } from "@/components/ui/button";
 import {
     Pagination,
@@ -99,7 +99,7 @@ export default function GameSaveMenu() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
                 {Array.from({ length: 6 }).map((_, index) => {
                     const id = page * 6 + index;
-                    return <SaveFile key={`SaveFile${id}`} saveId={id} />;
+                    return <SavSlot key={`SaveFile${id}`} saveId={id} />;
                 })}
             </div>
             <Pagination className="absolute bottom-1.5 left-0 right-0">
