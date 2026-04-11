@@ -66,31 +66,28 @@ export default function MainMenu() {
         }
     }
 
-    useHotkeys(
-        [
-            {
-                hotkey: "ArrowDown",
-                callback: () => focusMenuItem("down"),
-                options: { preventDefault: true },
-            },
-            {
-                hotkey: "ArrowUp",
-                callback: () => focusMenuItem("up"),
-                options: { preventDefault: true },
-            },
-            {
-                hotkey: "Home",
-                callback: () => focusMenuItem("home"),
-                options: { preventDefault: true },
-            },
-            {
-                hotkey: "End",
-                callback: () => focusMenuItem("end"),
-                options: { preventDefault: true },
-            },
-        ],
-        { target: menuRef },
-    );
+    useHotkeys([
+        {
+            hotkey: "ArrowDown",
+            callback: () => focusMenuItem("down"),
+            options: { preventDefault: true },
+        },
+        {
+            hotkey: "ArrowUp",
+            callback: () => focusMenuItem("up"),
+            options: { preventDefault: true },
+        },
+        {
+            hotkey: "Home",
+            callback: () => focusMenuItem("home"),
+            options: { preventDefault: true },
+        },
+        {
+            hotkey: "End",
+            callback: () => focusMenuItem("end"),
+            options: { preventDefault: true },
+        },
+    ]);
 
     useEffect(() => {
         InterfaceSettings.setHidden(false);
