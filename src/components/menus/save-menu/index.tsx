@@ -1,21 +1,19 @@
 import DownloadIcon from "@mui/icons-material/Download";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
-import { Grid, IconButton, Stack, type Theme, Typography } from "@mui/joy";
+import { Grid, IconButton, Stack, type Theme } from "@mui/joy";
 import { Pagination, Tooltip, useMediaQuery } from "@mui/material";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import ModalDialogCustom from "@/components/ModalDialog";
 import SaveSlot from "@/components/menus/save-menu/save-slots";
 import useGameProps from "@/hooks/useGameProps";
-import { useSearchParamState, useSetSearchParamState } from "@/hooks/useSearchParamState";
+import { useSetSearchParamState } from "@/hooks/useSearchParamState";
 import { GameSaveScreenStore } from "@/lib/stores/useGameSaveScreenStore";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import { downloadGameSave, loadGameSaveFromFile } from "@/utils/save-utility";
 
 export default function GameSaveMenu() {
-    const open = useSearchParamState<boolean>("saves");
     const setOpen = useSetSearchParamState<boolean>("saves");
     const navigate = useNavigate();
     const page = useStore(GameSaveScreenStore.store, (state) => state.page);
@@ -25,17 +23,7 @@ export default function GameSaveMenu() {
     const location = useLocation();
 
     return (
-        <ModalDialogCustom
-            open={open ?? false}
-            setOpen={setOpen}
-            layout={smScreen ? "fullscreen" : "center"}
-            head={<Typography level="h2">{`${t("save")}/${t("load")}`}</Typography>}
-            minWidth="80%"
-            sx={{
-                minHeight: "50%",
-                paddingBottom: 6,
-            }}
-        >
+        <>
             <Stack
                 direction={"row"}
                 sx={{
@@ -108,6 +96,6 @@ export default function GameSaveMenu() {
                     },
                 }}
             />
-        </ModalDialogCustom>
+        </>
     );
 }
