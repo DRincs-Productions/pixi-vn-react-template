@@ -11,18 +11,24 @@ import Markdown from "react-markdown";
 import { MarkdownTypewriterHooks } from "react-markdown-typewriter";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
+import { ChoiceMenu } from "@/components/menus/choice-menus";
 import AnimatedDots from "../components/AnimatedDots";
 import SliderResizer from "../components/SliderResizer";
 import { useQueryDialogue } from "../hooks/useQueryInterface";
 import { InterfaceSettings } from "../stores/interface-settings-store";
 import { TypewriterSettings } from "../stores/typewriter-settings-store";
-import ChoiceMenu from "../components/choice-menu";
 
 export default function NarrationScreen() {
     const cardHeightTemp = useStore(InterfaceSettings.store, (state) => state.dialogueCardHeight);
-    const cardImageWidth = useStore(InterfaceSettings.store, (state) => state.dialogueCardImageWidth);
+    const cardImageWidth = useStore(
+        InterfaceSettings.store,
+        (state) => state.dialogueCardImageWidth,
+    );
     const { data: { animatedText, character, text } = {} } = useQueryDialogue();
-    const hidden = useStore(InterfaceSettings.store, (state) => state.hidden || (animatedText || text ? false : true));
+    const hidden = useStore(
+        InterfaceSettings.store,
+        (state) => state.hidden || (animatedText || text ? false : true),
+    );
     const cardHeight = animatedText || text ? cardHeightTemp : 0;
     const cardVarians = useMemo(
         () =>
@@ -39,7 +45,10 @@ export default function NarrationScreen() {
         [hidden],
     );
     const cardImageVarians = useMemo(
-        () => (!hidden && character?.icon ? `motion-opacity-in-0 motion-translate-x-in-[-5%]` : `motion-opacity-out-0`),
+        () =>
+            !hidden && character?.icon
+                ? `motion-opacity-in-0 motion-translate-x-in-[-5%]`
+                : `motion-opacity-out-0`,
         [hidden, character?.icon],
     );
     const paragraphRef = useRef<HTMLDivElement>(null);
@@ -68,7 +77,13 @@ export default function NarrationScreen() {
                     stackProps={{
                         sx: {
                             top: 0,
-                            paddingBottom: { xs: "0.9rem", sm: "1rem", md: "1.1rem", lg: "1.3rem", xl: "1.4rem" },
+                            paddingBottom: {
+                                xs: "0.9rem",
+                                sm: "1rem",
+                                md: "1.1rem",
+                                lg: "1.3rem",
+                                xl: "1.4rem",
+                            },
                         },
                     }}
                     sx={{
@@ -96,7 +111,13 @@ export default function NarrationScreen() {
                             gap: 1,
                             padding: 0,
                             height: "100%",
-                            marginX: { xs: "0.9rem", sm: "1rem", md: "1.1rem", lg: "1.3rem", xl: "1.4rem" },
+                            marginX: {
+                                xs: "0.9rem",
+                                sm: "1rem",
+                                md: "1.1rem",
+                                lg: "1.3rem",
+                                xl: "1.4rem",
+                            },
                         }}
                     >
                         {character?.icon && (
@@ -189,15 +210,18 @@ function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDiv
     const { data: { animatedText, text } = {} } = useQueryDialogue();
     const { mode } = useColorScheme();
 
-    const handleCharacterAnimationComplete = useCallback((ref: { current: HTMLSpanElement | null }) => {
-        if (paragraphRef.current && ref.current) {
-            const scrollTop = ref.current.offsetTop - paragraphRef.current.clientHeight / 2;
-            paragraphRef.current.scrollTo({
-                top: scrollTop,
-                behavior: "auto",
-            });
-        }
-    }, []);
+    const handleCharacterAnimationComplete = useCallback(
+        (ref: { current: HTMLSpanElement | null }) => {
+            if (paragraphRef.current && ref.current) {
+                const scrollTop = ref.current.offsetTop - paragraphRef.current.clientHeight / 2;
+                paragraphRef.current.scrollTo({
+                    top: scrollTop,
+                    behavior: "auto",
+                });
+            }
+        },
+        [],
+    );
 
     return (
         <p

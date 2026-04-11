@@ -8,13 +8,13 @@ import { GameStatus } from "@/stores/game-status-store";
 import { InterfaceSettings } from "@/stores/interface-settings-store";
 import { TypewriterSettings } from "@/stores/typewriter-settings-store";
 
-export default function ChoiceMenu() {
-    const nextStepLoading = useStore(GameStatus.store, (state) => state.loading);
+export function ChoiceMenu() {
+    const loading = useStore(GameStatus.store, (state) => state.loading);
     const { data: menu = [] } = useQueryChoiceMenuOptions();
-    const typewriterInProgress = useStore(TypewriterSettings.store, (state) => state.inProgress);
+    const isTyping = useStore(TypewriterSettings.store, (state) => state.inProgress);
     const hidden = useStore(InterfaceSettings.store, (state) => state.hidden);
     const { selectChoice } = useNarrationFunctions();
-    const [debouncedMenu] = useDebouncedValue(typewriterInProgress ? [] : menu, { wait: 50 });
+    const [debouncedMenu] = useDebouncedValue(isTyping ? [] : menu, { wait: 50 });
 
     return (
         <div
@@ -32,7 +32,7 @@ export default function ChoiceMenu() {
                     style={!hidden ? { animationDelay: `${index * 200}ms` } : undefined}
                 >
                     <Button
-                        disabled={nextStepLoading}
+                        disabled={loading}
                         onClick={() => selectChoice(item)}
                         size="sm"
                         variant="outline"
