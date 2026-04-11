@@ -6,17 +6,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { CANVAS_UI_LAYER_NAME } from "@/constans";
 import useGameProps from "@/hooks/useGameProps";
-import { useSetSearchParamState } from "@/hooks/useSearchParamState";
 import { INTERFACE_DATA_USE_QUEY_KEY as INTERFACE_DATA_USE_QUERY_KEY } from "@/hooks/useQueryInterface";
 import useQueryLastSave from "@/hooks/useQueryLastSave";
+import { useSetSearchParamState } from "@/hooks/useSearchParamState";
 import startLabel from "@/labels/startLabel";
 import { InterfaceSettings } from "@/lib/stores/interface-settings-store";
 import { cn } from "@/lib/utils";
 import { loadSave } from "@/utils/save-utility";
 import packageJson from "../../../package.json";
 
-const menuButtonClass =
-    "justify-start hover:scale-105 transition-transform duration-150 ease-out";
+const menuButtonClass = "justify-start hover:scale-105 transition-transform duration-150 ease-out";
 
 /** Text-shadow outline so the text is readable on any background colour */
 const infoShadowClass = "[text-shadow:0_0_3px_#000,0_0_6px_#000]";
