@@ -71,7 +71,9 @@ function get10ColorShades(color: string) {
 }
 
 export default function MyThemeProvider({ children }: Iprops) {
-    const [primaryColor, setPrimaryColor] = useState(localStorage.getItem("primaryColor") || "#1c73ff");
+    const [primaryColor, setPrimaryColor] = useState(
+        localStorage.getItem("primaryColor") || "#1c73ff",
+    );
     const [solidColor, setSolidColor] = useState<SolidColorType>(
         (localStorage.getItem("solidColor") as SolidColorType) || "white",
     );

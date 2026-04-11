@@ -1,4 +1,13 @@
-import { moveIn, narration, newLabel, showImageContainer, showWithFade, sound, Text, TextStyle } from "@drincs/pixi-vn";
+import {
+    moveIn,
+    narration,
+    newLabel,
+    showImageContainer,
+    showWithFade,
+    sound,
+    Text,
+    TextStyle,
+} from "@drincs/pixi-vn";
 import { james, mc, sly, steph, steph_fullname } from "../values/characters";
 
 const secondPart = newLabel("second_part", [
@@ -70,7 +79,11 @@ const secondPart = newLabel("second_part", [
         narration.dialogue = { character: steph, text: `They got you a new mattress, right?` };
     },
     async () => {
-        await showImageContainer("steph", ["fm02-body", "fm02-eyes-nervous", "fm02-mouth-nervous01"]);
+        await showImageContainer("steph", [
+            "fm02-body",
+            "fm02-eyes-nervous",
+            "fm02-mouth-nervous01",
+        ]);
         narration.dialogGlue = true;
         narration.dialogue = `That last guy was a druggie, did ${james.name} tell you that?`;
     },
@@ -83,7 +96,10 @@ const secondPart = newLabel("second_part", [
     async () => {
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-grin", "fm01-mouth-grin00"]);
         await showImageContainer("steph", ["fm02-body", "fm02-eyes-wow", "fm02-mouth-upset01"]);
-        narration.dialogue = { character: steph, text: `${sly.name}! If word gets out about that...` };
+        narration.dialogue = {
+            character: steph,
+            text: `${sly.name}! If word gets out about that...`,
+        };
     },
     async () => {
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-smile", "fm01-mouth-grin00"]);
@@ -155,7 +171,10 @@ const secondPart = newLabel("second_part", [
     async () => {
         await showImageContainer("james", ["m01-body", "m01-eyes-annoy", "m01-mouth-smile00"]);
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-smile", "fm01-mouth-smile01"]);
-        narration.dialogue = { character: sly, text: `${james.name} is just a baby. A freshman like you!` };
+        narration.dialogue = {
+            character: sly,
+            text: `${james.name} is just a baby. A freshman like you!`,
+        };
     },
     async () => {
         await showImageContainer("james", ["m01-body", "m01-eyes-annoy", "m01-mouth-annoy01"]);
@@ -179,7 +198,11 @@ const secondPart = newLabel("second_part", [
     },
     async () => {
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-smile", "fm01-mouth-serious00"]);
-        await showImageContainer("steph", ["fm02-body", "fm02-eyes-nervous", "fm02-mouth-nervous00"]);
+        await showImageContainer("steph", [
+            "fm02-body",
+            "fm02-eyes-nervous",
+            "fm02-mouth-nervous00",
+        ]);
         narration.dialogue = { character: mc, text: `Um... why did you switch degrees?` };
     },
     async () => {
@@ -196,7 +219,11 @@ const secondPart = newLabel("second_part", [
     async () => {
         await showImageContainer("james", ["m01-body", "m01-eyes-grin", "m01-mouth-neutral01"]);
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-wow", "fm01-mouth-upset01"]);
-        await showImageContainer("steph", ["fm02-body", "fm02-eyes-nervous", "fm02-mouth-nervous00"]);
+        await showImageContainer("steph", [
+            "fm02-body",
+            "fm02-eyes-nervous",
+            "fm02-mouth-nervous00",
+        ]);
         narration.dialogue = { character: james, text: `They were actually her siblings.` };
     },
     async () => {
@@ -231,7 +258,11 @@ const secondPart = newLabel("second_part", [
     async () => {
         await showImageContainer("james", ["m01-body", "m01-eyes-smile", "m01-mouth-annoy00"]);
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-smile", "fm01-mouth-serious00"]);
-        await showImageContainer("steph", ["fm02-body", "fm02-eyes-nervous", "fm02-mouth-nervous00"]);
+        await showImageContainer("steph", [
+            "fm02-body",
+            "fm02-eyes-nervous",
+            "fm02-mouth-nervous00",
+        ]);
         narration.dialogue = { character: mc, text: `...` };
     },
     async () => {
@@ -247,8 +278,15 @@ const secondPart = newLabel("second_part", [
     },
     async () => {
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-smile", "fm01-mouth-smile00"]);
-        await showImageContainer("steph", ["fm02-body", "fm02-eyes-nervous", "fm02-mouth-nervous00"]);
-        narration.dialogue = { character: mc, text: `...uh... ...just getting my Gen Eds out of the way right now...` };
+        await showImageContainer("steph", [
+            "fm02-body",
+            "fm02-eyes-nervous",
+            "fm02-mouth-nervous00",
+        ]);
+        narration.dialogue = {
+            character: mc,
+            text: `...uh... ...just getting my Gen Eds out of the way right now...`,
+        };
     },
     async () => {
         await showImageContainer("james", ["m01-body", "m01-eyes-smile", "m01-mouth-neutral00"]);
@@ -267,12 +305,19 @@ const secondPart = newLabel("second_part", [
     },
     async () => {
         await showImageContainer("james", ["m01-body", "m01-eyes-smile", "m01-mouth-smile00"]);
-        await showImageContainer("steph", ["fm02-body", "fm02-eyes-nervous", "fm02-mouth-nervous00"]);
+        await showImageContainer("steph", [
+            "fm02-body",
+            "fm02-eyes-nervous",
+            "fm02-mouth-nervous00",
+        ]);
         narration.dialogue = `I knew this wouldn't go anywhere good.`;
     },
     async () => {
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-smile", "fm01-mouth-smile01"]);
-        narration.dialogue = { character: sly, text: `Are you going to go visit your parents on the weekend?` };
+        narration.dialogue = {
+            character: sly,
+            text: `Are you going to go visit your parents on the weekend?`,
+        };
     },
     async () => {
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-smile", "fm01-mouth-smile00"]);
@@ -316,7 +361,11 @@ const secondPart = newLabel("second_part", [
     },
     async () => {
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-smile", "fm01-mouth-serious01"]);
-        await showImageContainer("steph", ["fm02-body", "fm02-eyes-nervous", "fm02-mouth-nervous00"]);
+        await showImageContainer("steph", [
+            "fm02-body",
+            "fm02-eyes-nervous",
+            "fm02-mouth-nervous00",
+        ]);
         narration.dialogGlue = true;
         narration.dialogue = `. ...... . . . . .. .. ..  .... .`;
     },
@@ -347,7 +396,10 @@ const secondPart = newLabel("second_part", [
         await showImageContainer("james", ["m01-body", "m01-eyes-wow", "m01-mouth-annoy00"]);
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-smile", "fm01-mouth-smile00"]);
         await showImageContainer("steph", ["fm02-body", "fm02-eyes-wow", "fm02-mouth-upset01"]);
-        narration.dialogue = { character: steph, text: `${james.name}! You don't have to refer to him by name!!` };
+        narration.dialogue = {
+            character: steph,
+            text: `${james.name}! You don't have to refer to him by name!!`,
+        };
     },
     async () => {
         await showImageContainer("james", ["m01-body", "m01-eyes-smile", "m01-mouth-neutral01"]);
@@ -358,10 +410,17 @@ const secondPart = newLabel("second_part", [
     async () => {
         await showImageContainer("james", ["m01-body", "m01-eyes-smile", "m01-mouth-neutral00"]);
         await showImageContainer("steph", ["fm02-body", "fm02-eyes-joy", "fm02-mouth-nervous01"]);
-        narration.dialogue = { character: steph, text: `Say, ${mc.name}, where's the rest of your luggage?` };
+        narration.dialogue = {
+            character: steph,
+            text: `Say, ${mc.name}, where's the rest of your luggage?`,
+        };
     },
     async () => {
-        await showImageContainer("steph", ["fm02-body", "fm02-eyes-nervous", "fm02-mouth-nervous00"]);
+        await showImageContainer("steph", [
+            "fm02-body",
+            "fm02-eyes-nervous",
+            "fm02-mouth-nervous00",
+        ]);
         narration.dialogue = { character: mc, text: `...` };
     },
     async () => {
@@ -384,7 +443,10 @@ const secondPart = newLabel("second_part", [
     },
     async () => {
         await showImageContainer("steph", ["fm02-body", "fm02-eyes-wow", "fm02-mouth-nervous00"]);
-        narration.dialogue = { character: mc, text: `So... um... what are you going for, ${steph_fullname}?` };
+        narration.dialogue = {
+            character: mc,
+            text: `So... um... what are you going for, ${steph_fullname}?`,
+        };
     },
     async () => {
         await showImageContainer("steph", ["fm02-body", "fm02-eyes-wow", "fm02-mouth-nervous01"]);
@@ -421,7 +483,10 @@ const secondPart = newLabel("second_part", [
         await showImageContainer("james", ["m01-body", "m01-eyes-grin", "m01-mouth-grin00"]);
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-smile", "fm01-mouth-serious00"]);
         await showImageContainer("steph", ["fm02-body", "fm02-eyes-nervous", "fm02-mouth-smile01"]);
-        narration.dialogue = { character: steph, text: `I think I've had plenty of it already, though.` };
+        narration.dialogue = {
+            character: steph,
+            text: `I think I've had plenty of it already, though.`,
+        };
     },
     async () => {
         await showImageContainer("james", ["m01-body", "m01-eyes-smile", "m01-mouth-grin00"]);
@@ -518,7 +583,11 @@ const secondPart = newLabel("second_part", [
     async () => {
         // let stephImage = await showImageContainer("steph", ["fm02-body", "fm02-eyes-upset", "fm02-mouth-upset00"])
         await showImageContainer("james", ["m01-body", "m01-eyes-concern", "m01-mouth-neutral01"]);
-        await showImageContainer("steph", ["fm02-body", "fm02-eyes-nervous", "fm02-mouth-nervous00"]);
+        await showImageContainer("steph", [
+            "fm02-body",
+            "fm02-eyes-nervous",
+            "fm02-mouth-nervous00",
+        ]);
         narration.dialogue = { character: james, text: `...hey ${mc.name}, are you okay?` };
     },
     async () => {
@@ -591,7 +660,10 @@ const secondPart = newLabel("second_part", [
     async () => {
         await showImageContainer("james", ["m01-body", "m01-eyes-smile", "m01-mouth-smile01"]);
         await showImageContainer("steph", ["fm02-body", "fm02-eyes-wow", "fm02-mouth-nervous00"]);
-        narration.dialogue = { character: james, text: `"You can do?" Is that what the kids are saying today?` };
+        narration.dialogue = {
+            character: james,
+            text: `"You can do?" Is that what the kids are saying today?`,
+        };
     },
     async () => {
         await showImageContainer("james", ["m01-body", "m01-eyes-smile", "m01-mouth-neutral00"]);
@@ -677,7 +749,10 @@ const secondPart = newLabel("second_part", [
     async () => {
         await showImageContainer("james", ["m01-body", "m01-eyes-grin", "m01-mouth-smile01"]);
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-smile", "fm01-mouth-smile00"]);
-        narration.dialogue = { character: james, text: `...who told you you're a scary guy, ${mc.name}?` };
+        narration.dialogue = {
+            character: james,
+            text: `...who told you you're a scary guy, ${mc.name}?`,
+        };
     },
     async () => {
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-smile", "fm01-mouth-serious00"]);
@@ -714,7 +789,11 @@ const secondPart = newLabel("second_part", [
     async () => {
         await showImageContainer("james", ["m01-body", "m01-eyes-concern", "m01-mouth-concern00"]);
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-upset", "fm01-mouth-serious01"]);
-        await showImageContainer("steph", ["fm02-body", "fm02-eyes-nervous", "fm02-mouth-nervous00"]);
+        await showImageContainer("steph", [
+            "fm02-body",
+            "fm02-eyes-nervous",
+            "fm02-mouth-nervous00",
+        ]);
         narration.dialogue = { character: sly, text: `...why are you scary?` };
     },
     async () => {
@@ -739,7 +818,11 @@ const secondPart = newLabel("second_part", [
     },
     async () => {
         await showImageContainer("james", ["m01-body", "m01-eyes-concern", "m01-mouth-concern00"]);
-        await showImageContainer("steph", ["fm02-body", "fm02-eyes-nervous", "fm02-mouth-nervous01"]);
+        await showImageContainer("steph", [
+            "fm02-body",
+            "fm02-eyes-nervous",
+            "fm02-mouth-nervous01",
+        ]);
         narration.dialogue = {
             character: steph,
             text: `...I can't imagine being told by your own *mother* you're scary.`,
@@ -747,13 +830,20 @@ const secondPart = newLabel("second_part", [
     },
     async () => {
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-smile", "fm01-mouth-serious00"]);
-        await showImageContainer("steph", ["fm02-body", "fm02-eyes-nervous", "fm02-mouth-nervous00"]);
+        await showImageContainer("steph", [
+            "fm02-body",
+            "fm02-eyes-nervous",
+            "fm02-mouth-nervous00",
+        ]);
         narration.dialogue = { character: mc, text: `...` };
     },
     async () => {
         await showImageContainer("james", ["m01-body", "m01-eyes-smile", "m01-mouth-concern00"]);
         await showImageContainer("steph", ["fm02-body", "fm02-eyes-joy", "fm02-mouth-nervous01"]);
-        narration.dialogue = { character: steph, text: `...but if you really *were*, I suspect you wouldn't be here.` };
+        narration.dialogue = {
+            character: steph,
+            text: `...but if you really *were*, I suspect you wouldn't be here.`,
+        };
     },
     async () => {
         await showImageContainer("james", ["m01-body", "m01-eyes-concern", "m01-mouth-smile01"]);
@@ -767,7 +857,11 @@ const secondPart = newLabel("second_part", [
         narration.dialogue = `...I want to run. But I don't know this place; there's nowhere *to* run. And I can't lose this room... So the best I can do is make *them* run.`;
     },
     async () => {
-        await showImageContainer("steph", ["fm02-body", "fm02-eyes-nervous", "fm02-mouth-nervous00"]);
+        await showImageContainer("steph", [
+            "fm02-body",
+            "fm02-eyes-nervous",
+            "fm02-mouth-nervous00",
+        ]);
         narration.dialogue = `By telling them the truth.`;
     },
     async () => {
@@ -810,7 +904,11 @@ const secondPart = newLabel("second_part", [
         narration.dialogue = { character: mc, text: `...she was...` };
     },
     async () => {
-        await showImageContainer("steph", ["fm02-body", "fm02-eyes-nervous", "fm02-mouth-nervous00"]);
+        await showImageContainer("steph", [
+            "fm02-body",
+            "fm02-eyes-nervous",
+            "fm02-mouth-nervous00",
+        ]);
         narration.dialogue = { character: mc, text: `...` };
     },
     async () => {
@@ -819,10 +917,16 @@ const secondPart = newLabel("second_part", [
         narration.dialogue = `They just look at me sadly.`;
     },
     () => {
-        narration.dialogue = { character: mc, text: `...addicted to heroin and I couldn't tell *anyone*.` };
+        narration.dialogue = {
+            character: mc,
+            text: `...addicted to heroin and I couldn't tell *anyone*.`,
+        };
     },
     () => {
-        narration.dialogue = { character: mc, text: `...told me she'd gut me like a pig if I did.` };
+        narration.dialogue = {
+            character: mc,
+            text: `...told me she'd gut me like a pig if I did.`,
+        };
     },
     () => {
         narration.dialogue = { character: mc, text: `I recommended to her...` };
@@ -879,7 +983,10 @@ const secondPart = newLabel("second_part", [
         narration.dialogue = `she threatened to *kill* me, but... she couldn't bring herself to do it.`;
     },
     () => {
-        narration.dialogue = { character: mc, text: `She had a few days' supply of heroin. She...` };
+        narration.dialogue = {
+            character: mc,
+            text: `She had a few days' supply of heroin. She...`,
+        };
     },
     async () => {
         await showImageContainer("james", ["m01-body", "m01-eyes-wow", "m01-mouth-concern00"]);
@@ -915,7 +1022,11 @@ const secondPart = newLabel("second_part", [
     },
     async () => {
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-upset", "fm01-mouth-serious00"]);
-        await showImageContainer("steph", ["fm02-body", "fm02-eyes-nervous", "fm02-mouth-nervous00"]);
+        await showImageContainer("steph", [
+            "fm02-body",
+            "fm02-eyes-nervous",
+            "fm02-mouth-nervous00",
+        ]);
         narration.dialogue = {
             character: mc,
             text: `...nobody wanted to adopt me; I was 15 at the time my mom killed herself. Teens don't get adopted.`,
@@ -962,7 +1073,10 @@ const secondPart = newLabel("second_part", [
         };
     },
     () => {
-        narration.dialogue = { character: mc, text: `...so there. Have I finally scared you away?` };
+        narration.dialogue = {
+            character: mc,
+            text: `...so there. Have I finally scared you away?`,
+        };
     },
     async () => {
         await showImageContainer("james", ["m01-body", "m01-eyes-cry", "m01-mouth-cry00"]);
@@ -1032,7 +1146,10 @@ const secondPart = newLabel("second_part", [
     },
     async () => {
         await showImageContainer("steph", ["fm02-body", "fm02-eyes-bawl", "fm02-mouth-nervous01"]);
-        narration.dialogue = { character: sly, text: `Will you be honest with your feelings and with us?` };
+        narration.dialogue = {
+            character: sly,
+            text: `Will you be honest with your feelings and with us?`,
+        };
     },
     async () => {
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-soft", "fm01-mouth-soft00"]);
@@ -1042,11 +1159,18 @@ const secondPart = newLabel("second_part", [
         await showImageContainer("james", ["m01-body", "m01-eyes-cry", "m01-mouth-smile00"]);
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-soft", "fm01-mouth-soft01"]);
         await showImageContainer("steph", ["fm02-body", "fm02-eyes-bawl", "fm02-mouth-nervous00"]);
-        narration.dialogue = { character: sly, text: `Are you willing to try being a friend and having friends?` };
+        narration.dialogue = {
+            character: sly,
+            text: `Are you willing to try being a friend and having friends?`,
+        };
     },
     async () => {
         await showImageContainer("sly", ["fm01-body", "fm01-eyes-soft", "fm01-mouth-soft00"]);
-        await showImageContainer("steph", ["fm02-body", "fm02-eyes-nervous", "fm02-mouth-nervous00"]);
+        await showImageContainer("steph", [
+            "fm02-body",
+            "fm02-eyes-nervous",
+            "fm02-mouth-nervous00",
+        ]);
         narration.dialogue = { character: mc, text: `...` };
     },
     async () => {

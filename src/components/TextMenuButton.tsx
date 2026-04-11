@@ -35,7 +35,13 @@ export default function TextMenuButton(props: TextMenuButtonProps) {
                           : theme.palette.neutral[300]
                 }
                 sx={{
-                    fontSize: { xs: "0.6rem", sm: "0.7rem", md: "0.8rem", lg: "1rem", xl: "1.1rem" },
+                    fontSize: {
+                        xs: "0.6rem",
+                        sm: "0.7rem",
+                        md: "0.8rem",
+                        lg: "1rem",
+                        xl: "1.1rem",
+                    },
                     userSelect: "none",
                     textShadow: `0 0 3px ${theme.palette.common.black}, 0 0 5px ${theme.palette.common.black}`,
                 }}

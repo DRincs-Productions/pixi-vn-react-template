@@ -10,7 +10,10 @@ export function initializeIndexedDB(): Promise<void> {
             let db = request.result;
             if (!db.objectStoreNames.contains(INDEXED_DB_SAVE_TABLE)) {
                 // create the object store
-                let objectStore = db.createObjectStore(INDEXED_DB_SAVE_TABLE, { keyPath: "id", autoIncrement: true });
+                let objectStore = db.createObjectStore(INDEXED_DB_SAVE_TABLE, {
+                    keyPath: "id",
+                    autoIncrement: true,
+                });
                 objectStore.createIndex("id", "id", { unique: true });
                 objectStore.createIndex("date", "date", { unique: false });
                 objectStore.createIndex("name", "name", { unique: false });
@@ -56,7 +59,10 @@ export async function putRowIntoIndexDB<T extends {}>(tableName: string, data: T
     });
 }
 
-export async function getRowFromIndexDB<T extends {}>(tableName: string, id: any): Promise<T | null> {
+export async function getRowFromIndexDB<T extends {}>(
+    tableName: string,
+    id: any,
+): Promise<T | null> {
     return new Promise((resolve, reject) => {
         let request = indexedDB.open(INDEXED_DB_NAME);
         request.onsuccess = function (_event) {
@@ -158,7 +164,9 @@ export async function getListFromIndexDB<T extends {}>(
             let transaction = db.transaction([tableName], "readwrite");
             let objectStore = transaction.objectStore(tableName);
             let getRequest = options.order
-                ? objectStore.index(options.order.field as string).openCursor(null, options.order.direction)
+                ? objectStore
+                      .index(options.order.field as string)
+                      .openCursor(null, options.order.direction)
                 : objectStore.openCursor();
             let results: T[] = [];
             let counter = 0;

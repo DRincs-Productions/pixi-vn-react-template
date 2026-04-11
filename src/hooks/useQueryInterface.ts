@@ -20,7 +20,10 @@ export function useQueryChoiceMenuOptions() {
         queryFn: async () =>
             narration.choices?.map((option) => ({
                 ...option,
-                text: typeof option.text === "string" ? t(option.text) : option.text.map((text) => t(text)).join(" "),
+                text:
+                    typeof option.text === "string"
+                        ? t(option.text)
+                        : option.text.map((text) => t(text)).join(" "),
             })) || [],
     });
 }

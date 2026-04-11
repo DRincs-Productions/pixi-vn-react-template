@@ -23,7 +23,10 @@ export function createGameSave(options?: { image?: string; name?: string }): Gam
     };
 }
 
-export async function loadSave(saveData: GameSaveData, navigate: (to: string) => any | Promise<any>) {
+export async function loadSave(
+    saveData: GameSaveData,
+    navigate: (to: string) => any | Promise<any>,
+) {
     await Game.restoreGameState(saveData.saveData, navigate);
 }
 
@@ -38,7 +41,9 @@ export async function saveGameToIndexDB(
         ...rest,
     };
     if (item.id === undefined) {
-        const lastSave = await getLastRowFromIndexDB<GameSaveData & { id: number }>(INDEXED_DB_SAVE_TABLE);
+        const lastSave = await getLastRowFromIndexDB<GameSaveData & { id: number }>(
+            INDEXED_DB_SAVE_TABLE,
+        );
         if (lastSave) {
             item.id = lastSave.id + 1;
         } else {
@@ -52,7 +57,9 @@ export async function saveGameToIndexDB(
     return (await getLastSaveFromIndexDB()) as GameSaveData & { id: number };
 }
 
-export async function getSaveFromIndexDB(id: number): Promise<(GameSaveData & { id: number }) | null> {
+export async function getSaveFromIndexDB(
+    id: number,
+): Promise<(GameSaveData & { id: number }) | null> {
     return await getRowFromIndexDB(INDEXED_DB_SAVE_TABLE, id);
 }
 
@@ -121,7 +128,9 @@ export async function addRefreshSave() {
     }
 }
 
-export async function loadRefreshSave(redirect: (to: string) => any | Promise<any>): Promise<boolean> {
+export async function loadRefreshSave(
+    redirect: (to: string) => any | Promise<any>,
+): Promise<boolean> {
     const jsonString = localStorage.getItem(REFRESH_SAVE_LOCAL_STORAGE_KEY);
     if (jsonString) {
         const data: GameSaveData = JSON.parse(jsonString);

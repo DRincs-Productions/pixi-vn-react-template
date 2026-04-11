@@ -58,7 +58,11 @@ export default defineConfig({
         rollupOptions: {
             output: {
                 manualChunks(id) {
-                    if (id.includes("react-markdown") || id.includes("rehype-raw") || id.includes("remark-gfm"))
+                    if (
+                        id.includes("react-markdown") ||
+                        id.includes("rehype-raw") ||
+                        id.includes("remark-gfm")
+                    )
                         return "react-markdown";
                     if (id.includes("@pixi/sound")) return "sound";
                     if (id.includes("@drincs/pixi-vn-spine")) return "spine";

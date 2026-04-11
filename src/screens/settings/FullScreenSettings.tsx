@@ -4,7 +4,9 @@ import { Box, Button, FormHelperText, FormLabel } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import useQueryIsFullModeScreen, { IS_FULL_SCREEN_MODE_USE_QUEY_KEY } from "../../hooks/useQueryIsFullModeScreen";
+import useQueryIsFullModeScreen, {
+    IS_FULL_SCREEN_MODE_USE_QUEY_KEY,
+} from "../../hooks/useQueryIsFullModeScreen";
 
 export default function FullScreenSettings() {
     const { data: isFullScreenMode } = useQueryIsFullModeScreen();
@@ -20,7 +22,9 @@ export default function FullScreenSettings() {
         <>
             <Box>
                 <FormLabel sx={{ typography: "title-sm" }}>{t("fullscreen")}</FormLabel>
-                <FormHelperText sx={{ typography: "body-sm" }}>{t("fullscreen_description")}</FormHelperText>
+                <FormHelperText sx={{ typography: "body-sm" }}>
+                    {t("fullscreen_description")}
+                </FormHelperText>
             </Box>
             <Button
                 loading={loading}
@@ -34,7 +38,9 @@ export default function FullScreenSettings() {
                     }
                     promise.finally(() => {
                         setLoading(false);
-                        queryClient.invalidateQueries({ queryKey: [IS_FULL_SCREEN_MODE_USE_QUEY_KEY] });
+                        queryClient.invalidateQueries({
+                            queryKey: [IS_FULL_SCREEN_MODE_USE_QUEY_KEY],
+                        });
                     });
                 }}
                 startDecorator={isFullScreenMode ? <FullscreenExitIcon /> : <FullscreenIcon />}

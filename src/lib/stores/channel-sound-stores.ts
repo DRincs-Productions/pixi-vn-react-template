@@ -15,8 +15,12 @@ export namespace ChannelSound {
             return store;
         }
         store = new Store<ChannelSoundState>({
-            volume: Number(localStorage.getItem(`${alias}_volume`) ?? sound.findChannel(alias).volume * 100),
-            muted: Boolean(localStorage.getItem(`${alias}_muted`) ?? sound.findChannel(alias).muted),
+            volume: Number(
+                localStorage.getItem(`${alias}_volume`) ?? sound.findChannel(alias).volume * 100,
+            ),
+            muted: Boolean(
+                localStorage.getItem(`${alias}_muted`) ?? sound.findChannel(alias).muted,
+            ),
         });
         storeCache.set(alias, store);
         return store;

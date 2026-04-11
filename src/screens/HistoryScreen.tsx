@@ -24,7 +24,9 @@ function HistoryList({ searchString }: { searchString?: string }) {
                         <Stack direction="row" spacing={1.5}>
                             <Avatar size="sm" src={data.icon} />
                             <Box sx={{ flex: 1 }}>
-                                {data.character && <Typography level="title-sm">{data.character}</Typography>}
+                                {data.character && (
+                                    <Typography level="title-sm">{data.character}</Typography>
+                                )}
                                 <Markdown
                                     remarkPlugins={[remarkGfm]}
                                     rehypePlugins={[rehypeRaw]}

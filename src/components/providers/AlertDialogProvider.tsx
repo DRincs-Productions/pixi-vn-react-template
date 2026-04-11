@@ -88,7 +88,9 @@ export function AlertDialogProvider({ children }: { children: ReactNode }) {
                                         return;
                                     }
                                     setDialogs((prev) =>
-                                        prev.map((d) => (d.id === dialog.id ? { ...d, loading: true } : d)),
+                                        prev.map((d) =>
+                                            d.id === dialog.id ? { ...d, loading: true } : d,
+                                        ),
                                     );
                                     try {
                                         const result = await dialog.options.onConfirm();
@@ -97,7 +99,9 @@ export function AlertDialogProvider({ children }: { children: ReactNode }) {
                                         }
                                     } finally {
                                         setDialogs((prev) =>
-                                            prev.map((d) => (d.id === dialog.id ? { ...d, loading: false } : d)),
+                                            prev.map((d) =>
+                                                d.id === dialog.id ? { ...d, loading: false } : d,
+                                            ),
                                         );
                                     }
                                 }}

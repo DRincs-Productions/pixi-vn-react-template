@@ -52,7 +52,12 @@ export default function ReturnMainMenuButton() {
                         >
                             {t("exit")}
                         </Button>
-                        <Button key={"cancel"} color="neutral" variant="plain" onClick={() => setOpenDialog(false)}>
+                        <Button
+                            key={"cancel"}
+                            color="neutral"
+                            variant="plain"
+                            onClick={() => setOpenDialog(false)}
+                        >
                             {t("cancel")}
                         </Button>
                     </>

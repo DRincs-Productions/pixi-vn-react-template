@@ -1,6 +1,10 @@
 import { Typography, type TypographyProps, useTheme } from "@mui/joy";
 
-export default function TypographyShadow({ sx, shadowColor, ...rest }: TypographyProps & { shadowColor?: string }) {
+export default function TypographyShadow({
+    sx,
+    shadowColor,
+    ...rest
+}: TypographyProps & { shadowColor?: string }) {
     const theme = useTheme();
     const defaultShadowColor = shadowColor ?? theme.palette.neutral[900];
 
