@@ -27,7 +27,14 @@ export function useSearchParamState<T>(field: string): T | undefined {
     const storeValue = useStore(searchParamStore, (state) => state[field]) as T | undefined;
 
     useEffect(() => {
-        searchParamStore.setState((state) => ({ ...state, [field]: valueFromUrl }));
+        // Only write to the store when the URL value genuinely differs from what the
+        // store already holds.  This prevents the redundant setState (and its extra
+        // re-render) that would otherwise fire ~300 ms after every
+        // useSetSearchParamState call, once the debounced navigate() settles.
+        // The effect still runs for real external URL changes (browser back/forward).
+        if (searchParamStore.state[field] !== valueFromUrl) {
+            searchParamStore.setState((state) => ({ ...state, [field]: valueFromUrl }));
+        }
     }, [field, valueFromUrl]);
 
     // On first render, the store hasn't been synced yet, so fall back to the URL value.
