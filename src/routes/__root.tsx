@@ -15,7 +15,7 @@ import useClosePageDetector from "@/hooks/useClosePageDetector";
 import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "@/hooks/useQueryInterface";
 import useSaveHotkeys from "@/hooks/useSaveHotkeys";
-import { useI18n } from "@/i18n";
+import { useI18n } from "@/lib/i18n";
 import { SearchParams } from "@/lib/stores/search-param-store";
 import type { RouterContext } from "@/router";
 import LoadingScreen from "@/screens/LoadingScreen";
