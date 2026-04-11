@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 
-export function SaveForm({
+export function SaveNameInput({
     initialValue,
     onValueChange,
 }: {

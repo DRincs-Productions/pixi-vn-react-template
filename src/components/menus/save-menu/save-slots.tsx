@@ -1,7 +1,7 @@
 import { ArchiveRestore, Download, Save, Trash2 } from "lucide-react";
 import { useLocation } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import useSaveMenuActions from "@/components/menus/save-menu/use-save-menu-actions";
+import useSaveFileActions from "@/components/menus/save-menu/use-save-menu-actions";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -11,11 +11,11 @@ import { downloadGameSave } from "@/utils/save-utility";
 
 const textShadow = "0 0 3px #111827, 0 0 5px #111827";
 
-export default function SaveSlot({ saveId }: { saveId: number }) {
+export default function SaveFile({ saveId }: { saveId: number }) {
     const { t } = useTranslation(["ui"]);
     const { isLoading, data: saveData, isError } = useQuerySaves({ id: saveId });
     const location = useLocation();
-    const { handleLoad, handleDelete, handleSave } = useSaveMenuActions();
+    const { handleLoad, handleDelete, handleSave } = useSaveFileActions();
 
     const isHome = (location.pathname as FileRouteTypes["fullPaths"]) === "/";
 
@@ -63,7 +63,7 @@ export default function SaveSlot({ saveId }: { saveId: number }) {
                     {saveData.date.toLocaleTimeString()}
                 </span>
                 <span className="text-sm text-neutral-300" style={{ textShadow }}>
-                    {`${t("save_slot")} ${saveId + 1}`}
+                    {`${t("save_slot")} ${String(saveId + 1).padStart(2, "0")}`}
                 </span>
             </div>
             {/* top-right delete */}

@@ -3,7 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { SaveForm } from "@/components/menus/save-menu/save-forms";
+import { SaveNameInput } from "@/components/menus/save-menu/save-forms";
 import { useAlertDialog } from "@/components/providers/AlertDialogProvider";
 import useGameProps from "@/hooks/useGameProps";
 import { LAST_SAVE_USE_QUEY_KEY } from "@/hooks/useQueryLastSave";
@@ -12,7 +12,7 @@ import { useSetSearchParamState } from "@/hooks/useSearchParamState";
 import type GameSaveData from "@/models/GameSaveData";
 import { deleteSaveFromIndexDB, loadSave, saveGameToIndexDB } from "@/utils/save-utility";
 
-export default function useSaveMenuActions() {
+export default function useSaveFileActions() {
     const setOpen = useSetSearchParamState<boolean>("saves");
     const navigate = useNavigate();
     const { t } = useTranslation(["ui"]);
@@ -26,7 +26,7 @@ export default function useSaveMenuActions() {
             openAlertDialog({
                 head: t("load"),
                 content: t("you_sure_to_load_save", {
-                    name: data.name || `${t("save_slot")} ${data.id}`,
+                    name: data.name || `${t("save_slot")} ${String(data.id + 1).padStart(2, "0")}`,
                 }),
                 onConfirm: () =>
                     loadSave(data, (to) => navigate({ to }))
@@ -50,7 +50,7 @@ export default function useSaveMenuActions() {
         (id: number) => {
             openAlertDialog({
                 head: t("delete"),
-                content: t("you_sure_to_delete_save", { name: `${t("save_slot")} ${id}` }),
+                content: t("you_sure_to_delete_save", { name: `${t("save_slot")} ${String(id + 1).padStart(2, "0")}` }),
                 onConfirm: () =>
                     deleteSaveFromIndexDB(id)
                         .then(() => {
@@ -77,7 +77,7 @@ export default function useSaveMenuActions() {
                 content: (
                     <>
                         {t("save_as")}
-                        <SaveForm
+                        <SaveNameInput
                             initialValue={defaultName || ""}
                             onValueChange={(v) => {
                                 tempSaveNameRef.current = v;
