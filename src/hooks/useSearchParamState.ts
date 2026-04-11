@@ -1,14 +1,15 @@
-import { Store } from "@tanstack/store";
-import { useStore } from "@tanstack/react-store";
+import { useDebouncedCallback } from "@tanstack/react-pacer";
 import { useNavigate, useSearch } from "@tanstack/react-router";
+import { useStore } from "@tanstack/react-store";
+import { Store } from "@tanstack/store";
 import { useCallback, useEffect } from "react";
 
 /**
- * Internal store used as an instant-read cache for URL search params.
+ * Module-level store used as an instant-read cache for URL search params.
  * This avoids the browser-level delay of `useSearch` when params are
  * set programmatically via `navigate()`.
  */
-const _searchParamStore = new Store<Record<string, unknown>>({});
+const searchParamStore = new Store<Record<string, unknown>>({});
 
 /**
  * Returns the current value of the given URL search param.
@@ -23,10 +24,10 @@ const _searchParamStore = new Store<Record<string, unknown>>({});
 export function useSearchParamState<T>(field: string): T | undefined {
     const search = useSearch({ strict: false });
     const valueFromUrl = (search as Record<string, unknown>)[field] as T | undefined;
-    const storeValue = useStore(_searchParamStore, (state) => state[field]) as T | undefined;
+    const storeValue = useStore(searchParamStore, (state) => state[field]) as T | undefined;
 
     useEffect(() => {
-        _searchParamStore.setState((state) => ({ ...state, [field]: valueFromUrl }));
+        searchParamStore.setState((state) => ({ ...state, [field]: valueFromUrl }));
     }, [field, valueFromUrl]);
 
     // On first render, the store hasn't been synced yet, so fall back to the URL value.
@@ -37,8 +38,8 @@ export function useSearchParamState<T>(field: string): T | undefined {
  * Returns a stable setter for the given URL search param.
  *
  * Calling the setter instantly updates the internal store (so components
- * re-render without waiting for the URL update) and then also calls
- * `navigate()` to keep the URL in sync.
+ * re-render without waiting for the URL update) and then debounces the
+ * `navigate()` call to avoid flooding the browser history on rapid changes.
  *
  * Pass `undefined` to remove the param from the URL.
  *
@@ -48,11 +49,18 @@ export function useSearchParamState<T>(field: string): T | undefined {
 export function useSetSearchParamState<T>(field: string): (value: T | undefined) => void {
     const navigate = useNavigate();
 
+    const debouncedNavigate = useDebouncedCallback(
+        (fieldParam: string, value: unknown) => {
+            navigate({ search: ((prev: any) => ({ ...prev, [fieldParam]: value })) as any });
+        },
+        { wait: 300 },
+    );
+
     return useCallback(
         (value: T | undefined) => {
-            _searchParamStore.setState((state) => ({ ...state, [field]: value }));
-            navigate({ search: ((prev: any) => ({ ...prev, [field]: value })) as any });
+            searchParamStore.setState((state) => ({ ...state, [field]: value }));
+            debouncedNavigate(field, value);
         },
-        [field, navigate],
+        [field, debouncedNavigate],
     );
 }

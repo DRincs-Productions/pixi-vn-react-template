@@ -12,9 +12,9 @@ import SettingButton from "../../components/SettingButton";
 import useGameProps from "../../hooks/useGameProps";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
+import { useSetSearchParamState } from "../../hooks/useSearchParamState";
 import { useAlertDialog } from "../../providers/AlertDialogProvider";
 import { downloadGameSave, loadGameSaveFromFile, loadSave, saveGameToIndexDB } from "../../utils/save-utility";
-import { OpenScreens } from "../../stores/open-screens-store";
 
 export default function SaveLoadSettingButtons() {
     const navigate = useNavigate();
@@ -24,6 +24,7 @@ export default function SaveLoadSettingButtons() {
     const { data: lastSave = null } = useQueryLastSave();
     const location = useLocation();
     const { openAlertDialog } = useAlertDialog();
+    const setSaves = useSetSearchParamState<boolean>("saves");
 
     return [
         location.pathname === "/" ? null : (
@@ -97,8 +98,7 @@ export default function SaveLoadSettingButtons() {
         <SettingButton
             key={"save_load_button"}
             onClick={() => {
-                OpenScreens.setSaves(true);
-                navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any });
+                setSaves(true);
             }}
         >
             <SaveIcon />

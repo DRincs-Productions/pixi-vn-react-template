@@ -11,12 +11,12 @@ import useNarrationFunctions from "../hooks/useNarrationFunctions";
 import { useQueryCanGoBack } from "../hooks/useQueryInterface";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
+import { useSetSearchParamState } from "../hooks/useSearchParamState";
 import { useWheelActions } from "../hooks/useWheelActions";
 import { useAlertDialog } from "../providers/AlertDialogProvider";
 import { AutoSettings } from "../stores/auto-settings-store";
 import { GameStatus } from "../stores/game-status-store";
 import { InterfaceSettings } from "../stores/interface-settings-store";
-import { OpenScreens } from "../stores/open-screens-store";
 import { SkipSettings } from "../stores/skip-settings-store";
 import { loadSave, saveGameToIndexDB } from "../utils/save-utility";
 
@@ -34,6 +34,9 @@ export default function QuickTools() {
     const { openAlertDialog } = useAlertDialog();
     const gameProps = useGameProps();
     useWheelActions();
+    const setHistory = useSetSearchParamState<boolean>("history");
+    const setSaves = useSetSearchParamState<boolean>("saves");
+    const setSettings = useSetSearchParamState<boolean>("settings");
     const textMenuVarians = useMemo(
         () =>
             hidden
@@ -72,8 +75,7 @@ export default function QuickTools() {
             </TextMenuButton>
             <TextMenuButton
                 onClick={() => {
-                    OpenScreens.setHistory(true);
-                    navigate({ search: ((prev: any) => ({ ...prev, history: true })) as any });
+                    setHistory(true);
                 }}
                 sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
@@ -96,8 +98,7 @@ export default function QuickTools() {
             </TextMenuButton>
             <TextMenuButton
                 onClick={() => {
-                    OpenScreens.setSaves(true);
-                    navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any });
+                    setSaves(true);
                 }}
                 sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
@@ -148,8 +149,7 @@ export default function QuickTools() {
             </TextMenuButton>
             <TextMenuButton
                 onClick={() => {
-                    OpenScreens.setSettings(true);
-                    navigate({ search: ((prev: any) => ({ ...prev, settings: true })) as any });
+                    setSettings(true);
                 }}
                 sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >

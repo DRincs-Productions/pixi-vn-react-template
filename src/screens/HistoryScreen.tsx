@@ -4,16 +4,14 @@ import { Box, Chip, Input, Stack, type Theme, Typography } from "@mui/joy";
 import Avatar from "@mui/joy/Avatar";
 import { useMediaQuery } from "@mui/material";
 import { useHotkeys } from "@tanstack/react-hotkeys";
-import { useNavigate, useSearch } from "@tanstack/react-router";
-import { useStore } from "@tanstack/react-store";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import ModalDialogCustom from "../components/ModalDialog";
 import { useQueryNarrativeHistory } from "../hooks/useQueryInterface";
-import { OpenScreens } from "../stores/open-screens-store";
+import { useSearchParamState, useSetSearchParamState } from "../hooks/useSearchParamState";
 
 function HistoryList({ searchString }: { searchString?: string }) {
     const { data = [] } = useQueryNarrativeHistory({ searchString });
@@ -83,22 +81,16 @@ function HistoryList({ searchString }: { searchString?: string }) {
 }
 
 export default function HistoryScreen() {
-    const { history: openFromSearch = false } = useSearch({ from: "/game" });
-    const open = useStore(OpenScreens.store, (state) => state.history);
-    const navigate = useNavigate();
+    const open = useSearchParamState<boolean>("history");
+    const setOpen = useSetSearchParamState<boolean>("history");
+    const handleSetOpen = useCallback((value: boolean) => setOpen(value || undefined), [setOpen]);
     const [searchString, setSearchString] = useState("");
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
 
-    useEffect(() => {
-        OpenScreens.setHistory(openFromSearch);
-    }, [openFromSearch]);
-
     const toggleOpen = useCallback(() => {
-        const newValue = !OpenScreens.store.state.history;
-        OpenScreens.setHistory(newValue);
-        navigate({ search: ((prev: any) => ({ ...prev, history: newValue })) as any });
-    }, [navigate]);
+        setOpen(open ? undefined : true);
+    }, [open, setOpen]);
 
     useHotkeys([
         {
@@ -109,8 +101,8 @@ export default function HistoryScreen() {
 
     return (
         <ModalDialogCustom
-            open={open}
-            setOpen={toggleOpen}
+            open={open ?? false}
+            setOpen={handleSetOpen}
             layout={smScreen ? "fullscreen" : "center"}
             head={
                 <Stack

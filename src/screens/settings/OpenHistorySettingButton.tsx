@@ -1,14 +1,15 @@
 import HistoryIcon from "@mui/icons-material/History";
 import { Typography } from "@mui/joy";
-import { useLocation, useNavigate } from "@tanstack/react-router";
+import { useLocation } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import SettingButton from "../../components/SettingButton";
-import { OpenScreens } from "../../stores/open-screens-store";
+import { useSetSearchParamState } from "../../hooks/useSearchParamState";
 
 export default function OpenHistorySettingButton() {
     const { t } = useTranslation(["ui"]);
-    const navigate = useNavigate();
     const location = useLocation();
+    const setSettings = useSetSearchParamState<boolean>("settings");
+    const setHistory = useSetSearchParamState<boolean>("history");
     if (!location.pathname.startsWith("/game")) {
         return null;
     }
@@ -16,9 +17,8 @@ export default function OpenHistorySettingButton() {
     return (
         <SettingButton
             onClick={() => {
-                OpenScreens.setSettings(false);
-                OpenScreens.setHistory(true);
-                navigate({ search: ((prev: any) => ({ ...prev, settings: false, history: true })) as any });
+                setSettings(undefined);
+                setHistory(true);
             }}
         >
             <HistoryIcon />
