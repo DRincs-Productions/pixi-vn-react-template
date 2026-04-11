@@ -3,7 +3,7 @@ import { Box } from "@mui/joy";
 import Modal from "@mui/joy/Modal";
 import { useStore } from "@tanstack/react-store";
 import useNetworkDetector from "../hooks/useNetworkDetector";
-import { NetworkStore } from "../stores/useNetworkStore";
+import { NetworkStore } from "../lib/stores/useNetworkStore";
 
 export default function OfflineScreen() {
     useNetworkDetector();

@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import useGameProps from "@/hooks/useGameProps";
 import { useQueryDialogue, useQueryInputValue } from "@/hooks/useQueryInterface";
-import { TypewriterSettings } from "@/stores/typewriter-settings-store";
+import { TypewriterSettings } from "@/lib/stores/typewriter-settings-store";
 
 export function InputRequestDialog() {
     const { data: { animatedText: text } = {} } = useQueryDialogue();

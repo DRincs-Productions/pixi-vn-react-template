@@ -3,7 +3,7 @@ import { narration } from "@drincs/pixi-vn/narration";
 import { useThrottler } from "@tanstack/react-pacer";
 import { useEffect, useRef } from "react";
 import { HTML_CANVAS_LAYER_NAME, HTML_UI_LAYER_NAME } from "../constans";
-import { GameStatus } from "../stores/game-status-store";
+import { GameStatus } from "../lib/stores/game-status-store";
 import useGameProps from "./useGameProps";
 
 function isScrollableElement(element: HTMLElement | null): boolean {
@@ -13,7 +13,8 @@ function isScrollableElement(element: HTMLElement | null): boolean {
     const overflowY = style.overflowY;
 
     const isScrollable =
-        (overflowY === "auto" || overflowY === "scroll") && element.scrollHeight > element.clientHeight;
+        (overflowY === "auto" || overflowY === "scroll") &&
+        element.scrollHeight > element.clientHeight;
 
     return isScrollable;
 }
@@ -36,7 +37,13 @@ function isInsideRoot(target: EventTarget | null, selector: string): boolean {
     return target.closest("#" + selector) !== null;
 }
 
-export function useWheelActions({ throttleMs = 300, minDelta = 20 }: { throttleMs?: number; minDelta?: number } = {}) {
+export function useWheelActions({
+    throttleMs = 300,
+    minDelta = 20,
+}: {
+    throttleMs?: number;
+    minDelta?: number;
+} = {}) {
     const pendingAsync = useRef(0);
     const gameProps = useGameProps();
 
@@ -56,7 +63,12 @@ export function useWheelActions({ throttleMs = 300, minDelta = 20 }: { throttleM
 
     const handleWheel = useThrottler(
         async (event: WheelEvent) => {
-            if (!(isInsideRoot(event.target, HTML_UI_LAYER_NAME) || isInsideRoot(event.target, HTML_CANVAS_LAYER_NAME)))
+            if (
+                !(
+                    isInsideRoot(event.target, HTML_UI_LAYER_NAME) ||
+                    isInsideRoot(event.target, HTML_CANVAS_LAYER_NAME)
+                )
+            )
                 return;
             if (hasScrollableParent(event.target)) return;
 

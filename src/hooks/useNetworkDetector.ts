@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { NetworkStore } from "../stores/useNetworkStore";
+import { NetworkStore } from "../lib/stores/useNetworkStore";
 
 export default function useNetworkDetector() {
     useEffect(() => {

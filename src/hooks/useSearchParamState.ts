@@ -2,7 +2,7 @@ import { useDebouncedCallback } from "@tanstack/react-pacer";
 import { useNavigate } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
 import { useCallback } from "react";
-import { SearchParams } from "@/stores/search-param-store";
+import { SearchParams } from "@/lib/stores/search-param-store";
 
 /**
  * Returns the current value of the given URL search param from the internal store.

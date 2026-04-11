@@ -14,10 +14,10 @@ import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastS
 import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
 import { useSetSearchParamState } from "../hooks/useSearchParamState";
 import { useWheelActions } from "../hooks/useWheelActions";
-import { AutoSettings } from "../stores/auto-settings-store";
-import { GameStatus } from "../stores/game-status-store";
-import { InterfaceSettings } from "../stores/interface-settings-store";
-import { SkipSettings } from "../stores/skip-settings-store";
+import { AutoSettings } from "../lib/stores/auto-settings-store";
+import { GameStatus } from "../lib/stores/game-status-store";
+import { InterfaceSettings } from "../lib/stores/interface-settings-store";
+import { SkipSettings } from "../lib/stores/skip-settings-store";
 import { loadSave, saveGameToIndexDB } from "../utils/save-utility";
 
 export default function QuickTools() {

@@ -4,7 +4,7 @@ import { useLocation } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
 import SettingButton from "../../components/SettingButton";
-import { SkipSettings } from "../../stores/skip-settings-store";
+import { SkipSettings } from "../../lib/stores/skip-settings-store";
 
 export default function SkipSettingToggle() {
     const { t } = useTranslation(["ui"]);

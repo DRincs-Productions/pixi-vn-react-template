@@ -10,7 +10,7 @@ import useGameProps from "../hooks/useGameProps";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "../hooks/useQueryInterface";
 import useQueryLastSave from "../hooks/useQueryLastSave";
 import startLabel from "../labels/startLabel";
-import { InterfaceSettings } from "../stores/interface-settings-store";
+import { InterfaceSettings } from "../lib/stores/interface-settings-store";
 import { loadSave } from "../utils/save-utility";
 
 export default function MainMenu() {
@@ -57,7 +57,11 @@ export default function MainMenu() {
                     }
                     setLoading(true);
                     loadSave(lastSave, (to) => navigate({ to }))
-                        .then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))
+                        .then(() =>
+                            queryClient.invalidateQueries({
+                                queryKey: [INTERFACE_DATA_USE_QUEY_KEY],
+                            }),
+                        )
                         .catch((e) => {
                             toast.error(t("fail_load"));
                             console.error(e);
@@ -75,7 +79,11 @@ export default function MainMenu() {
                     setLoading(true);
                     await navigate({ to: "/game/narration" });
                     Game.start(startLabel, gameProps)
-                        .then(() => queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] }))
+                        .then(() =>
+                            queryClient.invalidateQueries({
+                                queryKey: [INTERFACE_DATA_USE_QUEY_KEY],
+                            }),
+                        )
                         .finally(() => setLoading(false));
                 }}
                 transitionDelay={0.2}
@@ -84,14 +92,18 @@ export default function MainMenu() {
                 {t("start")}
             </MenuButton>
             <MenuButton
-                onClick={() => navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any })}
+                onClick={() =>
+                    navigate({ search: ((prev: any) => ({ ...prev, saves: true })) as any })
+                }
                 transitionDelay={0.3}
                 disabled={loading}
             >
                 {t("load")}
             </MenuButton>
             <MenuButton
-                onClick={() => navigate({ search: ((prev: any) => ({ ...prev, settings: true })) as any })}
+                onClick={() =>
+                    navigate({ search: ((prev: any) => ({ ...prev, settings: true })) as any })
+                }
                 transitionDelay={0.4}
             >
                 {t("settings")}

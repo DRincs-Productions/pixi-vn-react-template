@@ -3,9 +3,9 @@ import { useDebouncer } from "@tanstack/react-pacer";
 import { useStore } from "@tanstack/react-store";
 import { useCallback, useEffect } from "react";
 import { SKIP_DELAY } from "../constans";
-import { AutoSettings } from "../stores/auto-settings-store";
-import { SkipSettings } from "../stores/skip-settings-store";
-import { TypewriterSettings } from "../stores/typewriter-settings-store";
+import { AutoSettings } from "../lib/stores/auto-settings-store";
+import { SkipSettings } from "../lib/stores/skip-settings-store";
+import { TypewriterSettings } from "../lib/stores/typewriter-settings-store";
 import useInterval from "./useInterval";
 import useNarrationFunctions from "./useNarrationFunctions";
 

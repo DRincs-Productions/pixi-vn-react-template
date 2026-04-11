@@ -1,8 +1,8 @@
 import { Box, FormHelperText, FormLabel, Slider } from "@mui/joy";
 import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
-import { AutoSettings } from "../../stores/auto-settings-store";
-import { TypewriterSettings } from "../../stores/typewriter-settings-store";
+import { AutoSettings } from "../../lib/stores/auto-settings-store";
+import { TypewriterSettings } from "../../lib/stores/typewriter-settings-store";
 
 export default function DialoguesSettings() {
     const typewriterDelay = useStore(TypewriterSettings.store, (state) => state.delay);
@@ -14,7 +14,9 @@ export default function DialoguesSettings() {
         <>
             <Box>
                 <FormLabel sx={{ typography: "title-sm" }}>{t("text_speed")}</FormLabel>
-                <FormHelperText sx={{ typography: "body-sm" }}>{t("text_speed_description")}</FormHelperText>
+                <FormHelperText sx={{ typography: "body-sm" }}>
+                    {t("text_speed_description")}
+                </FormHelperText>
             </Box>
             <Box
                 sx={{

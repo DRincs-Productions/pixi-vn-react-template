@@ -3,7 +3,7 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { Box, FormHelperText, FormLabel, IconButton, Slider, Stack } from "@mui/joy";
 import { useStore } from "@tanstack/react-store";
 import { useMemo } from "react";
-import { ChannelSound } from "../stores/channel-sound-stores";
+import { ChannelSound } from "../lib/stores/channel-sound-stores";
 
 type Props = {
     label: string;
@@ -21,7 +21,9 @@ export default function SoundChannelControl({ label, alias, disabled, helper }: 
         <>
             <Box>
                 <FormLabel sx={{ typography: "title-sm" }}>{label}</FormLabel>
-                {helper ? <FormHelperText sx={{ typography: "body-sm" }}>{helper}</FormHelperText> : null}
+                {helper ? (
+                    <FormHelperText sx={{ typography: "body-sm" }}>{helper}</FormHelperText>
+                ) : null}
             </Box>
             <Stack direction="row" alignItems="center" spacing={1}>
                 <IconButton disabled={disabled} onClick={() => ChannelSound.toggleMuted(alias)}>
@@ -31,7 +33,9 @@ export default function SoundChannelControl({ label, alias, disabled, helper }: 
                     min={0}
                     max={100}
                     value={volume}
-                    onChange={(_, v) => ChannelSound.setVolume(alias, Array.isArray(v) ? v[0] : (v as number))}
+                    onChange={(_, v) =>
+                        ChannelSound.setVolume(alias, Array.isArray(v) ? v[0] : (v as number))
+                    }
                     disabled={disabled}
                     sx={{ flex: 1 }}
                     step={1}

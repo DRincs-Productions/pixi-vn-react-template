@@ -5,7 +5,7 @@ import { Box, FormHelperText, FormLabel, IconButton, Slider, Stack } from "@mui/
 import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
 import SoundChannelControl from "../../components/SoundChannelControl";
-import { MasterSound } from "../../stores/master-sound-storage";
+import { MasterSound } from "../../lib/stores/master-sound-storage";
 
 export default function SoundSettings() {
     const { t } = useTranslation(["ui"]);
@@ -16,8 +16,12 @@ export default function SoundSettings() {
     return (
         <Stack spacing={1} sx={{ p: 1 }}>
             <Box>
-                <FormLabel sx={{ typography: "title-sm" }}>{t("master_volume") || "Master"}</FormLabel>
-                <FormHelperText sx={{ typography: "body-sm" }}>{t("master_volume_description")}</FormHelperText>
+                <FormLabel sx={{ typography: "title-sm" }}>
+                    {t("master_volume") || "Master"}
+                </FormLabel>
+                <FormHelperText sx={{ typography: "body-sm" }}>
+                    {t("master_volume_description")}
+                </FormHelperText>
             </Box>
             <Stack direction="row" alignItems="center" spacing={1}>
                 <IconButton onClick={() => MasterSound.toggleMuted()}>
@@ -27,7 +31,9 @@ export default function SoundSettings() {
                     min={0}
                     max={100}
                     value={masterVolume}
-                    onChange={(_, v) => MasterSound.setVolume(Array.isArray(v) ? v[0] : (v as number))}
+                    onChange={(_, v) =>
+                        MasterSound.setVolume(Array.isArray(v) ? v[0] : (v as number))
+                    }
                     sx={{ flex: 1 }}
                     step={1}
                 />

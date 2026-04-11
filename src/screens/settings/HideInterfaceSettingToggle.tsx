@@ -4,7 +4,7 @@ import { useLocation } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
 import SettingButton from "../../components/SettingButton";
-import { InterfaceSettings } from "../../stores/interface-settings-store";
+import { InterfaceSettings } from "../../lib/stores/interface-settings-store";
 
 export default function HideInterfaceSettingToggle() {
     const { t } = useTranslation(["ui"]);

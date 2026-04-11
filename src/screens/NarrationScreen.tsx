@@ -15,8 +15,8 @@ import { ChoiceMenu } from "@/components/menus/choice-menus";
 import AnimatedDots from "../components/AnimatedDots";
 import SliderResizer from "../components/SliderResizer";
 import { useQueryDialogue } from "../hooks/useQueryInterface";
-import { InterfaceSettings } from "../stores/interface-settings-store";
-import { TypewriterSettings } from "../stores/typewriter-settings-store";
+import { InterfaceSettings } from "../lib/stores/interface-settings-store";
+import { TypewriterSettings } from "../lib/stores/typewriter-settings-store";
 
 export default function NarrationScreen() {
     const cardHeightTemp = useStore(InterfaceSettings.store, (state) => state.dialogueCardHeight);

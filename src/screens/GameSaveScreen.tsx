@@ -16,8 +16,8 @@ import useGameProps from "../hooks/useGameProps";
 import { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
 import { useSearchParamState, useSetSearchParamState } from "../hooks/useSearchParamState";
+import { GameSaveScreenStore } from "../lib/stores/useGameSaveScreenStore";
 import type GameSaveData from "../models/GameSaveData";
-import { GameSaveScreenStore } from "../stores/useGameSaveScreenStore";
 import {
     deleteSaveFromIndexDB,
     downloadGameSave,

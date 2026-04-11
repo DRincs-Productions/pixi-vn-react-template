@@ -4,15 +4,18 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useNarrationFunctions from "../hooks/useNarrationFunctions";
 import { useQueryCanGoNext } from "../hooks/useQueryInterface";
-import { GameStatus } from "../stores/game-status-store";
-import { InterfaceSettings } from "../stores/interface-settings-store";
-import { SkipSettings } from "../stores/skip-settings-store";
+import { GameStatus } from "../lib/stores/game-status-store";
+import { InterfaceSettings } from "../lib/stores/interface-settings-store";
+import { SkipSettings } from "../lib/stores/skip-settings-store";
 
 export default function NextButton() {
     const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
     const gameLoading = useStore(GameStatus.store, (state) => state.loading);
     const { data: canContinue = false } = useQueryCanGoNext();
-    const hideNextButton = useStore(InterfaceSettings.store, (state) => state.hidden || !canContinue);
+    const hideNextButton = useStore(
+        InterfaceSettings.store,
+        (state) => state.hidden || !canContinue,
+    );
     const { goNext } = useNarrationFunctions();
     const { t } = useTranslation(["ui"]);
     const varians = useMemo(

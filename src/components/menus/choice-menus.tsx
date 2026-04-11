@@ -4,9 +4,9 @@ import { CornerDownLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useNarrationFunctions from "@/hooks/useNarrationFunctions";
 import { useQueryChoiceMenuOptions } from "@/hooks/useQueryInterface";
-import { GameStatus } from "@/stores/game-status-store";
-import { InterfaceSettings } from "@/stores/interface-settings-store";
-import { TypewriterSettings } from "@/stores/typewriter-settings-store";
+import { GameStatus } from "@/lib/stores/game-status-store";
+import { InterfaceSettings } from "@/lib/stores/interface-settings-store";
+import { TypewriterSettings } from "@/lib/stores/typewriter-settings-store";
 
 export function ChoiceMenu() {
     const loading = useStore(GameStatus.store, (state) => state.loading);
