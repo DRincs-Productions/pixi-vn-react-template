@@ -57,8 +57,8 @@ export function useSetSearchParamState<T>(field: string): (value: T | undefined)
     const navigate = useNavigate();
 
     const debouncedNavigate = useDebouncedCallback(
-        (fieldParam: string, value: unknown) => {
-            navigate({ search: ((prev: any) => ({ ...prev, [fieldParam]: value })) as any });
+        (key: string, value: unknown) => {
+            navigate({ search: ((prev: any) => ({ ...prev, [key]: value })) as any });
         },
         { wait: 300 },
     );
