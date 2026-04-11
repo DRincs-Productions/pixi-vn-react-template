@@ -15,8 +15,9 @@ import { TypewriterSettings } from "@/stores/typewriter-settings-store";
 
 export default function InputRequestDialog() {
     const { data: { animatedText: text } = {} } = useQueryDialogue();
-    const { data: { isRequired, type, currentValue } = { currentValue: undefined, isRequired: false } } =
-        useQueryInputValue<string | number>();
+    const {
+        data: { isRequired, type, currentValue } = { currentValue: undefined, isRequired: false },
+    } = useQueryInputValue<string | number>();
     const open = useStore(TypewriterSettings.store, (state) => !state.inProgress && isRequired);
     const [debouncedOpen] = useDebouncedValue(open, { wait: 50 });
     const [tempValue, setTempValue] = useState<string | number>();

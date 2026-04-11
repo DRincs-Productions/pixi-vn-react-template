@@ -13,14 +13,14 @@
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 4,
-    "lineWidth": 120
+    "lineWidth": 100
   },
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": true,
       "suspicious": {
-        "noExplicitAny": "off",
+        "noExplicitAny": "info",
         "noArrayIndexKey": "warn",
         "noDoubleEquals": "info"
       },
