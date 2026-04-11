@@ -45,6 +45,7 @@ export function useSetSearchParamState<T>(field: string): (value: T | undefined)
 
     return useCallback(
         (value: T | undefined) => {
+            if (value === false) value = undefined;
             searchParamStore.setState((state) => ({ ...state, [field]: value }));
             debouncedNavigate(field, value);
         },
