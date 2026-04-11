@@ -128,7 +128,7 @@ export default function GameSaveScreen() {
                         queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
                     });
                     toast.promise(savePromise, {
-                        loading: t("save"),
+                        loading: t("saving"),
                         success: t("success_save"),
                         error: t("fail_save"),
                     });
