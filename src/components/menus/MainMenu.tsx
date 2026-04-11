@@ -2,7 +2,7 @@ import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { CANVAS_UI_LAYER_NAME } from "@/constans";
 import useGameProps from "@/hooks/useGameProps";
@@ -11,8 +11,15 @@ import { INTERFACE_DATA_USE_QUEY_KEY as INTERFACE_DATA_USE_QUERY_KEY } from "@/h
 import useQueryLastSave from "@/hooks/useQueryLastSave";
 import startLabel from "@/labels/startLabel";
 import { InterfaceSettings } from "@/lib/stores/interface-settings-store";
+import { cn } from "@/lib/utils";
 import { loadSave } from "@/utils/save-utility";
 import packageJson from "../../../package.json";
+
+const menuButtonClass =
+    "justify-start hover:scale-105 transition-transform duration-150 ease-out";
+
+/** Text-shadow outline so the text is readable on any background colour */
+const infoShadowClass = "[text-shadow:0_0_3px_#000,0_0_6px_#000]";
 
 export default function MainMenu() {
     const queryClient = useQueryClient();
@@ -38,13 +45,10 @@ export default function MainMenu() {
     }, []);
 
     return (
-        <div className="h-full w-full flex items-center justify-start p-4 sm:p-6 md:p-10">
-            <Card className="w-full max-w-sm bg-background/90 backdrop-blur-sm">
-                <CardHeader>
-                    <CardTitle>{packageJson.name}</CardTitle>
-                    <CardDescription>v{packageJson.version}</CardDescription>
-                </CardHeader>
-                <CardContent className="flex flex-col gap-2">
+        <div className="relative h-full w-full flex items-center justify-start p-3 sm:p-6 md:p-10">
+            {/* Buttons card – semi-transparent */}
+            <Card className="w-full max-w-xs sm:max-w-sm bg-background/50 backdrop-blur-sm">
+                <CardContent className="flex flex-col gap-2 pt-4">
                     <Button
                         onClick={() => {
                             if (!lastSave) {
@@ -64,7 +68,7 @@ export default function MainMenu() {
                                 .finally(() => setLoading(false));
                         }}
                         disabled={(!isLoading && !lastSave) || loading}
-                        className="justify-start"
+                        className={menuButtonClass}
                     >
                         {isLoading ? (
                             <>
@@ -88,7 +92,7 @@ export default function MainMenu() {
                                 .finally(() => setLoading(false));
                         }}
                         disabled={loading}
-                        className="justify-start"
+                        className={menuButtonClass}
                     >
                         {t("start")}
                     </Button>
@@ -97,7 +101,7 @@ export default function MainMenu() {
                         onClick={() => setSaves(true)}
                         disabled={loading}
                         variant="outline"
-                        className="justify-start"
+                        className={menuButtonClass}
                     >
                         {t("load")}
                     </Button>
@@ -106,7 +110,7 @@ export default function MainMenu() {
                         onClick={() => setSettings(true)}
                         disabled={loading}
                         variant="outline"
-                        className="justify-start"
+                        className={menuButtonClass}
                     >
                         {t("settings")}
                     </Button>
@@ -122,6 +126,16 @@ export default function MainMenu() {
                     ) : null}
                 </CardContent>
             </Card>
+
+            {/* Game name + version – bottom right, outlined for readability on any bg */}
+            <div className="absolute bottom-3 right-3 text-right select-none pointer-events-none">
+                <p className={cn("text-xs font-semibold text-white", infoShadowClass)}>
+                    {packageJson.name}
+                </p>
+                <p className={cn("text-[0.65rem] text-white/80", infoShadowClass)}>
+                    v{packageJson.version}
+                </p>
+            </div>
         </div>
     );
 }
