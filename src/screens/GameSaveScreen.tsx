@@ -80,7 +80,7 @@ export default function GameSaveScreen() {
                         }),
             });
         },
-        [openAlertDialog, t, navigate, gameProps],
+        [openAlertDialog, t, navigate, gameProps, setOpen],
     );
 
     const handleDelete = useCallback(
@@ -122,19 +122,23 @@ export default function GameSaveScreen() {
                         />
                     </>
                 ),
-                onConfirm: () =>
-                    saveGameToIndexDB({ id, name: tempSaveNameRef.current })
-                        .then((save) => {
-                            queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
-                            queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
-                            toast.success(t("success_save"));
-                            return true;
-                        })
+                onConfirm: () => {
+                    const savePromise = saveGameToIndexDB({ id, name: tempSaveNameRef.current }).then((save) => {
+                        queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
+                        queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
+                    });
+                    toast.promise(savePromise, {
+                        loading: t("saving"),
+                        success: t("success_save"),
+                        error: t("fail_save"),
+                    });
+                    return savePromise
+                        .then(() => true)
                         .catch((e) => {
-                            toast.error(t("fail_save"));
                             console.error(e);
                             return false;
-                        }),
+                        });
+                },
             });
         },
         [openAlertDialog, t, queryClient],
