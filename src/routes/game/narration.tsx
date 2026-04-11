@@ -3,7 +3,6 @@ import NextButton from "../../components/NextButton";
 import VisibilityButton from "../../components/VisibilityButton";
 import useSkipAutoDetector from "../../hooks/useSkipAutoDetector";
 import HistoryScreen from "../../screens/HistoryScreen";
-import InputRequestDialog from "../../components/modals/InputRequestDialog";
 import NarrationScreen from "../../screens/NarrationScreen";
 import QuickTools from "../../screens/QuickTools";
 
@@ -17,7 +16,6 @@ function NarrationElement() {
             <HistoryScreen />
             <NarrationScreen />
             <QuickTools />
-            <InputRequestDialog />
             <NextButton />
             <NarrationDetectors />
             <VisibilityButton />

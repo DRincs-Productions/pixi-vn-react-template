@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
+import InputRequestDialog from "@/components/modals/InputRequestDialog";
 
 type Search = {
     /**
@@ -13,5 +14,10 @@ export const Route = createFileRoute("/game")({
 });
 
 function GameElement() {
-    return <Outlet />;
+    return (
+        <>
+            <InputRequestDialog />
+            <Outlet />
+        </>
+    );
 }
