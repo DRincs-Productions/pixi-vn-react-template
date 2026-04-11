@@ -1,7 +1,7 @@
 import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
 import { useQueryClient } from "@tanstack/react-query";
 import { CirclePlay, Play, Save, Settings } from "lucide-react";
-import { useEffect, useState } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
@@ -29,6 +29,39 @@ export default function MainMenu() {
     const setSaves = useSetSearchParamState<boolean>("saves");
     const setSettings = useSetSearchParamState<boolean>("settings");
     const [loading, setLoading] = useState(false);
+    const menuRef = useRef<HTMLDivElement>(null);
+
+    /** Returns all enabled menuitem buttons inside the menu container. */
+    function getMenuItems(): HTMLButtonElement[] {
+        if (!menuRef.current) return [];
+        return Array.from(
+            menuRef.current.querySelectorAll<HTMLButtonElement>("button[role='menuitem']:not(:disabled)"),
+        );
+    }
+
+    /** Arrow-key navigation between menu items. */
+    function handleMenuKeyDown(e: KeyboardEvent<HTMLDivElement>) {
+        const items = getMenuItems();
+        if (!items.length) return;
+        const active = document.activeElement as HTMLElement;
+        const currentIndex = items.indexOf(active as HTMLButtonElement);
+
+        let next = -1;
+        if (e.key === "ArrowDown") {
+            e.preventDefault();
+            next = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+        } else if (e.key === "ArrowUp") {
+            e.preventDefault();
+            next = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+        } else if (e.key === "Home") {
+            e.preventDefault();
+            next = 0;
+        } else if (e.key === "End") {
+            e.preventDefault();
+            next = items.length - 1;
+        }
+        if (next !== -1) items[next].focus();
+    }
 
     useEffect(() => {
         InterfaceSettings.setHidden(false);
@@ -39,6 +72,12 @@ export default function MainMenu() {
             layer.addChild(bg);
         }
 
+        // Auto-focus the first enabled button so arrow-key navigation works immediately.
+        const firstItem = menuRef.current?.querySelector<HTMLButtonElement>(
+            "button[role='menuitem']:not(:disabled)",
+        );
+        firstItem?.focus();
+
         return () => {
             canvas.getLayer(CANVAS_UI_LAYER_NAME)?.removeChildren();
         };
@@ -48,8 +87,14 @@ export default function MainMenu() {
         <div className="relative h-full w-full flex items-center justify-start p-3 sm:p-6 md:p-10">
             {/* Buttons card – semi-transparent, fade-in from left on mount */}
             <Card className="w-full max-w-xs sm:max-w-sm bg-background/50 backdrop-blur-sm animate-in fade-in slide-in-from-left-10 duration-500 ease-out fill-mode-both">
-                <CardContent className="flex flex-col gap-2 pt-4">
+                <CardContent
+                    ref={menuRef}
+                    role="menu"
+                    onKeyDown={handleMenuKeyDown}
+                    className="flex flex-col gap-2 pt-4"
+                >
                     <Button
+                        role="menuitem"
                         onClick={() => {
                             if (!lastSave) {
                                 return;
@@ -82,6 +127,7 @@ export default function MainMenu() {
                     </Button>
 
                     <Button
+                        role="menuitem"
                         onClick={async () => {
                             setLoading(true);
                             await navigate({ to: "/game/narration" });
@@ -101,6 +147,7 @@ export default function MainMenu() {
                     </Button>
 
                     <Button
+                        role="menuitem"
                         onClick={() => setSaves(true)}
                         disabled={loading}
                         variant="outline"
@@ -111,6 +158,7 @@ export default function MainMenu() {
                     </Button>
 
                     <Button
+                        role="menuitem"
                         onClick={() => setSettings(true)}
                         disabled={loading}
                         variant="outline"
