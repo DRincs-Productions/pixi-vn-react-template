@@ -1,14 +1,15 @@
 import DownloadIcon from "@mui/icons-material/Download";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
-import { Grid, IconButton, Input, Stack, type Theme, Typography } from "@mui/joy";
+import { Grid, IconButton, Stack, type Theme, Typography } from "@mui/joy";
 import { Pagination, Tooltip, useMediaQuery } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import ModalDialogCustom from "@/components/ModalDialog";
+import { SaveForm } from "@/components/menus/save-menu/save-forms";
 import GameSaveSlot from "@/components/menus/save-menu/save-slots";
 import { useAlertDialog } from "@/components/providers/AlertDialogProvider";
 import useGameProps from "@/hooks/useGameProps";
@@ -25,25 +26,6 @@ import {
     loadSave,
     saveGameToIndexDB,
 } from "@/utils/save-utility";
-
-function SaveForm({
-    initialValue,
-    onValueChange,
-}: {
-    initialValue: string;
-    onValueChange: (value: string) => void;
-}) {
-    const [value, setValue] = useState(initialValue);
-    return (
-        <Input
-            value={value}
-            onChange={(e) => {
-                setValue(e.target.value);
-                onValueChange(e.target.value);
-            }}
-        />
-    );
-}
 
 export default function GameSaveMenu() {
     const open = useSearchParamState<boolean>("saves");
