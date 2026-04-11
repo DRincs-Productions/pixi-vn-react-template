@@ -1,24 +1,11 @@
-import { Box, CircularProgress } from "@mui/joy";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function LoadingScreen() {
     return (
-        <Box
-            sx={{
-                height: "100vh",
-                width: "100vw",
-            }}
-        >
-            <Box
-                sx={{
-                    position: "absolute",
-                    right: 0,
-                    bottom: 0,
-                    padding: 0.5,
-                }}
-                className="motion-preset-pop"
-            >
-                <CircularProgress />
-            </Box>
-        </Box>
+        <div className="h-screen w-screen">
+            <div className="absolute bottom-0 right-0 p-2 motion-preset-pop">
+                <Spinner className="size-10 text-white" />
+            </div>
+        </div>
     );
 }
