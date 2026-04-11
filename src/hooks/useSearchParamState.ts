@@ -1,14 +1,8 @@
 import { useDebouncedCallback } from "@tanstack/react-pacer";
 import { useNavigate } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
-import { Store } from "@tanstack/store";
 import { useCallback } from "react";
-
-/**
- * Module-level store used as the source of truth for URL search params.
- * Values are written by `useSetSearchParamState` and read by `useSearchParamState`.
- */
-const searchParamStore = new Store<Record<string, unknown>>({});
+import { SearchParams } from "../stores/search-param-store";
 
 /**
  * Returns the current value of the given URL search param from the internal store.
@@ -17,7 +11,7 @@ const searchParamStore = new Store<Record<string, unknown>>({});
  * @returns The current value, or `undefined` if not set.
  */
 export function useSearchParamState<T>(field: string): T | undefined {
-    const storeValue = useStore(searchParamStore, (state) => state[field]) as T | undefined;
+    const storeValue = useStore(SearchParams.store, (state) => state[field]) as T | undefined;
     return storeValue;
 }
 
@@ -46,7 +40,7 @@ export function useSetSearchParamState<T>(field: string): (value: T | undefined)
     return useCallback(
         (value: T | undefined) => {
             if (value === false) value = undefined;
-            searchParamStore.setState((state) => ({ ...state, [field]: value }));
+            SearchParams.set(field, value);
             debouncedNavigate(field, value);
         },
         [field, debouncedNavigate],
