@@ -8,7 +8,7 @@ import {
     HTML_UI_LAYER_NAME,
     SFX_CHANNEL_NAME,
 } from "@/constans";
-import "@/index.css";
+import "@/style.css";
 import App from "@/App";
 
 // Register service worker
