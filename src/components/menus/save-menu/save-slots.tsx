@@ -56,7 +56,12 @@ export default function SaveFile({ saveId }: { saveId: number }) {
             />
             {/* top-left metadata */}
             <div className="absolute top-2.5 left-2.5 flex flex-col gap-0.5 select-none pointer-events-none">
-                <span className={cn("text-base font-semibold text-neutral-300", overlayTextShadowClass)}>
+                <span
+                    className={cn(
+                        "text-base font-semibold text-neutral-300",
+                        overlayTextShadowClass,
+                    )}
+                >
                     {saveData.name}
                 </span>
                 <span className={cn("text-sm text-neutral-300", overlayTextShadowClass)}>
@@ -74,7 +79,10 @@ export default function SaveFile({ saveId }: { saveId: number }) {
                 <Button
                     variant="destructive"
                     size="icon"
-                    onClick={(e) => { e.stopPropagation(); handleDelete(saveId); }}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(saveId);
+                    }}
                     aria-label={t("delete")}
                 >
                     <Trash2 />
@@ -85,7 +93,10 @@ export default function SaveFile({ saveId }: { saveId: number }) {
                 <Button
                     variant="ghost"
                     size="icon"
-                    onClick={(e) => { e.stopPropagation(); downloadGameSave(saveData); }}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        downloadGameSave(saveData);
+                    }}
                     aria-label={t("save_to_file")}
                 >
                     <Download className="text-neutral-300" />
@@ -94,7 +105,10 @@ export default function SaveFile({ saveId }: { saveId: number }) {
                     <Button
                         variant="ghost"
                         size="icon"
-                        onClick={(e) => { e.stopPropagation(); handleSave(saveId, saveData.name); }}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleSave(saveId, saveData.name);
+                        }}
                         aria-label={t("save")}
                     >
                         <SquarePen className="text-neutral-300" />
