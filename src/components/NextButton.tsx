@@ -21,8 +21,8 @@ export default function NextButton() {
     const varians = useMemo(
         () =>
             hideNextButton
-                ? `motion-opacity-out-0 motion-translate-y-out-[50%]`
-                : `motion-opacity-in-0 motion-translate-y-in-[50%]`,
+                ? `animate-out fade-out-0 slide-out-to-bottom-1/2`
+                : `animate-in fade-in-0 slide-in-from-bottom-1/2`,
         [hideNextButton],
     );
 

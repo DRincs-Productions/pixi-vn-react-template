@@ -26,10 +26,10 @@ export function ChoiceMenu() {
                     key={`choice-${item.choiceIndex}`}
                     className={
                         hidden
-                            ? "motion-opacity-out-0 motion-translate-y-out-[50%]"
-                            : "motion-opacity-in-0 motion-translate-y-in-[50%]"
+                            ? "animate-out fade-out-0 slide-out-to-bottom-[10%]"
+                            : "animate-in fade-in-0 slide-in-from-bottom-[10%] fill-mode-backwards"
                     }
-                    style={!hidden ? { animationDelay: `${index * 200}ms` } : undefined}
+                    style={!hidden ? { animationDelay: `${index * 150}ms` } : undefined}
                 >
                     <Button
                         disabled={loading}
