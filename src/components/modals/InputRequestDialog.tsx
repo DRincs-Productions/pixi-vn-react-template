@@ -23,10 +23,10 @@ export default function InputRequestDialog() {
 
     useEffect(() => {
         setTempValue(currentValue);
-    }, [open, currentValue]);
+    }, [currentValue]);
 
     return (
-        <Dialog open={open} dismissible={false}>
+        <Dialog open={open}>
             <DialogContent showCloseButton={false}>
                 {text && (
                     <Markdown
@@ -43,11 +43,13 @@ export default function InputRequestDialog() {
                     value={tempValue ?? ""}
                     type={type}
                     onChange={(e) => {
-                        let value: string | number = e.target.value;
-                        if (e.target.type === "number") {
-                            value = e.target.valueAsNumber as number;
+                        switch (e.target.type) {
+                            case "number":
+                                setTempValue(e.target.valueAsNumber);
+                                break;
+                            default:
+                                setTempValue(e.target.value);
                         }
-                        setTempValue(value);
                     }}
                 />
                 <DialogFooter>
