@@ -48,7 +48,7 @@ function SaveNameInput({
 export default function GameSaveScreen() {
     const open = useSearchParamState<boolean>("saves");
     const setOpen = useSetSearchParamState<boolean>("saves");
-    const handleSetOpen = useCallback((value: boolean) => setOpen(value || undefined), [setOpen]);
+    const handleSetOpen = useCallback((value: boolean) => setOpen(value ? true : undefined), [setOpen]);
     const navigate = useNavigate();
     const page = useStore(GameSaveScreenStore.store, (state) => state.page);
     const { t } = useTranslation(["ui"]);

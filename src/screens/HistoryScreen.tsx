@@ -83,7 +83,7 @@ function HistoryList({ searchString }: { searchString?: string }) {
 export default function HistoryScreen() {
     const open = useSearchParamState<boolean>("history");
     const setOpen = useSetSearchParamState<boolean>("history");
-    const handleSetOpen = useCallback((value: boolean) => setOpen(value || undefined), [setOpen]);
+    const handleSetOpen = useCallback((value: boolean) => setOpen(value ? true : undefined), [setOpen]);
     const [searchString, setSearchString] = useState("");
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
