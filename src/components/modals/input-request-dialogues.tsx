@@ -1,7 +1,8 @@
 import { narration } from "@drincs/pixi-vn";
+import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useDebouncedValue } from "@tanstack/react-pacer";
 import { useStore } from "@tanstack/react-store";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
@@ -27,6 +28,21 @@ export function InputRequestDialog() {
     useEffect(() => {
         setTempValue(currentValue);
     }, [currentValue]);
+
+    const canConfirm = tempValue !== undefined && tempValue !== "";
+
+    const submitInputValue = useCallback(() => {
+        if (!canConfirm) {
+            return;
+        }
+        narration.inputValue = tempValue || currentValue;
+        setTempValue(undefined);
+        gameProps.invalidateInterfaceData();
+    }, [canConfirm, currentValue, gameProps, tempValue]);
+
+    useHotkeys([
+        { hotkey: "Enter", callback: submitInputValue, options: { enabled: open } },
+    ]);
 
     return (
         <Dialog open={open}>
@@ -57,12 +73,8 @@ export function InputRequestDialog() {
                 />
                 <DialogFooter>
                     <Button
-                        disabled={tempValue === undefined || tempValue === ""}
-                        onClick={() => {
-                            narration.inputValue = tempValue || currentValue;
-                            setTempValue(undefined);
-                            gameProps.invalidateInterfaceData();
-                        }}
+                        disabled={!canConfirm}
+                        onClick={submitInputValue}
                     >
                         {t("confirm")}
                     </Button>
