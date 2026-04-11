@@ -4,8 +4,8 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { Box, FormHelperText, FormLabel, IconButton, Slider, Stack } from "@mui/joy";
 import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
-import SoundChannelControl from "../../components/SoundChannelControl";
-import { MasterSound } from "../../lib/stores/master-sound-storage";
+import SoundChannelControl from "@/components/SoundChannelControl";
+import { MasterSound } from "@/lib/stores/master-sound-storage";
 
 export default function SoundSettings() {
     const { t } = useTranslation(["ui"]);

@@ -17,9 +17,8 @@ import { useColorScheme as useColorSchemeMaterial } from "@mui/material";
 import { useDebouncedValue } from "@tanstack/react-pacer";
 import { useEffect } from "react";
 import { Hue, useColor } from "react-color-palette";
-// TODO: import "react-color-palette/css";
 import { useTranslation } from "react-i18next";
-import { useEditColorProvider } from "../../components/providers/ThemeProvider";
+import { useEditColorProvider } from "@/components/providers/ThemeProvider";
 
 export default function ThemeSettings() {
     const { mode, setMode } = useColorScheme();
