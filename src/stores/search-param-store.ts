@@ -10,4 +10,11 @@ export namespace SearchParams {
     export function set(field: string, value: unknown) {
         store.setState((state) => ({ ...state, [field]: value }));
     }
+
+    /**
+     * Set multiple search params at once. This is more efficient than calling `set()` multiple times since it only triggers one state update.
+     */
+    export function setMany(values: Record<string, unknown>) {
+        store.setState((state) => ({ ...state, ...values }));
+    }
 }

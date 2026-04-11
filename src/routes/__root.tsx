@@ -15,23 +15,13 @@ import GameSaveScreen from "@/screens/GameSaveScreen";
 import LoadingScreen from "@/screens/LoadingScreen";
 import OfflineScreen from "@/screens/OfflineScreen";
 import Settings from "@/screens/Settings";
+import { SearchParams } from "@/stores/search-param-store";
 import { defineAssets } from "@/utils/assets-utility";
 import { initializeIndexedDB } from "@/utils/indexedDB-utility";
 import { loadRefreshSave } from "@/utils/save-utility";
 
-type Search = {
-    /**
-     * Whether the settings page is open.
-     */
-    settings?: boolean;
-    /**
-     * Whether the saves page is open.
-     */
-    saves?: boolean;
-};
-
 export const Route = createRootRouteWithContext<RouterContext>()({
-    validateSearch: (search: Search): Search => search,
+    validateSearch: (search) => SearchParams.setMany(search),
     component: RootComponent,
     pendingComponent: LoadingScreen,
     loader: async ({ context }) => {
