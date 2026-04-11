@@ -48,7 +48,6 @@ function SaveNameInput({
 export default function GameSaveScreen() {
     const open = useSearchParamState<boolean>("saves");
     const setOpen = useSetSearchParamState<boolean>("saves");
-    const handleSetOpen = useCallback((value: boolean) => setOpen(value ? true : undefined), [setOpen]);
     const navigate = useNavigate();
     const page = useStore(GameSaveScreenStore.store, (state) => state.page);
     const { t } = useTranslation(["ui"]);
@@ -144,7 +143,7 @@ export default function GameSaveScreen() {
     return (
         <ModalDialogCustom
             open={open ?? false}
-            setOpen={handleSetOpen}
+            setOpen={setOpen}
             layout={smScreen ? "fullscreen" : "center"}
             head={<Typography level="h2">{`${t("save")}/${t("load")}`}</Typography>}
             minWidth="80%"

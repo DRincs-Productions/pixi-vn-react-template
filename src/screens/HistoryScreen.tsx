@@ -83,7 +83,6 @@ function HistoryList({ searchString }: { searchString?: string }) {
 export default function HistoryScreen() {
     const open = useSearchParamState<boolean>("history");
     const setOpen = useSetSearchParamState<boolean>("history");
-    const handleSetOpen = useCallback((value: boolean) => setOpen(value ? true : undefined), [setOpen]);
     const [searchString, setSearchString] = useState("");
     const { t } = useTranslation(["ui"]);
     const smScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
@@ -102,7 +101,7 @@ export default function HistoryScreen() {
     return (
         <ModalDialogCustom
             open={open ?? false}
-            setOpen={handleSetOpen}
+            setOpen={setOpen}
             layout={smScreen ? "fullscreen" : "center"}
             head={
                 <Stack
