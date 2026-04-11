@@ -41,7 +41,7 @@ export function InputRequestDialog() {
     }, [canConfirm, currentValue, gameProps, tempValue]);
 
     useHotkeys([
-        { hotkey: "Enter", callback: submitInputValue, options: { enabled: open ?? false } },
+        { hotkey: "Enter", callback: submitInputValue, options: { enabled: open } },
     ]);
 
     return (
