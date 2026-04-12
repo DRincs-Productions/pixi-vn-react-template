@@ -30,7 +30,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     component: RootComponent,
     pendingComponent: LoadingScreen,
     loader: async ({ context }) => {
-        await Promise.all([import("@/values"), import("@/labels")]);
+        await Promise.all([import("@/content"), import("@/labels")]);
         await Promise.all([initializeIndexedDB(), defineAssets(), useI18n()]);
         setupPixivnViteData();
         const isRefreshSaveExist = await loadRefreshSave((to) => redirect({ to }));
