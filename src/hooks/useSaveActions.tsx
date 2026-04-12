@@ -73,19 +73,25 @@ export default function useSaveActions() {
 
     const handleSave = useCallback(
         (id: number, defaultName?: string) => {
+            const isOverwrite = !!defaultName;
             tempSaveNameRef.current = defaultName || "";
             openAlertDialog({
                 head: t("save"),
                 content: (
-                    <>
-                        {t("save_as")}
+                    <div className="flex flex-col gap-2">
+                        {isOverwrite && (
+                            <p className="text-sm font-medium text-destructive">
+                                {t("you_sure_to_overwrite_save", { name: defaultName })}
+                            </p>
+                        )}
+                        <label className="text-sm font-medium">{t("save_name")}</label>
                         <SaveNameInput
                             initialValue={defaultName || ""}
                             onValueChange={(v) => {
                                 tempSaveNameRef.current = v;
                             }}
                         />
-                    </>
+                    </div>
                 ),
                 onConfirm: () => {
                     const savePromise = saveGameToIndexDB({
