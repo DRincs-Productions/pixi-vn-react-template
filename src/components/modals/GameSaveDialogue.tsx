@@ -34,7 +34,7 @@ export default function GameSaveDialogue() {
                     "translate-x-0 translate-y-0 rounded-none",
                     "data-open:animate-in data-open:slide-in-from-bottom data-closed:animate-out data-closed:slide-out-to-bottom",
                     // lg+: large centered dialog, zoom animation
-                    "lg:top-1/2 lg:left-1/2 lg:h-[90vh] lg:w-[90vw] lg:max-h-[90vh] lg:max-w-5xl",
+                    "lg:top-1/2 lg:left-1/2 lg:w-[90vw] lg:max-h-[90vh] lg:max-w-5xl",
                     "lg:-translate-x-1/2 lg:-translate-y-1/2 lg:rounded-xl",
                     "lg:data-open:slide-in-from-bottom-0 lg:data-closed:slide-out-to-bottom-0",
                     "duration-300",
