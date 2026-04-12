@@ -25,7 +25,7 @@ export default function GameSaveDialogue() {
             <DialogContent
                 className={cn(
                     "flex flex-col p-0 gap-0 overflow-hidden",
-                    "top-0 left-0 h-full max-h-full w-full max-w-full translate-x-0 translate-y-0 rounded-none",
+                    "top-0 left-0 h-full max-h-full w-full max-w-full sm:max-w-full translate-x-0 translate-y-0 rounded-none",
                     // lg+: large centered dialog (restore translate + rounded overridden by mobile classes)
                     "lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:rounded-xl lg:h-auto lg:w-[90vw] lg:max-h-[90vh] lg:max-w-5xl",
                 )}
