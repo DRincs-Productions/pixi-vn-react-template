@@ -81,8 +81,8 @@ export default function GameSaveDialogue() {
                         </TooltipProvider>
                     </div>
                 </div>
-                {/* Body: flex-1 so it fills remaining height; min-h-0 prevents flex overflow */}
-                <div className="min-h-0 flex-1">
+                {/* Body: flex-1 fills remaining height; flex col + overflow-hidden propagates max-height constraint to children */}
+                <div className="flex flex-1 min-h-0 flex-col overflow-hidden">
                     <GameSaveMenu />
                 </div>
             </DialogContent>

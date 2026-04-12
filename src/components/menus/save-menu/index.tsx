@@ -34,7 +34,7 @@ export default function GameSaveMenu() {
     const pageNumbers = getPageNumbers(currentPage, TOTAL_PAGES);
 
     return (
-        <div className="flex h-full flex-col">
+        <div className="flex flex-1 min-h-0 flex-col">
             <div className="min-h-0 flex-1 overflow-auto">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
                     {Array.from({ length: 6 }).map((_, index) => {
