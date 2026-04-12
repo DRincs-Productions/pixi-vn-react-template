@@ -2,8 +2,8 @@ import HistoryIcon from "@mui/icons-material/History";
 import { Typography } from "@mui/joy";
 import { useLocation } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import SettingButton from "../../components/SettingButton";
-import { useSetSearchParamState } from "../../hooks/useSearchParamState";
+import SettingButton from "@/components/SettingButton";
+import { useSetSearchParamState } from "@/hooks/useSearchParamState";
 
 export default function OpenHistorySettingButton() {
     const { t } = useTranslation(["ui"]);

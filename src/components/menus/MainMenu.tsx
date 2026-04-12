@@ -1,7 +1,8 @@
 import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
+import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
 import { CirclePlay, Play, Save, Settings } from "lucide-react";
-import { type KeyboardEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import packageJson from "@/../package.json";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,7 +17,8 @@ import { InterfaceSettings } from "@/lib/stores/interface-settings-store";
 import { cn, overlayTextShadowClass } from "@/lib/utils";
 import { loadSave } from "@/utils/save-utility";
 
-const menuButtonClass = "justify-start hover:scale-105 transition-transform duration-150 ease-out";
+const menuButtonClass =
+    "justify-start hover:scale-105 focus-visible:scale-105 transition-transform duration-150 ease-out";
 
 export default function MainMenu() {
     const queryClient = useQueryClient();
@@ -39,28 +41,50 @@ export default function MainMenu() {
     }
 
     /** Arrow-key navigation between menu items. */
-    function handleMenuKeyDown(e: KeyboardEvent<HTMLDivElement>) {
+    function focusMenuItem(direction: "up" | "down" | "home" | "end") {
         const items = getMenuItems();
         if (!items.length) return;
+
         const active = document.activeElement as HTMLElement;
         const currentIndex = items.indexOf(active as HTMLButtonElement);
 
         let next = -1;
-        if (e.key === "ArrowDown") {
-            e.preventDefault();
+        if (direction === "down") {
             next = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
-        } else if (e.key === "ArrowUp") {
-            e.preventDefault();
+        } else if (direction === "up") {
             next = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
-        } else if (e.key === "Home") {
-            e.preventDefault();
+        } else if (direction === "home") {
             next = 0;
-        } else if (e.key === "End") {
-            e.preventDefault();
+        } else if (direction === "end") {
             next = items.length - 1;
         }
-        if (next !== -1) items[next].focus();
+        if (next !== -1) {
+            items[next].focus();
+        }
     }
+
+    useHotkeys([
+        {
+            hotkey: "ArrowDown",
+            callback: () => focusMenuItem("down"),
+            options: { preventDefault: true },
+        },
+        {
+            hotkey: "ArrowUp",
+            callback: () => focusMenuItem("up"),
+            options: { preventDefault: true },
+        },
+        {
+            hotkey: "Home",
+            callback: () => focusMenuItem("home"),
+            options: { preventDefault: true },
+        },
+        {
+            hotkey: "End",
+            callback: () => focusMenuItem("end"),
+            options: { preventDefault: true },
+        },
+    ]);
 
     useEffect(() => {
         InterfaceSettings.setHidden(false);
@@ -89,7 +113,6 @@ export default function MainMenu() {
                 <CardContent
                     ref={menuRef}
                     role="menu"
-                    onKeyDown={handleMenuKeyDown}
                     className="flex flex-col gap-2 pt-4"
                 >
                     <Button

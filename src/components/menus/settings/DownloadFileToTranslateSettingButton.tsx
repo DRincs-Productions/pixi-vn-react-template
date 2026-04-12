@@ -2,8 +2,8 @@ import TranslateIcon from "@mui/icons-material/Translate";
 import { Typography } from "@mui/joy";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import SettingButton from "../../components/SettingButton";
-import { downloadResourceToTranslate } from "../../lib/i18n";
+import SettingButton from "@/components/SettingButton";
+import { downloadResourceToTranslate } from "@/lib/i18n";
 
 export default function DownloadFileToTranslateSettingButton() {
     const { t } = useTranslation(["ui"]);

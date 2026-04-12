@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import useQueryIsFullModeScreen, {
     IS_FULL_SCREEN_MODE_USE_QUEY_KEY,
-} from "../../hooks/useQueryIsFullModeScreen";
+} from "@/hooks/useQueryIsFullModeScreen";
 
 export default function FullScreenSettings() {
     const { data: isFullScreenMode } = useQueryIsFullModeScreen();

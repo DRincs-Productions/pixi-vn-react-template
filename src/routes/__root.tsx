@@ -9,6 +9,7 @@ import {
     redirect,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import Settings from "@/components/menus/settings";
 import GameSaveDialogue from "@/components/modals/GameSaveDialogue";
 import RootProvider from "@/components/providers/RootProvider";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
@@ -20,7 +21,6 @@ import { SearchParams } from "@/lib/stores/search-param-store";
 import type { RouterContext } from "@/router";
 import LoadingScreen from "@/screens/LoadingScreen";
 import OfflineScreen from "@/screens/OfflineScreen";
-import Settings from "@/screens/Settings";
 import { defineAssets } from "@/utils/assets-utility";
 import { initializeIndexedDB } from "@/utils/indexedDB-utility";
 import { loadRefreshSave } from "@/utils/save-utility";

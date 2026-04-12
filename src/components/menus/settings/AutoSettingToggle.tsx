@@ -3,8 +3,8 @@ import { Typography } from "@mui/joy";
 import { useLocation } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
-import SettingButton from "../../components/SettingButton";
-import { AutoSettings } from "../../lib/stores/auto-settings-store";
+import SettingButton from "@/components/SettingButton";
+import { AutoSettings } from "@/lib/stores/auto-settings-store";
 
 export default function AutoSettingToggle() {
     const { t } = useTranslation(["ui"]);

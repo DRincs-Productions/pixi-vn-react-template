@@ -9,17 +9,17 @@ import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useAlertDialog } from "@/components/providers/AlertDialogProvider";
-import SettingButton from "../../components/SettingButton";
-import useGameProps from "../../hooks/useGameProps";
-import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
-import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
-import { useSetSearchParamState } from "../../hooks/useSearchParamState";
+import SettingButton from "@/components/SettingButton";
+import useGameProps from "@/hooks/useGameProps";
+import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "@/hooks/useQueryLastSave";
+import { SAVES_USE_QUEY_KEY } from "@/hooks/useQuerySaves";
+import { useSetSearchParamState } from "@/hooks/useSearchParamState";
 import {
     downloadGameSave,
     loadGameSaveFromFile,
     loadSave,
     saveGameToIndexDB,
-} from "../../utils/save-utility";
+} from "@/utils/save-utility";
 
 export default function SaveLoadSettingButtons() {
     const navigate = useNavigate();
