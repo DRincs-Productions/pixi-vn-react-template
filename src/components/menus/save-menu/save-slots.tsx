@@ -51,8 +51,8 @@ export default function SavSlot({ saveId }: { saveId: number }) {
             <img
                 src={saveData.image}
                 alt={saveData.name}
-                className="absolute inset-0 size-full object-contain"
-                style={{ backgroundColor: "#303030", pointerEvents: "none", userSelect: "none" }}
+                className="absolute inset-0 size-full object-contain rounded-lg"
+                style={{ pointerEvents: "none", userSelect: "none" }}
             />
             {/* top-left metadata */}
             <div className="absolute top-2.5 left-2.5 flex flex-col gap-0.5 select-none pointer-events-none">
