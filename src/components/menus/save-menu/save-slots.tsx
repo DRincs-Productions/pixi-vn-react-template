@@ -20,15 +20,15 @@ export default function SavSlot({ saveId }: { saveId: number }) {
 
     if (isLoading) {
         return (
-            <AspectRatio ratio={16 / 9} className="m-2 rounded-xl sm:m-4 md:m-2 lg:m-4">
-                <Skeleton className="absolute inset-0 rounded-xl" />
+            <AspectRatio ratio={16 / 9} className="m-2 sm:m-4 md:m-2 lg:m-4">
+                <Skeleton className="absolute inset-0" />
             </AspectRatio>
         );
     }
 
     if (!saveData || isError) {
         return (
-            <AspectRatio ratio={16 / 9} className="m-2 rounded-xl sm:m-4 md:m-2 lg:m-4">
+            <AspectRatio ratio={16 / 9} className="m-2 sm:m-4 md:m-2 lg:m-4">
                 <Button
                     variant="ghost"
                     className="absolute inset-0 h-full w-full ring-1 ring-border"
@@ -45,7 +45,7 @@ export default function SavSlot({ saveId }: { saveId: number }) {
     return (
         <AspectRatio
             ratio={16 / 9}
-            className="m-2 overflow-hidden rounded-xl sm:m-4 md:m-2 lg:m-4 cursor-pointer"
+            className="m-2 overflow-hidden sm:m-4 md:m-2 lg:m-4 cursor-pointer"
             onClick={() => handleLoad({ ...saveData, id: saveId })}
         >
             <img
