@@ -113,11 +113,11 @@ export default function useSaveActions() {
         (id: number, existingName: string) => {
             tempSaveNameRef.current = existingName;
             openAlertDialog({
-                head: t("save"),
+                head: t("overwrite_save"),
                 content: (
                     <div className="flex flex-col gap-2">
                         <p className="text-sm font-medium text-destructive">
-                            {t("you_sure_to_overwrite_save", { name: existingName })}
+                            {t("you_sure_to_overwrite_save")}
                         </p>
                         <SaveNameInput
                             initialValue={existingName}
