@@ -8,10 +8,7 @@ import { InterfaceSettings } from "../lib/stores/interface-settings-store";
 export default function VisibilityButton() {
     const hidden = useStore(InterfaceSettings.store, (state) => state.hidden);
     const iconVarians = useMemo(
-        () =>
-            hidden
-                ? `animate-in zoom-in-95 fade-in-0`
-                : `animate-out zoom-out-0 fade-out-0`,
+        () => (hidden ? `animate-in zoom-in-95 fade-in-0` : `animate-out zoom-out-0 fade-out-0`),
         [hidden],
     );
 

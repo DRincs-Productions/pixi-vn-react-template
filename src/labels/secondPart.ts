@@ -8,7 +8,7 @@ import {
     Text,
     TextStyle,
 } from "@drincs/pixi-vn";
-import { james, mc, sly, steph, steph_fullname } from "../values/characters";
+import { james, mc, sly, steph, steph_fullname } from "../content/characters";
 
 const secondPart = newLabel("second_part", [
     async ({ t }) => {

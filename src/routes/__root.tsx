@@ -9,14 +9,14 @@ import {
     redirect,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import GameSaveMenu from "@/components/menus/save-menu";
 import Settings from "@/components/menus/settings";
+import GameSaveDialogue from "@/components/modals/GameSaveDialogue";
 import RootProvider from "@/components/providers/RootProvider";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
 import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "@/hooks/useQueryInterface";
 import useSaveHotkeys from "@/hooks/useSaveHotkeys";
-import { useI18n } from "@/i18n";
+import { useI18n } from "@/lib/i18n";
 import { SearchParams } from "@/lib/stores/search-param-store";
 import type { RouterContext } from "@/router";
 import LoadingScreen from "@/screens/LoadingScreen";
@@ -30,7 +30,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     component: RootComponent,
     pendingComponent: LoadingScreen,
     loader: async ({ context }) => {
-        await Promise.all([import("@/values"), import("@/labels")]);
+        await Promise.all([import("@/content"), import("@/labels")]);
         await Promise.all([initializeIndexedDB(), defineAssets(), useI18n()]);
         setupPixivnViteData();
         const isRefreshSaveExist = await loadRefreshSave((to) => redirect({ to }));
@@ -61,7 +61,7 @@ function RootComponent() {
             <RootProvider>
                 <RootSetup />
                 <Settings />
-                <GameSaveMenu />
+                <GameSaveDialogue />
                 <OfflineScreen />
                 <Outlet />
             </RootProvider>

@@ -96,8 +96,17 @@ export function AlertDialogProvider({ children }: { children: ReactNode }) {
                                         const result = await dialog.options.onConfirm();
                                         if (result) {
                                             closeDialog(dialog.id);
+                                        } else {
+                                            setDialogs((prev) =>
+                                                prev.map((d) =>
+                                                    d.id === dialog.id
+                                                        ? { ...d, loading: false }
+                                                        : d,
+                                                ),
+                                            );
                                         }
-                                    } finally {
+                                    } catch (e) {
+                                        console.error(e);
                                         setDialogs((prev) =>
                                             prev.map((d) =>
                                                 d.id === dialog.id ? { ...d, loading: false } : d,

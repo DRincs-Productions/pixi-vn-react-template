@@ -14,14 +14,11 @@ import useQueryLastSave from "@/hooks/useQueryLastSave";
 import { useSetSearchParamState } from "@/hooks/useSearchParamState";
 import startLabel from "@/labels/startLabel";
 import { InterfaceSettings } from "@/lib/stores/interface-settings-store";
-import { cn } from "@/lib/utils";
+import { cn, overlayTextShadowClass } from "@/lib/utils";
 import { loadSave } from "@/utils/save-utility";
 
 const menuButtonClass =
     "justify-start hover:scale-105 focus-visible:scale-105 transition-transform duration-150 ease-out";
-
-/** Text-shadow outline so the text is readable on any background colour */
-const infoShadowClass = "[text-shadow:0_0_3px_#000,0_0_6px_#000]";
 
 export default function MainMenu() {
     const queryClient = useQueryClient();
@@ -207,10 +204,10 @@ export default function MainMenu() {
 
             {/* Game name + version – bottom right, outlined for readability on any bg */}
             <div className="absolute bottom-3 right-3 text-right select-none pointer-events-none">
-                <p className={cn("text-xs font-semibold text-white", infoShadowClass)}>
+                <p className={cn("text-xs font-semibold text-white", overlayTextShadowClass)}>
                     {packageJson.name}
                 </p>
-                <p className={cn("text-[0.65rem] text-white/80", infoShadowClass)}>
+                <p className={cn("text-[0.65rem] text-white/80", overlayTextShadowClass)}>
                     v{packageJson.version}
                 </p>
             </div>

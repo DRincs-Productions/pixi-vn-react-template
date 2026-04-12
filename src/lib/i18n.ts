@@ -4,15 +4,15 @@ import resourcesToBackend from "i18next-resources-to-backend";
 import { initReactI18next } from "react-i18next";
 
 function getUserLang(): string {
-    let userLang: string = navigator.language || "en";
+    const userLang: string = navigator.language || "en";
     return userLang?.toLocaleLowerCase()?.split("-")[0];
 }
 
-function getLocalesResource(lng: string): Promise<any> {
-    return import(`./locales/strings_${lng}.json`);
+function getLocalesResource(lng: string): Promise<Record<string, unknown>> {
+    return import(`./../locales/strings_${lng}.json`);
 }
 
-function generateResourceToTranslate(lng: string): Promise<any> {
+function generateResourceToTranslate(lng: string): Promise<Record<string, unknown>> {
     return getLocalesResource(lng);
 }
 
@@ -45,7 +45,7 @@ export const useI18n = () => {
                 backend: {
                     backends: [
                         resourcesToBackend(async (lng: string, ns: string) => {
-                            let object = await getLocalesResource(lng);
+                            const object = await getLocalesResource(lng);
                             return object[ns];
                         }),
                     ],
