@@ -1,5 +1,5 @@
 import { RegisteredCharacters } from "@drincs/pixi-vn";
-import Character from "../models/Character";
+import Character from "@/models/Character";
 
 export const mc = new Character("mc", {
     name: "Me",
