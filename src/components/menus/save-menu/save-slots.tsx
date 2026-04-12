@@ -99,7 +99,7 @@ export default function SavSlot({ saveId }: { saveId: number }) {
                     }}
                     aria-label={t("save_to_file")}
                 >
-                    <Download className={cn("text-neutral-300", overlayTextShadowClass)} />
+                    <Download className={overlayTextShadowClass} />
                 </Button>
                 {!isHome && (
                     <Button
@@ -111,7 +111,7 @@ export default function SavSlot({ saveId }: { saveId: number }) {
                         }}
                         aria-label={t("save")}
                     >
-                        <SquarePen className={cn("text-neutral-300", overlayTextShadowClass)} />
+                        <SquarePen className={overlayTextShadowClass} />
                     </Button>
                 )}
             </div>
