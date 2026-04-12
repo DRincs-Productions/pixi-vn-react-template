@@ -20,10 +20,7 @@ export default function SavSlot({ saveId }: { saveId: number }) {
 
     if (isLoading) {
         return (
-            <AspectRatio
-                ratio={16 / 9}
-                className="m-2 rounded-xl ring-1 ring-border sm:m-4 md:m-2 lg:m-4"
-            >
+            <AspectRatio ratio={16 / 9} className="m-2 rounded-xl sm:m-4 md:m-2 lg:m-4">
                 <Skeleton className="absolute inset-0 rounded-xl" />
             </AspectRatio>
         );
@@ -31,13 +28,10 @@ export default function SavSlot({ saveId }: { saveId: number }) {
 
     if (!saveData || isError) {
         return (
-            <AspectRatio
-                ratio={16 / 9}
-                className="m-2 rounded-xl ring-1 ring-border sm:m-4 md:m-2 lg:m-4"
-            >
+            <AspectRatio ratio={16 / 9} className="m-2 rounded-xl sm:m-4 md:m-2 lg:m-4">
                 <Button
                     variant="ghost"
-                    className="absolute inset-0 h-full w-full"
+                    className="absolute inset-0 h-full w-full ring-1 ring-border"
                     onClick={() => handleSave(saveId)}
                     disabled={isHome}
                     aria-label={t("save")}
@@ -51,7 +45,7 @@ export default function SavSlot({ saveId }: { saveId: number }) {
     return (
         <AspectRatio
             ratio={16 / 9}
-            className="m-2 overflow-hidden rounded-xl ring-1 ring-border sm:m-4 md:m-2 lg:m-4 cursor-pointer"
+            className="m-2 overflow-hidden rounded-xl sm:m-4 md:m-2 lg:m-4 cursor-pointer"
             onClick={() => handleLoad({ ...saveData, id: saveId })}
         >
             <img
