@@ -20,14 +20,21 @@ export default function SavSlot({ saveId }: { saveId: number }) {
 
     if (isLoading) {
         return (
-            <AspectRatio ratio={16 / 9} className="m-2 rounded-xl ring-1 ring-border sm:m-4 md:m-2 lg:m-4"> className="absolute inset-0 rounded-xl" />
+            <AspectRatio
+                ratio={16 / 9}
+                className="m-2 rounded-xl ring-1 ring-border sm:m-4 md:m-2 lg:m-4"
+            >
+                <Skeleton className="absolute inset-0 rounded-xl" />
             </AspectRatio>
         );
     }
 
     if (!saveData || isError) {
         return (
-            <AspectRatio ratio={16 / 9} className="m-2 rounded-xl ring-1 ring-border sm:m-4 md:m-2 lg:m-4">
+            <AspectRatio
+                ratio={16 / 9}
+                className="m-2 rounded-xl ring-1 ring-border sm:m-4 md:m-2 lg:m-4"
+            >
                 <Button
                     variant="ghost"
                     className="absolute inset-0 h-full w-full"
