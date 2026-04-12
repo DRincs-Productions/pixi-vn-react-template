@@ -72,20 +72,55 @@ export default function useSaveActions() {
     );
 
     const handleSave = useCallback(
-        (id: number, defaultName?: string) => {
-            const isOverwrite = !!defaultName;
-            tempSaveNameRef.current = defaultName || "";
+        (id: number) => {
+            tempSaveNameRef.current = "";
+            openAlertDialog({
+                head: t("save"),
+                content: (
+                    <SaveNameInput
+                        initialValue=""
+                        onValueChange={(v) => {
+                            tempSaveNameRef.current = v;
+                        }}
+                    />
+                ),
+                onConfirm: () => {
+                    const savePromise = saveGameToIndexDB({
+                        id,
+                        name: tempSaveNameRef.current,
+                    }).then((save) => {
+                        queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
+                        queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
+                    });
+                    toast.promise(savePromise, {
+                        loading: t("saving"),
+                        success: t("success_save"),
+                        error: t("fail_save"),
+                    });
+                    return savePromise
+                        .then(() => true)
+                        .catch((e) => {
+                            console.error(e);
+                            return false;
+                        });
+                },
+            });
+        },
+        [openAlertDialog, t, queryClient],
+    );
+
+    const handleOverwriteSave = useCallback(
+        (id: number, existingName: string) => {
+            tempSaveNameRef.current = existingName;
             openAlertDialog({
                 head: t("save"),
                 content: (
                     <div className="flex flex-col gap-2">
-                        {isOverwrite && (
-                            <p className="text-sm font-medium text-destructive">
-                                {t("you_sure_to_overwrite_save", { name: defaultName })}
-                            </p>
-                        )}
+                        <p className="text-sm font-medium text-destructive">
+                            {t("you_sure_to_overwrite_save", { name: existingName })}
+                        </p>
                         <SaveNameInput
-                            initialValue={defaultName || ""}
+                            initialValue={existingName}
                             onValueChange={(v) => {
                                 tempSaveNameRef.current = v;
                             }}
@@ -121,5 +156,6 @@ export default function useSaveActions() {
         handleLoad,
         handleDelete,
         handleSave,
+        handleOverwriteSave,
     };
 }

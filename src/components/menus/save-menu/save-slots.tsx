@@ -14,7 +14,7 @@ export default function SavSlot({ saveId }: { saveId: number }) {
     const { t } = useTranslation(["ui"]);
     const { isLoading, data: saveData, isError } = useQuerySaves({ id: saveId });
     const location = useLocation();
-    const { handleLoad, handleDelete, handleSave } = useSaveActions();
+    const { handleLoad, handleDelete, handleSave, handleOverwriteSave } = useSaveActions();
 
     const isHome = (location.pathname as FileRouteTypes["fullPaths"]) === "/";
 
@@ -107,7 +107,7 @@ export default function SavSlot({ saveId }: { saveId: number }) {
                         size="icon"
                         onClick={(e) => {
                             e.stopPropagation();
-                            handleSave(saveId, saveData.name);
+                            handleOverwriteSave(saveId, saveData.name);
                         }}
                         aria-label={t("save")}
                     >
