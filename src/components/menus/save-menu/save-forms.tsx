@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 
 export function SaveNameInput({
@@ -8,14 +9,18 @@ export function SaveNameInput({
     initialValue: string;
     onValueChange: (value: string) => void;
 }) {
+    const { t } = useTranslation(["ui"]);
     const [value, setValue] = useState(initialValue);
     return (
-        <Input
-            value={value}
-            onChange={(e) => {
-                setValue(e.target.value);
-                onValueChange(e.target.value);
-            }}
-        />
+        <>
+            <label className="text-sm font-medium">{t("save_name")}</label>
+            <Input
+                value={value}
+                onChange={(e) => {
+                    setValue(e.target.value);
+                    onValueChange(e.target.value);
+                }}
+            />
+        </>
     );
 }

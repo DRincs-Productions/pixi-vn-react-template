@@ -84,7 +84,6 @@ export default function useSaveActions() {
                                 {t("you_sure_to_overwrite_save", { name: defaultName })}
                             </p>
                         )}
-                        <label className="text-sm font-medium">{t("save_name")}</label>
                         <SaveNameInput
                             initialValue={defaultName || ""}
                             onValueChange={(v) => {
