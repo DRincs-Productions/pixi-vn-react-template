@@ -34,68 +34,77 @@ export default function Settings() {
     ]);
 
     return (
-        <Dialog open={open ?? false} onOpenChange={(isOpen) => setOpen(isOpen || undefined)}
-        >
-            <DialogContent
-                className={
-                    "top-0 left-0 flex h-full max-h-full w-full max-w-full translate-x-0 translate-y-0 flex-col gap-0 overflow-hidden rounded-none border-0 p-0"
-                }
-            >
-                <div className="flex shrink-0 items-center justify-between border-b px-4 py-2 pr-12">
+        <Dialog open={open ?? false} onOpenChange={(isOpen) => setOpen(isOpen || undefined)}>
+            <DialogContent className="top-0 left-0 flex h-full max-h-full w-full max-w-full translate-x-0 translate-y-0 flex-col gap-0 rounded-none border-0 p-0">
+                {/* Fixed header */}
+                <div className="flex shrink-0 items-center border-b px-4 py-2 pr-12">
                     <DialogTitle>{t("settings")}</DialogTitle>
-                    <div className="text-right text-xs text-muted-foreground">
-                        <p className="font-semibold text-foreground">{packageJson.name}</p>
-                        <p>v{packageJson.version}</p>
-                    </div>
                 </div>
 
-                <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-2">
-                    <div className="min-h-0 overflow-auto border-b p-4 lg:border-r lg:border-b-0">
-                        <div className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                            {t("quick_actions")}
+                {/* Single scrollable body */}
+                <div className="flex-1 overflow-auto">
+                    {/* Two-column grid on md+, single column list below md */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 md:divide-x">
+                        {/* Left column: quick actions */}
+                        <div className="border-b p-4 md:border-b-0">
+                            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                                {t("quick_actions")}
+                            </h3>
+                            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                                <SkipSettingToggle />
+                                <AutoSettingToggle />
+                                <OpenHistorySettingButton />
+                                <SaveLoadSettingButtons />
+                                <HideInterfaceSettingToggle />
+                                <DownloadFileToTranslateSettingButton />
+                            </div>
+                            <Separator className="my-4" />
+                            <ReturnMainMenuButton />
                         </div>
-                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                            <SkipSettingToggle />
-                            <AutoSettingToggle />
-                            <OpenHistorySettingButton />
-                            <SaveLoadSettingButtons />
-                            <HideInterfaceSettingToggle />
-                            <DownloadFileToTranslateSettingButton />
+
+                        {/* Right column: settings sections */}
+                        <div className="border-b p-4 md:border-b-0">
+                            <div className="grid gap-4">
+                                <div>
+                                    <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                                        {t("dialogues")}
+                                    </h3>
+                                    <DialoguesSettings />
+                                </div>
+
+                                <Separator />
+
+                                <div>
+                                    <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                                        {t("sound")}
+                                    </h3>
+                                    <SoundSettings />
+                                </div>
+
+                                <Separator />
+
+                                <div>
+                                    <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                                        {t("display")}
+                                    </h3>
+                                    <FullScreenSettings />
+                                    <ThemeSettings />
+                                </div>
+                            </div>
                         </div>
-                        <Separator className="my-4" />
-                        <ReturnMainMenuButton />
                     </div>
 
-                    <div className="min-h-0 overflow-auto p-4">
-                        <div className="grid gap-4">
-                            <div className="rounded-lg border p-3">
-                                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                                    {t("dialogues")}
-                                </h3>
-                                <DialoguesSettings />
-                            </div>
-
-                            <div className="rounded-lg border p-3">
-                                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                                    {t("sound")}
-                                </h3>
-                                <SoundSettings />
-                            </div>
-
-                            <div className="rounded-lg border p-3">
-                                <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                                    {t("display")}
-                                </h3>
-                                <FullScreenSettings />
-                                <ThemeSettings />
-                            </div>
-                        </div>
+                    {/* Game info section at the bottom, full width */}
+                    <div className="border-t p-4">
+                        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                            {t("about")}
+                        </h3>
+                        <p className="text-sm font-semibold">{packageJson.name}</p>
+                        <p className="text-sm text-muted-foreground">v{packageJson.version}</p>
+                        <p className="text-sm text-muted-foreground">
+                            {t("generated_with_engine", { engine: "Pixi'VN" })}
+                        </p>
                     </div>
-                </div>
-
-                <div className="flex shrink-0 items-center justify-between border-t px-4 py-2 text-xs text-muted-foreground">
-                    <p>{packageJson.name}</p>
-                    <p>{t("generated_with_engine", { engine: "Pixi'VN" })}</p>
                 </div>
             </DialogContent>
         </Dialog>
