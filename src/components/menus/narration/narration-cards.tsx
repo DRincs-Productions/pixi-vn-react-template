@@ -16,27 +16,36 @@ export function NarrationCards() {
     const { data: { character } = {} } = useQueryDialogue();
     const paragraphRef = useRef<HTMLDivElement>(null);
     const characterAlt = `${character?.name || ""} ${character?.surname || ""}`.trim();
+    const characterName = `${character?.name || ""} ${character?.surname || ""}`.trim();
 
     return (
-        <Card className="flex h-full flex-row p-0">
-            <ResizablePanelGroup orientation="horizontal">
-                <ResizablePanel defaultSize={"16%"}>
-                    {character?.icon && <CharacterIcon icon={character.icon} alt={characterAlt} />}
-                </ResizablePanel>
-                <ResizableHandle />
-                <ResizablePanel>
-                    <CardContent ref={paragraphRef} className="h-full w-full overflow-y-auto px-1">
-                        <p
-                            className={cn("min-h-[1.75rem] px-1 text-xl font-semibold")}
-                            style={{ color: character?.color }}
-                        >
-                            {`${character?.name || ""} ${character?.surname || ""}`.trim()}
-                        </p>
-                        <Text paragraphRef={paragraphRef} />
-                    </CardContent>
-                </ResizablePanel>
-            </ResizablePanelGroup>
-        </Card>
+        <div className="flex h-full flex-col">
+            {/* Character name – outside the card, left-aligned just above it */}
+            <p
+                className={cn(
+                    "shrink-0 px-1 text-xl font-semibold leading-tight",
+                    characterName
+                        ? "animate-in fade-in-0 slide-in-from-left-[3%]"
+                        : "invisible",
+                )}
+                style={{ color: character?.color }}
+            >
+                {characterName || "\u00A0"}
+            </p>
+            <Card className="min-h-0 flex-1 flex-row p-0">
+                <ResizablePanelGroup orientation="horizontal">
+                    <ResizablePanel defaultSize={"16%"}>
+                        {character?.icon && <CharacterIcon icon={character.icon} alt={characterAlt} />}
+                    </ResizablePanel>
+                    <ResizableHandle />
+                    <ResizablePanel>
+                        <CardContent ref={paragraphRef} className="h-full w-full overflow-y-auto px-1">
+                            <Text paragraphRef={paragraphRef} />
+                        </CardContent>
+                    </ResizablePanel>
+                </ResizablePanelGroup>
+            </Card>
+        </div>
     );
 }
 
