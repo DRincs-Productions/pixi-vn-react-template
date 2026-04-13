@@ -13,7 +13,7 @@ export default function NarrationScreen() {
                     <ResizablePanel>
                         <ChoiceMenu />
                     </ResizablePanel>
-                    {(animatedText || text) && <ResizableHandle />}
+                    {(animatedText || text) && <ResizableHandle className="mx-4" />}
                     {(animatedText || text) && (
                         <ResizablePanel defaultSize={"30%"}>
                             <NarrationCards />

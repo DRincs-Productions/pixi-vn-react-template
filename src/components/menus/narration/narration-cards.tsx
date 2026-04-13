@@ -19,7 +19,14 @@ export function NarrationCards() {
     return (
         <div className="relative h-full">
             {character && (
-                <p className="text-xl font-bold absolute" style={{ color: character?.color }}>
+                <p
+                    className="absolute bottom-full left-0 p-2 text-xl font-bold"
+                    style={{
+                        color: character?.color,
+                        textShadow:
+                            "-1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white",
+                    }}
+                >
                     {characterName}
                 </p>
             )}
