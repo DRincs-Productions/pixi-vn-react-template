@@ -72,7 +72,6 @@ export default function Settings() {
                                 <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
                                     {t("dialogues")}
                                 </h3>
-                                <SkipSettingToggle />
                                 <DialoguesSettings />
                             </div>
 
