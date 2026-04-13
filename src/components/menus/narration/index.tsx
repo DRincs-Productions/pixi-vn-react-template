@@ -56,7 +56,11 @@ export default function NarrationScreen() {
                     orientation="vertical"
                     className="h-full w-full pb-[0.9rem] sm:pb-[1rem] md:pb-[1.1rem] lg:pb-[1.3rem] xl:pb-[1.4rem]"
                 >
-                    <ResizablePanel id="narration-menu-panel" defaultSize={100 - cardHeight} minSize={0}>
+                    <ResizablePanel
+                        id="narration-menu-panel"
+                        defaultSize={100 - cardHeight}
+                        minSize={0}
+                    >
                         <ChoiceMenu />
                     </ResizablePanel>
                     <ResizableHandle
@@ -74,7 +78,9 @@ export default function NarrationScreen() {
                         maxSize={100}
                         onResize={(value) => {
                             const nextValue = Number(value);
-                            InterfaceSettings.setDialogueCardHeight(Math.max(0, Math.min(100, nextValue)));
+                            InterfaceSettings.setDialogueCardHeight(
+                                Math.max(0, Math.min(100, nextValue)),
+                            );
                         }}
                     >
                         <NarrationCards
@@ -83,7 +89,9 @@ export default function NarrationScreen() {
                             character={character}
                             paragraphRef={paragraphRef}
                             onCardImageWidthChange={(value) => {
-                                InterfaceSettings.setDialogueCardImageWidth(Math.max(5, Math.min(75, value)));
+                                InterfaceSettings.setDialogueCardImageWidth(
+                                    Math.max(5, Math.min(75, value)),
+                                );
                             }}
                         />
                     </ResizablePanel>

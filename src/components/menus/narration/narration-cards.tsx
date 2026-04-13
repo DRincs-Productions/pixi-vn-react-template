@@ -45,7 +45,9 @@ export function NarrationCards({
             <p
                 className={cn(
                     "min-h-[1.75rem] px-1 text-xl font-semibold",
-                    character?.name ? "animate-in fade-in-0 slide-in-from-left-[3%]" : "animate-out fade-out-0",
+                    character?.name
+                        ? "animate-in fade-in-0 slide-in-from-left-[3%]"
+                        : "animate-out fade-out-0",
                 )}
                 style={{ color: character?.color }}
             >
@@ -59,7 +61,8 @@ export function NarrationCards({
             </div>
         </CardContent>
     );
-    const characterAlt = `${character?.name || ""} ${character?.surname || ""}`.trim() || "Character icon";
+    const characterAlt =
+        `${character?.name || ""} ${character?.surname || ""}`.trim() || "Character icon";
 
     return (
         <div
