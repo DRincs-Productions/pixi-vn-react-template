@@ -5,22 +5,22 @@ import { useStore } from "@tanstack/react-store";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useAlertDialog } from "../components/providers/AlertDialogProvider";
-import TextMenuButton from "../components/TextMenuButton";
-import useGameProps from "../hooks/useGameProps";
-import useNarrationFunctions from "../hooks/useNarrationFunctions";
-import { useQueryCanGoBack } from "../hooks/useQueryInterface";
-import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastSave";
-import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
-import { useSetSearchParamState } from "../hooks/useSearchParamState";
-import { useWheelActions } from "../hooks/useWheelActions";
-import { AutoSettings } from "../lib/stores/auto-settings-store";
-import { GameStatus } from "../lib/stores/game-status-store";
-import { InterfaceSettings } from "../lib/stores/interface-settings-store";
-import { SkipSettings } from "../lib/stores/skip-settings-store";
-import { loadSave, saveGameToIndexDB } from "../utils/save-utility";
+import useGameProps from "../../hooks/useGameProps";
+import useNarrationFunctions from "../../hooks/useNarrationFunctions";
+import { useQueryCanGoBack } from "../../hooks/useQueryInterface";
+import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../../hooks/useQueryLastSave";
+import { SAVES_USE_QUEY_KEY } from "../../hooks/useQuerySaves";
+import { useSetSearchParamState } from "../../hooks/useSearchParamState";
+import { useWheelActions } from "../../hooks/useWheelActions";
+import { AutoSettings } from "../../lib/stores/auto-settings-store";
+import { GameStatus } from "../../lib/stores/game-status-store";
+import { InterfaceSettings } from "../../lib/stores/interface-settings-store";
+import { SkipSettings } from "../../lib/stores/skip-settings-store";
+import { loadSave, saveGameToIndexDB } from "../../utils/save-utility";
+import { useAlertDialog } from "../providers/AlertDialogProvider";
+import TextMenuButton from "../TextMenuButton";
 
-export default function QuickTools() {
+export function QuickTools() {
     const { t } = useTranslation(["ui"]);
     const hidden = useStore(InterfaceSettings.store, (state) => state.hidden);
     const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);

@@ -1,4 +1,3 @@
-import { useColorScheme } from "@mui/joy";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";
 import Card from "@mui/joy/Card";
@@ -6,17 +5,12 @@ import CardContent from "@mui/joy/CardContent";
 import Sheet from "@mui/joy/Sheet";
 import Typography from "@mui/joy/Typography";
 import { useStore } from "@tanstack/react-store";
-import { type RefObject, useCallback, useMemo, useRef } from "react";
-import Markdown from "react-markdown";
-import { MarkdownTypewriterHooks } from "react-markdown-typewriter";
-import rehypeRaw from "rehype-raw";
-import remarkGfm from "remark-gfm";
+import { useMemo, useRef } from "react";
 import { ChoiceMenu } from "@/components/menus/choice-menus";
-import AnimatedDots from "../components/AnimatedDots";
-import SliderResizer from "../components/SliderResizer";
-import { useQueryDialogue } from "../hooks/useQueryInterface";
-import { InterfaceSettings } from "../lib/stores/interface-settings-store";
-import { TypewriterSettings } from "../lib/stores/typewriter-settings-store";
+import { NarrationText } from "@/components/menus/narration/narration-texts";
+import SliderResizer from "@/components/SliderResizer";
+import { useQueryDialogue } from "@/hooks/useQueryInterface";
+import { InterfaceSettings } from "@/lib/stores/interface-settings-store";
 
 export default function NarrationScreen() {
     const cardHeightTemp = useStore(InterfaceSettings.store, (state) => state.dialogueCardHeight);
@@ -27,7 +21,7 @@ export default function NarrationScreen() {
     const { data: { animatedText, character, text } = {} } = useQueryDialogue();
     const hidden = useStore(
         InterfaceSettings.store,
-        (state) => state.hidden || (animatedText || text ? false : true),
+        (state) => state.hidden || !(animatedText || text),
     );
     const cardHeight = animatedText || text ? cardHeightTemp : 0;
     const cardVarians = useMemo(
@@ -166,7 +160,7 @@ export default function NarrationScreen() {
                                     marginLeft: 2,
                                 }}
                                 className={
-                                    character && character.name
+                                    character?.name
                                         ? `animate-in fade-in-0 slide-in-from-left-[3%]`
                                         : `animate-out fade-out-0`
                                 }
@@ -188,7 +182,7 @@ export default function NarrationScreen() {
                                     marginBottom: { xs: 0, md: 3 },
                                 }}
                             >
-                                <NarrationScreenText paragraphRef={paragraphRef} />
+                                <NarrationText paragraphRef={paragraphRef} />
                             </Sheet>
                         </CardContent>
                     </Card>
@@ -202,63 +196,5 @@ export default function NarrationScreen() {
                 }}
             />
         </Box>
-    );
-}
-
-function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement | null> }) {
-    const typewriterDelay = useStore(TypewriterSettings.store, (state) => state.delay);
-    const { data: { animatedText, text } = {} } = useQueryDialogue();
-    const { mode } = useColorScheme();
-
-    const handleCharacterAnimationComplete = useCallback(
-        (ref: { current: HTMLSpanElement | null }) => {
-            if (paragraphRef.current && ref.current) {
-                const scrollTop = ref.current.offsetTop - paragraphRef.current.clientHeight / 2;
-                paragraphRef.current.scrollTo({
-                    top: scrollTop,
-                    behavior: "auto",
-                });
-            }
-        },
-        [],
-    );
-
-    return (
-        <p
-            className={`prose ${mode === "dark" ? "dark:prose-invert" : ""}`}
-            style={{ margin: 0, padding: 0, maxWidth: "100%" }}
-        >
-            <span>
-                <Markdown
-                    remarkPlugins={[remarkGfm]}
-                    rehypePlugins={[rehypeRaw]}
-                    components={{
-                        p: (props) => <span {...props} />,
-                    }}
-                >
-                    {text}
-                </Markdown>
-            </span>
-            <span>
-                <span> </span>
-                <MarkdownTypewriterHooks
-                    remarkPlugins={[remarkGfm]}
-                    rehypePlugins={[rehypeRaw]}
-                    delay={typewriterDelay}
-                    motionProps={{
-                        onAnimationStart: TypewriterSettings.start,
-                        onAnimationComplete: (definition: "visible" | "hidden") => {
-                            if (definition == "visible") {
-                                TypewriterSettings.end();
-                            }
-                        },
-                        onCharacterAnimationComplete: handleCharacterAnimationComplete,
-                    }}
-                    fallback={<AnimatedDots />}
-                >
-                    {animatedText}
-                </MarkdownTypewriterHooks>
-            </span>
-        </p>
     );
 }

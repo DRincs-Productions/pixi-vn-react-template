@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import NarrationScreen from "@/components/menus/narration";
+import { QuickTools } from "@/components/menus/quick-tools";
 import NextButton from "@/components/NextButton";
 import VisibilityButton from "@/components/VisibilityButton";
 import useSkipAutoDetector from "@/hooks/useSkipAutoDetector";
 import HistoryScreen from "@/screens/HistoryScreen";
-import NarrationScreen from "@/screens/NarrationScreen";
-import QuickTools from "@/screens/QuickTools";
 
 export const Route = createFileRoute("/game/narration")({
     component: NarrationElement,
