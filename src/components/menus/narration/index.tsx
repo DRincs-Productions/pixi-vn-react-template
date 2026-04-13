@@ -1,11 +1,8 @@
-import { useRef } from "react";
 import { ChoiceMenu } from "@/components/menus/choice-menus";
 import { NarrationCards } from "@/components/menus/narration/narration-cards";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 
 export default function NarrationScreen() {
-    const paragraphRef = useRef<HTMLDivElement>(null);
-
     return (
         <div className="absolute flex h-full w-full flex-col">
             <div className="flex min-h-0 flex-1 flex-col">
@@ -15,7 +12,7 @@ export default function NarrationScreen() {
                     </ResizablePanel>
                     <ResizableHandle />
                     <ResizablePanel defaultSize={"30%"}>
-                        <NarrationCards paragraphRef={paragraphRef} />
+                        <NarrationCards />
                     </ResizablePanel>
                 </ResizablePanelGroup>
             </div>

@@ -1,4 +1,4 @@
-import type { RefObject } from "react";
+import { useRef } from "react";
 import { NarrationText } from "@/components/menus/narration/narration-texts";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";
@@ -6,12 +6,9 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import { useQueryDialogue } from "@/hooks/useQueryInterface";
 import { cn } from "@/lib/utils";
 
-export function NarrationCards({
-    paragraphRef,
-}: {
-    paragraphRef: RefObject<HTMLDivElement | null>;
-}) {
+export function NarrationCards() {
     const { data: { character } = {} } = useQueryDialogue();
+    const paragraphRef = useRef<HTMLDivElement>(null);
 
     const textBlock = (
         <CardContent className="flex h-full min-w-0 flex-1 flex-col gap-2 px-3 py-2 sm:px-4 sm:py-3">
