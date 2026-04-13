@@ -15,20 +15,6 @@ import { cn } from "@/lib/utils";
 export function NarrationCards() {
     const { data: { character } = {} } = useQueryDialogue();
     const paragraphRef = useRef<HTMLDivElement>(null);
-
-    const textBlock = (
-        <CardContent>
-            <p
-                className={cn("min-h-[1.75rem] px-1 text-xl font-semibold")}
-                style={{ color: character?.color }}
-            >
-                {`${character?.name || ""} ${character?.surname || ""}`.trim()}
-            </p>
-            <div ref={paragraphRef} className="h-full w-full overflow-y-auto px-1">
-                <Text paragraphRef={paragraphRef} />
-            </div>
-        </CardContent>
-    );
     const characterAlt = `${character?.name || ""} ${character?.surname || ""}`.trim();
 
     return (
@@ -38,7 +24,17 @@ export function NarrationCards() {
                     {character?.icon && <CharacterIcon icon={character.icon} alt={characterAlt} />}
                 </ResizablePanel>
                 <ResizableHandle />
-                <ResizablePanel>{textBlock}</ResizablePanel>
+                <ResizablePanel>
+                    <CardContent ref={paragraphRef} className="h-full w-full overflow-y-auto px-1">
+                        <p
+                            className={cn("min-h-[1.75rem] px-1 text-xl font-semibold")}
+                            style={{ color: character?.color }}
+                        >
+                            {`${character?.name || ""} ${character?.surname || ""}`.trim()}
+                        </p>
+                        <Text paragraphRef={paragraphRef} />
+                    </CardContent>
+                </ResizablePanel>
             </ResizablePanelGroup>
         </Card>
     );
@@ -51,7 +47,7 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
     const handleCharacterAnimationComplete = useCallback(
         (ref: { current: HTMLSpanElement | null }) => {
             if (paragraphRef.current && ref.current) {
-                const scrollTop = ref.current.offsetTop - paragraphRef.current.clientHeight;
+                const scrollTop = ref.current.offsetTop - paragraphRef.current.clientHeight / 2;
                 paragraphRef.current.scrollTo({
                     top: scrollTop,
                     behavior: "auto",
