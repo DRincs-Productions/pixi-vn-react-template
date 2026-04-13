@@ -55,15 +55,21 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
 
     const handleCharacterAnimationComplete = useCallback(
         (ref: { current: HTMLSpanElement | null }) => {
-            if (paragraphRef.current && ref.current) {
-                const scrollTop = ref.current.offsetTop - paragraphRef.current.clientHeight / 2;
-                paragraphRef.current.scrollTo({
+            const container = paragraphRef.current;
+            const char = ref.current;
+            if (container && char) {
+                const containerRect = container.getBoundingClientRect();
+                const charRect = char.getBoundingClientRect();
+                // Position of the character relative to the top of the scroll container
+                const charOffsetInContainer = charRect.top - containerRect.top + container.scrollTop;
+                const scrollTop = charOffsetInContainer - container.clientHeight / 2;
+                container.scrollTo({
                     top: scrollTop,
-                    behavior: "auto",
+                    behavior: "smooth",
                 });
             }
         },
-        [paragraphRef.current],
+        [paragraphRef],
     );
 
     return (
