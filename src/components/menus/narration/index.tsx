@@ -4,7 +4,8 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import { useQueryDialogue } from "@/hooks/useQueryInterface";
 
 export default function NarrationScreen() {
-    const { data: { animatedText, text } = {} } = useQueryDialogue();
+    const { data: { animatedText, text, character } = {} } = useQueryDialogue();
+    const characterName = `${character?.name || ""} ${character?.surname || ""}`.trim();
 
     return (
         <div className="absolute flex h-full w-full flex-col">
@@ -15,6 +16,18 @@ export default function NarrationScreen() {
                     </ResizablePanel>
                     {(animatedText || text) && (
                         <div className="mx-4">
+                            {character && (
+                                <p
+                                    className="text-xl font-bold mb-0.5"
+                                    style={{
+                                        color: character?.color,
+                                        textShadow:
+                                            "-1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white",
+                                    }}
+                                >
+                                    {characterName}
+                                </p>
+                            )}
                             <ResizableHandle />
                         </div>
                     )}

@@ -17,15 +17,7 @@ export function NarrationCards() {
     const characterName = `${character?.name || ""} ${character?.surname || ""}`.trim();
 
     return (
-        <div className="flex h-full flex-col pt-2">
-            {character && (
-                <p
-                    className="shrink-0 pb-1 pl-2 text-xl font-bold"
-                    style={{ color: character?.color }}
-                >
-                    {characterName}
-                </p>
-            )}
+        <div className="flex h-full flex-col">
             <Card className="min-h-0 flex-1 flex-row p-3">
                 <ResizablePanelGroup orientation="horizontal">
                     {character?.icon && (
