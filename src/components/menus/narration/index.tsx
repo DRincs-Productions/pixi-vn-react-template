@@ -1,5 +1,6 @@
 import { useStore } from "@tanstack/react-store";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import type { GroupImperativeHandle } from "react-resizable-panels";
 import { ChoiceMenu } from "@/components/menus/choice-menus";
 import { NarrationCards } from "@/components/menus/narration/narration-cards";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
@@ -28,16 +29,34 @@ export default function NarrationScreen() {
         [hidden],
     );
     const paragraphRef = useRef<HTMLDivElement>(null);
+    const panelGroupRef = useRef<GroupImperativeHandle>(null);
+
+    useEffect(() => {
+        if (!panelGroupRef.current) {
+            return;
+        }
+        if (!hasDialogue) {
+            panelGroupRef.current.setLayout({
+                "narration-card-panel": 0,
+                "narration-menu-panel": 100,
+            });
+            return;
+        }
+        panelGroupRef.current.setLayout({
+            "narration-card-panel": cardHeight,
+            "narration-menu-panel": 100 - cardHeight,
+        });
+    }, [hasDialogue, cardHeight]);
 
     return (
         <div className="absolute flex h-full w-full flex-col">
             <div className="flex min-h-0 flex-1 flex-col">
                 <ResizablePanelGroup
+                    groupRef={panelGroupRef}
                     orientation="vertical"
                     className="h-full w-full pb-[0.9rem] sm:pb-[1rem] md:pb-[1.1rem] lg:pb-[1.3rem] xl:pb-[1.4rem]"
-                    key={hasDialogue ? "has-dialogue" : "no-dialogue"}
                 >
-                    <ResizablePanel defaultSize={100 - cardHeight} minSize={0}>
+                    <ResizablePanel id="narration-menu-panel" defaultSize={100 - cardHeight} minSize={0}>
                         <ChoiceMenu />
                     </ResizablePanel>
                     <ResizableHandle
@@ -49,6 +68,7 @@ export default function NarrationScreen() {
                         )}
                     />
                     <ResizablePanel
+                        id="narration-card-panel"
                         defaultSize={cardHeight}
                         minSize={0}
                         maxSize={100}
