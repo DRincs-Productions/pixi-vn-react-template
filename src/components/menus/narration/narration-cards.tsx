@@ -37,7 +37,7 @@ export function NarrationCards() {
                             <CharacterIcon icon={character.icon} alt={characterName} />
                         </ResizablePanel>
                     )}
-                    {character?.icon && <ResizableHandle />}
+                    {character?.icon && <ResizableHandle className="mr-3" />}
                     <ResizablePanel>
                         <CardContent
                             ref={paragraphRef}
