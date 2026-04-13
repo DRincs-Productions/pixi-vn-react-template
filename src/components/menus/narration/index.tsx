@@ -1,16 +1,11 @@
-import AspectRatio from "@mui/joy/AspectRatio";
-import Box from "@mui/joy/Box";
-import Card from "@mui/joy/Card";
-import CardContent from "@mui/joy/CardContent";
-import Sheet from "@mui/joy/Sheet";
-import Typography from "@mui/joy/Typography";
 import { useStore } from "@tanstack/react-store";
 import { useMemo, useRef } from "react";
 import { ChoiceMenu } from "@/components/menus/choice-menus";
-import { NarrationText } from "@/components/menus/narration/narration-texts";
-import SliderResizer from "@/components/SliderResizer";
+import { NarrationCards } from "@/components/menus/narration/narration-cards";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { useQueryDialogue } from "@/hooks/useQueryInterface";
 import { InterfaceSettings } from "@/lib/stores/interface-settings-store";
+import { cn } from "@/lib/utils";
 
 export default function NarrationScreen() {
     const cardHeightTemp = useStore(InterfaceSettings.store, (state) => state.dialogueCardHeight);
@@ -24,13 +19,7 @@ export default function NarrationScreen() {
         (state) => state.hidden || !(animatedText || text),
     );
     const cardHeight = animatedText || text ? cardHeightTemp : 0;
-    const cardVarians = useMemo(
-        () =>
-            hidden
-                ? `animate-out fade-out-0 slide-out-to-bottom-1/2`
-                : `animate-in fade-in-0 slide-in-from-bottom-1/2`,
-        [hidden],
-    );
+    const hasDialogue = Boolean(animatedText || text);
     const sliderVarians = useMemo(
         () =>
             hidden
@@ -38,163 +27,50 @@ export default function NarrationScreen() {
                 : `animate-in fade-in-0 slide-in-from-bottom-[25%]`,
         [hidden],
     );
-    const cardImageVarians = useMemo(
-        () =>
-            !hidden && character?.icon
-                ? `animate-in fade-in-0 slide-in-from-left-[5%]`
-                : `animate-out fade-out-0`,
-        [hidden, character?.icon],
-    );
     const paragraphRef = useRef<HTMLDivElement>(null);
 
     return (
-        <Box
-            sx={{
-                position: "absolute",
-                display: "flex",
-                flexDirection: "column",
-                height: "100%",
-                width: "100%",
-            }}
-        >
-            <Box sx={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
-                <SliderResizer
+        <div className="absolute flex h-full w-full flex-col">
+            <div className="flex min-h-0 flex-1 flex-col">
+                <ResizablePanelGroup
                     orientation="vertical"
-                    max={100}
-                    min={0}
-                    value={cardHeight}
-                    onChange={(_, value) => {
-                        if (typeof value === "number") {
-                            InterfaceSettings.setDialogueCardHeight(value);
-                        }
-                    }}
-                    stackProps={{
-                        sx: {
-                            top: 0,
-                            paddingBottom: {
-                                xs: "0.9rem",
-                                sm: "1rem",
-                                md: "1.1rem",
-                                lg: "1.3rem",
-                                xl: "1.4rem",
-                            },
-                        },
-                    }}
-                    sx={{
-                        pointerEvents: !hidden ? "auto" : "none",
-                    }}
-                    className={sliderVarians}
-                />
-                <Box sx={{ flex: 1, minHeight: 0 }}>
-                    <ChoiceMenu />
-                </Box>
-                <Box
-                    sx={{
-                        flex: "0 0 auto",
-                        height: `${cardHeight}%`,
-                        minHeight: 0,
-                        pointerEvents: !hidden ? "auto" : "none",
-                    }}
-                    className={cardVarians}
+                    className="h-full w-full pb-[0.9rem] sm:pb-[1rem] md:pb-[1.1rem] lg:pb-[1.3rem] xl:pb-[1.4rem]"
+                    key={hasDialogue ? "has-dialogue" : "no-dialogue"}
                 >
-                    <Card
-                        key={"dialogue-card"}
-                        orientation="horizontal"
-                        sx={{
-                            overflow: "auto",
-                            gap: 1,
-                            padding: 0,
-                            height: "100%",
-                            marginX: {
-                                xs: "0.9rem",
-                                sm: "1rem",
-                                md: "1.1rem",
-                                lg: "1.3rem",
-                                xl: "1.4rem",
-                            },
+                    <ResizablePanel defaultSize={100 - cardHeight} minSize={0}>
+                        <ChoiceMenu />
+                    </ResizablePanel>
+                    <ResizableHandle
+                        withHandle
+                        className={cn(
+                            "bg-transparent after:bg-transparent",
+                            sliderVarians,
+                            hidden ? "pointer-events-none opacity-0" : "opacity-100",
+                        )}
+                    />
+                    <ResizablePanel
+                        defaultSize={cardHeight}
+                        minSize={0}
+                        maxSize={100}
+                        onResize={(value) => {
+                            const nextValue = Number(value);
+                            InterfaceSettings.setDialogueCardHeight(Math.max(0, Math.min(100, nextValue)));
                         }}
                     >
-                        {character?.icon && (
-                            <AspectRatio
-                                flex
-                                ratio="1"
-                                maxHeight={"20%"}
-                                sx={{
-                                    height: "100%",
-                                    minWidth: `${cardImageWidth}%`,
-                                }}
-                                className={`animate-in zoom-in`}
-                            >
-                                <img src={character.icon} loading="lazy" alt="" />
-                            </AspectRatio>
-                        )}
-                        <SliderResizer
-                            orientation="horizontal"
-                            max={100}
-                            min={0}
-                            value={cardImageWidth}
-                            onChange={(_, value) => {
-                                if (typeof value === "number") {
-                                    if (value > 75) {
-                                        value = 75;
-                                    }
-                                    if (value < 5) {
-                                        value = 5;
-                                    }
-                                    InterfaceSettings.setDialogueCardImageWidth(value);
-                                }
+                        <NarrationCards
+                            hidden={hidden}
+                            cardHeight={100}
+                            cardImageWidth={cardImageWidth}
+                            character={character}
+                            paragraphRef={paragraphRef}
+                            onCardImageWidthChange={(value) => {
+                                InterfaceSettings.setDialogueCardImageWidth(Math.max(5, Math.min(75, value)));
                             }}
-                            sx={{
-                                pointerEvents: !hidden && character?.icon ? "auto" : "none",
-                            }}
-                            className={cardImageVarians}
                         />
-                        <CardContent>
-                            <Typography
-                                fontSize="xl"
-                                fontWeight="lg"
-                                sx={{
-                                    color: character?.color,
-                                    paddingLeft: 1,
-                                    height: { sx: undefined, md: 30 },
-                                    marginLeft: 2,
-                                }}
-                                className={
-                                    character?.name
-                                        ? `animate-in fade-in-0 slide-in-from-left-[3%]`
-                                        : `animate-out fade-out-0`
-                                }
-                            >
-                                {`${character?.name || ""} ${character?.surname || ""}`}
-                            </Typography>
-                            <Sheet
-                                ref={paragraphRef}
-                                sx={{
-                                    bgcolor: "background.level1",
-                                    borderRadius: "sm",
-                                    p: 1.5,
-                                    minHeight: 10,
-                                    display: "flex",
-                                    flex: 1,
-                                    overflow: "auto",
-                                    height: "100%",
-                                    marginX: { xs: 0, md: 3 },
-                                    marginBottom: { xs: 0, md: 3 },
-                                }}
-                            >
-                                <NarrationText paragraphRef={paragraphRef} />
-                            </Sheet>
-                        </CardContent>
-                    </Card>
-                </Box>
-            </Box>
-            <Box
-                sx={{
-                    flex: "0 0 auto",
-                    height: { xs: "0.9rem", sm: "1rem", md: "1.1rem", lg: "1.3rem", xl: "1.4rem" },
-                    minHeight: 0,
-                }}
-            />
-        </Box>
+                    </ResizablePanel>
+                </ResizablePanelGroup>
+            </div>
+            <div className="h-[0.9rem] shrink-0 sm:h-[1rem] md:h-[1.1rem] lg:h-[1.3rem] xl:h-[1.4rem]" />
+        </div>
     );
 }

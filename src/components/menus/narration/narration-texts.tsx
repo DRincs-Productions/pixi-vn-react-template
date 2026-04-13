@@ -1,4 +1,3 @@
-import { useColorScheme } from "@mui/joy";
 import { useStore } from "@tanstack/react-store";
 import { type RefObject, useCallback } from "react";
 import Markdown from "react-markdown";
@@ -16,7 +15,6 @@ export function NarrationText({
 }) {
     const typewriterDelay = useStore(TypewriterSettings.store, (state) => state.delay);
     const { data: { animatedText, text } = {} } = useQueryDialogue();
-    const { mode } = useColorScheme();
 
     const handleCharacterAnimationComplete = useCallback(
         (ref: { current: HTMLSpanElement | null }) => {
@@ -32,10 +30,7 @@ export function NarrationText({
     );
 
     return (
-        <p
-            className={`prose ${mode === "dark" ? "dark:prose-invert" : ""}`}
-            style={{ margin: 0, padding: 0, maxWidth: "100%" }}
-        >
+        <p className="prose dark:prose-invert m-0 max-w-full p-0">
             <span>
                 <Markdown
                     remarkPlugins={[remarkGfm]}
