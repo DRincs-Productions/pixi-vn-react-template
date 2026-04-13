@@ -12,14 +12,12 @@ type NarrationCharacter = {
 };
 
 export function NarrationCards({
-    cardHeight,
     cardImageWidth,
     character,
     hidden,
     paragraphRef,
     onCardImageWidthChange,
 }: {
-    cardHeight: number;
     cardImageWidth: number;
     character?: NarrationCharacter;
     hidden: boolean;
@@ -61,12 +59,13 @@ export function NarrationCards({
             </div>
         </CardContent>
     );
+    const characterAlt = `${character?.name || ""} ${character?.surname || ""}`.trim() || "Character icon";
 
     return (
         <div
             className={cn("shrink-0 min-h-0", cardVariants)}
             style={{
-                height: `${cardHeight}%`,
+                height: "100%",
                 pointerEvents: hidden ? "none" : "auto",
             }}
         >
@@ -83,7 +82,7 @@ export function NarrationCards({
                                 <img
                                     src={character.icon}
                                     loading="lazy"
-                                    alt=""
+                                    alt={characterAlt}
                                     className="h-full w-full object-cover"
                                 />
                             </div>

@@ -79,7 +79,6 @@ export default function NarrationScreen() {
                     >
                         <NarrationCards
                             hidden={hidden}
-                            cardHeight={100}
                             cardImageWidth={cardImageWidth}
                             character={character}
                             paragraphRef={paragraphRef}
