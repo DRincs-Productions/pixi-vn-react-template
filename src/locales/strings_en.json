@@ -45,6 +45,7 @@
     "search": "Search",
     "settings": "Settings",
     "settings_restricted": "Prefs",
+    "quick_actions": "Quick Actions",
     "skip": "Skip",
     "solid_color": "Solid Color",
     "solid_color_description": "Choose the solid color for the theme. It can be black or white and will be contrasting with the primary color. So if the primary color is dark, the solid color will be white, and a the other way around.",
@@ -66,6 +67,7 @@
     "sfx_volume": "Sound Effects Volume",
     "master_volume_description": "Controls the overall audio level for the game. Use this to raise or lower all sounds at once.",
     "bgm_volume_description": "Sets the volume for background music tracks only.",
-    "sfx_volume_description": "Sets the volume for sound effects such as UI clicks and in-game actions."
+    "sfx_volume_description": "Sets the volume for sound effects such as UI clicks and in-game actions.",
+    "generated_with_engine": "Generated with {{engine}} Engine"
   }
 }
