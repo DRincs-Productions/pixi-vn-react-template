@@ -26,7 +26,7 @@ export function NarrationCards({
     paragraphRef: RefObject<HTMLDivElement | null>;
     onCardImageWidthChange: (value: number) => void;
 }) {
-    const cardVarians = useMemo(
+    const cardVariants = useMemo(
         () =>
             hidden
                 ? "animate-out fade-out-0 slide-out-to-bottom-1/2"
@@ -34,7 +34,7 @@ export function NarrationCards({
         [hidden],
     );
 
-    const cardImageVarians = useMemo(
+    const cardImageVariants = useMemo(
         () =>
             !hidden && character?.icon
                 ? "animate-in fade-in-0 slide-in-from-left-[5%]"
@@ -64,7 +64,7 @@ export function NarrationCards({
 
     return (
         <div
-            className={cn("shrink-0 min-h-0", cardVarians)}
+            className={cn("shrink-0 min-h-0", cardVariants)}
             style={{
                 height: `${cardHeight}%`,
                 pointerEvents: hidden ? "none" : "auto",
@@ -79,7 +79,7 @@ export function NarrationCards({
                             maxSize={75}
                             onResize={(value) => onCardImageWidthChange(Number(value))}
                         >
-                            <div className={cn("h-full w-full", cardImageVarians)}>
+                            <div className={cn("h-full w-full", cardImageVariants)}>
                                 <img
                                     src={character.icon}
                                     loading="lazy"
