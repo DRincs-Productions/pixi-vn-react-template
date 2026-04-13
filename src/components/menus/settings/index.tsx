@@ -95,7 +95,7 @@ export default function Settings() {
 
                 <div className="flex shrink-0 items-center justify-between border-t px-4 py-2 text-xs text-muted-foreground">
                     <p>{packageJson.name}</p>
-                    <p>Generated with Pixi&apos;VN Engine</p>
+                    <p>{"Generated with Pixi'VN Engine"}</p>
                 </div>
             </DialogContent>
         </Dialog>
