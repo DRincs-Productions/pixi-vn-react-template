@@ -8,7 +8,7 @@ import HideInterfaceSettingToggle from "@/components/menus/settings/HideInterfac
 import OpenHistorySettingButton from "@/components/menus/settings/OpenHistorySettingButton";
 import SaveLoadSettingButtons from "@/components/menus/settings/SaveLoadSettingButtons";
 import SkipSettingToggle from "@/components/menus/settings/SkipSettingToggle";
-import SoundSettings from "@/components/menus/settings/SoundSettings";
+import { SoundSettings } from "@/components/menus/settings/sound-controls";
 import ThemeSettings from "@/components/menus/settings/ThemeSettings";
 import ReturnMainMenuButton from "@/components/ReturnMainMenuButton";
 import { Separator } from "@/components/ui/separator";
