@@ -75,7 +75,7 @@ function SoundRow({
                     min={0}
                     max={100}
                     value={[volume]}
-                    onValueChange={(v) => typeof v === "number" && onVolumeChange(v)}
+                    onValueChange={([v = 0]) => onVolumeChange(v)}
                     disabled={disabled}
                     className="flex-1"
                 />
