@@ -19,7 +19,9 @@ export function DialoguesControls() {
             <div className="flex flex-col gap-1.5">
                 <div>
                     <p className="text-sm font-medium leading-none">{t("text_speed")}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{t("text_speed_description")}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                        {t("text_speed_description")}
+                    </p>
                 </div>
                 <div className="flex items-center gap-2">
                     <Slider
@@ -27,7 +29,9 @@ export function DialoguesControls() {
                         max={200}
                         step={10}
                         value={[typewriterDelay]}
-                        onValueChange={([v = 0]) => TypewriterSettings.setDelay(v)}
+                        onValueChange={(v) =>
+                            typeof v === "number" && TypewriterSettings.setDelay(v)
+                        }
                         className="flex-1"
                     />
                     <span className="w-14 text-right text-xs tabular-nums">
@@ -40,6 +44,7 @@ export function DialoguesControls() {
                 </div>
             </div>
 
+            <AutoForwardToggle />
             <div className="flex flex-col gap-1.5">
                 <div>
                     <p className="text-sm font-medium leading-none">{t("auto_forward_time")}</p>
@@ -56,7 +61,7 @@ export function DialoguesControls() {
                         max={10}
                         step={1}
                         value={[autoTime]}
-                        onValueChange={([v = 1]) => AutoSettings.setTime(v)}
+                        onValueChange={(v) => typeof v === "number" && AutoSettings.setTime(v)}
                         disabled={!autoEnabled}
                         className="flex-1"
                     />
@@ -67,11 +72,7 @@ export function DialoguesControls() {
                     <span>10s</span>
                 </div>
             </div>
-
-            <div className="grid grid-cols-2 gap-2">
-                <AutoForwardToggle />
-                <SkipToggle />
-            </div>
+            <SkipToggle />
         </div>
     );
 }
@@ -109,7 +110,6 @@ export function SkipToggle() {
 
     return (
         <Toggle
-            variant="outline"
             pressed={enabled}
             onPressedChange={SkipSettings.setEnabled}
             className="h-auto w-full flex-col gap-1 py-3"
