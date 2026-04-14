@@ -30,7 +30,7 @@ export function NarrationCards() {
                         <div className="flex h-full flex-col">
                             {character && (
                                 <p
-                                    className="shrink-0 px-7 pt-3 text-xl font-bold"
+                                    className="shrink-0 px-7 text-xl font-bold"
                                     style={{ color: character?.color }}
                                 >
                                     {characterName}
