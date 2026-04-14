@@ -8,7 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { ChannelSound } from "@/lib/stores/channel-sound-stores";
 import { MasterSound } from "@/lib/stores/master-sound-storage";
 
-export function SoundSettings() {
+export function SoundControls() {
     const { t } = useTranslation(["ui"]);
 
     const masterVolume = useStore(MasterSound.store, (s) => s.volume);

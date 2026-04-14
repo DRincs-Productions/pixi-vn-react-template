@@ -1,15 +1,13 @@
 import { useTranslation } from "react-i18next";
 import packageJson from "@/../package.json";
-import AutoSettingToggle from "@/components/menus/settings/AutoSettingToggle";
-import DialoguesSettings from "@/components/menus/settings/DialoguesSettings";
 import DownloadFileToTranslateSettingButton from "@/components/menus/settings/DownloadFileToTranslateSettingButton";
+import { DialoguesControls } from "@/components/menus/settings/dialogues-controls";
 import FullScreenSettings from "@/components/menus/settings/FullScreenSettings";
 import HideInterfaceSettingToggle from "@/components/menus/settings/HideInterfaceSettingToggle";
 import ModeToggle from "@/components/menus/settings/mode-toggle";
 import OpenHistorySettingButton from "@/components/menus/settings/OpenHistorySettingButton";
 import SaveLoadSettingButtons from "@/components/menus/settings/SaveLoadSettingButtons";
-import SkipSettingToggle from "@/components/menus/settings/SkipSettingToggle";
-import { SoundSettings } from "@/components/menus/settings/sound-controls";
+import { SoundControls } from "@/components/menus/settings/sound-controls";
 import ReturnMainMenuButton from "@/components/ReturnMainMenuButton";
 import { Separator } from "@/components/ui/separator";
 
@@ -26,8 +24,6 @@ export default function Settings() {
                         {t("quick_actions")}
                     </h3>
                     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                        <SkipSettingToggle />
-                        <AutoSettingToggle />
                         <OpenHistorySettingButton />
                         <SaveLoadSettingButtons />
                         <HideInterfaceSettingToggle />
@@ -44,7 +40,7 @@ export default function Settings() {
                             <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
                                 {t("dialogues")}
                             </h3>
-                            <DialoguesSettings />
+                            <DialoguesControls />
                         </div>
 
                         <Separator />
@@ -53,7 +49,7 @@ export default function Settings() {
                             <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
                                 {t("sound")}
                             </h3>
-                            <SoundSettings />
+                            <SoundControls />
                         </div>
 
                         <Separator />
