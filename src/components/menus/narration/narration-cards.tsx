@@ -18,24 +18,27 @@ export function NarrationCards() {
 
     return (
         <div className="flex h-full flex-col">
-            <Card className="min-h-0 flex-1 flex-row p-3">
+            <Card className="min-h-0 flex-1 flex-row">
                 <ResizablePanelGroup orientation="horizontal">
                     {character?.icon && (
                         <ResizablePanel defaultSize={"16%"}>
                             <CharacterIcon icon={character.icon} alt={characterName} />
                         </ResizablePanel>
                     )}
-                    {character?.icon && <ResizableHandle className="mr-3" />}
+                    {character?.icon && <ResizableHandle />}
                     <ResizablePanel>
-                        {character && (
-                            <p className="text-xl font-bold" style={{ color: character?.color }}>
-                                {characterName}
-                            </p>
-                        )}
                         <CardContent
                             ref={paragraphRef}
-                            className="h-full w-full overflow-y-auto px-1"
+                            className="h-full w-full overflow-y-auto px-7"
                         >
+                            {character && (
+                                <p
+                                    className="text-xl font-bold"
+                                    style={{ color: character?.color }}
+                                >
+                                    {characterName}
+                                </p>
+                            )}
                             <Text paragraphRef={paragraphRef} />
                         </CardContent>
                     </ResizablePanel>
