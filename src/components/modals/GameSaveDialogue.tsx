@@ -53,9 +53,7 @@ export default function GameSaveDialogue() {
                         variant="ghost"
                         size="icon-lg"
                         onClick={() => downloadGameSave()}
-                        disabled={
-                            (location.pathname as FileRouteTypes["fullPaths"]) === "/"
-                        }
+                        disabled={(location.pathname as FileRouteTypes["fullPaths"]) === "/"}
                         aria-label={t("save_to_file")}
                     >
                         <Download className="size-6" />
@@ -68,11 +66,7 @@ export default function GameSaveDialogue() {
 
     return (
         <Dialog open={open ?? false} onOpenChange={(isOpen) => setOpen(isOpen || undefined)}>
-            <FullscreenDialogContent
-                title={`${t("save")}/${t("load")}`}
-                toolbar={toolbar}
-                centered
-            >
+            <FullscreenDialogContent title={`${t("save")}/${t("load")}`} toolbar={toolbar} centered>
                 <GameSaveMenu />
             </FullscreenDialogContent>
         </Dialog>

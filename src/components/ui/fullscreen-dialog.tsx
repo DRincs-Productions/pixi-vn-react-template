@@ -56,11 +56,7 @@ export function FullscreenDialogContent({
             <div className="flex shrink-0 items-center gap-2 border-b px-4 py-2">
                 <DialogTitle className="flex-1 text-lg font-semibold">{title}</DialogTitle>
                 {toolbar && <div className="flex items-center">{toolbar}</div>}
-                <DialogClose
-                    render={
-                        <Button variant="ghost" size="icon-sm" />
-                    }
-                >
+                <DialogClose render={<Button variant="ghost" size="icon-sm" />}>
                     <XIcon />
                     <span className="sr-only">Close</span>
                 </DialogClose>
