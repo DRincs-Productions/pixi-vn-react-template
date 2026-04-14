@@ -5,11 +5,11 @@ import DialoguesSettings from "@/components/menus/settings/DialoguesSettings";
 import DownloadFileToTranslateSettingButton from "@/components/menus/settings/DownloadFileToTranslateSettingButton";
 import FullScreenSettings from "@/components/menus/settings/FullScreenSettings";
 import HideInterfaceSettingToggle from "@/components/menus/settings/HideInterfaceSettingToggle";
+import ModeToggle from "@/components/menus/settings/mode-toggle";
 import OpenHistorySettingButton from "@/components/menus/settings/OpenHistorySettingButton";
 import SaveLoadSettingButtons from "@/components/menus/settings/SaveLoadSettingButtons";
 import SkipSettingToggle from "@/components/menus/settings/SkipSettingToggle";
 import { SoundSettings } from "@/components/menus/settings/sound-controls";
-import ThemeSettings from "@/components/menus/settings/ThemeSettings";
 import ReturnMainMenuButton from "@/components/ReturnMainMenuButton";
 import { Separator } from "@/components/ui/separator";
 
@@ -63,7 +63,7 @@ export default function Settings() {
                                 {t("display")}
                             </h3>
                             <FullScreenSettings />
-                            <ThemeSettings />
+                            <ModeToggle />
                         </div>
                     </div>
                 </div>
