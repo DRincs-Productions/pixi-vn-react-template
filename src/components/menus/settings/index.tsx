@@ -20,6 +20,14 @@ export default function Settings() {
             <div className="grid grid-cols-1 md:grid-cols-2 md:divide-x px-2 sm:px-12 md:px-14 lg:px-22 xl:px-28">
                 {/* Left column: quick actions */}
                 <div className="border-b p-4 md:border-b-0">
+                    <div>
+                        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                            {t("display")}
+                        </h3>
+                        <FullScreenSettings />
+                        <ModeToggle />
+                    </div>
+                    <Separator className="my-4" />
                     <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
                         {t("quick_actions")}
                     </h3>
@@ -50,16 +58,6 @@ export default function Settings() {
                                 {t("sound")}
                             </h3>
                             <SoundControls />
-                        </div>
-
-                        <Separator />
-
-                        <div>
-                            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                                {t("display")}
-                            </h3>
-                            <FullScreenSettings />
-                            <ModeToggle />
                         </div>
                     </div>
                 </div>
