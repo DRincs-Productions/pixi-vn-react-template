@@ -69,6 +69,6 @@
     "master_volume_description": "Controls the overall audio level for the game. Use this to raise or lower all sounds at once.",
     "bgm_volume_description": "Sets the volume for background music tracks only.",
     "sfx_volume_description": "Sets the volume for sound effects such as UI clicks and in-game actions.",
-    "generated_with_engine": "Generated with {{engine}} Engine"
+    "generated_with_engine": "Powered by {{engine}}"
   }
 }
