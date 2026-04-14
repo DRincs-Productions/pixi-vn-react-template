@@ -27,7 +27,9 @@ export function DialoguesControls() {
                         max={200}
                         step={10}
                         value={[typewriterDelay]}
-                        onValueChange={([v = 0]) => TypewriterSettings.setDelay(v)}
+                        onValueChange={(v) =>
+                            typeof v === "number" && TypewriterSettings.setDelay(v)
+                        }
                         className="flex-1"
                     />
                     <span className="w-14 text-right text-xs tabular-nums">
@@ -76,7 +78,7 @@ export function AutoForwardToggle() {
                     max={10}
                     step={1}
                     value={[autoTime]}
-                    onValueChange={([v = 1]) => AutoSettings.setTime(v)}
+                    onValueChange={(v) => typeof v === "number" && AutoSettings.setTime(v)}
                     disabled={!autoEnabled}
                     className="flex-1"
                 />
