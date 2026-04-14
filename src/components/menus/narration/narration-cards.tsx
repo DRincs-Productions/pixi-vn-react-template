@@ -8,6 +8,7 @@ import AnimatedDots from "@/components/AnimatedDots";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import useNarrationFunctions from "@/hooks/useNarrationFunctions";
 import { useQueryDialogue } from "@/hooks/useQueryInterface";
 import { TypewriterSettings } from "@/lib/stores/typewriter-settings-store";
 
@@ -15,6 +16,7 @@ export function NarrationCards() {
     const { data: { character } = {} } = useQueryDialogue();
     const paragraphRef = useRef<HTMLDivElement>(null);
     const characterName = `${character?.name || ""} ${character?.surname || ""}`.trim();
+    const { goNext } = useNarrationFunctions();
 
     const handlePointerDown = useCallback(
         (e: React.PointerEvent<HTMLDivElement>) => {
