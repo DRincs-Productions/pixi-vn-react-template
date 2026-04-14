@@ -33,13 +33,19 @@ export function NarrationCards() {
                 if (isInsideScrollable && e.clientX > rect.left + scrollable.clientWidth) return;
             }
 
-            // Forward the pointer events to the PixiJS canvas underneath
-            const canvas = document.querySelector("canvas");
-            if (!canvas) return;
+            // Find whatever element is physically underneath the card by briefly disabling its
+            // pointer-events, then forward the event to that element so it reaches the correct target
+            // regardless of what is rendered behind the card (canvas, image, etc.)
+            const card = e.currentTarget;
+            card.style.pointerEvents = "none";
+            const elementBelow = document.elementFromPoint(e.clientX, e.clientY);
+            card.style.pointerEvents = "";
 
-            canvas.dispatchEvent(
+            if (!elementBelow) return;
+
+            elementBelow.dispatchEvent(
                 new PointerEvent("pointerdown", {
-                    bubbles: false,
+                    bubbles: true,
                     cancelable: true,
                     clientX: e.clientX,
                     clientY: e.clientY,
@@ -54,9 +60,15 @@ export function NarrationCards() {
             window.addEventListener(
                 "pointerup",
                 (upEvent: PointerEvent) => {
-                    canvas.dispatchEvent(
+                    card.style.pointerEvents = "none";
+                    const upElementBelow = document.elementFromPoint(
+                        upEvent.clientX,
+                        upEvent.clientY,
+                    );
+                    card.style.pointerEvents = "";
+                    upElementBelow?.dispatchEvent(
                         new PointerEvent("pointerup", {
-                            bubbles: false,
+                            bubbles: true,
                             cancelable: true,
                             clientX: upEvent.clientX,
                             clientY: upEvent.clientY,
@@ -133,7 +145,7 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
     );
 
     return (
-        <p className="prose dark:prose-invert m-0 max-w-full p-0">
+        <p className="prose dark:prose-invert m-0 max-w-full select-none p-0">
             <span>
                 <Markdown
                     remarkPlugins={[remarkGfm]}
