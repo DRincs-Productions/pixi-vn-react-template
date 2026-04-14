@@ -1,12 +1,12 @@
 import { sound } from "@drincs/pixi-vn";
-import VolumeOffIcon from "@mui/icons-material/VolumeOff";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import { Box, FormHelperText, FormLabel, IconButton, Slider, Stack } from "@mui/joy";
 import { useStore } from "@tanstack/react-store";
+import { Volume2Icon, VolumeXIcon } from "lucide-react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ChannelSound } from "@/lib/stores/channel-sound-stores";
 import { MasterSound } from "@/lib/stores/master-sound-storage";
+import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 
 export function SoundSettings() {
     const { t } = useTranslation(["ui"]);
@@ -15,33 +15,15 @@ export function SoundSettings() {
     const masterMuted = useStore(MasterSound.store, (s) => s.muted);
 
     return (
-        <Stack spacing={1} sx={{ p: 1 }}>
-            <Box>
-                <FormLabel sx={{ typography: "title-sm" }}>
-                    {t("master_volume") || "Master"}
-                </FormLabel>
-                <FormHelperText sx={{ typography: "body-sm" }}>
-                    {t("master_volume_description")}
-                </FormHelperText>
-            </Box>
-            <Stack direction="row" alignItems="center" spacing={1}>
-                <IconButton onClick={() => MasterSound.toggleMuted()}>
-                    {masterMuted ? <VolumeOffIcon /> : <VolumeUpIcon />}
-                </IconButton>
-                <Slider
-                    min={0}
-                    max={100}
-                    value={masterVolume}
-                    onChange={(_, v) =>
-                        MasterSound.setVolume(Array.isArray(v) ? v[0] : (v as number))
-                    }
-                    sx={{ flex: 1 }}
-                    step={1}
-                />
-                <Box component="span" sx={{ minWidth: 36, textAlign: "right" }}>
-                    {masterVolume}%
-                </Box>
-            </Stack>
+        <div className="flex flex-col gap-4">
+            <SoundRow
+                label={t("master_volume") || "Master"}
+                helper={t("master_volume_description")}
+                volume={masterVolume}
+                muted={masterMuted}
+                onMuteToggle={() => MasterSound.toggleMuted()}
+                onVolumeChange={(v) => MasterSound.setVolume(v)}
+            />
 
             {sound.channels.map((c) => (
                 <SoundChannelControl
@@ -52,7 +34,54 @@ export function SoundSettings() {
                     disabled={masterMuted}
                 />
             ))}
-        </Stack>
+        </div>
+    );
+}
+
+function SoundRow({
+    label,
+    helper,
+    volume,
+    muted,
+    disabled,
+    onMuteToggle,
+    onVolumeChange,
+}: {
+    label: string;
+    helper?: string;
+    volume: number;
+    muted: boolean;
+    disabled?: boolean;
+    onMuteToggle: () => void;
+    onVolumeChange: (v: number) => void;
+}) {
+    return (
+        <div className="flex flex-col gap-1.5">
+            <div>
+                <p className="text-sm font-medium leading-none">{label}</p>
+                {helper && <p className="mt-1 text-xs text-muted-foreground">{helper}</p>}
+            </div>
+            <div className="flex items-center gap-2">
+                <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    disabled={disabled}
+                    onClick={onMuteToggle}
+                    aria-label={muted ? "Unmute" : "Mute"}
+                >
+                    {muted ? <VolumeXIcon /> : <Volume2Icon />}
+                </Button>
+                <Slider
+                    min={0}
+                    max={100}
+                    value={[volume]}
+                    onValueChange={([v]) => onVolumeChange(v)}
+                    disabled={disabled}
+                    className="flex-1"
+                />
+                <span className="w-9 text-right text-xs tabular-nums">{volume}%</span>
+            </div>
+        </div>
     );
 }
 
@@ -72,32 +101,14 @@ export default function SoundChannelControl({
     const muted = useStore(store, (s) => s.muted);
 
     return (
-        <>
-            <Box>
-                <FormLabel sx={{ typography: "title-sm" }}>{label}</FormLabel>
-                {helper ? (
-                    <FormHelperText sx={{ typography: "body-sm" }}>{helper}</FormHelperText>
-                ) : null}
-            </Box>
-            <Stack direction="row" alignItems="center" spacing={1}>
-                <IconButton disabled={disabled} onClick={() => ChannelSound.toggleMuted(alias)}>
-                    {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
-                </IconButton>
-                <Slider
-                    min={0}
-                    max={100}
-                    value={volume}
-                    onChange={(_, v) =>
-                        ChannelSound.setVolume(alias, Array.isArray(v) ? v[0] : (v as number))
-                    }
-                    disabled={disabled}
-                    sx={{ flex: 1 }}
-                    step={1}
-                />
-                <Box component="span" sx={{ minWidth: 36, textAlign: "right" }}>
-                    {volume}%
-                </Box>
-            </Stack>
-        </>
+        <SoundRow
+            label={label}
+            helper={helper}
+            volume={volume}
+            muted={muted}
+            disabled={disabled}
+            onMuteToggle={() => ChannelSound.toggleMuted(alias)}
+            onVolumeChange={(v) => ChannelSound.setVolume(alias, v)}
+        />
     );
 }
