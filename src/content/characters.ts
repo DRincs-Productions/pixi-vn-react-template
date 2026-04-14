@@ -8,7 +8,6 @@ export const mc = new Character("mc", {
 export const james = new Character("james", {
     name: "James",
     color: "#0084ac",
-    icon: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-mouth-wow01.webp",
 });
 
 export const steph_fullname = "Stephanie";

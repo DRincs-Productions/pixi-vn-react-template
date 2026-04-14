@@ -27,6 +27,11 @@ export function NarrationCards() {
                     )}
                     {character?.icon && <ResizableHandle className="mr-3" />}
                     <ResizablePanel>
+                        {character && (
+                            <p className="text-xl font-bold" style={{ color: character?.color }}>
+                                {characterName}
+                            </p>
+                        )}
                         <CardContent
                             ref={paragraphRef}
                             className="h-full w-full overflow-y-auto px-1"
