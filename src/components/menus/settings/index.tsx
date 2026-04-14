@@ -2,12 +2,11 @@ import { useTranslation } from "react-i18next";
 import packageJson from "@/../package.json";
 import DownloadFileToTranslateSettingButton from "@/components/menus/settings/DownloadFileToTranslateSettingButton";
 import { DialoguesControls } from "@/components/menus/settings/dialogues-controls";
-import FullScreenSettings from "@/components/menus/settings/FullScreenSettings";
 import HideInterfaceSettingToggle from "@/components/menus/settings/HideInterfaceSettingToggle";
-import ModeToggle from "@/components/menus/settings/mode-toggle";
 import OpenHistorySettingButton from "@/components/menus/settings/OpenHistorySettingButton";
 import SaveLoadSettingButtons from "@/components/menus/settings/SaveLoadSettingButtons";
 import { SoundControls } from "@/components/menus/settings/sound-controls";
+import { SystemControls } from "@/components/menus/settings/system-controls";
 import ReturnMainMenuButton from "@/components/ReturnMainMenuButton";
 import { Separator } from "@/components/ui/separator";
 
@@ -24,8 +23,7 @@ export default function Settings() {
                         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
                             {t("display")}
                         </h3>
-                        <FullScreenSettings />
-                        <ModeToggle />
+                        <SystemControls />
                     </div>
                     <Separator className="my-4" />
                     <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
