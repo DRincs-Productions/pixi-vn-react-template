@@ -1,9 +1,9 @@
 import { useLocation } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
-import { ChevronsRightIcon, TimerIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Kbd } from "@/components/ui/kbd";
 import { Slider } from "@/components/ui/slider";
-import { Toggle } from "@/components/ui/toggle";
+import { Switch } from "@/components/ui/switch";
 import { AutoSettings } from "@/lib/stores/auto-settings-store";
 import { SkipSettings } from "@/lib/stores/skip-settings-store";
 import { TypewriterSettings } from "@/lib/stores/typewriter-settings-store";
@@ -11,8 +11,6 @@ import { TypewriterSettings } from "@/lib/stores/typewriter-settings-store";
 export function DialoguesControls() {
     const typewriterDelay = useStore(TypewriterSettings.store, (state) => state.delay);
     const { t } = useTranslation(["ui"]);
-    const autoEnabled = useStore(AutoSettings.store, (state) => state.enabled);
-    const autoTime = useStore(AutoSettings.store, (state) => state.time);
 
     return (
         <div className="flex flex-col gap-4">
@@ -29,9 +27,7 @@ export function DialoguesControls() {
                         max={200}
                         step={10}
                         value={[typewriterDelay]}
-                        onValueChange={(v) =>
-                            typeof v === "number" && TypewriterSettings.setDelay(v)
-                        }
+                        onValueChange={([v = 0]) => TypewriterSettings.setDelay(v)}
                         className="flex-1"
                     />
                     <span className="w-14 text-right text-xs tabular-nums">
@@ -45,33 +41,6 @@ export function DialoguesControls() {
             </div>
 
             <AutoForwardToggle />
-            <div className="flex flex-col gap-1.5">
-                <div>
-                    <p className="text-sm font-medium leading-none">{t("auto_forward_time")}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                        {t("auto_forward_time_description", {
-                            autoName: t("auto_forward_time_restricted"),
-                            textSpeedName: t("text_speed"),
-                        })}
-                    </p>
-                </div>
-                <div className="flex items-center gap-2">
-                    <Slider
-                        min={1}
-                        max={10}
-                        step={1}
-                        value={[autoTime]}
-                        onValueChange={(v) => typeof v === "number" && AutoSettings.setTime(v)}
-                        disabled={!autoEnabled}
-                        className="flex-1"
-                    />
-                    <span className="w-14 text-right text-xs tabular-nums">{autoTime}s</span>
-                </div>
-                <div className="flex justify-between px-1 text-xs text-muted-foreground">
-                    <span>1s</span>
-                    <span>10s</span>
-                </div>
-            </div>
             <SkipToggle />
         </div>
     );
@@ -80,6 +49,7 @@ export function DialoguesControls() {
 export function AutoForwardToggle() {
     const { t } = useTranslation(["ui"]);
     const autoEnabled = useStore(AutoSettings.store, (state) => state.enabled);
+    const autoTime = useStore(AutoSettings.store, (state) => state.time);
 
     const location = useLocation();
     if (location.pathname === "/") {
@@ -87,15 +57,36 @@ export function AutoForwardToggle() {
     }
 
     return (
-        <Toggle
-            variant="outline"
-            pressed={autoEnabled}
-            onPressedChange={AutoSettings.toggleEnabled}
-            className="h-auto w-full flex-col gap-1 py-3"
-        >
-            <TimerIcon className="size-5" />
-            <span className="text-xs font-medium">{t("auto_forward_time_restricted")}</span>
-        </Toggle>
+        <div className="flex flex-col gap-2 rounded-md border p-3">
+            <div className="flex items-center justify-between gap-4">
+                <div className="flex-1">
+                    <p className="text-sm font-medium leading-none">
+                        {t("auto_forward_time_restricted")}
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                        {t("auto_forward_time_description")}
+                    </p>
+                </div>
+                <Switch checked={autoEnabled} onCheckedChange={AutoSettings.toggleEnabled} />
+            </div>
+
+            <div className="flex items-center gap-2">
+                <Slider
+                    min={1}
+                    max={10}
+                    step={1}
+                    value={[autoTime]}
+                    onValueChange={([v = 1]) => AutoSettings.setTime(v)}
+                    disabled={!autoEnabled}
+                    className="flex-1"
+                />
+                <span className="w-8 text-right text-xs tabular-nums">{autoTime}s</span>
+            </div>
+            <div className="flex justify-between px-1 text-xs text-muted-foreground">
+                <span>1s</span>
+                <span>10s</span>
+            </div>
+        </div>
     );
 }
 
@@ -109,16 +100,15 @@ export function SkipToggle() {
     }
 
     return (
-        <Toggle
-            pressed={enabled}
-            onPressedChange={SkipSettings.setEnabled}
-            className="h-auto w-full flex-col gap-1 py-3"
-        >
-            <ChevronsRightIcon className="size-5" />
-            <span className="text-xs font-medium">{t("skip")}</span>
-            <kbd className="rounded border bg-muted px-1 py-0.5 font-mono text-[10px] text-muted-foreground">
-                Space
-            </kbd>
-        </Toggle>
+        <div className="flex items-center justify-between gap-4 rounded-md border p-3">
+            <div className="flex-1">
+                <div className="flex items-center gap-2">
+                    <p className="text-sm font-medium leading-none">{t("skip")}</p>
+                    <Kbd>Space</Kbd>
+                </div>
+                <p className="mt-1 text-xs text-muted-foreground">{t("skip_description")}</p>
+            </div>
+            <Switch checked={enabled} onCheckedChange={SkipSettings.setEnabled} />
+        </div>
     );
 }
