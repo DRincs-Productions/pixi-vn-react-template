@@ -1,5 +1,5 @@
-import * as React from "react";
 import { XIcon } from "lucide-react";
+import type * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
@@ -40,25 +40,19 @@ export function FullscreenDialogContent({
                 // Base: full-screen on all viewport sizes.
                 // sm:max-w-full overrides the base DialogContent's sm:max-w-sm.
                 "flex flex-col p-0 gap-0 overflow-hidden",
-                "top-0 left-0 h-full max-h-full w-full max-w-full sm:max-w-full translate-x-0 translate-y-0 rounded-none",
+                "top-0 left-0 h-full max-h-full w-full max-w-full sm:max-w-full rounded-none",
                 // Centered variant: restore normal modal look at lg+
-                centered && [
-                    "lg:top-1/2 lg:left-1/2",
-                    "lg:-translate-x-1/2 lg:-translate-y-1/2",
-                    "lg:rounded-xl",
-                    "lg:h-auto lg:w-[90vw] lg:max-h-[90vh] lg:max-w-5xl",
-                ],
+                centered && ["lg:h-auto lg:w-[90vw] lg:max-h-[90vh] lg:max-w-5xl"],
                 className,
             )}
             {...props}
         >
             {/* Header – title | optional toolbar | close button, all in one flex row */}
-            <div className="flex shrink-0 items-center gap-2 border-b px-4 py-2">
-                <DialogTitle className="flex-1 text-lg font-semibold">{title}</DialogTitle>
+            <div className="flex shrink-0 items-center">
+                <DialogTitle className="flex-1 text-lg">{title}</DialogTitle>
                 {toolbar && <div className="flex items-center">{toolbar}</div>}
                 <DialogClose render={<Button variant="ghost" size="icon-sm" />}>
                     <XIcon />
-                    <span className="sr-only">Close</span>
                 </DialogClose>
             </div>
 
