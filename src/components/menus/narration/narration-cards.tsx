@@ -1,5 +1,5 @@
 import { useStore } from "@tanstack/react-store";
-import { type RefObject, useCallback, useRef } from "react";
+import React, { type RefObject, useCallback, useRef } from "react";
 import Markdown from "react-markdown";
 import { MarkdownTypewriterHooks } from "react-markdown-typewriter";
 import rehypeRaw from "rehype-raw";
@@ -16,9 +16,67 @@ export function NarrationCards() {
     const paragraphRef = useRef<HTMLDivElement>(null);
     const characterName = `${character?.name || ""} ${character?.surname || ""}`.trim();
 
+    const handlePointerDown = useCallback(
+        (e: React.PointerEvent<HTMLDivElement>) => {
+            // Let resize handles manage their own drag behaviour
+            if ((e.target as HTMLElement).closest('[data-slot="resizable-handle"]')) return;
+
+            // Let native scrollbar clicks through (scrollbar sits between clientWidth and the right edge)
+            const scrollable = paragraphRef.current;
+            if (scrollable) {
+                const rect = scrollable.getBoundingClientRect();
+                const isInsideScrollable =
+                    e.clientX >= rect.left &&
+                    e.clientX <= rect.right &&
+                    e.clientY >= rect.top &&
+                    e.clientY <= rect.bottom;
+                if (isInsideScrollable && e.clientX > rect.left + scrollable.clientWidth) return;
+            }
+
+            // Forward the pointer events to the PixiJS canvas underneath
+            const canvas = document.querySelector("canvas");
+            if (!canvas) return;
+
+            canvas.dispatchEvent(
+                new PointerEvent("pointerdown", {
+                    bubbles: false,
+                    cancelable: true,
+                    clientX: e.clientX,
+                    clientY: e.clientY,
+                    pointerId: e.pointerId,
+                    pointerType: e.pointerType,
+                    button: e.button,
+                    buttons: e.buttons,
+                    pressure: e.pressure,
+                }),
+            );
+
+            window.addEventListener(
+                "pointerup",
+                (upEvent: PointerEvent) => {
+                    canvas.dispatchEvent(
+                        new PointerEvent("pointerup", {
+                            bubbles: false,
+                            cancelable: true,
+                            clientX: upEvent.clientX,
+                            clientY: upEvent.clientY,
+                            pointerId: upEvent.pointerId,
+                            pointerType: upEvent.pointerType,
+                            button: upEvent.button,
+                            buttons: 0,
+                        }),
+                    );
+                },
+                { once: true },
+            );
+        },
+        // eslint-disable-next-line -- paragraphRef is a stable ref object
+        [],
+    );
+
     return (
         <div className="flex h-full flex-col">
-            <Card className="min-h-0 flex-1 flex-row">
+            <Card className="min-h-0 flex-1 flex-row" onPointerDown={handlePointerDown}>
                 <ResizablePanelGroup orientation="horizontal">
                     {character?.icon && (
                         <ResizablePanel defaultSize={"16%"}>
