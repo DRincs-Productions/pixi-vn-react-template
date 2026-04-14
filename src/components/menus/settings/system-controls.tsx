@@ -10,6 +10,8 @@ import {
     FormHelperText,
     FormLabel,
     IconButton,
+    Option,
+    Select,
     ToggleButtonGroup,
     Tooltip,
     Typography,
@@ -22,14 +24,28 @@ import SettingButton from "@/components/SettingButton";
 import useQueryIsFullModeScreen, {
     IS_FULL_SCREEN_MODE_USE_QUEY_KEY,
 } from "@/hooks/useQueryIsFullModeScreen";
-import { downloadResourceToTranslate } from "@/lib/i18n";
+import {
+    availableLanguages,
+    downloadResourceToTranslate,
+    getBrowserLang,
+    getSavedLanguage,
+    setUserLanguage,
+} from "@/lib/i18n";
+
+function getLanguageDisplayName(lng: string): string {
+    try {
+        return new Intl.DisplayNames([lng], { type: "language" }).of(lng) ?? lng;
+    } catch {
+        return lng;
+    }
+}
 
 export function SystemControls() {
     return (
         <div className="flex flex-col gap-4">
             <FullScreenSettings />
             <ModeToggle />
-            <DownloadFileToTranslateSettingButton />
+            <LanguageSettings />
         </div>
     );
 }
@@ -144,5 +160,39 @@ export function DownloadFileToTranslateSettingButton() {
             <TranslateIcon />
             <Typography level="title-md">{t("download_locale")}</Typography>
         </SettingButton>
+    );
+}
+
+export function LanguageSettings() {
+    const { t } = useTranslation(["ui"]);
+    const browserLang = getBrowserLang();
+    const [selectedLang, setSelectedLang] = useState<string | undefined>(getSavedLanguage());
+
+    const handleChange = (_: React.SyntheticEvent | null, value: string | null) => {
+        const lng = value === "" ? undefined : (value ?? undefined);
+        setSelectedLang(lng);
+        setUserLanguage(lng);
+    };
+
+    return (
+        <>
+            <Box>
+                <FormLabel sx={{ typography: "title-sm" }}>{t("language")}</FormLabel>
+                <FormHelperText sx={{ typography: "body-sm" }}>
+                    {t("language_description")}
+                </FormHelperText>
+            </Box>
+            <Select value={selectedLang ?? ""} onChange={handleChange}>
+                <Option value="">
+                    {t("language_browser")} ({getLanguageDisplayName(browserLang)})
+                </Option>
+                {availableLanguages.map((lng) => (
+                    <Option key={lng} value={lng}>
+                        {getLanguageDisplayName(lng)}
+                    </Option>
+                ))}
+            </Select>
+            <DownloadFileToTranslateSettingButton />
+        </>
     );
 }

@@ -3,9 +3,38 @@ import Backend from "i18next-chained-backend";
 import resourcesToBackend from "i18next-resources-to-backend";
 import { initReactI18next } from "react-i18next";
 
+export const LANGUAGE_STORAGE_KEY = "pixi-vn-language";
+
+// Collect available language codes from locale files at build time
+const _localeModules = import.meta.glob("/src/locales/strings_*.json");
+export const availableLanguages: string[] = Object.keys(_localeModules)
+    .map((path) => {
+        const match = path.match(/strings_(.+)\.json$/);
+        return match ? match[1] : null;
+    })
+    .filter(Boolean) as string[];
+
 function getUserLang(): string {
     const userLang: string = navigator.language || "en";
     return userLang?.toLocaleLowerCase()?.split("-")[0];
+}
+
+export function getBrowserLang(): string {
+    return getUserLang();
+}
+
+export function getSavedLanguage(): string | undefined {
+    return localStorage.getItem(LANGUAGE_STORAGE_KEY) || undefined;
+}
+
+export async function setUserLanguage(lng: string | undefined): Promise<void> {
+    if (lng === undefined) {
+        localStorage.removeItem(LANGUAGE_STORAGE_KEY);
+        await i18n.changeLanguage(getUserLang());
+    } else {
+        localStorage.setItem(LANGUAGE_STORAGE_KEY, lng);
+        await i18n.changeLanguage(lng);
+    }
 }
 
 function getLocalesResource(lng: string): Promise<Record<string, unknown>> {
@@ -37,7 +66,7 @@ export const useI18n = () => {
             .init({
                 debug: false,
                 fallbackLng: "en",
-                lng: getUserLang(),
+                lng: getSavedLanguage() || getUserLang(),
                 interpolation: {
                     escapeValue: false,
                 },
