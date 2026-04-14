@@ -1,15 +1,9 @@
 import * as React from "react";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { XIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
-/**
- * A Dialog wrapper that always occupies the full viewport, with a consistent
- * header bar (title + optional toolbar). The close button is provided by the
- * underlying `DialogContent` and sits at `absolute top-2 right-2`.
- *
- * When `centered` is true the dialog behaves like a normal centered modal at
- * the `lg` breakpoint (used by the save/load menu).
- */
 /**
  * Props for FullscreenDialogContent.
  *
@@ -41,10 +35,12 @@ export function FullscreenDialogContent({
 }: FullscreenDialogContentProps) {
     return (
         <DialogContent
+            showCloseButton={false}
             className={cn(
-                // Base: full-screen on all viewport sizes
+                // Base: full-screen on all viewport sizes.
+                // sm:max-w-full overrides the base DialogContent's sm:max-w-sm.
                 "flex flex-col p-0 gap-0 overflow-hidden",
-                "top-0 left-0 h-full max-h-full w-full max-w-full translate-x-0 translate-y-0 rounded-none",
+                "top-0 left-0 h-full max-h-full w-full max-w-full sm:max-w-full translate-x-0 translate-y-0 rounded-none",
                 // Centered variant: restore normal modal look at lg+
                 centered && [
                     "lg:top-1/2 lg:left-1/2",
@@ -56,10 +52,18 @@ export function FullscreenDialogContent({
             )}
             {...props}
         >
-            {/* Header – pr-12 leaves room for the absolute close button */}
-            <div className="flex shrink-0 items-center justify-between border-b px-4 py-2 pr-12">
-                <DialogTitle>{title}</DialogTitle>
+            {/* Header – title | optional toolbar | close button, all in one flex row */}
+            <div className="flex shrink-0 items-center gap-2 border-b px-4 py-2">
+                <DialogTitle className="flex-1 text-lg font-semibold">{title}</DialogTitle>
                 {toolbar && <div className="flex items-center">{toolbar}</div>}
+                <DialogClose
+                    render={
+                        <Button variant="ghost" size="icon-sm" />
+                    }
+                >
+                    <XIcon />
+                    <span className="sr-only">Close</span>
+                </DialogClose>
             </div>
 
             {/* Body */}
