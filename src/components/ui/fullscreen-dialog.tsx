@@ -10,6 +10,14 @@ import { cn } from "@/lib/utils";
  * When `centered` is true the dialog behaves like a normal centered modal at
  * the `lg` breakpoint (used by the save/load menu).
  */
+/**
+ * Props for FullscreenDialogContent.
+ *
+ * `title` is intentionally excluded from the base `DialogContent` props and
+ * redefined here as `React.ReactNode` so that any renderable value (string,
+ * translated node, etc.) can be passed without conflict with the HTML `title`
+ * attribute that would otherwise come through from `DialogPrimitive.Popup`.
+ */
 export interface FullscreenDialogContentProps
     extends Omit<React.ComponentProps<typeof DialogContent>, "title"> {
     title: React.ReactNode;
