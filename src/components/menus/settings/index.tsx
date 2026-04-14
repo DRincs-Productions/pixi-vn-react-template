@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 import packageJson from "@/../package.json";
-import DownloadFileToTranslateSettingButton from "@/components/menus/settings/DownloadFileToTranslateSettingButton";
 import { DialoguesControls } from "@/components/menus/settings/dialogues-controls";
 import HideInterfaceSettingToggle from "@/components/menus/settings/HideInterfaceSettingToggle";
 import OpenHistorySettingButton from "@/components/menus/settings/OpenHistorySettingButton";
@@ -33,7 +32,6 @@ export default function Settings() {
                         <OpenHistorySettingButton />
                         <SaveLoadSettingButtons />
                         <HideInterfaceSettingToggle />
-                        <DownloadFileToTranslateSettingButton />
                     </div>
                     <Separator className="my-4" />
                     <ReturnMainMenuButton />

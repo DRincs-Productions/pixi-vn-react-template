@@ -3,6 +3,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import TranslateIcon from "@mui/icons-material/Translate";
 import {
     Box,
     Button,
@@ -11,20 +12,24 @@ import {
     IconButton,
     ToggleButtonGroup,
     Tooltip,
+    Typography,
 } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/components/providers/theme-provider";
+import SettingButton from "@/components/SettingButton";
 import useQueryIsFullModeScreen, {
     IS_FULL_SCREEN_MODE_USE_QUEY_KEY,
 } from "@/hooks/useQueryIsFullModeScreen";
+import { downloadResourceToTranslate } from "@/lib/i18n";
 
 export function SystemControls() {
     return (
         <div className="flex flex-col gap-4">
             <FullScreenSettings />
             <ModeToggle />
+            <DownloadFileToTranslateSettingButton />
         </div>
     );
 }
@@ -113,5 +118,31 @@ export function FullScreenSettings() {
                 {isFullScreenMode ? t("exit_fullscreen") : t("enter_fullscreen")}
             </Button>
         </>
+    );
+}
+
+export function DownloadFileToTranslateSettingButton() {
+    const { t } = useTranslation(["ui"]);
+    const [loading, setLoading] = useState(false);
+
+    // Only show this button in development mode
+    if (import.meta.env.PROD) {
+        return null;
+    }
+
+    return (
+        <SettingButton
+            key={"download_locale"}
+            onClick={() => {
+                setLoading(true);
+                downloadResourceToTranslate()
+                    .then(() => setLoading(false))
+                    .catch(() => setLoading(false));
+            }}
+            disabled={loading}
+        >
+            <TranslateIcon />
+            <Typography level="title-md">{t("download_locale")}</Typography>
+        </SettingButton>
     );
 }
