@@ -17,7 +17,7 @@ export default function Settings() {
     return (
         <div className="flex-1 overflow-auto">
             {/* Two-column grid on md+, single column list below md */}
-            <div className="grid grid-cols-1 md:grid-cols-2 md:divide-x px-4 sm:px-8 md:px-12 lg:px-20 xl:px-28">
+            <div className="grid grid-cols-1 md:grid-cols-2 md:divide-x px-2 sm:px-12 md:px-14 lg:px-22 xl:px-28">
                 {/* Left column: quick actions */}
                 <div className="border-b p-4 md:border-b-0">
                     <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
