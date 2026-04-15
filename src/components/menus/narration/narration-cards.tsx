@@ -5,6 +5,7 @@ import { MarkdownTypewriterHooks } from "react-markdown-typewriter";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import AnimatedDots from "@/components/AnimatedDots";
+import { QuickTools } from "@/components/menus/quick-tools";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
@@ -22,38 +23,41 @@ export function NarrationCards() {
 
     return (
         <div className="flex h-full flex-col">
-            <Card className="pointer-events-none min-h-0 flex-1 flex-row">
-                <ResizablePanelGroup orientation="horizontal">
-                    {character?.icon && (
-                        <ResizablePanel defaultSize={"16%"}>
-                            <CharacterIcon icon={character.icon} alt={characterName} />
+            <Card className="pointer-events-none min-h-0 flex-1 gap-1 py-2">
+                <div className="min-h-0 flex-1">
+                    <ResizablePanelGroup orientation="horizontal">
+                        {character?.icon && (
+                            <ResizablePanel defaultSize={"16%"}>
+                                <CharacterIcon icon={character.icon} alt={characterName} />
+                            </ResizablePanel>
+                        )}
+                        {character?.icon && <ResizableHandle />}
+                        <ResizablePanel>
+                            <div className="flex h-full flex-col">
+                                {character && (
+                                    <p
+                                        className="shrink-0 px-7 text-xl font-bold"
+                                        style={{ color: character?.color }}
+                                    >
+                                        {characterName}
+                                    </p>
+                                )}
+                                <CardContent className="min-h-0 flex-1 px-7">
+                                    <ScrollArea
+                                        ref={paragraphRef}
+                                        className="h-full"
+                                        onPointerDown={handlePointerDown}
+                                        onPointerCancel={handlePointerCancel}
+                                        onPointerUp={handlePointerUp}
+                                    >
+                                        <Text paragraphRef={paragraphRef} />
+                                    </ScrollArea>
+                                </CardContent>
+                            </div>
                         </ResizablePanel>
-                    )}
-                    {character?.icon && <ResizableHandle />}
-                    <ResizablePanel>
-                        <div className="flex h-full flex-col">
-                            {character && (
-                                <p
-                                    className="shrink-0 px-7 text-xl font-bold"
-                                    style={{ color: character?.color }}
-                                >
-                                    {characterName}
-                                </p>
-                            )}
-                            <CardContent className="min-h-0 flex-1 px-7">
-                                <ScrollArea
-                                    ref={paragraphRef}
-                                    className="h-full"
-                                    onPointerDown={handlePointerDown}
-                                    onPointerCancel={handlePointerCancel}
-                                    onPointerUp={handlePointerUp}
-                                >
-                                    <Text paragraphRef={paragraphRef} />
-                                </ScrollArea>
-                            </CardContent>
-                        </div>
-                    </ResizablePanel>
-                </ResizablePanelGroup>
+                    </ResizablePanelGroup>
+                </div>
+                <QuickTools />
             </Card>
         </div>
     );

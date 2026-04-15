@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import NarrationScreen from "@/components/menus/narration";
-import { QuickTools } from "@/components/menus/quick-tools";
 import VisibilityButton from "@/components/VisibilityButton";
 import useNarrationPointerHandlers from "@/hooks/useNarrationPointerHandlers";
 import useSkipAutoDetector from "@/hooks/useSkipAutoDetector";
@@ -16,7 +15,6 @@ function NarrationElement() {
             <HistoryScreen />
             <NarrationClickOverlay />
             <NarrationScreen />
-            <QuickTools />
             <NarrationDetectors />
             <VisibilityButton />
         </>
