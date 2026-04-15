@@ -6,15 +6,15 @@ export function About() {
 
     return (
         <div className="flex flex-col gap-1 text-sm">
-            <div className="flex gap-2">
+            <div className="flex justify-between gap-2">
                 <span className="font-medium text-muted-foreground">{t("name")}:</span>
                 <span>{packageJson.name}</span>
             </div>
-            <div className="flex gap-2">
+            <div className="flex justify-between gap-2">
                 <span className="font-medium text-muted-foreground">{t("version")}:</span>
                 <span>v{packageJson.version}</span>
             </div>
-            <div className="flex gap-2">
+            <div className="flex justify-between gap-2">
                 <span className="font-medium text-muted-foreground">{t("engine")}:</span>
                 <span>
                     {t("powered_by")}{" "}
