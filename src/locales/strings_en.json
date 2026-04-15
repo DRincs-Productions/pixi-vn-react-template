@@ -72,7 +72,7 @@
         "sfx_volume_description": "Sets the volume for sound effects such as UI clicks and in-game actions.",
         "generated_with_engine": "Powered by {{engine}}",
         "language": "Language",
-        "language_description": "Choose the display language. Select \"System\" to follow your browser's language setting.",
-        "language_browser": "System"
+        "language_description": "Choose the display language. When the language matches your browser setting, it is marked as \"(system)\".",
+        "system": "System"
     }
 }

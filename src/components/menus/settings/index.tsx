@@ -20,7 +20,7 @@ export default function Settings() {
                 <div className="border-b p-4 md:border-b-0">
                     <div>
                         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                            {t("display")}
+                            {t("system")}
                         </h3>
                         <SystemControls />
                     </div>
