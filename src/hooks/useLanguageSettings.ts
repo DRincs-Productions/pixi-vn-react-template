@@ -1,10 +1,9 @@
+import { getLanguageDisplayName } from "@/lib/i18n";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { getBrowserLang, getLanguageDisplayName } from "@/lib/i18n";
 
 export function useLanguageSettings() {
     const {
-        t,
         i18n: {
             options: { fallbackLng, supportedLngs = [] },
             language,
@@ -23,12 +22,8 @@ export function useLanguageSettings() {
     }, [language, supportedLngs, fallbackLng]);
 
     const displayLabel = useMemo(() => {
-        const browserLang = getBrowserLang();
-        return (
-            getLanguageDisplayName(selectedLang) +
-            (selectedLang === browserLang ? ` (${t("system")})` : "")
-        );
-    }, [selectedLang, t]);
+        return getLanguageDisplayName(selectedLang);
+    }, [selectedLang]);
 
     const handleChange = useCallback(
         (value: string | null) => {
@@ -39,13 +34,12 @@ export function useLanguageSettings() {
     );
 
     const languageOptions = useMemo(() => {
-        const browserLang = getBrowserLang();
         if (!Array.isArray(supportedLngs)) return [];
         return supportedLngs.map((lng) => ({
             value: lng,
-            label: getLanguageDisplayName(lng) + (lng === browserLang ? ` (${t("system")})` : ""),
+            label: getLanguageDisplayName(lng),
         }));
-    }, [supportedLngs, t]);
+    }, [supportedLngs]);
 
     return {
         selectedLang,

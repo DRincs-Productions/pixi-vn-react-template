@@ -1,12 +1,24 @@
-import i18n from "i18next";
+import i18n, { type ReadCallback } from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import ChainedBackend from "i18next-chained-backend";
-import resourcesToBackend from "i18next-resources-to-backend";
 import { initReactI18next } from "react-i18next";
 
-export const useI18n = () => {
+class Backend extends ChainedBackend {
+    override async read(lng: string, ns: string, callback: ReadCallback) {
+        try {
+            const object = await getLocalesResource(lng);
+            const result = object[ns];
+            callback(null, result);
+        } catch (error) {
+            callback(error as Error, { data: null });
+        }
+    }
+}
+
+export const useI18n = async () => {
     if (!i18n.isInitialized) {
-        i18n.use(ChainedBackend)
+        return await i18n
+            .use(Backend)
             .use(LanguageDetector)
             .use(initReactI18next)
             .init({
@@ -18,16 +30,8 @@ export const useI18n = () => {
                 },
                 load: "currentOnly",
                 detection: {
-                    order: ["localStorage", "navigator"],
+                    order: ["localStorage"],
                     caches: ["localStorage"],
-                },
-                backend: {
-                    backends: [
-                        resourcesToBackend(async (lng: string, ns: string) => {
-                            const object = await getLocalesResource(lng);
-                            return object[ns];
-                        }),
-                    ],
                 },
             });
     }
@@ -46,7 +50,7 @@ export function getLanguageDisplayName(lng: string): string {
     }
 }
 
-function getLocalesResource(lng: string): Promise<Record<string, unknown>> {
+function getLocalesResource(lng: string): Promise<Record<string, Record<string, string>>> {
     return import(`./../locales/${lng}.json`);
 }
 
