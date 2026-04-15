@@ -10,6 +10,7 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { Separator } from "@/components/ui/separator";
 import { useSetSearchParamState } from "@/hooks/useSearchParamState";
 import { Game } from "@drincs/pixi-vn";
@@ -95,7 +96,10 @@ export function OpenHistorySettingButton() {
         >
             <HistoryIcon />
             {t("history")}
-            <kbd className="ml-auto text-xs text-muted-foreground">Ctrl+H</kbd>
+            <KbdGroup className="ml-auto">
+                <Kbd>Ctrl</Kbd>
+                <Kbd>H</Kbd>
+            </KbdGroup>
         </Button>
     );
 }

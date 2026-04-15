@@ -5,12 +5,19 @@ export function About() {
     const { t } = useTranslation(["ui"]);
 
     return (
-        <>
-            <p className="text-sm font-semibold">{packageJson.name}</p>
-            <p className="text-sm text-muted-foreground">v{packageJson.version}</p>
-            <p className="text-sm text-muted-foreground">
-                {t("generated_with_engine", { engine: "Pixi'VN" })}
-            </p>
-        </>
+        <div className="flex flex-col gap-1 text-sm">
+            <div className="flex gap-2">
+                <span className="font-medium text-muted-foreground">{t("name")}:</span>
+                <span>{packageJson.name}</span>
+            </div>
+            <div className="flex gap-2">
+                <span className="font-medium text-muted-foreground">{t("version")}:</span>
+                <span>v{packageJson.version}</span>
+            </div>
+            <div className="flex gap-2">
+                <span className="font-medium text-muted-foreground">{t("engine")}:</span>
+                <span>Pixi'VN</span>
+            </div>
+        </div>
     );
 }
