@@ -2,39 +2,14 @@ import { type StepLabelProps, stepHistory } from "@drincs/pixi-vn";
 import { narration } from "@drincs/pixi-vn/narration";
 import { useThrottler } from "@tanstack/react-pacer";
 import { useEffect, useRef } from "react";
-import { HTML_CANVAS_LAYER_NAME, HTML_UI_LAYER_NAME } from "../constans";
-import { GameStatus } from "../lib/stores/game-status-store";
-import useGameProps from "./useGameProps";
-
-function isScrollableElement(element: HTMLElement | null): boolean {
-    if (!element) return false;
-
-    const style = window.getComputedStyle(element);
-    const overflowY = style.overflowY;
-
-    const isScrollable =
-        (overflowY === "auto" || overflowY === "scroll") &&
-        element.scrollHeight > element.clientHeight;
-
-    return isScrollable;
-}
-
-function hasScrollableParent(target: EventTarget | null): boolean {
-    let el = target as HTMLElement | null;
-
-    while (el) {
-        if (isScrollableElement(el)) {
-            return true;
-        }
-        el = el.parentElement;
-    }
-
-    return false;
-}
+import { HTML_CANVAS_LAYER_NAME, HTML_UI_LAYER_NAME } from "@/constans";
+import useGameProps from "@/hooks/useGameProps";
+import { GameStatus } from "@/lib/stores/game-status-store";
+import { hasScrollableParent } from "@/utils/scroll-utils";
 
 function isInsideRoot(target: EventTarget | null, selector: string): boolean {
     if (!(target instanceof HTMLElement)) return false;
-    return target.closest("#" + selector) !== null;
+    return target.closest(`#${selector}`) !== null;
 }
 
 export function useWheelActions({
