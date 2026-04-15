@@ -5,7 +5,7 @@ export function About() {
     const { t } = useTranslation(["ui"]);
 
     return (
-        <div className="flex flex-col gap-1 text-sm pl-4">
+        <div className="flex flex-col gap-1 text-sm">
             <div className="flex gap-2">
                 <span className="font-medium text-muted-foreground">{t("name")}:</span>
                 <span>{packageJson.name}</span>
