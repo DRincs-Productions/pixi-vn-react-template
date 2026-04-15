@@ -42,8 +42,8 @@ export function NarrationCards() {
                             )}
                             <CardContent className="min-h-0 flex-1 px-7">
                                 <ScrollArea
-                                    viewportRef={paragraphRef}
-                                    className="h-full pointer-events-auto"
+                                    ref={paragraphRef}
+                                    className="h-full"
                                     onPointerDown={handlePointerDown}
                                     onPointerCancel={handlePointerCancel}
                                     onPointerUp={handlePointerUp}
