@@ -1,5 +1,5 @@
 import i18n from "i18next";
-import Backend from "i18next-chained-backend";
+import ChainedBackend from "i18next-chained-backend";
 import resourcesToBackend from "i18next-resources-to-backend";
 import { initReactI18next } from "react-i18next";
 
@@ -7,7 +7,7 @@ export const LANGUAGE_STORAGE_KEY = "language";
 
 export const useI18n = () => {
     if (!i18n.isInitialized) {
-        i18n.use(Backend)
+        i18n.use(ChainedBackend)
             .use(initReactI18next)
             .init({
                 debug: false,
