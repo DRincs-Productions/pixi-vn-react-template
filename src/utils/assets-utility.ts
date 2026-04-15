@@ -9,11 +9,11 @@ import { AUDIO_BUNDLE_NAME } from "../constans";
  * You can read more about assets management in the documentation: https://pixi-vn.web.app/start/assets-management.html
  */
 export async function defineAssets() {
-    const isAssetsInitialized =
+    const hasRequiredBundles =
         Assets.resolver.hasBundle("/" as FileRouteTypes["fullPaths"]) &&
         Assets.resolver.hasBundle(AUDIO_BUNDLE_NAME);
 
-    if (!isAssetsInitialized) {
+    if (!hasRequiredBundles) {
         await Assets.init({ manifest });
     }
 
