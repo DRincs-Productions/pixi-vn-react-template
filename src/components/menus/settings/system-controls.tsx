@@ -19,7 +19,6 @@ import {
     availableLanguages,
     downloadResourceToTranslate,
     getBrowserLang,
-    getSavedLanguage,
     setUserLanguage,
 } from "@/lib/i18n";
 import { useQueryClient } from "@tanstack/react-query";
@@ -47,12 +46,12 @@ export function ModeToggle() {
     const { t } = useTranslation(["ui"]);
 
     return (
-        <div className="flex flex-col gap-1.5">
-            <div>
+        <div className="flex items-center justify-between gap-4">
+            <div className="flex-1">
                 <p className="text-sm font-medium leading-none">{t("theme_mode")}</p>
                 <p className="mt-1 text-xs text-muted-foreground">{t("theme_mode_description")}</p>
             </div>
-            <div className="flex gap-1 rounded-lg border p-1 w-fit">
+            <div className="flex gap-1 rounded-lg border p-1 shrink-0">
                 <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger asChild>
@@ -110,54 +109,55 @@ export function FullScreenSettings() {
     }
 
     return (
-        <div className="flex flex-col gap-1.5">
-            <div>
+        <div className="flex items-center justify-between gap-4">
+            <div className="flex-1">
                 <p className="text-sm font-medium leading-none">{t("fullscreen")}</p>
                 <p className="mt-1 text-xs text-muted-foreground">
                     {t("fullscreen_description")}
                 </p>
             </div>
-            <div>
-                <Button
-                    variant="outline"
-                    disabled={loading}
-                    onClick={() => {
-                        setLoading(true);
-                        let promise: Promise<void>;
-                        if (isFullScreenMode) {
-                            promise = document.exitFullscreen();
-                        } else {
-                            promise = document.documentElement.requestFullscreen();
-                        }
-                        promise.finally(() => {
-                            setLoading(false);
-                            queryClient.invalidateQueries({
-                                queryKey: [IS_FULL_SCREEN_MODE_USE_QUEY_KEY],
-                            });
+            <Button
+                variant="outline"
+                size="sm"
+                disabled={loading}
+                className="shrink-0"
+                onClick={() => {
+                    setLoading(true);
+                    let promise: Promise<void>;
+                    if (isFullScreenMode) {
+                        promise = document.exitFullscreen();
+                    } else {
+                        promise = document.documentElement.requestFullscreen();
+                    }
+                    promise.finally(() => {
+                        setLoading(false);
+                        queryClient.invalidateQueries({
+                            queryKey: [IS_FULL_SCREEN_MODE_USE_QUEY_KEY],
                         });
-                    }}
-                >
-                    <FullscreenIcon />
-                    {isFullScreenMode ? t("exit_fullscreen") : t("enter_fullscreen")}
-                </Button>
-            </div>
+                    });
+                }}
+            >
+                <FullscreenIcon />
+                {isFullScreenMode ? t("exit_fullscreen") : t("enter_fullscreen")}
+            </Button>
         </div>
     );
 }
 
 export function LanguageSettings() {
-    const { t } = useTranslation(["ui"]);
+    const { t, i18n } = useTranslation(["ui"]);
     const browserLang = getBrowserLang();
-    const [selectedLang, setSelectedLang] = useState<string>(
-        getSavedLanguage() ?? browserLang,
-    );
+    // Use i18n.language as the source of truth so the displayed value always
+    // reflects the language actually in use (persisted via localStorage on change).
+    const [selectedLang, setSelectedLang] = useState<string>(i18n.language);
 
     const handleChange = (value: string) => {
         setSelectedLang(value);
-        // If the selected language matches the browser language, store undefined
-        // so the app follows the system preference
-        setUserLanguage(value === browserLang ? undefined : value);
+        setUserLanguage(value);
     };
+
+    const displayLabel =
+        getLanguageDisplayName(selectedLang) + (selectedLang === browserLang ? " (system)" : "");
 
     return (
         <div className="flex flex-col gap-1.5">
@@ -190,7 +190,8 @@ export function LanguageSettings() {
             </div>
             <Select value={selectedLang} onValueChange={handleChange}>
                 <SelectTrigger className="w-full">
-                    <SelectValue />
+                    {/* Render display name explicitly so the trigger always shows text, not the value code */}
+                    <SelectValue>{displayLabel}</SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                     {availableLanguages.map((lng) => (
