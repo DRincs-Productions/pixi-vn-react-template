@@ -27,13 +27,21 @@ export function getSavedLanguage(): string | undefined {
     return localStorage.getItem(LANGUAGE_STORAGE_KEY) || undefined;
 }
 
-export async function setUserLanguage(lng: string | undefined): Promise<void> {
-    if (lng === undefined) {
+export async function setUserLanguage(lng: string | undefined | null): Promise<void> {
+    if (!lng) {
         localStorage.removeItem(LANGUAGE_STORAGE_KEY);
         await i18n.changeLanguage(getUserLang());
     } else {
         localStorage.setItem(LANGUAGE_STORAGE_KEY, lng);
         await i18n.changeLanguage(lng);
+    }
+}
+
+export function getLanguageDisplayName(lng: string): string {
+    try {
+        return new Intl.DisplayNames([lng], { type: "language" }).of(lng) ?? lng;
+    } catch {
+        return lng;
     }
 }
 

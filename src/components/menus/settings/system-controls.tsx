@@ -1,4 +1,5 @@
-import { DownloadIcon, FullscreenIcon, MoonIcon, MonitorIcon, SunIcon } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { DownloadIcon, FullscreenIcon, MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/components/providers/theme-provider";
@@ -19,17 +20,9 @@ import {
     availableLanguages,
     downloadResourceToTranslate,
     getBrowserLang,
+    getLanguageDisplayName,
     setUserLanguage,
 } from "@/lib/i18n";
-import { useQueryClient } from "@tanstack/react-query";
-
-function getLanguageDisplayName(lng: string): string {
-    try {
-        return new Intl.DisplayNames([lng], { type: "language" }).of(lng) ?? lng;
-    } catch {
-        return lng;
-    }
-}
 
 export function SystemControls() {
     return (
@@ -54,7 +47,7 @@ export function ModeToggle() {
             <div className="flex gap-1 rounded-lg border p-1 shrink-0">
                 <TooltipProvider>
                     <Tooltip>
-                        <TooltipTrigger asChild>
+                        <TooltipTrigger>
                             <Toggle
                                 size="sm"
                                 pressed={theme === "light"}
@@ -67,7 +60,7 @@ export function ModeToggle() {
                         <TooltipContent>Light Mode</TooltipContent>
                     </Tooltip>
                     <Tooltip>
-                        <TooltipTrigger asChild>
+                        <TooltipTrigger>
                             <Toggle
                                 size="sm"
                                 pressed={theme === "system"}
@@ -80,7 +73,7 @@ export function ModeToggle() {
                         <TooltipContent>System Mode</TooltipContent>
                     </Tooltip>
                     <Tooltip>
-                        <TooltipTrigger asChild>
+                        <TooltipTrigger>
                             <Toggle
                                 size="sm"
                                 pressed={theme === "dark"}
@@ -112,9 +105,7 @@ export function FullScreenSettings() {
         <div className="flex items-center justify-between gap-4">
             <div className="flex-1">
                 <p className="text-sm font-medium leading-none">{t("fullscreen")}</p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                    {t("fullscreen_description")}
-                </p>
+                <p className="mt-1 text-xs text-muted-foreground">{t("fullscreen_description")}</p>
             </div>
             <Button
                 variant="outline"
@@ -151,8 +142,8 @@ export function LanguageSettings() {
     // reflects the language actually in use (persisted via localStorage on change).
     const [selectedLang, setSelectedLang] = useState<string>(i18n.language);
 
-    const handleChange = (value: string) => {
-        setSelectedLang(value);
+    const handleChange = (value: string | null) => {
+        setSelectedLang(value || browserLang);
         setUserLanguage(value);
     };
 
@@ -171,7 +162,7 @@ export function LanguageSettings() {
                 {!import.meta.env.PROD && (
                     <TooltipProvider>
                         <Tooltip>
-                            <TooltipTrigger asChild>
+                            <TooltipTrigger>
                                 <Button
                                     variant="ghost"
                                     size="icon"
