@@ -21,6 +21,7 @@ export const useI18n = () => {
                     backends: [
                         resourcesToBackend(async (lng: string, ns: string) => {
                             const object = await getLocalesResource(lng);
+                            if (!object) return;
                             return object[ns];
                         }),
                     ],
@@ -46,7 +47,7 @@ export function getLanguageDisplayName(lng: string): string {
     }
 }
 
-function getLocalesResource(lng: string): Promise<Record<string, unknown>> {
+function getLocalesResource(lng: string): Promise<Record<string, unknown> | undefined> {
     return import(`./../locales/strings_${lng}.json`);
 }
 
