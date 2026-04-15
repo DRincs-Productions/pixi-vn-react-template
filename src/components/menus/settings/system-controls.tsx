@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { DownloadIcon, FullscreenIcon, MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
-import { useCallback, useMemo, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/components/providers/theme-provider";
 import { Button } from "@/components/ui/button";
@@ -16,12 +16,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import useQueryIsFullModeScreen, {
     IS_FULL_SCREEN_MODE_USE_QUEY_KEY,
 } from "@/hooks/useQueryIsFullModeScreen";
-import {
-    downloadResourceToTranslate,
-    getBrowserLang,
-    getLanguageDisplayName,
-    LANGUAGE_STORAGE_KEY,
-} from "@/lib/i18n";
+import { downloadResourceToTranslate } from "@/lib/i18n";
+import { useLanguageSettings } from "@/hooks/useLanguageSettings";
 
 export function SystemControls() {
     return (
@@ -135,52 +131,7 @@ export function FullScreenSettings() {
 }
 
 export function LanguageSettings() {
-    const {
-        t,
-        i18n: {
-            options: { fallbackLng },
-            language,
-            languages,
-            changeLanguage,
-        },
-    } = useTranslation(["ui"]);
-
-    const selectedLang = useMemo(() => {
-        if (languages.includes(language)) {
-            return language;
-        }
-        if (typeof fallbackLng === "string") {
-            return fallbackLng;
-        }
-        return language;
-    }, [language, languages, fallbackLng]);
-    const displayLabel = useMemo(() => {
-        const browserLang = getBrowserLang();
-        return (
-            getLanguageDisplayName(selectedLang) + (selectedLang === browserLang ? " (system)" : "")
-        );
-    }, [selectedLang]);
-
-    const handleChange = useCallback(
-        (value: string | null) => {
-            if (!value) return;
-            const browserLang = getBrowserLang();
-            changeLanguage(value);
-            if (value === browserLang) {
-                localStorage.removeItem(LANGUAGE_STORAGE_KEY);
-            } else {
-                localStorage.setItem(LANGUAGE_STORAGE_KEY, value);
-            }
-        },
-        [changeLanguage],
-    );
-    const languageOptions = useMemo(() => {
-        const browserLang = getBrowserLang();
-        return languages.map((lng) => ({
-            value: lng,
-            label: getLanguageDisplayName(lng) + (lng === browserLang ? ` (${t("system")})` : ""),
-        }));
-    }, [languages, t]);
+    const { t, selectedLang, displayLabel, handleChange, languageOptions } = useLanguageSettings();
 
     return (
         <div className="flex flex-col gap-1.5">
