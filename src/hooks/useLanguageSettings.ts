@@ -6,23 +6,21 @@ export function useLanguageSettings() {
     const {
         t,
         i18n: {
-            options: { fallbackLng },
+            options: { fallbackLng, supportedLngs = [] },
             language,
-            languages,
             changeLanguage,
         },
     } = useTranslation(["ui"]);
 
     const selectedLang = useMemo(() => {
-        console.log("Available languages:", languages);
-        if (languages.includes(language)) {
+        if (Array.isArray(supportedLngs) && supportedLngs.includes(language)) {
             return language;
         }
         if (typeof fallbackLng === "string") {
             return fallbackLng;
         }
         return language;
-    }, [language, languages, fallbackLng]);
+    }, [language, supportedLngs, fallbackLng]);
 
     const displayLabel = useMemo(() => {
         const browserLang = getBrowserLang();
@@ -48,11 +46,12 @@ export function useLanguageSettings() {
 
     const languageOptions = useMemo(() => {
         const browserLang = getBrowserLang();
-        return languages.map((lng) => ({
+        if (!Array.isArray(supportedLngs)) return [];
+        return supportedLngs.map((lng) => ({
             value: lng,
             label: getLanguageDisplayName(lng) + (lng === browserLang ? ` (${t("system")})` : ""),
         }));
-    }, [languages, t]);
+    }, [supportedLngs, t]);
 
     return {
         selectedLang,
