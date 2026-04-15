@@ -9,7 +9,7 @@ import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
 import useGameProps from "@/hooks/useGameProps";
 import { useQueryDialogue, useQueryInputValue } from "@/hooks/useQueryInterface";
 import { TypewriterSettings } from "@/lib/stores/typewriter-settings-store";
@@ -56,19 +56,21 @@ export function InputRequestDialog() {
                         {text}
                     </Markdown>
                 )}
-                <Input
-                    value={tempValue ?? ""}
-                    type={type}
-                    onChange={(e) => {
-                        switch (e.target.type) {
-                            case "number":
-                                setTempValue(e.target.valueAsNumber);
-                                break;
-                            default:
-                                setTempValue(e.target.value);
-                        }
-                    }}
-                />
+                <InputGroup>
+                    <InputGroupInput
+                        value={tempValue ?? ""}
+                        type={type}
+                        onChange={(e) => {
+                            switch (e.target.type) {
+                                case "number":
+                                    setTempValue(e.target.valueAsNumber);
+                                    break;
+                                default:
+                                    setTempValue(e.target.value);
+                            }
+                        }}
+                    />
+                </InputGroup>
                 <DialogFooter>
                     <Button disabled={!canConfirm} onClick={submitInputValue}>
                         {t("confirm")}
