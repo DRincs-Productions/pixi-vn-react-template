@@ -9,7 +9,6 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import useNarrationPointerHandlers from "@/hooks/useNarrationPointerHandlers";
 import { useQueryDialogue } from "@/hooks/useQueryInterface";
 import { TypewriterSettings } from "@/lib/stores/typewriter-settings-store";
 
@@ -17,8 +16,6 @@ export function NarrationCards() {
     const { data: { character } = {} } = useQueryDialogue();
     const paragraphRef = useRef<HTMLDivElement>(null);
     const characterName = `${character?.name || ""} ${character?.surname || ""}`.trim();
-    const { handlePointerDown, handlePointerCancel, handlePointerUp } =
-        useNarrationPointerHandlers();
 
     return (
         <div className="flex h-full flex-col">
@@ -41,13 +38,7 @@ export function NarrationCards() {
                                 </p>
                             )}
                             <CardContent className="min-h-0 flex-1 px-7">
-                                <ScrollArea
-                                    ref={paragraphRef}
-                                    className="h-full"
-                                    onPointerDown={handlePointerDown}
-                                    onPointerCancel={handlePointerCancel}
-                                    onPointerUp={handlePointerUp}
-                                >
+                                <ScrollArea ref={paragraphRef} className="h-full">
                                     <Text paragraphRef={paragraphRef} />
                                 </ScrollArea>
                             </CardContent>
