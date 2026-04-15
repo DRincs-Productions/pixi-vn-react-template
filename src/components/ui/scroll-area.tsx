@@ -5,7 +5,7 @@ function ScrollArea({ className, children, ...props }: ScrollAreaPrimitive.Root.
     return (
         <ScrollAreaPrimitive.Root
             data-slot="scroll-area"
-            className={cn("relative", className)}
+            className={cn("pointer-events-auto", "relative", className)}
             {...props}
         >
             <ScrollAreaPrimitive.Viewport
