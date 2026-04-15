@@ -1,10 +1,8 @@
 import i18n from "i18next";
-import ChainedBackend from "i18next-chained-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
+import ChainedBackend from "i18next-chained-backend";
 import resourcesToBackend from "i18next-resources-to-backend";
 import { initReactI18next } from "react-i18next";
-
-export const LANGUAGE_STORAGE_KEY = "language";
 
 export const useI18n = () => {
     if (!i18n.isInitialized) {
@@ -14,13 +12,13 @@ export const useI18n = () => {
             .init({
                 debug: false,
                 fallbackLng: "en",
+                supportedLngs: ["en", "es"],
                 interpolation: {
                     escapeValue: false,
                 },
                 load: "currentOnly",
                 detection: {
                     order: ["localStorage", "navigator"],
-                    lookupLocalStorage: LANGUAGE_STORAGE_KEY,
                     caches: ["localStorage"],
                 },
                 backend: {
