@@ -1,8 +1,8 @@
+import { useStore } from "@tanstack/react-store";
 import type React from "react";
 import { useCallback, useRef } from "react";
-import { useStore } from "@tanstack/react-store";
-import { hasScrollableParent, isScrollableElement } from "@/utils/scroll-utils";
 import { SkipSettings } from "@/lib/stores/skip-settings-store";
+import { hasScrollableParent, isScrollableElement } from "@/utils/scroll-utils";
 import useNarrationFunctions from "./useNarrationFunctions";
 
 export default function useNarrationPointerHandlers() {
