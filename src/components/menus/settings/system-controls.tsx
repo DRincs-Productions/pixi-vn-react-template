@@ -13,11 +13,11 @@ import {
 } from "@/components/ui/select";
 import { Toggle } from "@/components/ui/toggle";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useLanguageSettings } from "@/hooks/useLanguageSettings";
 import useQueryIsFullModeScreen, {
     IS_FULL_SCREEN_MODE_USE_QUEY_KEY,
 } from "@/hooks/useQueryIsFullModeScreen";
 import { downloadResourceToTranslate } from "@/lib/i18n";
-import { useLanguageSettings } from "@/hooks/useLanguageSettings";
 
 export function SystemControls() {
     return (
@@ -131,7 +131,8 @@ export function FullScreenSettings() {
 }
 
 export function LanguageSettings() {
-    const { t, selectedLang, displayLabel, handleChange, languageOptions } = useLanguageSettings();
+    const { t } = useTranslation(["ui"]);
+    const { selectedLang, displayLabel, handleChange, languageOptions } = useLanguageSettings();
 
     return (
         <div className="flex flex-col gap-1.5">

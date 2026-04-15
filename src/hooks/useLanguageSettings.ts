@@ -14,6 +14,7 @@ export function useLanguageSettings() {
     } = useTranslation(["ui"]);
 
     const selectedLang = useMemo(() => {
+        console.log("Available languages:", languages);
         if (languages.includes(language)) {
             return language;
         }
@@ -26,7 +27,8 @@ export function useLanguageSettings() {
     const displayLabel = useMemo(() => {
         const browserLang = getBrowserLang();
         return (
-            getLanguageDisplayName(selectedLang) + (selectedLang === browserLang ? ` (${t("system")})` : "")
+            getLanguageDisplayName(selectedLang) +
+            (selectedLang === browserLang ? ` (${t("system")})` : "")
         );
     }, [selectedLang, t]);
 
@@ -53,7 +55,6 @@ export function useLanguageSettings() {
     }, [languages, t]);
 
     return {
-        t,
         selectedLang,
         displayLabel,
         handleChange,
