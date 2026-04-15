@@ -5,13 +5,9 @@ import { initReactI18next } from "react-i18next";
 
 export const LANGUAGE_STORAGE_KEY = "pixi-vn-language";
 
-function getUserLang(): string {
+export function getBrowserLang(): string {
     const userLang: string = navigator.language || "en";
     return userLang?.toLocaleLowerCase()?.split("-")[0];
-}
-
-export function getBrowserLang(): string {
-    return getUserLang();
 }
 
 export function getSavedLanguage(): string | undefined {
@@ -55,7 +51,7 @@ export const useI18n = () => {
             .init({
                 debug: false,
                 fallbackLng: "en",
-                lng: getSavedLanguage() || getUserLang(),
+                lng: getSavedLanguage() || getBrowserLang(),
                 interpolation: {
                     escapeValue: false,
                 },
