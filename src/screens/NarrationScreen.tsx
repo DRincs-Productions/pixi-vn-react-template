@@ -16,7 +16,7 @@ import AnimatedDots from "../components/AnimatedDots";
 import SliderResizer from "../components/SliderResizer";
 import { useQueryDialogue } from "../hooks/useQueryInterface";
 import { InterfaceSettings } from "../lib/stores/interface-settings-store";
-import { TypewriterSettings } from "../lib/stores/typewriter-settings-store";
+import { TextDisplaySettings } from "../lib/stores/text-display-settings-store";
 
 export default function NarrationScreen() {
     const cardHeightTemp = useStore(InterfaceSettings.store, (state) => state.dialogueCardHeight);
@@ -206,7 +206,8 @@ export default function NarrationScreen() {
 }
 
 function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement | null> }) {
-    const typewriterDelay = useStore(TypewriterSettings.store, (state) => state.delay);
+    const typewriterDelay = useStore(TextDisplaySettings.store, (state) => state.delay);
+    const fontSize = useStore(TextDisplaySettings.store, (state) => state.fontSize);
     const { data: { animatedText, text } = {} } = useQueryDialogue();
     const { mode } = useColorScheme();
 
@@ -226,7 +227,7 @@ function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDiv
     return (
         <p
             className={`prose ${mode === "dark" ? "dark:prose-invert" : ""}`}
-            style={{ margin: 0, padding: 0, maxWidth: "100%" }}
+            style={{ margin: 0, padding: 0, maxWidth: "100%", fontSize: `${fontSize}%` }}
         >
             <span>
                 <Markdown
@@ -246,10 +247,10 @@ function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDiv
                     rehypePlugins={[rehypeRaw]}
                     delay={typewriterDelay}
                     motionProps={{
-                        onAnimationStart: TypewriterSettings.start,
+                        onAnimationStart: TextDisplaySettings.start,
                         onAnimationComplete: (definition: "visible" | "hidden") => {
                             if (definition == "visible") {
-                                TypewriterSettings.end();
+                                TextDisplaySettings.end();
                             }
                         },
                         onCharacterAnimationComplete: handleCharacterAnimationComplete,

@@ -60,6 +60,8 @@
         "success_save": "Save successful",
         "text_speed": "Text Speed",
         "text_speed_description": "Choose the speed of the typewriter effect. If is set to 0 ( off ) the text will appear instantly.",
+        "text_size": "Text Size",
+        "text_size_description": "Adjust the font size of the dialogue text.",
         "theme_mode": "Theme Mode",
         "theme_mode_description": "Choose between light, dark, or system theme mode.",
         "you_sure_to_delete_save": "Are you sure you want to delete this save file?",
