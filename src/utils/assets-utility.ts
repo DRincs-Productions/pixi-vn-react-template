@@ -3,13 +3,18 @@ import type { FileRouteTypes } from "@/routeTree.gen";
 import manifest from "../assets/manifest";
 import { AUDIO_BUNDLE_NAME } from "../constans";
 
+let assetsInitialized = false;
+
 /**
  * Define all the assets that will be used in the game.
  * This function will be called before the game starts.
  * You can read more about assets management in the documentation: https://pixi-vn.web.app/start/assets-management.html
  */
 export async function defineAssets() {
-    await Assets.init({ manifest });
+    if (!assetsInitialized) {
+        await Assets.init({ manifest });
+        assetsInitialized = true;
+    }
 
     // The game will not start until these asserts are loaded.
     await Assets.loadBundle("/" as FileRouteTypes["fullPaths"]);
