@@ -27,7 +27,7 @@ function NarrationClickOverlay() {
     const { handlePointerDown, handlePointerUp } = useNarrationPointerHandlers();
     return (
         <div
-            className="fixed inset-0 z-0"
+            className="fixed inset-0 z-0 pointer-events-auto"
             onPointerDown={handlePointerDown}
             onPointerUp={handlePointerUp}
         />
