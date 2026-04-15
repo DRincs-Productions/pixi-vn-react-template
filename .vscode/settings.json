@@ -47,8 +47,8 @@
   },
   // reorganise imports
   "editor.codeActionsOnSave": {
-    "source.organizeImports.biome": "explicit",
-    "source.fixAll.biome": "explicit"
+    "source.organizeImports": "explicit",
+    "source.fixAll": "explicit"
   },
   "js/ts.preferences.importModuleSpecifier": "non-relative",
   "js/ts.preferences.importModuleSpecifierEnding": "minimal",
