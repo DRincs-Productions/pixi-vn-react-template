@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { DownloadIcon, FullscreenIcon, MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/components/providers/theme-provider";
 import { Button } from "@/components/ui/button";
@@ -17,11 +17,10 @@ import useQueryIsFullModeScreen, {
     IS_FULL_SCREEN_MODE_USE_QUEY_KEY,
 } from "@/hooks/useQueryIsFullModeScreen";
 import {
-    availableLanguages,
     downloadResourceToTranslate,
     getBrowserLang,
     getLanguageDisplayName,
-    setUserLanguage,
+    LANGUAGE_STORAGE_KEY,
 } from "@/lib/i18n";
 
 export function SystemControls() {
@@ -136,19 +135,52 @@ export function FullScreenSettings() {
 }
 
 export function LanguageSettings() {
-    const { t, i18n } = useTranslation(["ui"]);
-    const browserLang = getBrowserLang();
-    // Use i18n.language as the source of truth so the displayed value always
-    // reflects the language actually in use (persisted via localStorage on change).
-    const [selectedLang, setSelectedLang] = useState<string>(i18n.language);
+    const {
+        t,
+        i18n: {
+            options: { fallbackLng },
+            language,
+            languages,
+            changeLanguage,
+        },
+    } = useTranslation(["ui"]);
 
-    const handleChange = (value: string | null) => {
-        setSelectedLang(value || browserLang);
-        setUserLanguage(value);
-    };
+    const selectedLang = useMemo(() => {
+        if (languages.includes(language)) {
+            return language;
+        }
+        if (typeof fallbackLng === "string") {
+            return fallbackLng;
+        }
+        return language;
+    }, [language, languages, fallbackLng]);
+    const displayLabel = useMemo(() => {
+        const browserLang = getBrowserLang();
+        return (
+            getLanguageDisplayName(selectedLang) + (selectedLang === browserLang ? " (system)" : "")
+        );
+    }, [selectedLang]);
 
-    const displayLabel =
-        getLanguageDisplayName(selectedLang) + (selectedLang === browserLang ? " (system)" : "");
+    const handleChange = useCallback(
+        (value: string | null) => {
+            if (!value) return;
+            const browserLang = getBrowserLang();
+            changeLanguage(value);
+            if (value === browserLang) {
+                localStorage.removeItem(LANGUAGE_STORAGE_KEY);
+            } else {
+                localStorage.setItem(LANGUAGE_STORAGE_KEY, value);
+            }
+        },
+        [changeLanguage],
+    );
+    const languageOptions = useMemo(() => {
+        const browserLang = getBrowserLang();
+        return languages.map((lng) => ({
+            value: lng,
+            label: getLanguageDisplayName(lng) + (lng === browserLang ? ` (${t("system")})` : ""),
+        }));
+    }, [languages, t]);
 
     return (
         <div className="flex flex-col gap-1.5">
@@ -185,10 +217,9 @@ export function LanguageSettings() {
                     <SelectValue>{displayLabel}</SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                    {availableLanguages.map((lng) => (
-                        <SelectItem key={lng} value={lng}>
-                            {getLanguageDisplayName(lng)}
-                            {lng === browserLang ? " (system)" : ""}
+                    {languageOptions.map(({ label, value }) => (
+                        <SelectItem key={value} value={value}>
+                            {label}
                         </SelectItem>
                     ))}
                 </SelectContent>

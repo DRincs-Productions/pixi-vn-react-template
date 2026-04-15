@@ -5,15 +5,6 @@ import { initReactI18next } from "react-i18next";
 
 export const LANGUAGE_STORAGE_KEY = "pixi-vn-language";
 
-// Collect available language codes from locale files at build time
-const _localeModules = import.meta.glob("/src/locales/strings_*.json");
-export const availableLanguages: string[] = Object.keys(_localeModules)
-    .map((path) => {
-        const match = path.match(/strings_(.+)\.json$/);
-        return match ? match[1] : null;
-    })
-    .filter(Boolean) as string[];
-
 function getUserLang(): string {
     const userLang: string = navigator.language || "en";
     return userLang?.toLocaleLowerCase()?.split("-")[0];
@@ -25,16 +16,6 @@ export function getBrowserLang(): string {
 
 export function getSavedLanguage(): string | undefined {
     return localStorage.getItem(LANGUAGE_STORAGE_KEY) || undefined;
-}
-
-export async function setUserLanguage(lng: string | undefined | null): Promise<void> {
-    if (!lng) {
-        localStorage.removeItem(LANGUAGE_STORAGE_KEY);
-        await i18n.changeLanguage(getUserLang());
-    } else {
-        localStorage.setItem(LANGUAGE_STORAGE_KEY, lng);
-        await i18n.changeLanguage(lng);
-    }
 }
 
 export function getLanguageDisplayName(lng: string): string {
