@@ -1,5 +1,5 @@
 import { useStore } from "@tanstack/react-store";
-import React, { type RefObject, useCallback, useRef } from "react";
+import { type RefObject, useCallback, useRef } from "react";
 import Markdown from "react-markdown";
 import { MarkdownTypewriterHooks } from "react-markdown-typewriter";
 import rehypeRaw from "rehype-raw";
@@ -8,35 +8,15 @@ import AnimatedDots from "@/components/AnimatedDots";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-import useNarrationFunctions from "@/hooks/useNarrationFunctions";
+import useNarrationPointerHandlers from "@/hooks/useNarrationPointerHandlers";
 import { useQueryDialogue } from "@/hooks/useQueryInterface";
 import { TypewriterSettings } from "@/lib/stores/typewriter-settings-store";
-import { hasScrollableParent, isScrollableElement } from "@/utils/scroll-utils";
 
 export function NarrationCards() {
     const { data: { character } = {} } = useQueryDialogue();
     const paragraphRef = useRef<HTMLDivElement>(null);
     const characterName = `${character?.name || ""} ${character?.surname || ""}`.trim();
-    const { goNext } = useNarrationFunctions();
-    const pointerDownPos = useRef<{ x: number; y: number } | null>(null);
-
-    const handlePointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-        if (e.button !== 0) return;
-        if (hasScrollableParent(e.target)) return;
-        pointerDownPos.current = { x: e.clientX, y: e.clientY };
-    }, []);
-
-    const handlePointerUp = useCallback(
-        (e: React.PointerEvent<HTMLDivElement>) => {
-            // Let resize handles manage their own drag behaviour
-            if ((e.target as HTMLElement).closest('[data-slot="resizable-handle"]')) return;
-            // Let native scrollbar interactions through
-            if (isScrollableElement(e.target as HTMLElement)) return;
-
-            goNext();
-        },
-        [goNext],
-    );
+    const { handlePointerDown, handlePointerUp } = useNarrationPointerHandlers();
 
     return (
         <div className="flex h-full flex-col">

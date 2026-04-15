@@ -1,0 +1,29 @@
+import type React from "react";
+import { useCallback, useRef } from "react";
+import { hasScrollableParent, isScrollableElement } from "@/utils/scroll-utils";
+import useNarrationFunctions from "./useNarrationFunctions";
+
+export default function useNarrationPointerHandlers() {
+    const { goNext } = useNarrationFunctions();
+    const pointerDownPos = useRef<{ x: number; y: number } | null>(null);
+
+    const handlePointerDown = useCallback((e: React.PointerEvent) => {
+        if (e.button !== 0) return;
+        if (hasScrollableParent(e.target)) return;
+        pointerDownPos.current = { x: e.clientX, y: e.clientY };
+    }, []);
+
+    const handlePointerUp = useCallback(
+        (e: React.PointerEvent) => {
+            // Let resize handles manage their own drag behaviour
+            if ((e.target as HTMLElement).closest('[data-slot="resizable-handle"]')) return;
+            // Let native scrollbar interactions through
+            if (isScrollableElement(e.target as HTMLElement)) return;
+
+            goNext();
+        },
+        [goNext],
+    );
+
+    return { handlePointerDown, handlePointerUp };
+}
