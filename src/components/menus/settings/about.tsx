@@ -16,7 +16,17 @@ export function About() {
             </div>
             <div className="flex gap-2">
                 <span className="font-medium text-muted-foreground">{t("engine")}:</span>
-                <span>Pixi'VN</span>
+                <span>
+                    {t("powered_by")}{" "}
+                    <a
+                        href="https://pixi-vn.web.app"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline hover:text-foreground"
+                    >
+                        Pixi&apos;VN
+                    </a>
+                </span>
             </div>
         </div>
     );

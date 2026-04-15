@@ -75,6 +75,7 @@
         "bgm_volume_description": "Sets the volume for background music tracks only.",
         "sfx_volume_description": "Sets the volume for sound effects such as UI clicks and in-game actions.",
         "generated_with_engine": "Powered by {{engine}}",
+        "powered_by": "Powered by",
         "language": "Language",
         "language_description": "Choose the display language. When the language matches your browser setting, it is marked as \"(system)\".",
         "system": "System"
