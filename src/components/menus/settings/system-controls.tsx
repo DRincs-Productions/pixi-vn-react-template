@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { DownloadIcon, FullscreenIcon, MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
+import { DownloadIcon, FullscreenIcon, Minimize2Icon, MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/components/providers/theme-provider";
@@ -123,7 +123,7 @@ export function FullScreenSettings() {
                     });
                 }}
             >
-                <FullscreenIcon />
+                {isFullScreenMode ? <Minimize2Icon /> : <FullscreenIcon />}
                 {isFullScreenMode ? t("exit_fullscreen") : t("enter_fullscreen")}
             </Button>
         </div>
