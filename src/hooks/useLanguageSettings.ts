@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { getBrowserLang, getLanguageDisplayName, LANGUAGE_STORAGE_KEY } from "@/lib/i18n";
+import { getBrowserLang, getLanguageDisplayName } from "@/lib/i18n";
 
 export function useLanguageSettings() {
     const {
@@ -33,13 +33,7 @@ export function useLanguageSettings() {
     const handleChange = useCallback(
         (value: string | null) => {
             if (!value) return;
-            const browserLang = getBrowserLang();
             changeLanguage(value);
-            if (value === browserLang) {
-                localStorage.removeItem(LANGUAGE_STORAGE_KEY);
-            } else {
-                localStorage.setItem(LANGUAGE_STORAGE_KEY, value);
-            }
         },
         [changeLanguage],
     );
