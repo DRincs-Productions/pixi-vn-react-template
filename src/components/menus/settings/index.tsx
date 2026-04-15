@@ -23,7 +23,7 @@ export default function Settings() {
                     </div>
                     <Separator className="my-4" />
                     <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                        {t("quick_actions")}
+                        {t("menus")}
                     </h3>
                     <QuickMenus />
                 </div>

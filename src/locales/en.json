@@ -65,6 +65,7 @@
         "download_locale": "Export strings for translation",
         "sound": "Audio",
         "master_volume": "Master Volume",
+        "menus": "Menus",
         "bgm_volume": "Music Volume",
         "sfx_volume": "Sound Effects Volume",
         "master_volume_description": "Controls the overall audio level for the game. Use this to raise or lower all sounds at once.",

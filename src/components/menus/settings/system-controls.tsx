@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/components/providers/theme-provider";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import {
     Select,
     SelectContent,
@@ -39,7 +40,7 @@ export function ModeToggle() {
                 <p className="text-sm font-medium leading-none">{t("theme_mode")}</p>
                 <p className="mt-1 text-xs text-muted-foreground">{t("theme_mode_description")}</p>
             </div>
-            <div className="flex gap-1 rounded-lg border p-1 shrink-0">
+            <ButtonGroup className="shrink-0">
                 <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger>
@@ -81,7 +82,7 @@ export function ModeToggle() {
                         <TooltipContent>Dark Mode</TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
-            </div>
+            </ButtonGroup>
         </div>
     );
 }
