@@ -1,6 +1,15 @@
-import { getLanguageDisplayName } from "@/lib/i18n";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+
+function getLanguageDisplayName(lng: string): string {
+    try {
+        const name = new Intl.DisplayNames([lng], { type: "language" }).of(lng);
+        if (name) return name.charAt(0).toUpperCase() + name.slice(1);
+        return lng;
+    } catch {
+        return lng;
+    }
+}
 
 export function useLanguageSettings() {
     const {
@@ -34,11 +43,13 @@ export function useLanguageSettings() {
     );
 
     const languageOptions = useMemo(() => {
-        if (!Array.isArray(supportedLngs)) return [];
-        return supportedLngs.map((lng) => ({
-            value: lng,
-            label: getLanguageDisplayName(lng),
-        }));
+        if (supportedLngs === false) return [];
+        return supportedLngs
+            .filter((option) => option !== "cimode")
+            .map((lng) => ({
+                value: lng,
+                label: getLanguageDisplayName(lng),
+            }));
     }, [supportedLngs]);
 
     return {

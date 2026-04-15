@@ -42,14 +42,6 @@ export function getBrowserLang(): string {
     return userLang?.toLocaleLowerCase()?.split("-")[0];
 }
 
-export function getLanguageDisplayName(lng: string): string {
-    try {
-        return new Intl.DisplayNames([lng], { type: "language" }).of(lng) ?? lng;
-    } catch {
-        return lng;
-    }
-}
-
 function getLocalesResource(lng: string): Promise<Record<string, Record<string, string>>> {
     return import(`./../locales/${lng}.json`);
 }
