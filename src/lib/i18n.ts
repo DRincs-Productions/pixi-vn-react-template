@@ -5,6 +5,30 @@ import { initReactI18next } from "react-i18next";
 
 export const LANGUAGE_STORAGE_KEY = "language";
 
+export const useI18n = () => {
+    if (!i18n.isInitialized) {
+        i18n.use(Backend)
+            .use(initReactI18next)
+            .init({
+                debug: false,
+                fallbackLng: "en",
+                lng: getSavedLanguage() || getBrowserLang(),
+                interpolation: {
+                    escapeValue: false,
+                },
+                load: "currentOnly",
+                backend: {
+                    backends: [
+                        resourcesToBackend(async (lng: string, ns: string) => {
+                            const object = await getLocalesResource(lng);
+                            return object[ns];
+                        }),
+                    ],
+                },
+            });
+    }
+};
+
 export function getBrowserLang(): string {
     const userLang: string = navigator.language || "en";
     return userLang?.toLocaleLowerCase()?.split("-")[0];
@@ -39,27 +63,3 @@ export async function downloadResourceToTranslate() {
     a.download = `strings_${lng}.json`;
     a.click();
 }
-
-export const useI18n = () => {
-    if (!i18n.isInitialized) {
-        i18n.use(Backend)
-            .use(initReactI18next)
-            .init({
-                debug: false,
-                fallbackLng: "en",
-                lng: getSavedLanguage() || getBrowserLang(),
-                interpolation: {
-                    escapeValue: false,
-                },
-                load: "currentOnly",
-                backend: {
-                    backends: [
-                        resourcesToBackend(async (lng: string, ns: string) => {
-                            const object = await getLocalesResource(lng);
-                            return object[ns];
-                        }),
-                    ],
-                },
-            });
-    }
-};
