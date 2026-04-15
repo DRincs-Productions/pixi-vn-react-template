@@ -11,7 +11,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import useNarrationFunctions from "@/hooks/useNarrationFunctions";
 import { useQueryDialogue } from "@/hooks/useQueryInterface";
 import { TypewriterSettings } from "@/lib/stores/typewriter-settings-store";
-import { hasScrollableParent } from "@/utils/scroll-utils";
+import { hasScrollableParent, isScrollableElement } from "@/utils/scroll-utils";
 
 export function NarrationCards() {
     const { data: { character } = {} } = useQueryDialogue();
@@ -28,14 +28,12 @@ export function NarrationCards() {
 
     const handlePointerUp = useCallback(
         (e: React.PointerEvent<HTMLDivElement>) => {
-            const start = pointerDownPos.current;
-            pointerDownPos.current = null;
-            if (!start) return;
-            const dx = Math.abs(e.clientX - start.x);
-            const dy = Math.abs(e.clientY - start.y);
-            if (dx < 5 && dy < 5) {
-                goNext();
-            }
+            // Let resize handles manage their own drag behaviour
+            if ((e.target as HTMLElement).closest('[data-slot="resizable-handle"]')) return;
+            // Let native scrollbar interactions through
+            if (isScrollableElement(e.target as HTMLElement)) return;
+
+            goNext();
         },
         [goNext],
     );
