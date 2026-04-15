@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
+import { Field, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
 export function SaveNameInput({
     initialValue,
@@ -12,17 +13,15 @@ export function SaveNameInput({
     const { t } = useTranslation(["ui"]);
     const [value, setValue] = useState(initialValue);
     return (
-        <>
-            <label className="text-sm font-medium">{t("save_name")}</label>
-            <InputGroup>
-                <InputGroupInput
-                    value={value}
-                    onChange={(e) => {
-                        setValue(e.target.value);
-                        onValueChange(e.target.value);
-                    }}
-                />
-            </InputGroup>
-        </>
+        <Field>
+            <FieldLabel>{t("save_name")}</FieldLabel>
+            <Input
+                value={value}
+                onChange={(e) => {
+                    setValue(e.target.value);
+                    onValueChange(e.target.value);
+                }}
+            />
+        </Field>
     );
 }
