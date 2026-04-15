@@ -3,7 +3,7 @@ import Backend from "i18next-chained-backend";
 import resourcesToBackend from "i18next-resources-to-backend";
 import { initReactI18next } from "react-i18next";
 
-export const LANGUAGE_STORAGE_KEY = "pixi-vn-language";
+export const LANGUAGE_STORAGE_KEY = "language";
 
 export function getBrowserLang(): string {
     const userLang: string = navigator.language || "en";
@@ -26,13 +26,9 @@ function getLocalesResource(lng: string): Promise<Record<string, unknown>> {
     return import(`./../locales/strings_${lng}.json`);
 }
 
-function generateResourceToTranslate(lng: string): Promise<Record<string, unknown>> {
-    return getLocalesResource(lng);
-}
-
 export async function downloadResourceToTranslate() {
     const lng = i18n.options.fallbackLng?.toString() || "en";
-    const data = await generateResourceToTranslate(lng);
+    const data = await getLocalesResource(lng);
     const jsonString = JSON.stringify(data);
     // download the save data as a JSON file
     const blob = new Blob([jsonString], { type: "application/json" });
