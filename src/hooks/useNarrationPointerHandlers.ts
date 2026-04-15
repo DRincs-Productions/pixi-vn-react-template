@@ -1,10 +1,13 @@
 import type React from "react";
 import { useCallback, useRef } from "react";
+import { useStore } from "@tanstack/react-store";
 import { hasScrollableParent, isScrollableElement } from "@/utils/scroll-utils";
+import { SkipSettings } from "@/lib/stores/skip-settings-store";
 import useNarrationFunctions from "./useNarrationFunctions";
 
 export default function useNarrationPointerHandlers() {
     const { goNext } = useNarrationFunctions();
+    const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
     const pointerDownPos = useRef<{ x: number; y: number } | null>(null);
 
     const handlePointerDown = useCallback((e: React.PointerEvent) => {
@@ -20,9 +23,12 @@ export default function useNarrationPointerHandlers() {
             // Let native scrollbar interactions through
             if (isScrollableElement(e.target as HTMLElement)) return;
 
+            if (skipEnabled) {
+                SkipSettings.setEnabled(false);
+            }
             goNext();
         },
-        [goNext],
+        [goNext, skipEnabled],
     );
 
     return { handlePointerDown, handlePointerUp };
