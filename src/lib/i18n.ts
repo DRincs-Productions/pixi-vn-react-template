@@ -24,7 +24,7 @@ export const useI18n = async () => {
             .init({
                 debug: false,
                 fallbackLng: "en",
-                supportedLngs: ["en", "es"],
+                supportedLngs: ["en"],
                 interpolation: {
                     escapeValue: false,
                 },
