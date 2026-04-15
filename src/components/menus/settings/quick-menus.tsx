@@ -24,7 +24,7 @@ export function QuickMenus() {
                 <OpenHistorySettingButton />
                 <SaveLoadMenuButton />
             </div>
-            <Separator className="my-4" />
+            <Separator />
             <ReturnMainMenuButton />
         </div>
     );
@@ -52,7 +52,9 @@ export default function ReturnMainMenuButton() {
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>{t("attention")}</AlertDialogTitle>
-                    <AlertDialogDescription>{t("you_sure_to_return_main_menu")}</AlertDialogDescription>
+                    <AlertDialogDescription>
+                        {t("you_sure_to_return_main_menu")}
+                    </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
