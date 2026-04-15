@@ -1,5 +1,6 @@
 import ModalDialogCustom from "@/components/ModalDialog";
 import SettingButton from "@/components/SettingButton";
+import { Separator } from "@/components/ui/separator";
 import { useSetSearchParamState } from "@/hooks/useSearchParamState";
 import { Game } from "@drincs/pixi-vn";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
@@ -9,7 +10,6 @@ import { Button, Stack, Typography } from "@mui/joy";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Separator } from "react-resizable-panels";
 
 export function QuickMenus() {
     return (
