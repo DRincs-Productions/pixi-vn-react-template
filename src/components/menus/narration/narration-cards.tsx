@@ -8,6 +8,7 @@ import AnimatedDots from "@/components/AnimatedDots";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import useNarrationPointerHandlers from "@/hooks/useNarrationPointerHandlers";
 import { useQueryDialogue } from "@/hooks/useQueryInterface";
 import { TypewriterSettings } from "@/lib/stores/typewriter-settings-store";
@@ -39,14 +40,16 @@ export function NarrationCards() {
                                     {characterName}
                                 </p>
                             )}
-                            <CardContent
-                                ref={paragraphRef}
-                                className="min-h-0 flex-1 overflow-y-auto px-7"
-                                onPointerDown={handlePointerDown}
-                                onPointerCancel={handlePointerCancel}
-                                onPointerUp={handlePointerUp}
-                            >
-                                <Text paragraphRef={paragraphRef} />
+                            <CardContent className="min-h-0 flex-1 px-7">
+                                <ScrollArea
+                                    viewportRef={paragraphRef}
+                                    className="h-full pointer-events-auto"
+                                    onPointerDown={handlePointerDown}
+                                    onPointerCancel={handlePointerCancel}
+                                    onPointerUp={handlePointerUp}
+                                >
+                                    <Text paragraphRef={paragraphRef} />
+                                </ScrollArea>
                             </CardContent>
                         </div>
                     </ResizablePanel>
