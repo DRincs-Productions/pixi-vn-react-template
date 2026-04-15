@@ -48,18 +48,18 @@ export default function Settings() {
 
                         <div>
                             <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                                {t("about")}
+                                {t("menus")}
                             </h3>
-                            <About />
+                            <QuickMenus />
                         </div>
 
                         <Separator />
 
                         <div>
                             <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                                {t("menus")}
+                                {t("about")}
                             </h3>
-                            <QuickMenus />
+                            <About />
                         </div>
                     </div>
                 </div>
