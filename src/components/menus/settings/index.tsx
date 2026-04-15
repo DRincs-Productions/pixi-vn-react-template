@@ -1,13 +1,10 @@
-import { useTranslation } from "react-i18next";
 import packageJson from "@/../package.json";
 import { DialoguesControls } from "@/components/menus/settings/dialogues-controls";
-import HideInterfaceSettingToggle from "@/components/menus/settings/HideInterfaceSettingToggle";
-import OpenHistorySettingButton from "@/components/menus/settings/OpenHistorySettingButton";
-import SaveLoadSettingButtons from "@/components/menus/settings/SaveLoadSettingButtons";
+import { QuickMenus } from "@/components/menus/settings/quick-menus";
 import { SoundControls } from "@/components/menus/settings/sound-controls";
 import { SystemControls } from "@/components/menus/settings/system-controls";
-import ReturnMainMenuButton from "@/components/ReturnMainMenuButton";
 import { Separator } from "@/components/ui/separator";
+import { useTranslation } from "react-i18next";
 
 export default function Settings() {
     const { t } = useTranslation(["ui"]);
@@ -28,13 +25,7 @@ export default function Settings() {
                     <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
                         {t("quick_actions")}
                     </h3>
-                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                        <OpenHistorySettingButton />
-                        <SaveLoadSettingButtons />
-                        <HideInterfaceSettingToggle />
-                    </div>
-                    <Separator className="my-4" />
-                    <ReturnMainMenuButton />
+                    <QuickMenus />
                 </div>
 
                 {/* Right column: settings sections */}
