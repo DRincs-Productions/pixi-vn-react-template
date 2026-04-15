@@ -16,7 +16,7 @@ export function NarrationCards() {
     const { data: { character } = {} } = useQueryDialogue();
     const paragraphRef = useRef<HTMLDivElement>(null);
     const characterName = `${character?.name || ""} ${character?.surname || ""}`.trim();
-    const { handlePointerDown, handlePointerUp } = useNarrationPointerHandlers();
+    const { handlePointerDown, handlePointerCancel, handlePointerUp } = useNarrationPointerHandlers();
 
     return (
         <div className="flex h-full flex-col">
@@ -42,6 +42,7 @@ export function NarrationCards() {
                                 ref={paragraphRef}
                                 className="pointer-events-auto min-h-0 flex-1 overflow-y-auto px-7"
                                 onPointerDown={handlePointerDown}
+                                onPointerCancel={handlePointerCancel}
                                 onPointerUp={handlePointerUp}
                             >
                                 <Text paragraphRef={paragraphRef} />
