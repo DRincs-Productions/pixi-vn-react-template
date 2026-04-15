@@ -1,3 +1,4 @@
+import { About } from "@/components/menus/settings/about";
 import { DialoguesControls } from "@/components/menus/settings/dialogues-controls";
 import { QuickMenus } from "@/components/menus/settings/quick-menus";
 import { SoundControls } from "@/components/menus/settings/sound-controls";
@@ -49,6 +50,7 @@ export default function Settings() {
                             <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
                                 {t("about")}
                             </h3>
+                            <About />
                         </div>
 
                         <Separator />
