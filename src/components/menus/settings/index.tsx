@@ -27,18 +27,6 @@ export default function Settings() {
 
                         <div>
                             <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                                {t("dialogues")}
-                            </h3>
-                            <DialoguesControls />
-                        </div>
-                    </div>
-                </div>
-
-                {/* Right column: settings sections */}
-                <div className="border-b p-4 md:border-b-0">
-                    <div className="grid gap-4">
-                        <div>
-                            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
                                 {t("sound")}
                             </h3>
                             <SoundControls />
@@ -48,18 +36,30 @@ export default function Settings() {
 
                         <div>
                             <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                                {t("menus")}
+                                {t("about")}
                             </h3>
-                            <QuickMenus />
+                            <About />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Right column: settings sections */}
+                <div className="border-b p-4 md:border-b-0">
+                    <div className="grid gap-4">
+                        <div>
+                            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                                {t("dialogues")}
+                            </h3>
+                            <DialoguesControls />
                         </div>
 
                         <Separator />
 
                         <div>
                             <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                                {t("about")}
+                                {t("menus")}
                             </h3>
-                            <About />
+                            <QuickMenus />
                         </div>
                     </div>
                 </div>
