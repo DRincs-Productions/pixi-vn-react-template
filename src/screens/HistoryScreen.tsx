@@ -50,14 +50,15 @@ function HistoryList({ searchString }: { searchString?: string }) {
                             </div>
                         </div>
                         <div className="mt-2 flex flex-wrap gap-1.5">
-                            {item.choices?.map((choice, choiceIndex) => {
+                            {item.choices?.map((choice) => {
+                                const choiceKey = `${choice.text}-${choice.isResponse ? "1" : "0"}-${choice.hidden ? "1" : "0"}`;
                                 if (choice.hidden) {
                                     return null;
                                 }
                                 if (choice.isResponse) {
                                     return (
                                         <span
-                                            key={`choices-success-${choiceIndex}`}
+                                            key={`choices-success-${choiceKey}`}
                                             className={cn(
                                                 "inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs",
                                                 "border-green-500/30 bg-green-500/10 text-green-700 dark:text-green-400",
@@ -70,7 +71,7 @@ function HistoryList({ searchString }: { searchString?: string }) {
                                 }
                                 return (
                                     <span
-                                        key={`choices-${choiceIndex}`}
+                                        key={`choices-${choiceKey}`}
                                         className={cn(
                                             "inline-flex items-center rounded-md border px-2 py-1 text-xs",
                                             "border-primary/30 bg-primary/10 text-primary",
