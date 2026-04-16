@@ -55,7 +55,7 @@ export default function SavSlot({ saveId }: { saveId: number }) {
                 style={{ pointerEvents: "none", userSelect: "none" }}
             />
             {/* top-left metadata */}
-            <div className="absolute top-2.5 left-2.5 flex flex-col gap-0.5 select-none pointer-events-none">
+            <div className="absolute top-2.5 left-2.5 flex flex-col gap-0.5 pointer-events-none">
                 <span
                     className={cn(
                         "text-base font-semibold text-neutral-300",

@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import NarrationScreen from "@/components/menus/narration";
-import { QuickTools } from "@/components/menus/quick-tools";
-import NextButton from "@/components/NextButton";
 import VisibilityButton from "@/components/VisibilityButton";
+import useNarrationPointerHandlers from "@/hooks/useNarrationPointerHandlers";
 import useSkipAutoDetector from "@/hooks/useSkipAutoDetector";
 import HistoryScreen from "@/screens/HistoryScreen";
 
@@ -14,12 +13,23 @@ function NarrationElement() {
     return (
         <>
             <HistoryScreen />
+            <NarrationClickOverlay />
             <NarrationScreen />
-            <QuickTools />
-            <NextButton />
             <NarrationDetectors />
             <VisibilityButton />
         </>
+    );
+}
+
+function NarrationClickOverlay() {
+    const { handlePointerDown, handlePointerCancel, handlePointerUp } = useNarrationPointerHandlers();
+    return (
+        <div
+            className="fixed inset-0 z-0 pointer-events-auto"
+            onPointerDown={handlePointerDown}
+            onPointerCancel={handlePointerCancel}
+            onPointerUp={handlePointerUp}
+        />
     );
 }
 

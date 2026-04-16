@@ -110,11 +110,7 @@ export default function MainMenu() {
         <div className="relative h-full w-full flex items-center justify-start p-3 sm:p-6 md:p-10">
             {/* Buttons card – semi-transparent, fade-in from left on mount */}
             <Card className="w-full max-w-xs sm:max-w-sm bg-background/50 backdrop-blur-sm animate-in fade-in slide-in-from-left-10 duration-500 ease-out fill-mode-both">
-                <CardContent
-                    ref={menuRef}
-                    role="menu"
-                    className="flex flex-col gap-2 pt-4"
-                >
+                <CardContent ref={menuRef} role="menu" className="flex flex-col gap-2 pt-4">
                     <Button
                         role="menuitem"
                         onClick={() => {
@@ -203,7 +199,7 @@ export default function MainMenu() {
             </Card>
 
             {/* Game name + version – bottom right, outlined for readability on any bg */}
-            <div className="absolute bottom-3 right-3 text-right select-none pointer-events-none">
+            <div className="absolute bottom-3 right-3 text-right pointer-events-none">
                 <p className={cn("text-xs font-semibold text-white", overlayTextShadowClass)}>
                     {packageJson.name}
                 </p>
