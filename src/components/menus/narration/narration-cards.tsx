@@ -1,9 +1,3 @@
-import { useStore } from "@tanstack/react-store";
-import { type RefObject, useCallback, useRef } from "react";
-import Markdown from "react-markdown";
-import { MarkdownTypewriterHooks } from "react-markdown-typewriter";
-import rehypeRaw from "rehype-raw";
-import remarkGfm from "remark-gfm";
 import AnimatedDots from "@/components/AnimatedDots";
 import { QuickTools } from "@/components/menus/quick-tools";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -12,7 +6,13 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useNarrationPointerHandlers from "@/hooks/useNarrationPointerHandlers";
 import { useQueryDialogue } from "@/hooks/useQueryInterface";
-import { TypewriterSettings } from "@/lib/stores/typewriter-settings-store";
+import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
+import { useStore } from "@tanstack/react-store";
+import { type RefObject, useCallback, useRef } from "react";
+import Markdown from "react-markdown";
+import { MarkdownTypewriterHooks } from "react-markdown-typewriter";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
 
 export function NarrationCards() {
     const { data: { character } = {} } = useQueryDialogue();
@@ -64,7 +64,7 @@ export function NarrationCards() {
 }
 
 export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement | null> }) {
-    const typewriterDelay = useStore(TypewriterSettings.store, (state) => state.delay);
+    const typewriterDelay = useStore(TextDisplaySettings.store, (state) => state.delay);
     const { data: { animatedText, text } = {} } = useQueryDialogue();
 
     const handleCharacterAnimationComplete = useCallback(
@@ -107,10 +107,10 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
                     rehypePlugins={[rehypeRaw]}
                     delay={typewriterDelay}
                     motionProps={{
-                        onAnimationStart: TypewriterSettings.start,
+                        onAnimationStart: TextDisplaySettings.start,
                         onAnimationComplete: (definition: "visible" | "hidden") => {
                             if (definition === "visible") {
-                                TypewriterSettings.end();
+                                TextDisplaySettings.end();
                             }
                         },
                         onCharacterAnimationComplete: handleCharacterAnimationComplete,
