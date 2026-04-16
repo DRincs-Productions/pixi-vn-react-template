@@ -207,7 +207,6 @@ export default function NarrationScreen() {
 
 function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement | null> }) {
     const typewriterDelay = useStore(TextDisplaySettings.store, (state) => state.delay);
-    const fontSize = useStore(TextDisplaySettings.store, (state) => state.fontSize);
     const { data: { animatedText, text } = {} } = useQueryDialogue();
     const { mode } = useColorScheme();
 
@@ -227,7 +226,7 @@ function NarrationScreenText({ paragraphRef }: { paragraphRef: RefObject<HTMLDiv
     return (
         <p
             className={`prose ${mode === "dark" ? "dark:prose-invert" : ""}`}
-            style={{ margin: 0, padding: 0, maxWidth: "100%", fontSize: `${fontSize}%` }}
+            style={{ margin: 0, padding: 0, maxWidth: "100%" }}
         >
             <span>
                 <Markdown
