@@ -41,12 +41,7 @@ export function QuickTools() {
     const noPointer = hidden ? "pointer-events-none" : undefined;
 
     return (
-        <div
-            className={cn(
-                "flex flex-wrap items-center justify-end gap-1 px-2 pb-2 select-none",
-                hidden ? "animate-out fade-out-0" : "animate-in fade-in-0",
-            )}
-        >
+        <div className={cn("flex flex-wrap items-center justify-end gap-1")}>
             <Button
                 variant="ghost"
                 size="xs"
@@ -86,12 +81,7 @@ export function QuickTools() {
             >
                 {t("auto_forward_time_restricted")}
             </Toggle>
-            <Button
-                variant="ghost"
-                size="xs"
-                className={noPointer}
-                onClick={() => setSaves(true)}
-            >
+            <Button variant="ghost" size="xs" className={noPointer} onClick={() => setSaves(true)}>
                 {t(`${t("save")}/${t("load")}`)}
             </Button>
             <Button

@@ -199,7 +199,7 @@ export default function MainMenu() {
             </Card>
 
             {/* Game name + version – bottom right, outlined for readability on any bg */}
-            <div className="absolute bottom-3 right-3 text-right select-none pointer-events-none">
+            <div className="absolute bottom-3 right-3 text-right pointer-events-none">
                 <p className={cn("text-xs font-semibold text-white", overlayTextShadowClass)}>
                     {packageJson.name}
                 </p>

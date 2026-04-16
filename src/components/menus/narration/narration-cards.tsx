@@ -23,7 +23,7 @@ export function NarrationCards() {
 
     return (
         <div className="flex h-full flex-col">
-            <Card className="pointer-events-none min-h-0 flex-1 gap-1 py-4">
+            <Card className="pointer-events-none min-h-0 flex-1 gap-1 px-2 pb-2">
                 <div className="min-h-0 flex-1">
                     <ResizablePanelGroup orientation="horizontal">
                         {character?.icon && (
@@ -36,13 +36,13 @@ export function NarrationCards() {
                             <div className="flex h-full flex-col">
                                 {character && (
                                     <p
-                                        className="shrink-0 px-7 text-xl font-bold"
+                                        className="shrink-0 px-4 text-xl font-bold"
                                         style={{ color: character?.color }}
                                     >
                                         {characterName}
                                     </p>
                                 )}
-                                <CardContent className="min-h-0 flex-1 px-7">
+                                <CardContent className="min-h-0 flex-1">
                                     <ScrollArea
                                         ref={paragraphRef}
                                         className="h-full"
@@ -88,7 +88,7 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
     );
 
     return (
-        <p className="prose dark:prose-invert m-0 max-w-full select-none p-0">
+        <p className="prose dark:prose-invert m-0 max-w-full p-0">
             <span>
                 <Markdown
                     remarkPlugins={[remarkGfm]}
