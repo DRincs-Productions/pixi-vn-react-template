@@ -1,8 +1,3 @@
-import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
-import { useHotkeys } from "@tanstack/react-hotkeys";
-import { useQueryClient } from "@tanstack/react-query";
-import { CirclePlay, Play, Save, Settings } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
 import packageJson from "@/../package.json";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,6 +11,11 @@ import startLabel from "@/labels/startLabel";
 import { InterfaceSettings } from "@/lib/stores/interface-settings-store";
 import { cn, overlayTextShadowClass } from "@/lib/utils";
 import { loadSave } from "@/utils/save-utility";
+import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
+import { useHotkeys } from "@tanstack/react-hotkeys";
+import { useQueryClient } from "@tanstack/react-query";
+import { CirclePlay, Play, Save, Settings } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 const menuButtonClass =
     "justify-start hover:scale-105 focus-visible:scale-105 transition-transform duration-150 ease-out";
@@ -109,7 +109,7 @@ export default function MainMenu() {
     return (
         <div className="relative h-full w-full flex items-center justify-start p-3 sm:p-6 md:p-10">
             {/* Buttons card – semi-transparent, fade-in from left on mount */}
-            <Card className="w-full max-w-xs sm:max-w-sm bg-background/50 backdrop-blur-sm animate-in fade-in slide-in-from-left-10 duration-500 ease-out fill-mode-both">
+            <Card className="w-full max-w-xs sm:max-w-sm bg-background/70 backdrop-blur-sm animate-in fade-in slide-in-from-left-10 duration-500 ease-out fill-mode-both">
                 <CardContent ref={menuRef} role="menu" className="flex flex-col gap-2 pt-4">
                     <Button
                         role="menuitem"

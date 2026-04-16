@@ -1,11 +1,11 @@
-import { type StepLabelProps, stepHistory } from "@drincs/pixi-vn";
-import { narration } from "@drincs/pixi-vn/narration";
-import { useThrottler } from "@tanstack/react-pacer";
-import { useEffect, useRef } from "react";
 import { HTML_CANVAS_LAYER_NAME, HTML_UI_LAYER_NAME } from "@/constans";
 import useGameProps from "@/hooks/useGameProps";
 import { GameStatus } from "@/lib/stores/game-status-store";
 import { hasScrollableParent } from "@/utils/scroll-utils";
+import { type StepLabelProps, stepHistory } from "@drincs/pixi-vn";
+import { narration } from "@drincs/pixi-vn/narration";
+import { useThrottler } from "@tanstack/react-pacer";
+import { useEffect, useRef } from "react";
 
 function isInsideRoot(target: EventTarget | null, selector: string): boolean {
     if (!(target instanceof HTMLElement)) return false;

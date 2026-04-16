@@ -70,6 +70,9 @@ function get10ColorShades(color: string) {
     };
 }
 
+/**
+ * @deprecated
+ */
 export default function MyThemeProvider({ children }: Iprops) {
     const [primaryColor, setPrimaryColor] = useState(
         localStorage.getItem("primaryColor") || "#1c73ff",
@@ -83,7 +86,7 @@ export default function MyThemeProvider({ children }: Iprops) {
         localStorage.setItem("primaryColor", primaryColor);
         localStorage.setItem("solidColor", solidColor);
 
-        let colors = get10ColorShades(primaryColor);
+        const colors = get10ColorShades(primaryColor);
         return extendTheme({
             colorSchemes: {
                 light: {

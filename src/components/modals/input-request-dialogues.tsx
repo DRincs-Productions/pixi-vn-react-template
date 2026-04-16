@@ -12,14 +12,14 @@ import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import useGameProps from "@/hooks/useGameProps";
 import { useQueryDialogue, useQueryInputValue } from "@/hooks/useQueryInterface";
-import { TypewriterSettings } from "@/lib/stores/typewriter-settings-store";
+import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 
 export function InputRequestDialog() {
     const { data: { animatedText: text } = {} } = useQueryDialogue();
     const {
         data: { isRequired, type, currentValue } = { currentValue: undefined, isRequired: false },
     } = useQueryInputValue<string | number>();
-    const isTyping = useStore(TypewriterSettings.store, (state) => state.inProgress);
+    const isTyping = useStore(TextDisplaySettings.store, (state) => state.inProgress);
     const [open] = useDebouncedValue(!isTyping && isRequired, { wait: 50 });
     const [tempValue, setTempValue] = useState<string | number>();
     const gameProps = useGameProps();
