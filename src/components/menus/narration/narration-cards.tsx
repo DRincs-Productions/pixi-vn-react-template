@@ -23,7 +23,7 @@ export function NarrationCards() {
 
     return (
         <div className="flex h-full flex-col">
-            <Card className="pointer-events-none min-h-0 flex-1 gap-1 py-2">
+            <Card className="pointer-events-none min-h-0 flex-1 gap-1 py-4">
                 <div className="min-h-0 flex-1">
                     <ResizablePanelGroup orientation="horizontal">
                         {character?.icon && (

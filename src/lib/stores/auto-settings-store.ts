@@ -28,6 +28,13 @@ export namespace AutoSettings {
     }
 
     /**
+     * Set the auto forward state
+     */
+    export function setEnabled(value: boolean) {
+        store.setState((state) => ({ ...state, enabled: value }));
+    }
+
+    /**
      * Set the time to wait before auto forwarding
      */
     export function setTime(value: number) {
