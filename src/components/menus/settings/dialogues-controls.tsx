@@ -9,7 +9,6 @@ import { useTranslation } from "react-i18next";
 
 export function DialoguesControls() {
     const typewriterDelay = useStore(TextDisplaySettings.store, (state) => state.delay);
-    const fontSize = useStore(TextDisplaySettings.store, (state) => state.fontSize);
     const { t } = useTranslation(["ui"]);
 
     return (
@@ -39,32 +38,6 @@ export function DialoguesControls() {
                 <div className="flex justify-between px-1 text-xs text-muted-foreground">
                     <span>{t("off")}</span>
                     <span>200ms</span>
-                </div>
-            </div>
-
-            <div className="flex flex-col gap-1.5">
-                <div>
-                    <p className="text-sm font-medium leading-none">{t("text_size")}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                        {t("text_size_description")}
-                    </p>
-                </div>
-                <div className="flex items-center gap-2">
-                    <Slider
-                        min={50}
-                        max={200}
-                        step={10}
-                        value={[fontSize]}
-                        onValueChange={(v) =>
-                            typeof v === "number" && TextDisplaySettings.setFontSize(v)
-                        }
-                        className="flex-1"
-                    />
-                    <span className="w-14 text-right text-xs tabular-nums">{fontSize}%</span>
-                </div>
-                <div className="flex justify-between px-1 text-xs text-muted-foreground">
-                    <span>50%</span>
-                    <span>200%</span>
                 </div>
             </div>
 

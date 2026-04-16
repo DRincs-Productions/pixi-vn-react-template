@@ -1,4 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
+import { useStore } from "@tanstack/react-store";
 import { DownloadIcon, FullscreenIcon, Minimize2Icon, MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -12,6 +13,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
 import { Toggle } from "@/components/ui/toggle";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguageSettings } from "@/hooks/useLanguageSettings";
@@ -19,6 +21,7 @@ import useQueryIsFullModeScreen, {
     IS_FULL_SCREEN_MODE_USE_QUEY_KEY,
 } from "@/hooks/useQueryIsFullModeScreen";
 import { downloadResourceToTranslate } from "@/lib/i18n";
+import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 
 export function SystemControls() {
     return (
@@ -26,6 +29,38 @@ export function SystemControls() {
             <FullScreenSettings />
             <ModeToggle />
             <LanguageSettings />
+            <TextSizeSettings />
+        </div>
+    );
+}
+
+export function TextSizeSettings() {
+    const { t } = useTranslation(["ui"]);
+    const fontSize = useStore(TextDisplaySettings.store, (state) => state.fontSize);
+
+    return (
+        <div className="flex flex-col gap-1.5">
+            <div>
+                <p className="text-sm font-medium leading-none">{t("text_size")}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{t("text_size_description")}</p>
+            </div>
+            <div className="flex items-center gap-2">
+                <Slider
+                    min={50}
+                    max={200}
+                    step={10}
+                    value={[fontSize]}
+                    onValueChange={(v) =>
+                        typeof v === "number" && TextDisplaySettings.setFontSize(v)
+                    }
+                    className="flex-1"
+                />
+                <span className="w-14 text-right text-xs tabular-nums">{fontSize}%</span>
+            </div>
+            <div className="flex justify-between px-1 text-xs text-muted-foreground">
+                <span>50%</span>
+                <span>200%</span>
+            </div>
         </div>
     );
 }
