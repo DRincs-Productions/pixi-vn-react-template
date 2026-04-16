@@ -19,14 +19,17 @@ import { HistoryIcon, LogOutIcon, SaveIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export function QuickMenus() {
+    const location = useLocation();
+    const isInGame = location.pathname.startsWith("/game");
+
     return (
         <div className="flex flex-col gap-4">
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                <OpenHistorySettingButton />
+                {isInGame && <OpenHistorySettingButton />}
                 <SaveLoadMenuButton />
             </div>
-            <Separator />
-            <ReturnMainMenuButton />
+            {isInGame && <Separator />}
+            {isInGame && <ReturnMainMenuButton />}
         </div>
     );
 }
@@ -34,11 +37,6 @@ export function QuickMenus() {
 export default function ReturnMainMenuButton() {
     const navigate = useNavigate();
     const { t } = useTranslation(["ui"]);
-    const location = useLocation();
-
-    if (location.pathname === "/") {
-        return null;
-    }
 
     return (
         <AlertDialog>
@@ -77,20 +75,15 @@ export default function ReturnMainMenuButton() {
 
 export function OpenHistorySettingButton() {
     const { t } = useTranslation(["ui"]);
-    const location = useLocation();
     const setSettings = useSetSearchParamState<boolean>("settings");
     const setHistory = useSetSearchParamState<boolean>("history");
-
-    if (!location.pathname.startsWith("/game")) {
-        return null;
-    }
 
     return (
         <Button
             variant="outline"
             className="w-full justify-start"
             onClick={() => {
-                setSettings(undefined);
+                setSettings(false);
                 setHistory(true);
             }}
         >
