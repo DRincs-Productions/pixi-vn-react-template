@@ -31,15 +31,6 @@ export default function Settings() {
                             </h3>
                             <SoundControls />
                         </div>
-
-                        <Separator />
-
-                        <div>
-                            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                                {t("about")}
-                            </h3>
-                            <About />
-                        </div>
                     </div>
                 </div>
 
@@ -60,6 +51,15 @@ export default function Settings() {
                                 {t("menus")}
                             </h3>
                             <QuickMenus />
+                        </div>
+
+                        <Separator />
+
+                        <div>
+                            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                                {t("about")}
+                            </h3>
+                            <About />
                         </div>
                     </div>
                 </div>
