@@ -9,7 +9,7 @@ import useGameProps from "./useGameProps";
 
 function isInsideRoot(target: EventTarget | null, selector: string): boolean {
     if (!(target instanceof HTMLElement)) return false;
-    return target.closest("#" + selector) !== null;
+    return target.closest(`#${selector}`) !== null;
 }
 
 export function useWheelActions({

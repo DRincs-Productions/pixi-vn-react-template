@@ -1,26 +1,26 @@
-import { Stack } from "@mui/joy";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
-import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useAlertDialog } from "../components/providers/AlertDialogProvider";
-import TextMenuButton from "../components/TextMenuButton";
-import useGameProps from "../hooks/useGameProps";
-import useNarrationFunctions from "../hooks/useNarrationFunctions";
-import { useQueryCanGoBack } from "../hooks/useQueryInterface";
-import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "../hooks/useQueryLastSave";
-import { SAVES_USE_QUEY_KEY } from "../hooks/useQuerySaves";
-import { useSetSearchParamState } from "../hooks/useSearchParamState";
-import { useWheelActions } from "../hooks/useWheelActions";
-import { AutoSettings } from "../lib/stores/auto-settings-store";
-import { GameStatus } from "../lib/stores/game-status-store";
-import { InterfaceSettings } from "../lib/stores/interface-settings-store";
-import { SkipSettings } from "../lib/stores/skip-settings-store";
-import { loadSave, saveGameToIndexDB } from "../utils/save-utility";
+import { Button } from "@/components/ui/button";
+import { Toggle } from "@/components/ui/toggle";
+import useGameProps from "@/hooks/useGameProps";
+import useNarrationFunctions from "@/hooks/useNarrationFunctions";
+import { useQueryCanGoBack } from "@/hooks/useQueryInterface";
+import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "@/hooks/useQueryLastSave";
+import { SAVES_USE_QUEY_KEY } from "@/hooks/useQuerySaves";
+import { useSetSearchParamState } from "@/hooks/useSearchParamState";
+import { useWheelActions } from "@/hooks/useWheelActions";
+import { AutoSettings } from "@/lib/stores/auto-settings-store";
+import { GameStatus } from "@/lib/stores/game-status-store";
+import { InterfaceSettings } from "@/lib/stores/interface-settings-store";
+import { SkipSettings } from "@/lib/stores/skip-settings-store";
+import { cn } from "@/lib/utils";
+import { loadSave, saveGameToIndexDB } from "@/utils/save-utility";
+import { useAlertDialog } from "../providers/AlertDialogProvider";
 
-export default function QuickTools() {
+export function QuickTools() {
     const { t } = useTranslation(["ui"]);
     const hidden = useStore(InterfaceSettings.store, (state) => state.hidden);
     const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
@@ -37,31 +37,15 @@ export default function QuickTools() {
     const setHistory = useSetSearchParamState<boolean>("history");
     const setSaves = useSetSearchParamState<boolean>("saves");
     const setSettings = useSetSearchParamState<boolean>("settings");
-    const textMenuVarians = useMemo(
-        () =>
-            hidden
-                ? `animate-out fade-out-0 slide-out-to-bottom-1/2`
-                : `animate-in fade-in-0 slide-in-from-bottom-1/2`,
-        [hidden],
-    );
+
+    const noPointer = hidden ? "pointer-events-none" : undefined;
 
     return (
-        <Stack
-            direction="row"
-            justifyContent="center"
-            alignItems="flex-end"
-            spacing={{ xs: 0.5, sm: 1, md: 2 }}
-            sx={{
-                position: "absolute",
-                height: { xs: "0.9rem", sm: "1rem", md: "1.1rem", lg: "1.3rem", xl: "1.4rem" },
-                paddingLeft: { xs: 1, sm: 2, md: 4, lg: 6, xl: 8 },
-                left: 0,
-                right: 0,
-                bottom: 0,
-            }}
-            className={textMenuVarians}
-        >
-            <TextMenuButton
+        <div className={cn("flex flex-wrap items-center justify-end gap-1")}>
+            <Button
+                variant="ghost"
+                size="xs"
+                className={noPointer}
                 onClick={() => {
                     if (skipEnabled) {
                         SkipSettings.setEnabled(false);
@@ -69,42 +53,41 @@ export default function QuickTools() {
                     goBack();
                 }}
                 disabled={!canGoBack || nextStepLoading}
-                sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
                 {t("back")}
-            </TextMenuButton>
-            <TextMenuButton
-                onClick={() => {
-                    setHistory(true);
-                }}
-                sx={{ pointerEvents: !hidden ? "auto" : "none" }}
+            </Button>
+            <Button
+                variant="ghost"
+                size="xs"
+                className={noPointer}
+                onClick={() => setHistory(true)}
             >
                 {t("history")}
-            </TextMenuButton>
-            <TextMenuButton
-                selected={skipEnabled}
-                onClick={SkipSettings.toggleEnabled}
-                sx={{ pointerEvents: !hidden ? "auto" : "none" }}
+            </Button>
+            <Toggle
+                size="sm"
+                pressed={skipEnabled}
+                onPressedChange={(v) => SkipSettings.setEnabled(v)}
+                className={noPointer}
             >
                 {t("skip")}
-            </TextMenuButton>
-            <TextMenuButton
-                selected={autoEnabled}
+            </Toggle>
+            <Toggle
+                size="sm"
+                pressed={autoEnabled}
+                onPressedChange={(v) => AutoSettings.setEnabled(v)}
                 disabled={skipEnabled}
-                onClick={AutoSettings.toggleEnabled}
-                sx={{ pointerEvents: !hidden ? "auto" : "none" }}
+                className={noPointer}
             >
                 {t("auto_forward_time_restricted")}
-            </TextMenuButton>
-            <TextMenuButton
-                onClick={() => {
-                    setSaves(true);
-                }}
-                sx={{ pointerEvents: !hidden ? "auto" : "none" }}
-            >
+            </Toggle>
+            <Button variant="ghost" size="xs" className={noPointer} onClick={() => setSaves(true)}>
                 {t(`${t("save")}/${t("load")}`)}
-            </TextMenuButton>
-            <TextMenuButton
+            </Button>
+            <Button
+                variant="ghost"
+                size="xs"
+                className={noPointer}
                 onClick={() => {
                     const savePromise = saveGameToIndexDB().then((save) => {
                         queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
@@ -116,11 +99,13 @@ export default function QuickTools() {
                         error: t("fail_save"),
                     });
                 }}
-                sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
                 {t("quick_save_restricted")}
-            </TextMenuButton>
-            <TextMenuButton
+            </Button>
+            <Button
+                variant="ghost"
+                size="xs"
+                className={noPointer}
                 onClick={() => {
                     if (!lastSave) return;
                     openAlertDialog({
@@ -143,18 +128,17 @@ export default function QuickTools() {
                     });
                 }}
                 disabled={!lastSave}
-                sx={{ pointerEvents: !hidden ? "auto" : "none" }}
             >
                 {t("load_last_save_restricted")}
-            </TextMenuButton>
-            <TextMenuButton
-                onClick={() => {
-                    setSettings(true);
-                }}
-                sx={{ pointerEvents: !hidden ? "auto" : "none" }}
+            </Button>
+            <Button
+                variant="ghost"
+                size="xs"
+                className={noPointer}
+                onClick={() => setSettings(true)}
             >
                 {t("settings_restricted")}
-            </TextMenuButton>
-        </Stack>
+            </Button>
+        </div>
     );
 }

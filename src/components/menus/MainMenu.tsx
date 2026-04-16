@@ -1,8 +1,3 @@
-import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
-import { useHotkeys } from "@tanstack/react-hotkeys";
-import { useQueryClient } from "@tanstack/react-query";
-import { CirclePlay, Play, Save, Settings } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
 import packageJson from "@/../package.json";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,6 +11,11 @@ import startLabel from "@/labels/startLabel";
 import { InterfaceSettings } from "@/lib/stores/interface-settings-store";
 import { cn, overlayTextShadowClass } from "@/lib/utils";
 import { loadSave } from "@/utils/save-utility";
+import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
+import { useHotkeys } from "@tanstack/react-hotkeys";
+import { useQueryClient } from "@tanstack/react-query";
+import { CirclePlay, Play, Save, Settings } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 const menuButtonClass =
     "justify-start hover:scale-105 focus-visible:scale-105 transition-transform duration-150 ease-out";
@@ -199,7 +199,7 @@ export default function MainMenu() {
             </Card>
 
             {/* Game name + version – bottom right, outlined for readability on any bg */}
-            <div className="absolute bottom-3 right-3 text-right select-none pointer-events-none">
+            <div className="absolute bottom-3 right-3 text-right pointer-events-none">
                 <p className={cn("text-xs font-semibold text-white", overlayTextShadowClass)}>
                     {packageJson.name}
                 </p>
