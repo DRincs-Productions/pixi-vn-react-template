@@ -13,6 +13,7 @@
   "workbench.editorAssociations": {
     "*.md": "vscode.markdown.preview.editor"
   },
+  // formatter
   "[javascript]": {
     "editor.defaultFormatter": "biomejs.biome",
     "editor.formatOnSave": true
