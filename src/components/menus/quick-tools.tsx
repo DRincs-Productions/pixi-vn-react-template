@@ -1,8 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
-import { useStore } from "@tanstack/react-store";
-import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
 import useGameProps from "@/hooks/useGameProps";
@@ -14,15 +9,18 @@ import { useSetSearchParamState } from "@/hooks/useSearchParamState";
 import { useWheelActions } from "@/hooks/useWheelActions";
 import { AutoSettings } from "@/lib/stores/auto-settings-store";
 import { GameStatus } from "@/lib/stores/game-status-store";
-import { InterfaceSettings } from "@/lib/stores/interface-settings-store";
 import { SkipSettings } from "@/lib/stores/skip-settings-store";
 import { cn } from "@/lib/utils";
 import { loadSave, saveGameToIndexDB } from "@/utils/save-utility";
+import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
+import { useStore } from "@tanstack/react-store";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { useAlertDialog } from "../providers/AlertDialogProvider";
 
 export function QuickTools() {
     const { t } = useTranslation(["ui"]);
-    const hidden = useStore(InterfaceSettings.store, (state) => state.hidden);
     const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
     const autoEnabled = useStore(AutoSettings.store, (state) => state.enabled);
     const queryClient = useQueryClient();
@@ -38,14 +36,11 @@ export function QuickTools() {
     const setSaves = useSetSearchParamState<boolean>("saves");
     const setSettings = useSetSearchParamState<boolean>("settings");
 
-    const noPointer = hidden ? "pointer-events-none" : undefined;
-
     return (
         <div className={cn("flex flex-wrap items-center justify-end gap-1")}>
             <Button
                 variant="ghost"
                 size="xs"
-                className={noPointer}
                 onClick={() => {
                     if (skipEnabled) {
                         SkipSettings.setEnabled(false);
@@ -56,19 +51,13 @@ export function QuickTools() {
             >
                 {t("back")}
             </Button>
-            <Button
-                variant="ghost"
-                size="xs"
-                className={noPointer}
-                onClick={() => setHistory(true)}
-            >
+            <Button variant="ghost" size="xs" onClick={() => setHistory(true)}>
                 {t("history")}
             </Button>
             <Toggle
                 size="sm"
                 pressed={skipEnabled}
                 onPressedChange={(v) => SkipSettings.setEnabled(v)}
-                className={noPointer}
             >
                 {t("skip")}
             </Toggle>
@@ -77,17 +66,15 @@ export function QuickTools() {
                 pressed={autoEnabled}
                 onPressedChange={(v) => AutoSettings.setEnabled(v)}
                 disabled={skipEnabled}
-                className={noPointer}
             >
                 {t("auto_forward_time_restricted")}
             </Toggle>
-            <Button variant="ghost" size="xs" className={noPointer} onClick={() => setSaves(true)}>
+            <Button variant="ghost" size="xs" onClick={() => setSaves(true)}>
                 {t(`${t("save")}/${t("load")}`)}
             </Button>
             <Button
                 variant="ghost"
                 size="xs"
-                className={noPointer}
                 onClick={() => {
                     const savePromise = saveGameToIndexDB().then((save) => {
                         queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
@@ -105,7 +92,6 @@ export function QuickTools() {
             <Button
                 variant="ghost"
                 size="xs"
-                className={noPointer}
                 onClick={() => {
                     if (!lastSave) return;
                     openAlertDialog({
@@ -131,12 +117,7 @@ export function QuickTools() {
             >
                 {t("load_last_save_restricted")}
             </Button>
-            <Button
-                variant="ghost"
-                size="xs"
-                className={noPointer}
-                onClick={() => setSettings(true)}
-            >
+            <Button variant="ghost" size="xs" onClick={() => setSettings(true)}>
                 {t("settings_restricted")}
             </Button>
         </div>

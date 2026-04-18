@@ -2,10 +2,6 @@ import { Store } from "@tanstack/store";
 
 type InterfaceSettingsStorage = {
     /**
-     * Whether the interface is hidden
-     */
-    hidden: boolean;
-    /**
      * Height of the dialogue card as percentage (0-100)
      */
     dialogueCardHeight: number;
@@ -17,17 +13,9 @@ type InterfaceSettingsStorage = {
 
 export namespace InterfaceSettings {
     export const store = new Store<InterfaceSettingsStorage>({
-        hidden: false,
         dialogueCardHeight: Number(localStorage.getItem("dialogue_card_height") ?? 30),
         dialogueCardImageWidth: Number(localStorage.getItem("dialogue_card_image_width") ?? 16),
     });
-
-    /**
-     * Toggle the interface visibility
-     */
-    export function toggleHidden() {
-        store.setState((state) => ({ ...state, hidden: !state.hidden }));
-    }
 
     /**
      * Set the interface visibility

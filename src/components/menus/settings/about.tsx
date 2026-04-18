@@ -8,15 +8,15 @@ export function About() {
         <div className="flex flex-col gap-1 text-sm">
             <div className="flex justify-between gap-2">
                 <span className="font-medium text-muted-foreground">{t("name")}:</span>
-                <span>{packageJson.name}</span>
+                <span className="font-medium text-muted-foreground">{packageJson.name}</span>
             </div>
             <div className="flex justify-between gap-2">
                 <span className="font-medium text-muted-foreground">{t("version")}:</span>
-                <span>v{packageJson.version}</span>
+                <span className="font-medium text-muted-foreground">v{packageJson.version}</span>
             </div>
             <div className="flex justify-between gap-2">
                 <span className="font-medium text-muted-foreground">{t("engine")}:</span>
-                <span>
+                <span className="font-medium text-muted-foreground">
                     {t("powered_by")}{" "}
                     <a
                         href="https://pixi-vn.web.app"
