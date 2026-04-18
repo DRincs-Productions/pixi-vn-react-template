@@ -37,6 +37,7 @@ export function QuickMenus() {
 export default function ReturnMainMenuButton() {
     const navigate = useNavigate();
     const { t } = useTranslation(["ui"]);
+    const setOpenSettings = useSetSearchParamState<boolean>("settings");
 
     return (
         <AlertDialog>
@@ -62,6 +63,7 @@ export default function ReturnMainMenuButton() {
                         onClick={() => {
                             Game.clear();
                             navigate({ to: "/" });
+                            setOpenSettings(false);
                         }}
                     >
                         <LogOutIcon />
