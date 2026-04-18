@@ -1,6 +1,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, FullscreenDialogContent } from "@/components/ui/fullscreen-dialog";
 import { Input } from "@/components/ui/input";
+import {
+    Item,
+    ItemContent,
+    ItemFooter,
+    ItemGroup,
+    ItemMedia,
+    ItemTitle,
+} from "@/components/ui/item";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useQueryNarrativeHistory } from "@/hooks/useQueryInterface";
 import { useSearchParamState, useSetSearchParamState } from "@/hooks/useSearchParamState";
@@ -18,81 +26,79 @@ function HistoryList({ searchString }: { searchString?: string }) {
     const { data = [] } = useQueryNarrativeHistory({ searchString });
 
     return (
-        <div className="flex flex-col gap-3">
+        <ItemGroup>
             {data.map((item, index) => {
                 const key = `${item.character ?? "unknown"}-${item.text}-${index}`;
                 return (
-                    <article key={key} className="rounded-lg border bg-card/50 p-3">
-                        <div className="flex gap-2">
+                    <Item key={key} variant="outline">
+                        <ItemMedia variant="image">
                             <Avatar size="sm">
                                 <AvatarImage src={item.icon} />
                                 <AvatarFallback>
                                     {item.character?.slice(0, 1).toUpperCase() ?? "?"}
                                 </AvatarFallback>
                             </Avatar>
-                            <div className="flex-1 space-y-1">
-                                {item.character && (
-                                    <p className="text-sm font-medium text-foreground">
-                                        {item.character}
-                                    </p>
-                                )}
-                                <Markdown
-                                    remarkPlugins={[remarkGfm]}
-                                    rehypePlugins={[rehypeRaw]}
-                                    components={{
-                                        p: ({ children, id }) => (
-                                            <p key={id} className="m-0 text-sm text-foreground">
-                                                {children}
-                                            </p>
-                                        ),
-                                    }}
-                                >
-                                    {item.text}
-                                </Markdown>
-                            </div>
-                        </div>
-                        <div className="mt-2 flex flex-wrap gap-1.5">
-                            {item.choices?.map((choice) => {
-                                const choiceKey = `${choice.text}-${choice.isResponse ? "1" : "0"}-${choice.hidden ? "1" : "0"}`;
-                                if (choice.hidden) {
-                                    return null;
-                                }
-                                if (choice.isResponse) {
+                        </ItemMedia>
+                        <ItemContent>
+                            {item.character && <ItemTitle>{item.character}</ItemTitle>}
+                            <Markdown
+                                remarkPlugins={[remarkGfm]}
+                                rehypePlugins={[rehypeRaw]}
+                                components={{
+                                    p: ({ children, id }) => (
+                                        <p key={id} className="m-0 text-sm text-muted-foreground">
+                                            {children}
+                                        </p>
+                                    ),
+                                }}
+                            >
+                                {item.text}
+                            </Markdown>
+                        </ItemContent>
+                        {(item.choices?.some((c) => !c.hidden) || item.inputValue) && (
+                            <ItemFooter className="flex-wrap justify-start gap-1.5">
+                                {item.choices?.map((choice) => {
+                                    const choiceKey = `${choice.text}-${choice.isResponse ? "1" : "0"}-${choice.hidden ? "1" : "0"}`;
+                                    if (choice.hidden) {
+                                        return null;
+                                    }
+                                    if (choice.isResponse) {
+                                        return (
+                                            <span
+                                                key={`choices-success-${choiceKey}`}
+                                                className={cn(
+                                                    "inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs",
+                                                    "border-green-500/30 bg-green-500/10 text-green-700 dark:text-green-400",
+                                                )}
+                                            >
+                                                {choice.text}
+                                                <Check className="size-3" />
+                                            </span>
+                                        );
+                                    }
                                     return (
                                         <span
-                                            key={`choices-success-${choiceKey}`}
+                                            key={`choices-${choiceKey}`}
                                             className={cn(
-                                                "inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs",
-                                                "border-green-500/30 bg-green-500/10 text-green-700 dark:text-green-400",
+                                                "inline-flex items-center rounded-md border px-2 py-1 text-xs",
+                                                "border-primary/30 bg-primary/10 text-primary",
                                             )}
                                         >
                                             {choice.text}
-                                            <Check className="size-3" />
                                         </span>
                                     );
-                                }
-                                return (
-                                    <span
-                                        key={`choices-${choiceKey}`}
-                                        className={cn(
-                                            "inline-flex items-center rounded-md border px-2 py-1 text-xs",
-                                            "border-primary/30 bg-primary/10 text-primary",
-                                        )}
-                                    >
-                                        {choice.text}
+                                })}
+                                {item.inputValue && (
+                                    <span className="inline-flex items-center rounded-md border px-2 py-1 text-xs">
+                                        {item.inputValue.toString()}
                                     </span>
-                                );
-                            })}
-                            {item.inputValue && (
-                                <span className="inline-flex items-center rounded-md border px-2 py-1 text-xs">
-                                    {item.inputValue.toString()}
-                                </span>
-                            )}
-                        </div>
-                    </article>
+                                )}
+                            </ItemFooter>
+                        )}
+                    </Item>
                 );
             })}
-        </div>
+        </ItemGroup>
     );
 }
 
