@@ -140,7 +140,7 @@ export default function HistoryScreen() {
         <Dialog open={open ?? false} onOpenChange={(isOpen) => setOpen(isOpen || undefined)}>
             <FullscreenDialogContent title={t("history")} toolbar={toolbar}>
                 <ScrollArea className="flex-1 min-h-0">
-                    <div className="p-4">
+                    <div className="p-4 px-2 sm:px-12 md:px-14 lg:px-22 xl:px-28">
                         <HistoryList searchString={debouncedSearchString} />
                     </div>
                 </ScrollArea>
