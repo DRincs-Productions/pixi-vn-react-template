@@ -9,6 +9,7 @@ import {
     ItemMedia,
     ItemTitle,
 } from "@/components/ui/item";
+import { Kbd } from "@/components/ui/kbd";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useQueryNarrativeHistory } from "@/hooks/useQueryInterface";
 import { useSearchParamState, useSetSearchParamState } from "@/hooks/useSearchParamState";
@@ -41,7 +42,7 @@ function HistoryList({ searchString }: { searchString?: string }) {
                                 </Avatar>
                             </ItemMedia>
                         )}
-                        <ItemContent>
+                        <ItemContent className={!item.character ? "items-center text-center" : undefined}>
                             {item.character && <ItemTitle>{item.character}</ItemTitle>}
                             <Markdown
                                 remarkPlugins={[remarkGfm]}
@@ -66,34 +67,34 @@ function HistoryList({ searchString }: { searchString?: string }) {
                                     }
                                     if (choice.isResponse) {
                                         return (
-                                            <span
+                                            <Kbd
                                                 key={`choices-success-${choiceKey}`}
                                                 className={cn(
-                                                    "inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs",
+                                                    "h-auto border px-2 py-1",
                                                     "border-green-500/30 bg-green-500/10 text-green-700 dark:text-green-400",
                                                 )}
                                             >
                                                 {choice.text}
                                                 <Check className="size-3" />
-                                            </span>
+                                            </Kbd>
                                         );
                                     }
                                     return (
-                                        <span
+                                        <Kbd
                                             key={`choices-${choiceKey}`}
                                             className={cn(
-                                                "inline-flex items-center rounded-md border px-2 py-1 text-xs",
+                                                "h-auto border px-2 py-1",
                                                 "border-primary/30 bg-primary/10 text-primary",
                                             )}
                                         >
                                             {choice.text}
-                                        </span>
+                                        </Kbd>
                                     );
                                 })}
                                 {item.inputValue && (
-                                    <span className="inline-flex items-center rounded-md border px-2 py-1 text-xs">
+                                    <Kbd className="h-auto px-2 py-1">
                                         {item.inputValue.toString()}
-                                    </span>
+                                    </Kbd>
                                 )}
                             </ItemFooter>
                         )}
