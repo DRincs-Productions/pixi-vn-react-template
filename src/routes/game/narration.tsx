@@ -1,5 +1,4 @@
 import NarrationScreen from "@/components/menus/narration";
-import VisibilityButton from "@/components/VisibilityButton";
 import useNarrationPointerHandlers from "@/hooks/useNarrationPointerHandlers";
 import useSkipAutoDetector from "@/hooks/useSkipAutoDetector";
 import HistoryScreen from "@/screens/HistoryScreen";
@@ -16,7 +15,6 @@ function NarrationElement() {
             <NarrationClickOverlay />
             <NarrationScreen />
             <NarrationDetectors />
-            <VisibilityButton />
         </>
     );
 }
