@@ -1,10 +1,9 @@
-import * as React from "react";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import { cva, type VariantProps } from "class-variance-authority";
-
-import { cn } from "@/lib/utils";
-import { Separator } from "@/components/ui/separator";
+import type * as React from "react";
 
 function ItemGroup({ className, ...props }: React.ComponentProps<"div">) {
     return (
@@ -126,7 +125,7 @@ function ItemTitle({ className, ...props }: React.ComponentProps<"div">) {
         <div
             data-slot="item-title"
             className={cn(
-                "font-heading line-clamp-1 flex w-fit items-center gap-2 text-sm leading-snug font-medium underline-offset-4",
+                "line-clamp-1 flex w-fit items-center gap-2 text-sm leading-snug font-medium underline-offset-4",
                 className,
             )}
             {...props}
@@ -179,13 +178,13 @@ function ItemFooter({ className, ...props }: React.ComponentProps<"div">) {
 
 export {
     Item,
-    ItemMedia,
-    ItemContent,
     ItemActions,
+    ItemContent,
+    ItemDescription,
+    ItemFooter,
     ItemGroup,
+    ItemHeader,
+    ItemMedia,
     ItemSeparator,
     ItemTitle,
-    ItemDescription,
-    ItemHeader,
-    ItemFooter,
 };
