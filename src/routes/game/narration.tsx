@@ -1,7 +1,6 @@
 import NarrationScreen from "@/components/menus/narration";
 import useNarrationPointerHandlers from "@/hooks/useNarrationPointerHandlers";
 import useSkipAutoDetector from "@/hooks/useSkipAutoDetector";
-import HistoryScreen from "@/screens/HistoryScreen";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/game/narration")({
@@ -11,7 +10,6 @@ export const Route = createFileRoute("/game/narration")({
 function NarrationElement() {
     return (
         <>
-            <HistoryScreen />
             <NarrationClickOverlay />
             <NarrationScreen />
             <NarrationDetectors />
