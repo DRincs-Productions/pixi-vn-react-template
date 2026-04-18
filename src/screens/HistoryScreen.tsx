@@ -1,3 +1,10 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Dialog, FullscreenDialogContent } from "@/components/ui/fullscreen-dialog";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useQueryNarrativeHistory } from "@/hooks/useQueryInterface";
+import { useSearchParamState, useSetSearchParamState } from "@/hooks/useSearchParamState";
+import { cn } from "@/lib/utils";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useDebouncedValue } from "@tanstack/react-pacer";
 import { Check, Search } from "lucide-react";
@@ -6,13 +13,6 @@ import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Dialog, FullscreenDialogContent } from "@/components/ui/fullscreen-dialog";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { useQueryNarrativeHistory } from "@/hooks/useQueryInterface";
-import { useSearchParamState, useSetSearchParamState } from "@/hooks/useSearchParamState";
-import { cn } from "@/lib/utils";
 
 function HistoryList({ searchString }: { searchString?: string }) {
     const { data = [] } = useQueryNarrativeHistory({ searchString });
@@ -32,7 +32,9 @@ function HistoryList({ searchString }: { searchString?: string }) {
                             </Avatar>
                             <div className="flex-1 space-y-1">
                                 {item.character && (
-                                    <p className="text-sm font-medium text-foreground">{item.character}</p>
+                                    <p className="text-sm font-medium text-foreground">
+                                        {item.character}
+                                    </p>
                                 )}
                                 <Markdown
                                     remarkPlugins={[remarkGfm]}
