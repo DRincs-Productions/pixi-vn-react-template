@@ -31,14 +31,16 @@ function HistoryList({ searchString }: { searchString?: string }) {
                 const key = `${item.character ?? "unknown"}-${item.text}-${index}`;
                 return (
                     <Item key={key} variant="outline">
-                        <ItemMedia variant="image">
-                            <Avatar size="sm">
-                                <AvatarImage src={item.icon} />
-                                <AvatarFallback>
-                                    {item.character?.slice(0, 1).toUpperCase() ?? "?"}
-                                </AvatarFallback>
-                            </Avatar>
-                        </ItemMedia>
+                        {item.character && (
+                            <ItemMedia variant="image">
+                                <Avatar size="sm">
+                                    <AvatarImage src={item.icon} />
+                                    <AvatarFallback>
+                                        {item.character?.slice(0, 1).toUpperCase() ?? "?"}
+                                    </AvatarFallback>
+                                </Avatar>
+                            </ItemMedia>
+                        )}
                         <ItemContent>
                             {item.character && <ItemTitle>{item.character}</ItemTitle>}
                             <Markdown
