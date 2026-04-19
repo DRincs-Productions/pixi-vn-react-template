@@ -1,10 +1,10 @@
 import { Assets, sound, type AssetsManifest } from "@drincs/pixi-vn";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import manifest from "../assets/manifest";
+import generatedManifestJson from "../assets/manifest.gen.json";
 import { AUDIO_BUNDLE_NAME } from "../constans";
 
 let assetsInitialized = false;
-const GENERATED_MANIFEST_URL = "/assets/manifest.json";
 
 function mergeAssetsManifest(
     staticManifest: AssetsManifest,
@@ -15,17 +15,6 @@ function mergeAssetsManifest(
     };
 }
 
-async function getGeneratedManifest(): Promise<AssetsManifest | null> {
-    try {
-        const response = await fetch(GENERATED_MANIFEST_URL, { cache: "no-store" });
-        if (!response.ok) return null;
-        const generatedManifest = (await response.json()) as AssetsManifest;
-        return generatedManifest.bundles.length ? generatedManifest : null;
-    } catch {
-        return null;
-    }
-}
-
 /**
  * Define all the assets that will be used in the game.
  * This function will be called before the game starts.
@@ -33,8 +22,8 @@ async function getGeneratedManifest(): Promise<AssetsManifest | null> {
  */
 export async function defineAssets() {
     if (!assetsInitialized) {
-        const generatedManifest = await getGeneratedManifest();
-        const resolvedManifest = generatedManifest
+        const generatedManifest = generatedManifestJson as AssetsManifest;
+        const resolvedManifest = generatedManifest.bundles.length
             ? mergeAssetsManifest(manifest, generatedManifest)
             : manifest;
         await Assets.init({ manifest: resolvedManifest });

@@ -16,6 +16,7 @@ function assetpackPlugin(): Plugin {
         pipes: [
             ...pixiPipes({
                 manifest: {
+                    output: "src/assets/manifest.gen.json",
                     createShortcuts: true,
                 },
             }),
