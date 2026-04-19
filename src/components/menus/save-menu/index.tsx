@@ -9,6 +9,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { GameSaveScreenStore } from "@/lib/stores/useGameSaveScreenStore";
 
 const TOTAL_PAGES = 999;
@@ -35,14 +36,14 @@ export default function GameSaveMenu() {
 
     return (
         <div className="flex flex-1 min-h-0 flex-col">
-            <div className="min-h-0 flex-1 overflow-auto">
+            <ScrollArea className="min-h-0 flex-1">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
                     {Array.from({ length: 6 }).map((_, index) => {
                         const id = page * 6 + index;
                         return <SavSlot key={`SaveFile${id}`} saveId={id} />;
                     })}
                 </div>
-            </div>
+            </ScrollArea>
             <Pagination className="shrink-0 border-t py-1.5">
                 <PaginationContent>
                     <PaginationItem>
