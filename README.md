@@ -93,6 +93,7 @@ This template now includes AssetPack in the Vite pipeline.
 * During `npm run dev`, AssetPack watches this folder and regenerates files in `public/assets`.
 * During `npm run build`, AssetPack runs once before the Vite build.
 * PixiJS loads the generated manifest from `public/assets/manifest.json` and merges it with the existing static manifest.
+* `package.json` includes an explicit `minimatch` override to keep a patched transitive version used by AssetPack dependencies.
 
 ## Start the web application
 
