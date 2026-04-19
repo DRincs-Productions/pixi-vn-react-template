@@ -21,6 +21,8 @@ export default defineConfig({
         tailwindcss(),
         vitePluginPixivn(),
         VitePWA({
+            injectRegister: false,
+            registerType: "autoUpdate",
             // you can generate the icons using: https://favicon.io/favicon-converter/
             // and the maskable icon using: https://progressier.com/maskable-icons-editor
             includeAssets: ["favicon.ico", "apple-touch-icon.png", "mask-icon.svg"],
@@ -42,6 +44,23 @@ export default defineConfig({
                         src: "pwa-512x512.png",
                         sizes: "512x512",
                         type: "image/png",
+                    },
+                ],
+            },
+            workbox: {
+                runtimeCaching: [
+                    {
+                        urlPattern: ({ url }) => url.hostname === "raw.githubusercontent.com",
+                        handler: "CacheFirst",
+                        options: {
+                            cacheName: "external-assets-v1",
+                            cacheableResponse: {
+                                statuses: [0, 200],
+                            },
+                            expiration: {
+                                maxAgeSeconds: 7 * 24 * 60 * 60,
+                            },
+                        },
                     },
                 ],
             },

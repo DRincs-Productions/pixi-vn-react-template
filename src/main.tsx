@@ -10,13 +10,9 @@ import {
 } from "@/constans";
 import "@/styles.css";
 import App from "@/App";
+import { registerSW } from "virtual:pwa-register";
 
-// Register service worker
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker.register("/service-worker.js").catch(console.error);
-    });
-}
+registerSW({ immediate: true });
 
 // Canvas setup with PIXI
 const body = document.body;
