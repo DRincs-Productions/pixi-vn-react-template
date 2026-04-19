@@ -1,6 +1,6 @@
-import type { AssetsManifest } from "@drincs/pixi-vn";
 import { AUDIO_BUNDLE_NAME } from "@/constans";
 import type { FileRouteTypes } from "@/routeTree.gen";
+import type { AssetsManifest } from "@drincs/pixi-vn";
 import secondPart from "../labels/secondPart";
 import startLabel from "../labels/startLabel";
 import generatedManifestJson from "./manifest.gen.json";
@@ -11,6 +11,7 @@ import generatedManifestJson from "./manifest.gen.json";
  */
 const manifest: AssetsManifest = {
     bundles: [
+        ...generatedManifestJson.bundles,
         {
             name: AUDIO_BUNDLE_NAME,
             assets: [
@@ -272,9 +273,4 @@ const manifest: AssetsManifest = {
     ],
 };
 
-const generatedManifest = generatedManifestJson as AssetsManifest;
-const mergedManifest: AssetsManifest = generatedManifest.bundles.length
-    ? { bundles: [...manifest.bundles, ...generatedManifest.bundles] }
-    : manifest;
-
-export default mergedManifest;
+export default manifest;
