@@ -1,16 +1,34 @@
-import { useEffect } from "react";
-import { NetworkStore } from "../lib/stores/useNetworkStore";
+import { useCallback, useEffect, useState } from "react";
 
-export default function useNetworkDetector() {
-    useEffect(() => {
-        window.addEventListener("online", NetworkStore.updateOnlineStatus);
-        window.addEventListener("offline", NetworkStore.updateOnlineStatus);
+type NetworkStatus = {
+    isOnline: boolean;
+    retry: () => void;
+};
 
-        return () => {
-            window.removeEventListener("online", NetworkStore.updateOnlineStatus);
-            window.removeEventListener("offline", NetworkStore.updateOnlineStatus);
-        };
+export default function useNetworkDetector(): NetworkStatus {
+    const [isOnline, setIsOnline] = useState(() => navigator.onLine);
+
+    const checkOnline = useCallback(() => {
+        setIsOnline(navigator.onLine);
     }, []);
 
-    return null;
+    useEffect(() => {
+        const handleVisibility = () => {
+            if (!document.hidden) {
+                checkOnline();
+            }
+        };
+
+        window.addEventListener("online", checkOnline);
+        window.addEventListener("offline", checkOnline);
+        document.addEventListener("visibilitychange", handleVisibility);
+
+        return () => {
+            window.removeEventListener("online", checkOnline);
+            window.removeEventListener("offline", checkOnline);
+            document.removeEventListener("visibilitychange", handleVisibility);
+        };
+    }, [checkOnline]);
+
+    return { isOnline, retry: checkOnline };
 }

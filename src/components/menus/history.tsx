@@ -23,7 +23,7 @@ import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 
-function HistoryList({ searchString }: { searchString?: string }) {
+export function HistoryList({ searchString }: { searchString?: string }) {
     const { data = [] } = useQueryNarrativeHistory({ searchString });
 
     return (
@@ -42,7 +42,9 @@ function HistoryList({ searchString }: { searchString?: string }) {
                                 </Avatar>
                             </ItemMedia>
                         )}
-                        <ItemContent className={!item.character ? "items-center text-center" : undefined}>
+                        <ItemContent
+                            className={!item.character ? "items-center text-center" : undefined}
+                        >
                             {item.character && <ItemTitle>{item.character}</ItemTitle>}
                             <Markdown
                                 remarkPlugins={[remarkGfm]}
@@ -105,7 +107,7 @@ function HistoryList({ searchString }: { searchString?: string }) {
     );
 }
 
-export default function HistoryScreen() {
+export function HistoryMenu() {
     const open = useSearchParamState<boolean>("history");
     const setOpen = useSetSearchParamState<boolean>("history");
     const [searchString, setSearchString] = useState("");

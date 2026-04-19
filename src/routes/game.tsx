@@ -1,5 +1,5 @@
+import { HistoryMenu } from "@/components/menus/history";
 import { InputRequestDialog } from "@/components/modals/input-request-dialogues";
-import HistoryScreen from "@/screens/HistoryScreen";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 type Search = {
@@ -18,7 +18,7 @@ function GameElement() {
     return (
         <>
             <InputRequestDialog />
-            <HistoryScreen />
+            <HistoryMenu />
             <Outlet />
         </>
     );

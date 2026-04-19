@@ -1,14 +1,4 @@
-import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
-import { TanStackDevtools } from "@tanstack/react-devtools";
-import { hotkeysDevtoolsPlugin } from "@tanstack/react-hotkeys-devtools";
-import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
-import {
-    createRootRouteWithContext,
-    ErrorComponent,
-    Outlet,
-    redirect,
-} from "@tanstack/react-router";
-import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { OfflineAllert } from "@/components/modals/error-allerts";
 import GameSaveDialogue from "@/components/modals/GameSaveDialogue";
 import SettingsDialogue from "@/components/modals/SettingsDialogue";
 import RootProvider from "@/components/providers/RootProvider";
@@ -20,10 +10,20 @@ import { useI18n } from "@/lib/i18n";
 import { SearchParams } from "@/lib/stores/search-param-store";
 import type { RouterContext } from "@/router";
 import LoadingScreen from "@/screens/LoadingScreen";
-import OfflineScreen from "@/screens/OfflineScreen";
 import { defineAssets } from "@/utils/assets-utility";
 import { initializeIndexedDB } from "@/utils/indexedDB-utility";
 import { loadRefreshSave } from "@/utils/save-utility";
+import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
+import { TanStackDevtools } from "@tanstack/react-devtools";
+import { hotkeysDevtoolsPlugin } from "@tanstack/react-hotkeys-devtools";
+import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
+import {
+    createRootRouteWithContext,
+    ErrorComponent,
+    Outlet,
+    redirect,
+} from "@tanstack/react-router";
+import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
 export const Route = createRootRouteWithContext<RouterContext>()({
     validateSearch: (search) => SearchParams.setMany(search),
@@ -62,7 +62,7 @@ function RootComponent() {
                 <RootSetup />
                 <SettingsDialogue />
                 <GameSaveDialogue />
-                <OfflineScreen />
+                <OfflineAllert />
                 <Outlet />
             </RootProvider>
 
