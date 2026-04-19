@@ -1,15 +1,55 @@
+import { AssetPack } from "@assetpack/core";
+import { pixiPipes } from "@assetpack/core/pixi";
 import { vitePluginPixivn } from "@drincs/pixi-vn/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin, type ResolvedConfig } from "vite";
 import { checker } from "vite-plugin-checker";
 import { VitePWA } from "vite-plugin-pwa";
+
+function assetpackPlugin(): Plugin {
+    const assetPackConfig = {
+        entry: "./assets",
+        output: "./public/assets",
+        pipes: [
+            ...pixiPipes({
+                manifest: {
+                    createShortcuts: true,
+                },
+            }),
+        ],
+    };
+    let mode: ResolvedConfig["command"];
+    let assetPack: AssetPack | undefined;
+
+    return {
+        name: "vite-plugin-assetpack",
+        configResolved(resolvedConfig) {
+            mode = resolvedConfig.command;
+        },
+        async buildStart() {
+            if (mode === "serve") {
+                if (assetPack) return;
+                assetPack = new AssetPack(assetPackConfig);
+                void assetPack.watch();
+                return;
+            }
+            await new AssetPack(assetPackConfig).run();
+        },
+        async buildEnd() {
+            if (!assetPack) return;
+            await assetPack.stop();
+            assetPack = undefined;
+        },
+    };
+}
 
 // https://vite.dev/config/
 export default defineConfig({
     plugins: [
+        assetpackPlugin(),
         checker({
             typescript: {
                 tsconfigPath: "tsconfig.app.json",

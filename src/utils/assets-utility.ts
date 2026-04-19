@@ -1,9 +1,49 @@
-import { Assets, sound } from "@drincs/pixi-vn";
+import { Assets, sound, type AssetsManifest } from "@drincs/pixi-vn";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import manifest from "../assets/manifest";
 import { AUDIO_BUNDLE_NAME } from "../constans";
 
 let assetsInitialized = false;
+const GENERATED_MANIFEST_URL = "/assets/manifest.json";
+
+function mergeAssetsManifest(
+    staticManifest: AssetsManifest,
+    generatedManifest: AssetsManifest,
+): AssetsManifest {
+    const bundles = new Map<string, AssetsManifest["bundles"][number]>();
+
+    for (const sourceManifest of [staticManifest, generatedManifest]) {
+        for (const bundle of sourceManifest.bundles) {
+            const existingBundle = bundles.get(bundle.name);
+            if (!existingBundle) {
+                bundles.set(bundle.name, {
+                    ...bundle,
+                    assets: [...bundle.assets],
+                });
+                continue;
+            }
+
+            const uniqueAssets = new Map<string, (typeof bundle.assets)[number]>();
+            for (const asset of [...existingBundle.assets, ...bundle.assets]) {
+                uniqueAssets.set(JSON.stringify([asset.alias, asset.src]), asset);
+            }
+            existingBundle.assets = Array.from(uniqueAssets.values());
+        }
+    }
+
+    return { bundles: Array.from(bundles.values()) };
+}
+
+async function getGeneratedManifest(): Promise<AssetsManifest | null> {
+    try {
+        const response = await fetch(GENERATED_MANIFEST_URL, { cache: "no-store" });
+        if (!response.ok) return null;
+        const generatedManifest = (await response.json()) as AssetsManifest;
+        return generatedManifest.bundles.length ? generatedManifest : null;
+    } catch {
+        return null;
+    }
+}
 
 /**
  * Define all the assets that will be used in the game.
@@ -12,7 +52,11 @@ let assetsInitialized = false;
  */
 export async function defineAssets() {
     if (!assetsInitialized) {
-        await Assets.init({ manifest });
+        const generatedManifest = await getGeneratedManifest();
+        const resolvedManifest = generatedManifest
+            ? mergeAssetsManifest(manifest, generatedManifest)
+            : manifest;
+        await Assets.init({ manifest: resolvedManifest });
         assetsInitialized = true;
     }
 

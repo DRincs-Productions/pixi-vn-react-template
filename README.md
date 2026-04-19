@@ -85,6 +85,15 @@ First, is necessary install the dependencies. To do this, open a terminal in the
 npm install
 ```
 
+## AssetPack (PixiJS) + Vite
+
+This template now includes AssetPack in the Vite pipeline.
+
+* Put raw game assets inside the root `assets/` folder.
+* During `npm run dev`, AssetPack watches this folder and regenerates files in `public/assets`.
+* During `npm run build`, AssetPack runs once before the Vite build.
+* PixiJS loads the generated manifest from `public/assets/manifest.json` and merges it with the existing static manifest.
+
 ## Start the web application
 
 To start the web application, run the following command:
