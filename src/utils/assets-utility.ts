@@ -10,28 +10,9 @@ function mergeAssetsManifest(
     staticManifest: AssetsManifest,
     generatedManifest: AssetsManifest,
 ): AssetsManifest {
-    const bundles = new Map<string, AssetsManifest["bundles"][number]>();
-
-    for (const sourceManifest of [staticManifest, generatedManifest]) {
-        for (const bundle of sourceManifest.bundles) {
-            const existingBundle = bundles.get(bundle.name);
-            if (!existingBundle) {
-                bundles.set(bundle.name, {
-                    ...bundle,
-                    assets: [...bundle.assets],
-                });
-                continue;
-            }
-
-            const uniqueAssets = new Map<string, (typeof bundle.assets)[number]>();
-            for (const asset of [...existingBundle.assets, ...bundle.assets]) {
-                uniqueAssets.set(JSON.stringify([asset.alias, asset.src]), asset);
-            }
-            existingBundle.assets = Array.from(uniqueAssets.values());
-        }
-    }
-
-    return { bundles: Array.from(bundles.values()) };
+    return {
+        bundles: [...staticManifest.bundles, ...generatedManifest.bundles],
+    };
 }
 
 async function getGeneratedManifest(): Promise<AssetsManifest | null> {
