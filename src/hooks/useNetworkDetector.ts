@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const NETWORK_CHECK_INTERVAL_MS = 5000;
 const NETWORK_CHECK_ENDPOINT = "/network-check";
 const NETWORK_CHECK_TIMEOUT_MS = 5000;
 
@@ -68,13 +67,10 @@ export default function useNetworkDetector(): NetworkStatus {
         window.addEventListener("offline", handleOffline);
         document.addEventListener("visibilitychange", handleVisibility);
 
-        const periodicCheck = window.setInterval(checkReachability, NETWORK_CHECK_INTERVAL_MS);
-
         checkReachability();
 
         return () => {
             abortRef.current?.abort();
-            window.clearInterval(periodicCheck);
             window.removeEventListener("online", handleOnline);
             window.removeEventListener("offline", handleOffline);
             document.removeEventListener("visibilitychange", handleVisibility);
