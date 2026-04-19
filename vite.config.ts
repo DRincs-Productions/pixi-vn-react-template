@@ -1,6 +1,5 @@
 import { AssetPack } from "@assetpack/core";
 import { vitePluginPixivn } from "@drincs/pixi-vn/vite";
-import assetPackConfig from "./.assetpack.ts";
 import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
@@ -8,29 +7,35 @@ import react from "@vitejs/plugin-react";
 import { defineConfig, type Plugin, type ResolvedConfig } from "vite";
 import { checker } from "vite-plugin-checker";
 import { VitePWA } from "vite-plugin-pwa";
+import assetPackConfig from "./.assetpack.ts";
 
 function assetpackPlugin(): Plugin {
     let mode: ResolvedConfig["command"];
-    let assetPack: AssetPack | undefined;
+    let ap: AssetPack | undefined;
 
     return {
         name: "vite-plugin-assetpack",
         configResolved(resolvedConfig) {
             mode = resolvedConfig.command;
+            if (!resolvedConfig.publicDir) return;
+            if (assetPackConfig.output) return;
+            const publicDir = resolvedConfig.publicDir.replace(process.cwd(), "");
+            assetPackConfig.output = `.${publicDir}/assets/`;
         },
-        async buildStart() {
+        buildStart: async () => {
             if (mode === "serve") {
-                if (assetPack) return;
-                assetPack = new AssetPack(assetPackConfig);
-                void assetPack.watch();
-                return;
+                if (ap) return;
+                ap = new AssetPack(assetPackConfig);
+                void ap.watch();
+            } else {
+                await new AssetPack(assetPackConfig).run();
             }
-            await new AssetPack(assetPackConfig).run();
         },
-        async buildEnd() {
-            if (!assetPack) return;
-            await assetPack.stop();
-            assetPack = undefined;
+        buildEnd: async () => {
+            if (ap) {
+                await ap.stop();
+                ap = undefined;
+            }
         },
     };
 }

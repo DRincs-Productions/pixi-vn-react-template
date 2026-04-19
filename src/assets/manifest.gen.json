@@ -1,1 +1,8 @@
-{ "bundles": [] }
+{
+  "bundles": [
+    {
+      "name": "default",
+      "assets": []
+    }
+  ]
+}

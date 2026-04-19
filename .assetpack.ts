@@ -1,10 +1,10 @@
-import { type AssetPackConfig } from "@assetpack/core";
+import type { AssetPackConfig } from "@assetpack/core";
 import { pixiPipes } from "@assetpack/core/pixi";
 
 const config: AssetPackConfig = {
-    entry: "./assets",
+    entry: "./src/assets",
     output: "./public/assets",
-    ignore: ["**/*.ts", "**/*.js"],
+    ignore: ["**/*.ts", "**/*.js", "**/*.gen.json"],
     pipes: [
         ...pixiPipes({
             manifest: {
