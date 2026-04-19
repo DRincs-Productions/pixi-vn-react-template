@@ -1,6 +1,6 @@
 import { AssetPack } from "@assetpack/core";
-import { pixiPipes } from "@assetpack/core/pixi";
 import { vitePluginPixivn } from "@drincs/pixi-vn/vite";
+import assetPackConfig from "./.assetpack.js";
 import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
@@ -10,18 +10,6 @@ import { checker } from "vite-plugin-checker";
 import { VitePWA } from "vite-plugin-pwa";
 
 function assetpackPlugin(): Plugin {
-    const assetPackConfig = {
-        entry: "./assets",
-        output: "./public/assets",
-        pipes: [
-            ...pixiPipes({
-                manifest: {
-                    output: "src/assets/manifest.gen.json",
-                    createShortcuts: true,
-                },
-            }),
-        ],
-    };
     let mode: ResolvedConfig["command"];
     let assetPack: AssetPack | undefined;
 
