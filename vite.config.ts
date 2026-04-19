@@ -23,15 +23,6 @@ export default defineConfig({
         VitePWA({
             // you can generate the icons using: https://favicon.io/favicon-converter/
             // and the maskable icon using: https://progressier.com/maskable-icons-editor
-            workbox: {
-                runtimeCaching: [
-                    {
-                        // Always fetch from the network so the connectivity probe is never served from cache.
-                        urlPattern: ({ url }) => url.pathname === "/network-check",
-                        handler: "NetworkOnly",
-                    },
-                ],
-            },
             includeAssets: ["favicon.ico", "apple-touch-icon.png", "mask-icon.svg"],
             manifest: {
                 name: "my-app-project-name",

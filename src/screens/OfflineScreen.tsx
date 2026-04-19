@@ -1,4 +1,4 @@
-import { LoaderCircleIcon, RefreshCwIcon, WifiOffIcon } from "lucide-react";
+import { RefreshCwIcon, WifiOffIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +6,7 @@ import useNetworkDetector from "../hooks/useNetworkDetector";
 
 export default function OfflineScreen() {
     const { t } = useTranslation(["ui"]);
-    const { isOnline, isChecking, retry } = useNetworkDetector();
+    const { isOnline, retry } = useNetworkDetector();
 
     if (isOnline) return null;
 
@@ -21,14 +21,7 @@ export default function OfflineScreen() {
                     <CardDescription>{t("offline_description")}</CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-col items-center gap-2 text-sm text-muted-foreground">
-                    {isChecking ? (
-                        <div className="inline-flex items-center gap-2">
-                            <LoaderCircleIcon className="size-4 animate-spin" />
-                            {t("offline_checking")}
-                        </div>
-                    ) : (
-                        <div>{t("offline_hint")}</div>
-                    )}
+                    <div>{t("offline_hint")}</div>
                 </CardContent>
                 <CardFooter className="justify-center">
                     <Button
