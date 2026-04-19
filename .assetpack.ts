@@ -1,7 +1,7 @@
+import { type AssetPackConfig } from "@assetpack/core";
 import { pixiPipes } from "@assetpack/core/pixi";
 
-/** @type {import('@assetpack/core').AssetPackConfig} */
-export default {
+const config: AssetPackConfig = {
     entry: "./assets",
     output: "./public/assets",
     ignore: ["**/*.ts", "**/*.js"],
@@ -14,3 +14,5 @@ export default {
         }),
     ],
 };
+
+export default config;

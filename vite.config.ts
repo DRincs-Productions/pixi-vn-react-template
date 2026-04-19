@@ -1,6 +1,6 @@
 import { AssetPack } from "@assetpack/core";
 import { vitePluginPixivn } from "@drincs/pixi-vn/vite";
-import assetPackConfig from "./.assetpack.js";
+import assetPackConfig from "./.assetpack.ts";
 import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
