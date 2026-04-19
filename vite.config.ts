@@ -7,6 +7,17 @@ import { defineConfig } from "vite";
 import { checker } from "vite-plugin-checker";
 import { VitePWA } from "vite-plugin-pwa";
 
+/**
+ * List of external hostnames whose responses should be cached by the service worker.
+ * Add any CDN or remote asset host here to enable offline caching for it.
+ * Examples:
+ *   "cdn.jsdelivr.net"
+ *   "your.cdn.domain.com"
+ */
+const CACHED_EXTERNAL_HOSTNAMES: string[] = [
+    "raw.githubusercontent.com",
+];
+
 // https://vite.dev/config/
 export default defineConfig({
     plugins: [
@@ -48,7 +59,7 @@ export default defineConfig({
             workbox: {
                 runtimeCaching: [
                     {
-                        urlPattern: ({ url }) => url.hostname === "raw.githubusercontent.com",
+                        urlPattern: ({ url }) => CACHED_EXTERNAL_HOSTNAMES.includes(url.hostname),
                         handler: "CacheFirst",
                         options: {
                             cacheName: "external-assets-v1",
