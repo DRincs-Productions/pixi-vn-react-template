@@ -1,6 +1,13 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useStore } from "@tanstack/react-store";
-import { DownloadIcon, FullscreenIcon, Minimize2Icon, MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
+import {
+    DownloadIcon,
+    FullscreenIcon,
+    Minimize2Icon,
+    MonitorIcon,
+    MoonIcon,
+    SunIcon,
+} from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/components/providers/theme-provider";

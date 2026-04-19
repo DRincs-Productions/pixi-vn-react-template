@@ -4,7 +4,7 @@ import { pixiPipes } from "@assetpack/core/pixi";
 const config: AssetPackConfig = {
     entry: "./src/assets",
     output: "./public/assets",
-    ignore: ["**/*.ts", "**/*.js", "**/*.gen.json"],
+    ignore: ["**/*.ts", "**/*.js", "**/*.gen.*"],
     pipes: [
         ...pixiPipes({
             manifest: {
