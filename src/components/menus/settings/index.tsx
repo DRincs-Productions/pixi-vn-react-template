@@ -3,6 +3,7 @@ import { DialoguesControls } from "@/components/menus/settings/dialogues-control
 import { QuickMenus } from "@/components/menus/settings/quick-menus";
 import { SoundControls } from "@/components/menus/settings/sound-controls";
 import { SystemControls } from "@/components/menus/settings/system-controls";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { useTranslation } from "react-i18next";
 
@@ -10,7 +11,7 @@ export default function Settings() {
     const { t } = useTranslation(["ui"]);
 
     return (
-        <div className="flex-1 overflow-auto">
+        <ScrollArea className="flex-1 min-h-0">
             {/* Two-column grid on md+, single column list below md */}
             <div className="grid grid-cols-1 md:grid-cols-2 md:divide-x px-2 sm:px-12 md:px-14 lg:px-22 xl:px-28">
                 {/* Left column: quick actions */}
@@ -64,6 +65,6 @@ export default function Settings() {
                     </div>
                 </div>
             </div>
-        </div>
+        </ScrollArea>
     );
 }
