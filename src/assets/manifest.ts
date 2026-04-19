@@ -1,8 +1,9 @@
-import type { AssetsManifest } from "@drincs/pixi-vn";
 import { AUDIO_BUNDLE_NAME } from "@/constans";
 import type { FileRouteTypes } from "@/routeTree.gen";
+import type { AssetsManifest } from "@drincs/pixi-vn";
 import secondPart from "../labels/secondPart";
 import startLabel from "../labels/startLabel";
+import generatedManifestJson from "./manifest.gen.json";
 
 /**
  * Manifest for the assets used in the game.
@@ -10,6 +11,7 @@ import startLabel from "../labels/startLabel";
  */
 const manifest: AssetsManifest = {
     bundles: [
+        ...generatedManifestJson.bundles,
         {
             name: AUDIO_BUNDLE_NAME,
             assets: [
@@ -270,4 +272,5 @@ const manifest: AssetsManifest = {
         },
     ],
 };
+
 export default manifest;

@@ -1,11 +1,13 @@
+import { AssetPack } from "@assetpack/core";
 import { vitePluginPixivn } from "@drincs/pixi-vn/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin, type ResolvedConfig } from "vite";
 import { checker } from "vite-plugin-checker";
 import { VitePWA } from "vite-plugin-pwa";
+import assetPackConfig from "./.assetpack.ts";
 
 /**
  * List of external hostnames whose responses should be cached by the service worker.
@@ -21,6 +23,7 @@ const CACHED_EXTERNAL_HOSTNAMES: string[] = [
 // https://vite.dev/config/
 export default defineConfig({
     plugins: [
+        assetpackPlugin(),
         checker({
             typescript: {
                 tsconfigPath: "tsconfig.app.json",
@@ -101,3 +104,34 @@ export default defineConfig({
         },
     },
 });
+
+function assetpackPlugin(): Plugin {
+    let mode: ResolvedConfig["command"];
+    let ap: AssetPack | undefined;
+
+    return {
+        name: "vite-plugin-assetpack",
+        configResolved(resolvedConfig) {
+            mode = resolvedConfig.command;
+            if (!resolvedConfig.publicDir) return;
+            if (assetPackConfig.output) return;
+            const publicDir = resolvedConfig.publicDir.replace(process.cwd(), "");
+            assetPackConfig.output = `.${publicDir}/assets/`;
+        },
+        buildStart: async () => {
+            if (mode === "serve") {
+                if (ap) return;
+                ap = new AssetPack(assetPackConfig);
+                void ap.watch();
+            } else {
+                await new AssetPack(assetPackConfig).run();
+            }
+        },
+        buildEnd: async () => {
+            if (ap) {
+                await ap.stop();
+                ap = undefined;
+            }
+        },
+    };
+}

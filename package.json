@@ -60,6 +60,7 @@
     "vaul": "^1.1.2"
   },
   "devDependencies": {
+    "@assetpack/core": "^1.7.0",
     "@biomejs/biome": "^2.4.10",
     "@tailwindcss/typography": "^0.5.19",
     "@tanstack/devtools-vite": "latest",
@@ -74,6 +75,7 @@
     "vite-plugin-pwa": "^1.2.0"
   },
   "overrides": {
+    "minimatch": "^10.2.3",
     "serialize-javascript": "^7.0.5",
     "vite-plugin-pwa": {
       "vite": "$vite"

@@ -1,12 +1,12 @@
 {
   "files.watcherExclude": {
-    "**/routeTree.gen.ts": true
+    "**/*.gen.*": true
   },
   "search.exclude": {
-    "**/routeTree.gen.ts": true
+    "**/*.gen.*": true
   },
   "files.readonlyInclude": {
-    "**/routeTree.gen.ts": true
+    "**/*.gen.*": true
   },
   "extensions.ignoreRecommendations": false,
   "workbench.editor.enablePreview": true,
