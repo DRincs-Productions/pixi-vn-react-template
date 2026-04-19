@@ -11,13 +11,6 @@ import {
 import "@/styles.css";
 import App from "@/App";
 
-// Register service worker
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker.register("/service-worker.js").catch(console.error);
-    });
-}
-
 // Canvas setup with PIXI
 const body = document.body;
 if (!body) {
