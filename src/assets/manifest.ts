@@ -3,6 +3,7 @@ import { AUDIO_BUNDLE_NAME } from "@/constans";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import secondPart from "../labels/secondPart";
 import startLabel from "../labels/startLabel";
+import generatedManifestJson from "./manifest.gen.json";
 
 /**
  * Manifest for the assets used in the game.
@@ -270,4 +271,10 @@ const manifest: AssetsManifest = {
         },
     ],
 };
-export default manifest;
+
+const generatedManifest = generatedManifestJson as AssetsManifest;
+const mergedManifest: AssetsManifest = generatedManifest.bundles.length
+    ? { bundles: [...manifest.bundles, ...generatedManifest.bundles] }
+    : manifest;
+
+export default mergedManifest;
