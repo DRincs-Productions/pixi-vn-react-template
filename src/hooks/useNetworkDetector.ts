@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const NETWORK_CHECK_INTERVAL_MS = 60000;
-const NETWORK_CHECK_ENDPOINT = "/favicon.svg";
+const NETWORK_CHECK_INTERVAL_MS = 5000;
+const NETWORK_CHECK_ENDPOINT = "/network-check";
+const NETWORK_CHECK_TIMEOUT_MS = 5000;
 
 type NetworkStatus = {
     isOnline: boolean;
@@ -24,6 +25,8 @@ export default function useNetworkDetector(): NetworkStatus {
         abortRef.current?.abort();
         const controller = new AbortController();
         abortRef.current = controller;
+
+        const timeoutId = setTimeout(() => controller.abort(), NETWORK_CHECK_TIMEOUT_MS);
         setIsChecking(true);
 
         try {
@@ -34,9 +37,11 @@ export default function useNetworkDetector(): NetworkStatus {
                     signal: controller.signal,
                 },
             );
+            clearTimeout(timeoutId);
             if (controller.signal.aborted) return;
             setIsOnline(response.ok);
         } catch (error) {
+            clearTimeout(timeoutId);
             if (error instanceof Error && error.name === "AbortError") return;
             setIsOnline(false);
         } finally {
