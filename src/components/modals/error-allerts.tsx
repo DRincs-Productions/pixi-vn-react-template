@@ -1,10 +1,17 @@
+import { Button } from "@/components/ui/button";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 import { RefreshCwIcon, WifiOffIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import useNetworkDetector from "../hooks/useNetworkDetector";
+import useNetworkDetector from "../../hooks/useNetworkDetector";
 
-export default function OfflineScreen() {
+export function OfflineAllert() {
     const { t } = useTranslation(["ui"]);
     const { isOnline, retry } = useNetworkDetector();
 
@@ -24,11 +31,7 @@ export default function OfflineScreen() {
                     <div>{t("offline_hint")}</div>
                 </CardContent>
                 <CardFooter className="justify-center">
-                    <Button
-                        variant="outline"
-                        onClick={retry}
-                        aria-label={t("offline_retry")}
-                    >
+                    <Button variant="outline" onClick={retry} aria-label={t("offline_retry")}>
                         <RefreshCwIcon className="size-4" />
                         {t("offline_retry")}
                     </Button>
