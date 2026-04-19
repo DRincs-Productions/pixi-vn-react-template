@@ -9,37 +9,6 @@ import { checker } from "vite-plugin-checker";
 import { VitePWA } from "vite-plugin-pwa";
 import assetPackConfig from "./.assetpack.ts";
 
-function assetpackPlugin(): Plugin {
-    let mode: ResolvedConfig["command"];
-    let ap: AssetPack | undefined;
-
-    return {
-        name: "vite-plugin-assetpack",
-        configResolved(resolvedConfig) {
-            mode = resolvedConfig.command;
-            if (!resolvedConfig.publicDir) return;
-            if (assetPackConfig.output) return;
-            const publicDir = resolvedConfig.publicDir.replace(process.cwd(), "");
-            assetPackConfig.output = `.${publicDir}/assets/`;
-        },
-        buildStart: async () => {
-            if (mode === "serve") {
-                if (ap) return;
-                ap = new AssetPack(assetPackConfig);
-                void ap.watch();
-            } else {
-                await new AssetPack(assetPackConfig).run();
-            }
-        },
-        buildEnd: async () => {
-            if (ap) {
-                await ap.stop();
-                ap = undefined;
-            }
-        },
-    };
-}
-
 // https://vite.dev/config/
 export default defineConfig({
     plugins: [
@@ -107,3 +76,34 @@ export default defineConfig({
         },
     },
 });
+
+function assetpackPlugin(): Plugin {
+    let mode: ResolvedConfig["command"];
+    let ap: AssetPack | undefined;
+
+    return {
+        name: "vite-plugin-assetpack",
+        configResolved(resolvedConfig) {
+            mode = resolvedConfig.command;
+            if (!resolvedConfig.publicDir) return;
+            if (assetPackConfig.output) return;
+            const publicDir = resolvedConfig.publicDir.replace(process.cwd(), "");
+            assetPackConfig.output = `.${publicDir}/assets/`;
+        },
+        buildStart: async () => {
+            if (mode === "serve") {
+                if (ap) return;
+                ap = new AssetPack(assetPackConfig);
+                void ap.watch();
+            } else {
+                await new AssetPack(assetPackConfig).run();
+            }
+        },
+        buildEnd: async () => {
+            if (ap) {
+                await ap.stop();
+                ap = undefined;
+            }
+        },
+    };
+}
