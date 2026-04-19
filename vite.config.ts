@@ -21,8 +21,6 @@ export default defineConfig({
         tailwindcss(),
         vitePluginPixivn(),
         VitePWA({
-            injectRegister: false,
-            registerType: "autoUpdate",
             // you can generate the icons using: https://favicon.io/favicon-converter/
             // and the maskable icon using: https://progressier.com/maskable-icons-editor
             includeAssets: ["favicon.ico", "apple-touch-icon.png", "mask-icon.svg"],
