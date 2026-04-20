@@ -17,7 +17,7 @@ function resumeGameFromMenuClose() {
  */
 export default function usePauseGameWhenMenuIsOpen() {
     const { pathname } = useLocation();
-    const searchParams = useStore(SearchParams.store);
+    const searchParams = useStore(SearchParams.store, (state) => state);
     const pausedByMenuRef = useRef(false);
 
     const isOnGameRoute = pathname === "/game" || pathname.startsWith("/game/");
