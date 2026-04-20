@@ -13,11 +13,18 @@ import LoadingScreen from "@/screens/LoadingScreen";
 import { defineAssets } from "@/utils/assets-utility";
 import { initializeIndexedDB } from "@/utils/indexedDB-utility";
 import { loadRefreshSave } from "@/utils/save-utility";
+import { Game } from "@drincs/pixi-vn";
 import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { hotkeysDevtoolsPlugin } from "@tanstack/react-hotkeys-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
-import { createRootRouteWithContext, ErrorComponent, Outlet } from "@tanstack/react-router";
+import {
+    createRootRouteWithContext,
+    ErrorComponent,
+    Outlet,
+    redirect,
+    useNavigate,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
 export const Route = createRootRouteWithContext<RouterContext>()({
@@ -25,6 +32,9 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     component: RootComponent,
     pendingComponent: LoadingScreen,
     loader: async ({ context }) => {
+        Game.onNavigate(async (to) => {
+            redirect({ to });
+        });
         await Promise.all([import("@/content"), import("@/labels")]);
         await Promise.all([initializeIndexedDB(), defineAssets(), useI18n()]);
         setupPixivnViteData();
@@ -43,6 +53,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 });
 
 function RootSetup() {
+    const navigate = useNavigate();
+    Game.onNavigate((to) => navigate({ to }));
     useSaveHotkeys();
     return null;
 }
