@@ -23,11 +23,8 @@ export function createGameSave(options?: { image?: string; name?: string }): Gam
     };
 }
 
-export async function loadSave(
-    saveData: GameSaveData,
-    navigate: (to: string) => any | Promise<any>,
-) {
-    await Game.restoreGameState(saveData.saveData, navigate);
+export async function loadSave(saveData: GameSaveData) {
+    await Game.restoreGameState(saveData.saveData);
 }
 
 export async function saveGameToIndexDB(
@@ -90,10 +87,7 @@ export function downloadGameSave(data: GameSaveData = createGameSave()) {
     a.click();
 }
 
-export function loadGameSaveFromFile(
-    navigate: (to: string) => any | Promise<any>,
-    afterLoad?: (error?: Error) => void,
-) {
+export function loadGameSaveFromFile(afterLoad?: (error?: Error) => void) {
     // load the save data from a JSON file
     const input = document.createElement("input");
     input.type = "file";
@@ -106,7 +100,7 @@ export function loadGameSaveFromFile(
                 const jsonString = e.target?.result as string;
                 const data: GameSaveData = JSON.parse(jsonString);
                 // load the save data from the JSON string
-                loadSave(data, navigate)
+                loadSave(data)
                     .then(() => {
                         afterLoad?.();
                     })
@@ -128,14 +122,12 @@ export async function addRefreshSave() {
     }
 }
 
-export async function loadRefreshSave(
-    redirect: (to: string) => any | Promise<any>,
-): Promise<boolean> {
+export async function loadRefreshSave(): Promise<boolean> {
     const jsonString = localStorage.getItem(REFRESH_SAVE_LOCAL_STORAGE_KEY);
     if (jsonString) {
         const data: GameSaveData = JSON.parse(jsonString);
 
-        return loadSave(data, redirect)
+        return loadSave(data)
             .then(() => {
                 localStorage.removeItem(REFRESH_SAVE_LOCAL_STORAGE_KEY);
                 return true;

@@ -1,8 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
-import { useCallback, useRef } from "react";
-import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
 import { SaveNameInput } from "@/components/menus/save-menu/save-forms";
 import { useAlertDialog } from "@/components/providers/AlertDialogProvider";
 import useGameProps from "@/hooks/useGameProps";
@@ -11,10 +6,13 @@ import { SAVES_USE_QUEY_KEY } from "@/hooks/useQuerySaves";
 import { useSetSearchParamState } from "@/hooks/useSearchParamState";
 import type GameSaveData from "@/models/GameSaveData";
 import { deleteSaveFromIndexDB, loadSave, saveGameToIndexDB } from "@/utils/save-utility";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCallback, useRef } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 export default function useSaveActions() {
     const setOpen = useSetSearchParamState<boolean>("saves");
-    const navigate = useNavigate();
     const { t } = useTranslation(["ui"]);
     const gameProps = useGameProps();
     const queryClient = useQueryClient();
@@ -29,7 +27,7 @@ export default function useSaveActions() {
                     name: data.name || `${t("save_slot")} ${String(data.id + 1).padStart(2, "0")}`,
                 }),
                 onConfirm: () =>
-                    loadSave(data, (to) => navigate({ to }))
+                    loadSave(data)
                         .then(() => {
                             gameProps.invalidateInterfaceData();
                             toast.success(t("success_load"));
@@ -43,7 +41,7 @@ export default function useSaveActions() {
                         }),
             });
         },
-        [openAlertDialog, t, navigate, gameProps, setOpen],
+        [openAlertDialog, t, gameProps, setOpen],
     );
 
     const handleDelete = useCallback(

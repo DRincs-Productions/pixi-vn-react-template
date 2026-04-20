@@ -17,12 +17,7 @@ import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { hotkeysDevtoolsPlugin } from "@tanstack/react-hotkeys-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
-import {
-    createRootRouteWithContext,
-    ErrorComponent,
-    Outlet,
-    redirect,
-} from "@tanstack/react-router";
+import { createRootRouteWithContext, ErrorComponent, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
 export const Route = createRootRouteWithContext<RouterContext>()({
@@ -33,7 +28,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         await Promise.all([import("@/content"), import("@/labels")]);
         await Promise.all([initializeIndexedDB(), defineAssets(), useI18n()]);
         setupPixivnViteData();
-        const isRefreshSaveExist = await loadRefreshSave((to) => redirect({ to }));
+        const isRefreshSaveExist = await loadRefreshSave();
         if (isRefreshSaveExist) {
             await context.queryClient.invalidateQueries({
                 queryKey: [INTERFACE_DATA_USE_QUEY_KEY],

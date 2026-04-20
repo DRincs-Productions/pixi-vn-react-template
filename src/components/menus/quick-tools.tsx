@@ -13,7 +13,6 @@ import { SkipSettings } from "@/lib/stores/skip-settings-store";
 import { cn } from "@/lib/utils";
 import { loadSave, saveGameToIndexDB } from "@/utils/save-utility";
 import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -28,7 +27,6 @@ export function QuickTools() {
     const { data: canGoBack = null } = useQueryCanGoBack();
     const nextStepLoading = useStore(GameStatus.store, (state) => state.loading);
     const { goBack } = useNarrationFunctions();
-    const navigate = useNavigate();
     const { openAlertDialog } = useAlertDialog();
     const gameProps = useGameProps();
     useWheelActions();
@@ -100,7 +98,7 @@ export function QuickTools() {
                             name: lastSave.name || `${t("save_slot")} ${lastSave.id}`,
                         }),
                         onConfirm: () =>
-                            loadSave(lastSave, (to) => navigate({ to }))
+                            loadSave(lastSave)
                                 .then(() => {
                                     gameProps.invalidateInterfaceData();
                                     toast.success(t("success_load"));

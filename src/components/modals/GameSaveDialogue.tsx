@@ -1,7 +1,3 @@
-import { useLocation, useNavigate } from "@tanstack/react-router";
-import { Download, FolderOpen } from "lucide-react";
-import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
 import GameSaveMenu from "@/components/menus/save-menu";
 import { Button } from "@/components/ui/button";
 import { Dialog, FullscreenDialogContent } from "@/components/ui/fullscreen-dialog";
@@ -10,12 +6,15 @@ import useGameProps from "@/hooks/useGameProps";
 import { useSearchParamState, useSetSearchParamState } from "@/hooks/useSearchParamState";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import { downloadGameSave, loadGameSaveFromFile } from "@/utils/save-utility";
+import { useLocation } from "@tanstack/react-router";
+import { Download, FolderOpen } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 export default function GameSaveDialogue() {
     const open = useSearchParamState<boolean>("saves");
     const setOpen = useSetSearchParamState<boolean>("saves");
     const { t } = useTranslation(["ui"]);
-    const navigate = useNavigate();
     const gameProps = useGameProps();
     const location = useLocation();
 
@@ -27,18 +26,15 @@ export default function GameSaveDialogue() {
                         variant="ghost"
                         size="icon-lg"
                         onClick={() =>
-                            loadGameSaveFromFile(
-                                (to) => navigate({ to }),
-                                (err) => {
-                                    if (err) {
-                                        toast.error(t("allert_error_occurred"));
-                                        return;
-                                    }
-                                    gameProps.invalidateInterfaceData();
-                                    toast.success(t("success_load"));
-                                    setOpen(undefined);
-                                },
-                            )
+                            loadGameSaveFromFile((err) => {
+                                if (err) {
+                                    toast.error(t("allert_error_occurred"));
+                                    return;
+                                }
+                                gameProps.invalidateInterfaceData();
+                                toast.success(t("success_load"));
+                                setOpen(undefined);
+                            })
                         }
                         aria-label={t("load_from_file")}
                     >

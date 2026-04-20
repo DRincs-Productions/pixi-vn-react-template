@@ -118,7 +118,7 @@ export default function MainMenu() {
                                 return;
                             }
                             setLoading(true);
-                            loadSave(lastSave, (to) => navigate({ to }))
+                            loadSave(lastSave)
                                 .then(() =>
                                     queryClient.invalidateQueries({
                                         queryKey: [INTERFACE_DATA_USE_QUERY_KEY],

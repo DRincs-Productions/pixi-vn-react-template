@@ -1,6 +1,4 @@
-import { Assets, Container, canvas, drawCanvasErrorHandler, Game, sound } from "@drincs/pixi-vn";
-import "@drincs/pixi-vn-spine";
-import { createRoot } from "react-dom/client";
+import App from "@/App";
 import {
     BGM_CHANNEL_NAME,
     CANVAS_UI_LAYER_NAME,
@@ -9,7 +7,8 @@ import {
     SFX_CHANNEL_NAME,
 } from "@/constans";
 import "@/styles.css";
-import App from "@/App";
+import { Assets, canvas, Container, drawCanvasErrorHandler, Game, sound } from "@drincs/pixi-vn";
+import { createRoot } from "react-dom/client";
 
 // Canvas setup with PIXI
 const body = document.body;

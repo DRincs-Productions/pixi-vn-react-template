@@ -1,6 +1,6 @@
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
-import { useLocation, useNavigate } from "@tanstack/react-router";
+import { useLocation } from "@tanstack/react-router";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -29,7 +29,6 @@ export default function useSaveHotkeys(): null {
     const queryClient = useQueryClient();
     const { t } = useTranslation(["ui"]);
     const location = useLocation();
-    const navigate = useNavigate();
     const { data: lastSave = null } = useQueryLastSave();
     const { openAlertDialog } = useAlertDialog();
     const gameProps = useGameProps();
@@ -61,7 +60,7 @@ export default function useSaveHotkeys(): null {
                 name: lastSave.name || `${t("save_slot")} ${lastSave.id}`,
             }),
             onConfirm: () =>
-                loadSave(lastSave, (to) => navigate({ to }))
+                loadSave(lastSave)
                     .then(() => {
                         gameProps.invalidateInterfaceData();
                         toast.success(t("success_load"));
@@ -73,7 +72,7 @@ export default function useSaveHotkeys(): null {
                         return false;
                     }),
         });
-    }, [lastSave, openAlertDialog, t, navigate, gameProps]);
+    }, [lastSave, openAlertDialog, t, gameProps]);
 
     useHotkeys([
         {
