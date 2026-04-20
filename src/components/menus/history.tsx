@@ -122,6 +122,12 @@ export function HistoryMenu() {
         {
             hotkey: "Control+H",
             callback: toggleOpen,
+            options: {
+                meta: {
+                    name: t("history"),
+                    description: t("history_hotkey_description"),
+                },
+            },
         },
     ]);
 

@@ -1,6 +1,7 @@
 import { OfflineAllert } from "@/components/modals/error-allerts";
 import GameSaveDialogue from "@/components/modals/GameSaveDialogue";
 import SettingsDialogue from "@/components/modals/SettingsDialogue";
+import HotkeysMenu from "@/components/menus/hotkeys-menu";
 import RootProvider from "@/components/providers/RootProvider";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
 import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
@@ -69,6 +70,7 @@ function RootComponent() {
                 <RootSetup />
                 <SettingsDialogue />
                 <GameSaveDialogue />
+                <HotkeysMenu />
                 <OfflineAllert />
                 <Outlet />
             </RootProvider>

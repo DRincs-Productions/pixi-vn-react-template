@@ -7,8 +7,10 @@ import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useDebouncer } from "@tanstack/react-pacer";
 import { useStore } from "@tanstack/react-store";
 import { useCallback, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function useSkipAutoDetector() {
+    const { t } = useTranslation(["ui"]);
     const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
     const autoEnabled = useStore(AutoSettings.store, (state) => state.enabled);
     const autoTime = useStore(AutoSettings.store, (state) => state.time);
@@ -47,10 +49,48 @@ export default function useSkipAutoDetector() {
     }, [goNext]);
 
     useHotkeys([
-        { hotkey: "Enter", callback: onSkipKeyDown },
-        { hotkey: "Space", callback: onSkipKeyDown },
-        { hotkey: "Enter", callback: onSkipKeyUp, options: { eventType: "keyup" } },
-        { hotkey: "Space", callback: onSkipKeyUp, options: { eventType: "keyup" } },
+        {
+            hotkey: "Enter",
+            callback: onSkipKeyDown,
+            options: {
+                meta: {
+                    name: t("skip"),
+                    description: t("skip_hold_description"),
+                },
+            },
+        },
+        {
+            hotkey: "Space",
+            callback: onSkipKeyDown,
+            options: {
+                meta: {
+                    name: t("skip"),
+                    description: t("skip_hold_space_description"),
+                },
+            },
+        },
+        {
+            hotkey: "Enter",
+            callback: onSkipKeyUp,
+            options: {
+                eventType: "keyup",
+                meta: {
+                    name: t("next"),
+                    description: t("skip_release_description"),
+                },
+            },
+        },
+        {
+            hotkey: "Space",
+            callback: onSkipKeyUp,
+            options: {
+                eventType: "keyup",
+                meta: {
+                    name: t("next"),
+                    description: t("skip_release_space_description"),
+                },
+            },
+        },
     ]);
 
     return null;

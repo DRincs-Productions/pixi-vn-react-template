@@ -67,22 +67,46 @@ export default function MainMenu() {
         {
             hotkey: "ArrowDown",
             callback: () => focusMenuItem("down"),
-            options: { preventDefault: true },
+            options: {
+                preventDefault: true,
+                meta: {
+                    name: t("menu_navigation"),
+                    description: t("menu_navigation_down_description"),
+                },
+            },
         },
         {
             hotkey: "ArrowUp",
             callback: () => focusMenuItem("up"),
-            options: { preventDefault: true },
+            options: {
+                preventDefault: true,
+                meta: {
+                    name: t("menu_navigation"),
+                    description: t("menu_navigation_up_description"),
+                },
+            },
         },
         {
             hotkey: "Home",
             callback: () => focusMenuItem("home"),
-            options: { preventDefault: true },
+            options: {
+                preventDefault: true,
+                meta: {
+                    name: t("menu_navigation"),
+                    description: t("menu_navigation_home_description"),
+                },
+            },
         },
         {
             hotkey: "End",
             callback: () => focusMenuItem("end"),
-            options: { preventDefault: true },
+            options: {
+                preventDefault: true,
+                meta: {
+                    name: t("menu_navigation"),
+                    description: t("menu_navigation_end_description"),
+                },
+            },
         },
     ]);
 

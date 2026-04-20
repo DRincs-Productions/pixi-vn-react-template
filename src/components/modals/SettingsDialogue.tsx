@@ -13,6 +13,12 @@ export default function SettingsDialogue() {
         {
             hotkey: "Escape",
             callback: () => setOpen(!open),
+            options: {
+                meta: {
+                    name: t("settings"),
+                    description: t("settings_toggle_hotkey_description"),
+                },
+            },
         },
     ]);
 
