@@ -4,7 +4,6 @@ import SettingsDialogue from "@/components/modals/SettingsDialogue";
 import RootProvider from "@/components/providers/RootProvider";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
 import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
-import usePauseGameWhenMenuIsOpen from "@/hooks/usePauseGameWhenMenuIsOpen";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "@/hooks/useQueryInterface";
 import useSaveHotkeys from "@/hooks/useSaveHotkeys";
 import { useI18n } from "@/lib/i18n";
@@ -63,7 +62,6 @@ function RootSetup() {
 function RootComponent() {
     useClosePageDetector();
     useConfirmBackNavigation();
-    usePauseGameWhenMenuIsOpen();
 
     return (
         <>
