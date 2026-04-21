@@ -22,6 +22,7 @@ const CACHED_EXTERNAL_HOSTNAMES: string[] = [
 
 // https://vite.dev/config/
 export default defineConfig({
+    logLevel: "warn",
     plugins: [
         assetpackPlugin(),
         checker({
