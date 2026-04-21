@@ -1,13 +1,16 @@
 import { SearchParams } from "@/lib/stores/search-param-store";
+import { canvas, sound } from "@drincs/pixi-vn";
 import { useStore } from "@tanstack/react-store";
 import { useEffect, useMemo, useRef } from "react";
 
 function pauseGameFromMenuOpen() {
-    // TODO: Call the future Pixi-VN pause function here.
+    sound.pauseUnsavedAll();
+    canvas.pause();
 }
 
 function resumeGameFromMenuClose() {
-    // TODO: Call the future Pixi-VN resume function here.
+    sound.resumeUnsavedAll();
+    canvas.resume();
 }
 
 /**
