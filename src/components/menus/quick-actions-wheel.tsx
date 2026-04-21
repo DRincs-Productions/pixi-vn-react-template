@@ -4,7 +4,7 @@ import {
     useHotkeyRegistrations,
     useHotkeys,
 } from "@tanstack/react-hotkeys";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 function dispatchKeyboardEvent(
@@ -35,8 +35,7 @@ function triggerRegistration(registration: HotkeyRegistrationView) {
 }
 
 function shouldShowInWheel(registration: HotkeyRegistrationView) {
-    const enabled = registration.options.enabled !== false;
-    if (!enabled) {
+    if (registration.options.enabled === false) {
         return false;
     }
     if (registration.hotkey === "Tab") {
@@ -45,38 +44,29 @@ function shouldShowInWheel(registration: HotkeyRegistrationView) {
     return true;
 }
 
-export default function QuickActionsWheel() {
+/**
+ * Registers the Tab hotkeys that open/close/execute the wheel.
+ * Must NOT call `useHotkeyRegistrations` – kept in its own sibling component
+ * to avoid the write→read render loop with the store.
+ */
+function QuickActionsWheelHotkeys({
+    open,
+    setOpen,
+    selectedId,
+    wheelItemsRef,
+}: {
+    open: boolean;
+    setOpen: (v: boolean) => void;
+    selectedId: string | undefined;
+    wheelItemsRef: React.RefObject<HotkeyRegistrationView[]>;
+}) {
     const { t } = useTranslation(["ui"]);
-    const { hotkeys } = useHotkeyRegistrations();
-    const [open, setOpen] = useState(false);
-    const [selectedId, setSelectedId] = useState<string>();
-
-    const wheelItems = useMemo(() => {
-        return hotkeys
-            .filter(shouldShowInWheel)
-            .sort((a, b) => {
-                const aName = a.options.meta?.name ?? a.hotkey;
-                const bName = b.options.meta?.name ?? b.hotkey;
-                return aName.localeCompare(bName);
-            });
-    }, [hotkeys]);
-
-    useEffect(() => {
-        if (!wheelItems.length) {
-            setSelectedId(undefined);
-            setOpen(false);
-            return;
-        }
-        if (!selectedId || !wheelItems.some((item) => item.id === selectedId)) {
-            setSelectedId(wheelItems[0]?.id);
-        }
-    }, [wheelItems, selectedId]);
 
     useHotkeys([
         {
             hotkey: "Tab",
             callback: () => {
-                if (!wheelItems.length) {
+                if (!wheelItemsRef.current?.length) {
                     return;
                 }
                 setOpen(true);
@@ -96,7 +86,7 @@ export default function QuickActionsWheel() {
                     setOpen(false);
                     return;
                 }
-                const selected = wheelItems.find((item) => item.id === selectedId);
+                const selected = wheelItemsRef.current?.find((item) => item.id === selectedId);
                 if (selected) {
                     triggerRegistration(selected);
                 }
@@ -113,11 +103,63 @@ export default function QuickActionsWheel() {
         },
     ]);
 
+    return null;
+}
+
+/**
+ * Reads active hotkey registrations and renders the radial wheel overlay.
+ * Must NOT call `useHotkeys` – kept as a sibling of `QuickActionsWheelHotkeys`
+ * to avoid the write→read render loop with the store.
+ */
+function QuickActionsWheelContent({
+    open,
+    setOpen,
+    selectedId,
+    setSelectedId,
+    wheelItemsRef,
+}: {
+    open: boolean;
+    setOpen: (v: boolean) => void;
+    selectedId: string | undefined;
+    setSelectedId: (id: string | undefined) => void;
+    wheelItemsRef: React.RefObject<HotkeyRegistrationView[]>;
+}) {
+    const { t } = useTranslation(["ui"]);
+    const { hotkeys } = useHotkeyRegistrations();
+
+    const wheelItems = useMemo(() => {
+        return hotkeys
+            .filter(shouldShowInWheel)
+            .sort((a, b) => {
+                const aName = a.options.meta?.name ?? a.hotkey;
+                const bName = b.options.meta?.name ?? b.hotkey;
+                return aName.localeCompare(bName);
+            });
+    }, [hotkeys]);
+
+    // Keep the ref in sync so QuickActionsWheelHotkeys can read it without
+    // subscribing to the registrations store itself.
+    useEffect(() => {
+        (wheelItemsRef as React.MutableRefObject<HotkeyRegistrationView[]>).current = wheelItems;
+    }, [wheelItems, wheelItemsRef]);
+
+    useEffect(() => {
+        if (!wheelItems.length) {
+            setSelectedId(undefined);
+            setOpen(false);
+            return;
+        }
+        if (!selectedId || !wheelItems.some((item) => item.id === selectedId)) {
+            setSelectedId(wheelItems[0]?.id);
+        }
+    }, [wheelItems, selectedId, setSelectedId, setOpen]);
+
     if (!open || !wheelItems.length) {
         return null;
     }
 
-    const selectedRegistration = wheelItems.find((item) => item.id === selectedId) ?? wheelItems[0];
+    const selectedRegistration =
+        wheelItems.find((item) => item.id === selectedId) ?? (wheelItems[0] as HotkeyRegistrationView);
     const radius = 130;
 
     return (
@@ -141,7 +183,9 @@ export default function QuickActionsWheel() {
                             style={{ transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))` }}
                             onMouseEnter={() => setSelectedId(registration.id)}
                         >
-                            <span className="font-semibold">{registration.options.meta?.name ?? registration.hotkey}</span>
+                            <span className="font-semibold">
+                                {registration.options.meta?.name ?? registration.hotkey}
+                            </span>
                             <span className="text-[11px] opacity-85">{registration.hotkey}</span>
                         </button>
                     );
@@ -164,5 +208,34 @@ export default function QuickActionsWheel() {
                 </div>
             </div>
         </div>
+    );
+}
+
+/**
+ * Mounts both the hotkey registration component and the wheel display as
+ * siblings so that neither causes a re-render of the other when the TanStack
+ * hotkeys store changes.
+ */
+export default function QuickActionsWheel() {
+    const [open, setOpen] = useState(false);
+    const [selectedId, setSelectedId] = useState<string>();
+    const wheelItemsRef = useRef<HotkeyRegistrationView[]>([]);
+
+    return (
+        <>
+            <QuickActionsWheelContent
+                open={open}
+                setOpen={setOpen}
+                selectedId={selectedId}
+                setSelectedId={setSelectedId}
+                wheelItemsRef={wheelItemsRef}
+            />
+            <QuickActionsWheelHotkeys
+                open={open}
+                setOpen={setOpen}
+                selectedId={selectedId}
+                wheelItemsRef={wheelItemsRef}
+            />
+        </>
     );
 }

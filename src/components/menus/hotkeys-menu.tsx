@@ -4,11 +4,7 @@ import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSearchParamState, useSetSearchParamState } from "@/hooks/useSearchParamState";
 import { cn } from "@/lib/utils";
-import {
-    type HotkeyRegistrationView,
-    useHotkeyRegistrations,
-    useHotkeys,
-} from "@tanstack/react-hotkeys";
+import { type HotkeyRegistrationView, useHotkeyRegistrations, useHotkeys } from "@tanstack/react-hotkeys";
 import { Search } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -21,11 +17,15 @@ function isRegistrationEnabled(registration: HotkeyRegistrationView) {
     return registration.options.enabled !== false;
 }
 
-export default function HotkeysMenu() {
+/**
+ * Registers the Ctrl+K hotkey to toggle the hotkeys menu.
+ * Kept in its own component so it never shares a render with
+ * `useHotkeyRegistrations` (which reads the same store that
+ * `useHotkeys` writes, causing an infinite loop when co-located).
+ */
+function HotkeysMenuHotkeys() {
     const open = useSearchParamState<boolean>("hotkeys");
     const setOpen = useSetSearchParamState<boolean>("hotkeys");
-    const { hotkeys } = useHotkeyRegistrations();
-    const [searchString, setSearchString] = useState("");
     const { t } = useTranslation(["ui"]);
 
     const toggleOpen = useCallback(() => {
@@ -44,6 +44,21 @@ export default function HotkeysMenu() {
             },
         },
     ]);
+
+    return null;
+}
+
+/**
+ * Renders the hotkeys dialog.
+ * Uses `useHotkeyRegistrations` (reads the store) but never calls `useHotkeys`,
+ * so there is no write→read→re-render loop.
+ */
+function HotkeysMenuContent() {
+    const open = useSearchParamState<boolean>("hotkeys");
+    const setOpen = useSetSearchParamState<boolean>("hotkeys");
+    const { hotkeys } = useHotkeyRegistrations();
+    const [searchString, setSearchString] = useState("");
+    const { t } = useTranslation(["ui"]);
 
     const normalizedSearch = searchString.trim().toLowerCase();
     const hotkeyRows = useMemo(() => {
@@ -127,5 +142,19 @@ export default function HotkeysMenu() {
                 </ScrollArea>
             </FullscreenDialogContent>
         </Dialog>
+    );
+}
+
+/**
+ * Mounts both the hotkey registration and the dialog display as siblings so
+ * that neither component causes a re-render of the other when the TanStack
+ * hotkeys store changes.
+ */
+export default function HotkeysMenu() {
+    return (
+        <>
+            <HotkeysMenuHotkeys />
+            <HotkeysMenuContent />
+        </>
     );
 }
