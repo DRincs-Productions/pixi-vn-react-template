@@ -19,6 +19,14 @@ export namespace MasterSound {
     });
 
     /**
+     * Initialize the master sound storage, syncing the sound library with stored values
+     */
+    export function init() {
+        setVolume(store.state.volume);
+        setMuted(store.state.muted);
+    }
+
+    /**
      * Set the master volume (0-100)
      * @param volume The master volume to set (0-100)
      */
