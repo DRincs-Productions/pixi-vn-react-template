@@ -16,6 +16,7 @@ import { loadRefreshSave } from "@/utils/save-utility";
 import { Game } from "@drincs/pixi-vn";
 import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
 import { TanStackDevtools } from "@tanstack/react-devtools";
+import { useQueryClient } from "@tanstack/react-query";
 import { hotkeysDevtoolsPlugin } from "@tanstack/react-hotkeys-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import {
@@ -26,24 +27,19 @@ import {
     useNavigate,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { useEffect } from "react";
 
 export const Route = createRootRouteWithContext<RouterContext>()({
     validateSearch: (search) => SearchParams.setMany(search),
     component: RootComponent,
     pendingComponent: LoadingScreen,
-    loader: async ({ context }) => {
+    loader: async () => {
         Game.onNavigate(async (to) => {
             redirect({ to });
         });
         await Promise.all([import("@/content"), import("@/labels")]);
         await Promise.all([initializeIndexedDB(), defineAssets(), useI18n()]);
         setupPixivnViteData();
-        const isRefreshSaveExist = await loadRefreshSave();
-        if (isRefreshSaveExist) {
-            await context.queryClient.invalidateQueries({
-                queryKey: [INTERFACE_DATA_USE_QUEY_KEY],
-            });
-        }
     },
     errorComponent: (props) => (
         <div className="bg-background pointer-events-auto hover:text-foreground">
@@ -54,8 +50,27 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function RootSetup() {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
+
     Game.onNavigate((to) => navigate({ to }));
     useSaveHotkeys();
+
+    useEffect(() => {
+        let isMounted = true;
+        const restoreRefreshSave = async () => {
+            const isRefreshSaveExist = await loadRefreshSave();
+            if (isMounted && isRefreshSaveExist) {
+                await queryClient.invalidateQueries({
+                    queryKey: [INTERFACE_DATA_USE_QUEY_KEY],
+                });
+            }
+        };
+        restoreRefreshSave();
+        return () => {
+            isMounted = false;
+        };
+    }, [queryClient]);
+
     return null;
 }
 
