@@ -58,14 +58,18 @@ function RootSetup() {
     useEffect(() => {
         let isMounted = true;
         const restoreRefreshSave = async () => {
-            const isRefreshSaveExist = await loadRefreshSave();
-            if (isMounted && isRefreshSaveExist) {
-                await queryClient.invalidateQueries({
-                    queryKey: [INTERFACE_DATA_USE_QUEY_KEY],
-                });
+            try {
+                const isRefreshSaveExist = await loadRefreshSave();
+                if (isMounted && isRefreshSaveExist) {
+                    await queryClient.invalidateQueries({
+                        queryKey: [INTERFACE_DATA_USE_QUEY_KEY],
+                    });
+                }
+            } catch (error) {
+                console.error("Failed to restore refresh save", error);
             }
         };
-        restoreRefreshSave();
+        void restoreRefreshSave();
         return () => {
             isMounted = false;
         };
