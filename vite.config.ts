@@ -16,13 +16,10 @@ import assetPackConfig from "./.assetpack.ts";
  *   "cdn.jsdelivr.net"
  *   "your.cdn.domain.com"
  */
-const CACHED_EXTERNAL_HOSTNAMES: string[] = [
-    "raw.githubusercontent.com",
-];
+const CACHED_EXTERNAL_HOSTNAMES: string[] = ["raw.githubusercontent.com"];
 
 // https://vite.dev/config/
 export default defineConfig({
-    logLevel: "warn",
     plugins: [
         assetpackPlugin(),
         checker({
