@@ -106,13 +106,11 @@ function QuickActionsWheelContent({
     const { hotkeys } = useHotkeyRegistrations();
 
     const wheelItems = useMemo(() => {
-        return hotkeys
-            .filter(shouldShowInWheel)
-            .sort((a, b) => {
-                const aName = a.options.meta?.name ?? a.hotkey;
-                const bName = b.options.meta?.name ?? b.hotkey;
-                return aName.localeCompare(bName);
-            });
+        return hotkeys.filter(shouldShowInWheel).sort((a, b) => {
+            const aName = a.options.meta?.name ?? a.hotkey;
+            const bName = b.options.meta?.name ?? b.hotkey;
+            return aName.localeCompare(bName);
+        });
     }, [hotkeys]);
 
     // Keep the ref in sync so QuickActionsWheelHotkeys can read it without
@@ -137,7 +135,8 @@ function QuickActionsWheelContent({
     }
 
     const selectedRegistration =
-        wheelItems.find((item) => item.id === selectedId) ?? (wheelItems[0] as HotkeyRegistrationView);
+        wheelItems.find((item) => item.id === selectedId) ??
+        (wheelItems[0] as HotkeyRegistrationView);
     const radius = 130;
 
     return (
@@ -158,7 +157,9 @@ function QuickActionsWheelContent({
                                     ? "border-primary bg-primary text-primary-foreground"
                                     : "border-border bg-card/90 text-card-foreground hover:border-primary/60",
                             )}
-                            style={{ transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))` }}
+                            style={{
+                                transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
+                            }}
                             onMouseEnter={() => setSelectedId(registration.id)}
                             onClick={() => {
                                 triggerRegistration(registration);
@@ -198,13 +199,13 @@ function QuickActionsWheelContent({
  * siblings so that neither causes a re-render of the other when the TanStack
  * hotkeys store changes.
  */
-export default function QuickActionsWheel() {
+export function QuickActionsWheel() {
     const [open, setOpen] = useState(false);
     const [selectedId, setSelectedId] = useState<string>();
     const wheelItemsRef = useRef<HotkeyRegistrationView[]>([]);
 
     return (
-        <>
+        <div className="pointer-events-auto">
             <QuickActionsWheelContent
                 open={open}
                 setOpen={setOpen}
@@ -212,11 +213,7 @@ export default function QuickActionsWheel() {
                 setSelectedId={setSelectedId}
                 wheelItemsRef={wheelItemsRef}
             />
-            <QuickActionsWheelHotkeys
-                open={open}
-                setOpen={setOpen}
-                wheelItemsRef={wheelItemsRef}
-            />
-        </>
+            <QuickActionsWheelHotkeys open={open} setOpen={setOpen} wheelItemsRef={wheelItemsRef} />
+        </div>
     );
 }
