@@ -45,19 +45,17 @@ function shouldShowInWheel(registration: HotkeyRegistrationView) {
 }
 
 /**
- * Registers the Tab hotkeys that open/close/execute the wheel.
+ * Registers the Tab hotkey that toggles the wheel open/closed.
  * Must NOT call `useHotkeyRegistrations` – kept in its own sibling component
  * to avoid the write→read render loop with the store.
  */
 function QuickActionsWheelHotkeys({
     open,
     setOpen,
-    selectedId,
     wheelItemsRef,
 }: {
     open: boolean;
     setOpen: (v: boolean) => void;
-    selectedId: string | undefined;
     wheelItemsRef: React.RefObject<HotkeyRegistrationView[]>;
 }) {
     const { t } = useTranslation(["ui"]);
@@ -66,38 +64,18 @@ function QuickActionsWheelHotkeys({
         {
             hotkey: "Tab",
             callback: () => {
-                if (!wheelItemsRef.current?.length) {
-                    return;
-                }
-                setOpen(true);
-            },
-            options: {
-                enabled: !open,
-                meta: {
-                    name: t("quick_actions"),
-                    description: t("quick_actions_open_description"),
-                },
-            },
-        },
-        {
-            hotkey: "Tab",
-            callback: () => {
-                if (!open || !selectedId) {
+                if (open) {
                     setOpen(false);
                     return;
                 }
-                const selected = wheelItemsRef.current?.find((item) => item.id === selectedId);
-                if (selected) {
-                    triggerRegistration(selected);
+                if (wheelItemsRef.current?.length) {
+                    setOpen(true);
                 }
-                setOpen(false);
             },
             options: {
-                eventType: "keyup",
-                enabled: open,
                 meta: {
-                    name: t("quick_actions_execute"),
-                    description: t("quick_actions_execute_description"),
+                    name: t("quick_actions"),
+                    description: t("quick_actions_open_description"),
                 },
             },
         },
@@ -182,6 +160,10 @@ function QuickActionsWheelContent({
                             )}
                             style={{ transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))` }}
                             onMouseEnter={() => setSelectedId(registration.id)}
+                            onClick={() => {
+                                triggerRegistration(registration);
+                                setOpen(false);
+                            }}
                         >
                             <span className="font-semibold">
                                 {registration.options.meta?.name ?? registration.hotkey}
@@ -203,7 +185,7 @@ function QuickActionsWheelContent({
                             t("hotkeys_menu_no_description")}
                     </span>
                     <span className="text-[11px] text-muted-foreground">
-                        {t("quick_actions_release_hint")}
+                        {t("quick_actions_click_hint")}
                     </span>
                 </div>
             </div>
@@ -233,7 +215,6 @@ export default function QuickActionsWheel() {
             <QuickActionsWheelHotkeys
                 open={open}
                 setOpen={setOpen}
-                selectedId={selectedId}
                 wheelItemsRef={wheelItemsRef}
             />
         </>
