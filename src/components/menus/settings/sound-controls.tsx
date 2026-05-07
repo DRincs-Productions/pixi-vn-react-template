@@ -1,12 +1,12 @@
+import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
+import { ChannelSound } from "@/lib/stores/channel-sound-stores";
+import { MasterSound } from "@/lib/stores/master-sound-storage";
 import { sound } from "@drincs/pixi-vn";
 import { useStore } from "@tanstack/react-store";
 import { Volume2Icon, VolumeXIcon } from "lucide-react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
-import { ChannelSound } from "@/lib/stores/channel-sound-stores";
-import { MasterSound } from "@/lib/stores/master-sound-storage";
 
 export function SoundControls() {
     const { t } = useTranslation(["ui"]);

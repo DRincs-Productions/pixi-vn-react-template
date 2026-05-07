@@ -9,6 +9,17 @@ export type ChannelSoundState = {
 export namespace ChannelSound {
     const storeCache = new Map<string, Store<ChannelSoundState>>();
 
+    /**
+     * Initialize the channel sound storage, syncing the sound library with stored values
+     */
+    export function init() {
+        sound.channels.forEach((c) => {
+            const store = getStore(c.alias);
+            setVolume(c.alias, store.state.volume);
+            setMuted(c.alias, store.state.muted);
+        });
+    }
+
     export function getStore(alias: string): Store<ChannelSoundState> {
         let store = storeCache.get(alias);
         if (store) {
