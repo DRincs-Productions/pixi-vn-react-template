@@ -31,7 +31,7 @@ export function ChoiceMenu() {
                         disabled={loading}
                         onClick={() => selectChoice(item)}
                         size="sm"
-                        variant="outline"
+                        variant="secondary"
                     >
                         {item.type === "close" && <CornerDownLeft />}
                         {item.text}
