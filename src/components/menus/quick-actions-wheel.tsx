@@ -44,6 +44,61 @@ function shouldShowInWheel(registration: HotkeyRegistrationView) {
     return true;
 }
 
+type WheelActionItem = {
+    id: string;
+    label: string;
+    description: string;
+    hotkeyLabel: string;
+    registration: HotkeyRegistrationView;
+};
+
+function getRegistrationGroupKey(registration: HotkeyRegistrationView) {
+    const name = registration.options.meta?.name?.trim();
+    const eventType = registration.options.eventType ?? "keydown";
+
+    if (!name) {
+        return `single:${registration.id}`;
+    }
+
+    // Group by action name and event type so aliases with different wording
+    // (e.g. hold/release variants) are merged into one wheel action.
+    return `meta:${name}::${eventType}`;
+}
+
+function buildWheelItems(hotkeys: HotkeyRegistrationView[]): WheelActionItem[] {
+    const grouped = new Map<string, HotkeyRegistrationView[]>();
+
+    for (const registration of hotkeys.filter(shouldShowInWheel)) {
+        const key = getRegistrationGroupKey(registration);
+        const existing = grouped.get(key);
+        if (existing) {
+            existing.push(registration);
+        } else {
+            grouped.set(key, [registration]);
+        }
+    }
+
+    return Array.from(grouped.values())
+        .map((group) => {
+            const registration = group.find((item) => item.options.enabled !== false) ?? group[0];
+            const label = registration.options.meta?.name ?? registration.hotkey;
+            const description = registration.options.meta?.description ?? "";
+            const hotkeyLabel = Array.from(new Set(group.map((item) => item.hotkey))).join(" OR ");
+
+            return {
+                id: `group:${group
+                    .map((item) => item.id)
+                    .sort()
+                    .join("|")}`,
+                label,
+                description,
+                hotkeyLabel,
+                registration,
+            };
+        })
+        .sort((a, b) => a.label.localeCompare(b.label));
+}
+
 /**
  * Registers the Tab hotkey that toggles the wheel open/closed.
  * Must NOT call `useHotkeyRegistrations` – kept in its own sibling component
@@ -56,7 +111,7 @@ function QuickActionsWheelHotkeys({
 }: {
     open: boolean;
     setOpen: (v: boolean) => void;
-    wheelItemsRef: React.RefObject<HotkeyRegistrationView[]>;
+    wheelItemsRef: React.RefObject<WheelActionItem[]>;
 }) {
     const { t } = useTranslation(["ui"]);
 
@@ -100,24 +155,20 @@ function QuickActionsWheelContent({
     setOpen: (v: boolean) => void;
     selectedId: string | undefined;
     setSelectedId: (id: string | undefined) => void;
-    wheelItemsRef: React.RefObject<HotkeyRegistrationView[]>;
+    wheelItemsRef: React.RefObject<WheelActionItem[]>;
 }) {
     const { t } = useTranslation(["ui"]);
     const { hotkeys } = useHotkeyRegistrations();
     const wheelContainerRef = useRef<HTMLDivElement>(null);
 
     const wheelItems = useMemo(() => {
-        return hotkeys.filter(shouldShowInWheel).sort((a, b) => {
-            const aName = a.options.meta?.name ?? a.hotkey;
-            const bName = b.options.meta?.name ?? b.hotkey;
-            return aName.localeCompare(bName);
-        });
+        return buildWheelItems(hotkeys);
     }, [hotkeys]);
 
     // Keep the ref in sync so QuickActionsWheelHotkeys can read it without
     // subscribing to the registrations store itself.
     useEffect(() => {
-        (wheelItemsRef as React.MutableRefObject<HotkeyRegistrationView[]>).current = wheelItems;
+        (wheelItemsRef as React.MutableRefObject<WheelActionItem[]>).current = wheelItems;
     }, [wheelItems, wheelItemsRef]);
 
     useEffect(() => {
@@ -136,9 +187,8 @@ function QuickActionsWheelContent({
     }
 
     const selectedRegistration =
-        wheelItems.find((item) => item.id === selectedId) ??
-        (wheelItems[0] as HotkeyRegistrationView);
-    const radius = 110;
+        wheelItems.find((item) => item.id === selectedId) ?? (wheelItems[0] as WheelActionItem);
+    const radius = Math.min(168, Math.max(135, 120 + wheelItems.length * 3));
 
     const getRegistrationForPointer = (clientX: number, clientY: number) => {
         if (!wheelItems.length) {
@@ -188,7 +238,7 @@ function QuickActionsWheelContent({
             return;
         }
 
-        triggerRegistration(registration);
+        triggerRegistration(registration.registration);
         setOpen(false);
     };
 
@@ -212,36 +262,35 @@ function QuickActionsWheelContent({
                             key={registration.id}
                             type="button"
                             className={cn(
-                                "absolute top-1/2 left-1/2 flex w-28 -translate-x-1/2 -translate-y-1/2 flex-col items-center rounded-md border p-2 text-center text-xs transition-colors",
+                                "absolute flex w-28 flex-col items-center rounded-md border p-2 text-center text-xs transition-colors",
                                 selected
                                     ? "border-primary bg-primary text-primary-foreground"
                                     : "border-border bg-card/90 text-card-foreground hover:border-primary/60",
                             )}
                             style={{
-                                transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
+                                left: `calc(50% + ${x}px)`,
+                                top: `calc(50% + ${y}px)`,
+                                transform: "translate(-50%, -50%)",
                             }}
                             onMouseEnter={() => setSelectedId(registration.id)}
                             onClick={(event) => {
                                 event.stopPropagation();
-                                triggerRegistration(registration);
+                                triggerRegistration(registration.registration);
                                 setOpen(false);
                             }}
                         >
-                            <span className="font-semibold">
-                                {registration.options.meta?.name ?? registration.hotkey}
+                            <span className="font-semibold">{registration.label}</span>
+                            <span className="text-[11px] opacity-85">
+                                {registration.hotkeyLabel}
                             </span>
-                            <span className="text-[11px] opacity-85">{registration.hotkey}</span>
                         </button>
                     );
                 })}
 
                 <div className="absolute top-1/2 left-1/2 flex w-44 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1 rounded-full border bg-card p-4 text-center">
-                    <span className="text-sm font-semibold">
-                        {selectedRegistration.options.meta?.name ?? selectedRegistration.hotkey}
-                    </span>
+                    <span className="text-sm font-semibold">{selectedRegistration.label}</span>
                     <span className="text-xs text-muted-foreground">
-                        {selectedRegistration.options.meta?.description ??
-                            t("hotkeys_menu_no_description")}
+                        {selectedRegistration.description || t("hotkeys_menu_no_description")}
                     </span>
                     <span className="text-[11px] text-muted-foreground">
                         {t("quick_actions_click_hint")}
@@ -260,7 +309,7 @@ function QuickActionsWheelContent({
 export function QuickActionsWheel() {
     const [open, setOpen] = useState(false);
     const [selectedId, setSelectedId] = useState<string>();
-    const wheelItemsRef = useRef<HotkeyRegistrationView[]>([]);
+    const wheelItemsRef = useRef<WheelActionItem[]>([]);
 
     return (
         <div className="pointer-events-auto">
