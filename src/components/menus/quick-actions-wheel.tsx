@@ -4,7 +4,7 @@ import {
     useHotkeyRegistrations,
     useHotkeys,
 } from "@tanstack/react-hotkeys";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { type MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 function dispatchKeyboardEvent(
@@ -104,6 +104,7 @@ function QuickActionsWheelContent({
 }) {
     const { t } = useTranslation(["ui"]);
     const { hotkeys } = useHotkeyRegistrations();
+    const wheelContainerRef = useRef<HTMLDivElement>(null);
 
     const wheelItems = useMemo(() => {
         return hotkeys.filter(shouldShowInWheel).sort((a, b) => {
@@ -137,11 +138,70 @@ function QuickActionsWheelContent({
     const selectedRegistration =
         wheelItems.find((item) => item.id === selectedId) ??
         (wheelItems[0] as HotkeyRegistrationView);
-    const radius = 130;
+    const radius = 110;
+
+    const getRegistrationForPointer = (clientX: number, clientY: number) => {
+        if (!wheelItems.length) {
+            return undefined;
+        }
+
+        const rect = wheelContainerRef.current?.getBoundingClientRect();
+        const centerX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+        const centerY = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
+        const dx = clientX - centerX;
+        const dy = clientY - centerY;
+
+        if (dx === 0 && dy === 0) {
+            return selectedRegistration;
+        }
+
+        const pointerAngle = Math.atan2(dy, dx);
+        const step = (Math.PI * 2) / wheelItems.length;
+        const normalizedAngle = (pointerAngle + Math.PI / 2 + Math.PI * 2) % (Math.PI * 2);
+        const index = Math.round(normalizedAngle / step) % wheelItems.length;
+
+        return wheelItems[index];
+    };
+
+    const selectRegistrationFromPointer = (clientX: number, clientY: number) => {
+        const registration = getRegistrationForPointer(clientX, clientY);
+        if (registration && registration.id !== selectedRegistration.id) {
+            setSelectedId(registration.id);
+        }
+        return registration;
+    };
+
+    const handleOverlayMouseMove = (event: MouseEvent<HTMLDivElement>) => {
+        if ((event.target as HTMLElement).closest("button")) {
+            return;
+        }
+        selectRegistrationFromPointer(event.clientX, event.clientY);
+    };
+
+    const handleOverlayClick = (event: MouseEvent<HTMLDivElement>) => {
+        if ((event.target as HTMLElement).closest("button")) {
+            return;
+        }
+
+        const registration = selectRegistrationFromPointer(event.clientX, event.clientY);
+        if (!registration) {
+            return;
+        }
+
+        triggerRegistration(registration);
+        setOpen(false);
+    };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs">
-            <div className="relative size-[360px] rounded-full border border-primary/20 bg-background/90 shadow-xl">
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs"
+            onMouseMove={handleOverlayMouseMove}
+            onClick={handleOverlayClick}
+        >
+            <div
+                ref={wheelContainerRef}
+                className="relative size-[360px] rounded-full border border-primary/20 bg-background/90 shadow-xl"
+            >
                 {wheelItems.map((registration, index) => {
                     const angle = (index / wheelItems.length) * Math.PI * 2 - Math.PI / 2;
                     const x = Math.cos(angle) * radius;
@@ -161,7 +221,8 @@ function QuickActionsWheelContent({
                                 transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
                             }}
                             onMouseEnter={() => setSelectedId(registration.id)}
-                            onClick={() => {
+                            onClick={(event) => {
+                                event.stopPropagation();
                                 triggerRegistration(registration);
                                 setOpen(false);
                             }}
@@ -175,9 +236,6 @@ function QuickActionsWheelContent({
                 })}
 
                 <div className="absolute top-1/2 left-1/2 flex w-42 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1 rounded-full border bg-card p-4 text-center">
-                    <span className="text-xs uppercase tracking-wide text-muted-foreground">
-                        {t("quick_actions")}
-                    </span>
                     <span className="text-sm font-semibold">
                         {selectedRegistration.options.meta?.name ?? selectedRegistration.hotkey}
                     </span>
