@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as NarrationRouteImport } from './routes/narration'
 import { Route as GameRouteImport } from './routes/game'
+import { Route as DemoRouteImport } from './routes/demo'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GameNarrationRouteImport } from './routes/game/narration'
 
@@ -22,6 +23,11 @@ const NarrationRoute = NarrationRouteImport.update({
 const GameRoute = GameRouteImport.update({
   id: '/game',
   path: '/game',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoRoute = DemoRouteImport.update({
+  id: '/demo',
+  path: '/demo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -37,12 +43,14 @@ const GameNarrationRoute = GameNarrationRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/demo': typeof DemoRoute
   '/game': typeof GameRouteWithChildren
   '/narration': typeof NarrationRoute
   '/game/narration': typeof GameNarrationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/demo': typeof DemoRoute
   '/game': typeof GameRouteWithChildren
   '/narration': typeof NarrationRoute
   '/game/narration': typeof GameNarrationRoute
@@ -50,20 +58,22 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/demo': typeof DemoRoute
   '/game': typeof GameRouteWithChildren
   '/narration': typeof NarrationRoute
   '/game/narration': typeof GameNarrationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/game' | '/narration' | '/game/narration'
+  fullPaths: '/' | '/demo' | '/game' | '/narration' | '/game/narration'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/game' | '/narration' | '/game/narration'
-  id: '__root__' | '/' | '/game' | '/narration' | '/game/narration'
+  to: '/' | '/demo' | '/game' | '/narration' | '/game/narration'
+  id: '__root__' | '/' | '/demo' | '/game' | '/narration' | '/game/narration'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DemoRoute: typeof DemoRoute
   GameRoute: typeof GameRouteWithChildren
   NarrationRoute: typeof NarrationRoute
 }
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       path: '/game'
       fullPath: '/game'
       preLoaderRoute: typeof GameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo': {
+      id: '/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof DemoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -113,6 +130,7 @@ const GameRouteWithChildren = GameRoute._addFileChildren(GameRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DemoRoute: DemoRoute,
   GameRoute: GameRouteWithChildren,
   NarrationRoute: NarrationRoute,
 }

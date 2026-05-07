@@ -43,6 +43,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
             await context.queryClient.invalidateQueries({
                 queryKey: [INTERFACE_DATA_USE_QUEY_KEY],
             });
+        } else {
+            redirect({ to: "/demo" });
         }
     },
     errorComponent: (props) => (
