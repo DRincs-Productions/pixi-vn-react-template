@@ -235,7 +235,7 @@ function QuickActionsWheelContent({
                     );
                 })}
 
-                <div className="absolute top-1/2 left-1/2 flex w-42 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1 rounded-full border bg-card p-4 text-center">
+                <div className="absolute top-1/2 left-1/2 flex w-44 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1 rounded-full border bg-card p-4 text-center">
                     <span className="text-sm font-semibold">
                         {selectedRegistration.options.meta?.name ?? selectedRegistration.hotkey}
                     </span>
