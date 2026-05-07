@@ -2,10 +2,22 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Install Dependencies",
+      "type": "shell",
+      "command": "[ -d node_modules ] || npm i",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": false,
+        "close": true
+      }
+    },
+    {
       "label": "Start Vite Dev Server",
       "type": "shell",
       "command": "npm run dev",
       "isBackground": true,
+      "dependsOn": ["Install Dependencies"],
       "problemMatcher": {
         "owner": "vite",
         "pattern": {
@@ -39,6 +51,7 @@
       "type": "shell",
       "command": "npm run preview",
       "isBackground": true,
+      "dependsOn": ["Install Dependencies"],
       "problemMatcher": {
         "owner": "vite",
         "pattern": {
