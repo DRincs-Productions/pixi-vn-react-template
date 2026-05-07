@@ -1,0 +1,36 @@
+import NarrationScreen from "@/components/menus/narration";
+import useNarrationPointerHandlers from "@/hooks/useNarrationPointerHandlers";
+import useSkipAutoDetector from "@/hooks/useSkipAutoDetector";
+import { createFileRoute } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/game/narration")({
+    component: NarrationElement,
+});
+
+function NarrationElement() {
+    return (
+        <>
+            <NarrationClickOverlay />
+            <NarrationScreen />
+            <NarrationDetectors />
+        </>
+    );
+}
+
+function NarrationClickOverlay() {
+    const { handlePointerDown, handlePointerCancel, handlePointerUp } =
+        useNarrationPointerHandlers();
+    return (
+        <div
+            className="fixed inset-0 z-0 pointer-events-auto"
+            onPointerDown={handlePointerDown}
+            onPointerCancel={handlePointerCancel}
+            onPointerUp={handlePointerUp}
+        />
+    );
+}
+
+function NarrationDetectors() {
+    useSkipAutoDetector();
+    return <></>;
+}

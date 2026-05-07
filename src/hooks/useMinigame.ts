@@ -8,7 +8,7 @@ export default function useMinigame(
     props?: {
         onStart?: () => Promise<void>;
         onExit?: (layer: Layer) => void;
-    }
+    },
 ) {
     const loading = useRef(false);
 

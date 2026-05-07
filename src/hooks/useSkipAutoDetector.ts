@@ -1,52 +1,57 @@
-import { useShallow } from "zustand/react/shallow";
-import { SKIP_DELAY } from "../constans";
-import useAutoInfoStore from "../stores/useAutoInfoStore";
-import useSkipStore from "../stores/useSkipStore";
-import useTypewriterStore from "../stores/useTypewriterStore";
-import useDebouncedEffect from "./useDebouncedEffect";
-import useInterval from "./useInterval";
-import useEventListener from "./useKeyDetector";
-import useNarrationFunctions from "./useNarrationFunctions";
+import { SKIP_DELAY } from "@/constans";
+import useNarrationFunctions from "@/hooks/useNarrationFunctions";
+import { AutoSettings } from "@/lib/stores/auto-settings-store";
+import { SkipSettings } from "@/lib/stores/skip-settings-store";
+import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
+import { useHotkeys } from "@tanstack/react-hotkeys";
+import { useDebouncer } from "@tanstack/react-pacer";
+import { useStore } from "@tanstack/react-store";
+import { useCallback, useEffect, useRef } from "react";
 
 export default function useSkipAutoDetector() {
-    const skipEnabled = useSkipStore(useShallow((state) => state.enabled));
-    const setSkipEnabled = useSkipStore((state) => state.setEnabled);
-    const autoEnabled = useAutoInfoStore(useShallow((state) => state.enabled));
-    const autoTime = useAutoInfoStore(useShallow((state) => state.time));
-    const typewriterInProgress = useTypewriterStore(useShallow((state) => state.inProgress));
+    const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
+    const autoEnabled = useStore(AutoSettings.store, (state) => state.enabled);
+    const autoTime = useStore(AutoSettings.store, (state) => state.time);
+    const typewriterInProgress = useStore(TextDisplaySettings.store, (state) => state.inProgress);
     const { goNext } = useNarrationFunctions();
 
-    useInterval(goNext, {
-        delay: SKIP_DELAY,
-        enabled: skipEnabled,
-    });
+    const savedGoNext = useRef(goNext);
+    useEffect(() => {
+        savedGoNext.current = goNext;
+    }, [goNext]);
+    useEffect(() => {
+        if (skipEnabled) {
+            const id = setInterval(() => savedGoNext.current(), SKIP_DELAY);
+            return () => clearInterval(id);
+        }
+    }, [skipEnabled]);
 
-    useDebouncedEffect(
-        () => autoEnabled && !skipEnabled && goNext(),
+    const autoDebouncer = useDebouncer(
+        () => {
+            goNext();
+        },
         {
-            delay: autoTime * 1000,
+            wait: autoTime * 1000,
             enabled: autoEnabled && !skipEnabled && !typewriterInProgress,
         },
-        [autoEnabled, skipEnabled, goNext]
     );
 
-    useEventListener({
-        type: "keypress",
-        listener: (event) => {
-            if (event.code == "Enter" || event.code == "Space") {
-                setSkipEnabled(true);
-            }
-        },
-    });
-    useEventListener({
-        type: "keyup",
-        listener: (event) => {
-            if (event.code == "Enter" || event.code == "Space") {
-                setSkipEnabled(false);
-                goNext();
-            }
-        },
-    });
+    useEffect(() => {
+        autoDebouncer.maybeExecute();
+    }, [autoEnabled, skipEnabled, typewriterInProgress, autoTime]);
+
+    const onSkipKeyDown = useCallback(() => SkipSettings.setEnabled(true), []);
+    const onSkipKeyUp = useCallback(() => {
+        SkipSettings.setEnabled(false);
+        goNext();
+    }, [goNext]);
+
+    useHotkeys([
+        { hotkey: "Enter", callback: onSkipKeyDown },
+        { hotkey: "Space", callback: onSkipKeyDown },
+        { hotkey: "Enter", callback: onSkipKeyUp, options: { eventType: "keyup" } },
+        { hotkey: "Space", callback: onSkipKeyUp, options: { eventType: "keyup" } },
+    ]);
 
     return null;
 }

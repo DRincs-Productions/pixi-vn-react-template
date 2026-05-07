@@ -1,32 +1,40 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { LOADING_ROUTE, MAIN_MENU_ROUTE } from "../constans";
-import { addRefreshSave, loadRefreshSave } from "../utils/save-utility";
-import useEventListener from "./useKeyDetector";
-import useMyNavigate from "./useMyNavigate";
-import { INTERFACE_DATA_USE_QUEY_KEY } from "./useQueryInterface";
+import { useLocation } from "@tanstack/react-router";
+import { useCallback, useEffect } from "react";
+import type { FileRouteTypes } from "@/routeTree.gen";
+import { addRefreshSave } from "../utils/save-utility";
 
-export default function useClosePageDetector() {
-    const navigate = useMyNavigate();
-    const queryClient = useQueryClient();
+/**
+ * useAutoSaveOnPageClose
+ *
+ * Trigger a refresh/save when the user is about to leave the page or when the
+ * document becomes hidden. Skips the root path (`/`).
+ *
+ * This hook does not return a value.
+ */
+export default function useAutoSaveOnPageClose(): void {
     const location = useLocation();
 
-    useEventListener({
-        type: "beforeunload",
-        listener: async () => {
-            if (location.pathname === MAIN_MENU_ROUTE || location.pathname === LOADING_ROUTE) {
-                return;
-            }
-            await addRefreshSave();
-        },
-    });
+    const callback = useCallback(() => {
+        if ((location.pathname as FileRouteTypes["fullPaths"]) === "/") {
+            return;
+        }
+        addRefreshSave();
+    }, [location.pathname]);
 
     useEffect(() => {
-        loadRefreshSave(navigate).then(() =>
-            queryClient.invalidateQueries({ queryKey: [INTERFACE_DATA_USE_QUEY_KEY] })
-        );
-    }, []);
+        const onBeforeUnload = () => callback();
+        const onVisibilityChange = () => {
+            if (document.visibilityState === "hidden") {
+                callback();
+            }
+        };
 
-    return null;
+        window.addEventListener("beforeunload", onBeforeUnload);
+        document.addEventListener("visibilitychange", onVisibilityChange);
+
+        return () => {
+            window.removeEventListener("beforeunload", onBeforeUnload);
+            document.removeEventListener("visibilitychange", onVisibilityChange);
+        };
+    }, [callback]);
 }

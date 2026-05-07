@@ -1,7 +1,6 @@
 import { canvas, Game } from "@drincs/pixi-vn";
-import { NavigateFunction } from "react-router-dom";
-import { LOADING_ROUTE, MAIN_MENU_ROUTE, NARRATION_ROUTE, REFRESH_SAVE_LOCAL_STORAGE_KEY } from "../constans";
-import GameSaveData from "../models/GameSaveData";
+import { REFRESH_SAVE_LOCAL_STORAGE_KEY } from "../constans";
+import type GameSaveData from "../models/GameSaveData";
 import {
     deleteRowFromIndexDB,
     getLastRowFromIndexDB,
@@ -24,23 +23,24 @@ export function createGameSave(options?: { image?: string; name?: string }): Gam
     };
 }
 
-export async function loadSave(saveData: GameSaveData, navigate: NavigateFunction) {
-    await navigate(LOADING_ROUTE);
-    await Game.restoreGameState(saveData.saveData, navigate);
+export async function loadSave(saveData: GameSaveData) {
+    await Game.restoreGameState(saveData.saveData);
 }
 
 export async function saveGameToIndexDB(
     info: Partial<GameSaveData> & { id?: number } = {},
-    data = createGameSave()
+    data = createGameSave(),
 ): Promise<GameSaveData & { id: number }> {
     const { image = await canvas.extractImage(), ...rest } = info;
-    let item = {
+    const item = {
         ...data,
         image: image,
         ...rest,
     };
     if (item.id === undefined) {
-        let lastSave = await getLastRowFromIndexDB<GameSaveData & { id: number }>(INDEXED_DB_SAVE_TABLE);
+        const lastSave = await getLastRowFromIndexDB<GameSaveData & { id: number }>(
+            INDEXED_DB_SAVE_TABLE,
+        );
         if (lastSave) {
             item.id = lastSave.id + 1;
         } else {
@@ -54,12 +54,14 @@ export async function saveGameToIndexDB(
     return (await getLastSaveFromIndexDB()) as GameSaveData & { id: number };
 }
 
-export async function getSaveFromIndexDB(id: number): Promise<(GameSaveData & { id: number }) | null> {
+export async function getSaveFromIndexDB(
+    id: number,
+): Promise<(GameSaveData & { id: number }) | null> {
     return await getRowFromIndexDB(INDEXED_DB_SAVE_TABLE, id);
 }
 
 export async function getLastSaveFromIndexDB(): Promise<(GameSaveData & { id: number }) | null> {
-    let list = await getListFromIndexDB<GameSaveData & { id: number }>(INDEXED_DB_SAVE_TABLE, {
+    const list = await getListFromIndexDB<GameSaveData & { id: number }>(INDEXED_DB_SAVE_TABLE, {
         pagination: { limit: 1, offset: 0 },
         order: { field: "date", direction: "prev" },
     });
@@ -85,7 +87,7 @@ export function downloadGameSave(data: GameSaveData = createGameSave()) {
     a.click();
 }
 
-export function loadGameSaveFromFile(navigate: NavigateFunction, afterLoad?: () => void) {
+export function loadGameSaveFromFile(afterLoad?: (error?: Error) => void) {
     // load the save data from a JSON file
     const input = document.createElement("input");
     input.type = "file";
@@ -96,15 +98,14 @@ export function loadGameSaveFromFile(navigate: NavigateFunction, afterLoad?: () 
             const reader = new FileReader();
             reader.onload = (e) => {
                 const jsonString = e.target?.result as string;
-                navigate(LOADING_ROUTE);
-                let data: GameSaveData = JSON.parse(jsonString);
+                const data: GameSaveData = JSON.parse(jsonString);
                 // load the save data from the JSON string
-                loadSave(data, navigate)
+                loadSave(data)
                     .then(() => {
-                        afterLoad && afterLoad();
+                        afterLoad?.();
                     })
-                    .catch(() => {
-                        navigate(NARRATION_ROUTE);
+                    .catch((err) => {
+                        afterLoad?.(err);
                     });
             };
             reader.readAsText(file);
@@ -115,26 +116,27 @@ export function loadGameSaveFromFile(navigate: NavigateFunction, afterLoad?: () 
 
 export async function addRefreshSave() {
     const data = createGameSave();
-    let jsonString = JSON.stringify(data);
+    const jsonString = JSON.stringify(data);
     if (jsonString) {
         localStorage.setItem(REFRESH_SAVE_LOCAL_STORAGE_KEY, jsonString);
     }
 }
 
-export async function loadRefreshSave(navigate: NavigateFunction) {
+export async function loadRefreshSave(): Promise<boolean> {
     const jsonString = localStorage.getItem(REFRESH_SAVE_LOCAL_STORAGE_KEY);
     if (jsonString) {
-        navigate(LOADING_ROUTE);
-        let data: GameSaveData = JSON.parse(jsonString);
+        const data: GameSaveData = JSON.parse(jsonString);
 
-        return loadSave(data, navigate)
+        return loadSave(data)
             .then(() => {
                 localStorage.removeItem(REFRESH_SAVE_LOCAL_STORAGE_KEY);
+                return true;
             })
             .catch(() => {
-                navigate(MAIN_MENU_ROUTE);
+                Game.clear();
+                return false;
             });
     } else {
-        navigate(MAIN_MENU_ROUTE);
+        return false;
     }
 }

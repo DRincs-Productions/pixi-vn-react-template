@@ -20,7 +20,10 @@ export function useQueryChoiceMenuOptions() {
         queryFn: async () =>
             narration.choices?.map((option) => ({
                 ...option,
-                text: typeof option.text === "string" ? t(option.text) : option.text.map((text) => t(text)).join(" "),
+                text:
+                    typeof option.text === "string"
+                        ? t(option.text)
+                        : option.text.map((text) => t(text)).join(" "),
             })) || [],
     });
 }
@@ -98,9 +101,10 @@ export function useQueryCanGoNext() {
 const NARRATIVE_HISTORY_USE_QUEY_KEY = "narrative_history_use_quey_key";
 export function useQueryNarrativeHistory({ searchString }: { searchString?: string }) {
     const { t } = useTranslation(["narration"]);
+    const normalizedSearch = searchString?.toLowerCase().trim();
 
     return useQuery({
-        queryKey: [INTERFACE_DATA_USE_QUEY_KEY, NARRATIVE_HISTORY_USE_QUEY_KEY, searchString],
+        queryKey: [INTERFACE_DATA_USE_QUEY_KEY, NARRATIVE_HISTORY_USE_QUEY_KEY],
         queryFn: async () => {
             const promises = stepHistory.narrativeHistory.map(async (step) => {
                 let character = step.dialogue?.character;
@@ -128,12 +132,16 @@ export function useQueryNarrativeHistory({ searchString }: { searchString?: stri
                     inputValue: step.inputValue,
                 };
             });
-            const data = await Promise.all(promises);
-            return data.filter((data) => {
-                if (!searchString) return true;
+            return Promise.all(promises);
+        },
+        select: (data) => {
+            if (!normalizedSearch) {
+                return data;
+            }
+            return data.filter((item) => {
                 return (
-                    data.character?.toLowerCase().includes(searchString.toLowerCase()) ||
-                    data.text?.toLowerCase().includes(searchString.toLowerCase())
+                    item.character?.toLowerCase().includes(normalizedSearch) ||
+                    item.text?.toLowerCase().includes(normalizedSearch)
                 );
             });
         },
