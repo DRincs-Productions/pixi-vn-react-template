@@ -5,6 +5,9 @@
       "label": "Install Dependencies",
       "type": "shell",
       "command": "[ -d node_modules ] || npm i",
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
       "presentation": {
         "reveal": "always",
         "panel": "dedicated",
