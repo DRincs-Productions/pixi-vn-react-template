@@ -1,5 +1,6 @@
 import { HistoryMenu } from "@/components/menus/history";
 import { InputRequestDialog } from "@/components/modals/input-request-dialogues";
+import usePauseGameWhenMenuIsOpen from "@/hooks/usePauseGameWhenMenuIsOpen";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 type Search = {
@@ -15,6 +16,7 @@ export const Route = createFileRoute("/game")({
 });
 
 function GameElement() {
+    usePauseGameWhenMenuIsOpen();
     return (
         <>
             <InputRequestDialog />
