@@ -4,7 +4,11 @@ import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSearchParamState, useSetSearchParamState } from "@/hooks/useSearchParamState";
 import { cn } from "@/lib/utils";
-import { type HotkeyRegistrationView, useHotkeyRegistrations, useHotkeys } from "@tanstack/react-hotkeys";
+import {
+    type HotkeyRegistrationView,
+    useHotkeyRegistrations,
+    useHotkeys,
+} from "@tanstack/react-hotkeys";
 import { Search } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -104,7 +108,8 @@ function HotkeysMenuContent() {
                         {hotkeyRows.map((registration) => {
                             const label = registration.options.meta?.name ?? registration.hotkey;
                             const description =
-                                registration.options.meta?.description ?? t("hotkeys_menu_no_description");
+                                registration.options.meta?.description ??
+                                t("hotkeys_menu_no_description");
                             const enabled = isRegistrationEnabled(registration);
                             return (
                                 <div
@@ -113,7 +118,9 @@ function HotkeysMenuContent() {
                                 >
                                     <div className="flex-1 space-y-1">
                                         <p className="font-medium">{label}</p>
-                                        <p className="text-sm text-muted-foreground">{description}</p>
+                                        <p className="text-sm text-muted-foreground">
+                                            {description}
+                                        </p>
                                     </div>
                                     <div className="flex flex-wrap items-center gap-1.5 sm:justify-end">
                                         <KbdGroup>
@@ -129,14 +136,18 @@ function HotkeysMenuContent() {
                                                     : "border-muted-foreground/30 bg-muted text-muted-foreground",
                                             )}
                                         >
-                                            {enabled ? t("hotkeys_menu_active") : t("hotkeys_menu_inactive")}
+                                            {enabled
+                                                ? t("hotkeys_menu_active")
+                                                : t("hotkeys_menu_inactive")}
                                         </span>
                                     </div>
                                 </div>
                             );
                         })}
                         {hotkeyRows.length === 0 && (
-                            <p className="text-sm text-muted-foreground">{t("hotkeys_menu_no_results")}</p>
+                            <p className="text-sm text-muted-foreground">
+                                {t("hotkeys_menu_no_results")}
+                            </p>
                         )}
                     </div>
                 </ScrollArea>
