@@ -29,14 +29,19 @@ import {
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { useEffect } from "react";
 
+let isGameNavigateHandlerRegistered = false;
+
 export const Route = createRootRouteWithContext<RouterContext>()({
     validateSearch: (search) => SearchParams.setMany(search),
     component: RootComponent,
     pendingComponent: PendingComponent,
     loader: async ({ context }) => {
-        Game.onNavigate((to) => {
-            GameNavigation.requestNavigation(to);
-        });
+        if (!isGameNavigateHandlerRegistered) {
+            Game.onNavigate((to) => {
+                GameNavigation.requestNavigation(to);
+            });
+            isGameNavigateHandlerRegistered = true;
+        }
         await Promise.all([import("@/content"), import("@/labels")]);
         await Promise.all([initializeIndexedDB(), defineAssets(), useI18n()]);
         setupPixivnViteData();
@@ -60,8 +65,12 @@ function RootSetup() {
 
     useEffect(() => {
         if (!navigateTo) return;
-        GameNavigation.clearNavigation();
-        void navigate({ to: navigateTo });
+
+        void navigate({ to: navigateTo }).finally(() => {
+            if (GameNavigation.store.state.to === navigateTo) {
+                GameNavigation.clearNavigation();
+            }
+        });
     }, [navigate, navigateTo]);
 
     useSaveHotkeys();
