@@ -1,5 +1,5 @@
 import PendingComponent from "@/components/loading";
-import HotkeysMenu from "@/components/menus/hotkeys-menu";
+import ControlsMenu from "@/components/menus/settings/menus/controls";
 import { OfflineAllert } from "@/components/modals/error-allerts";
 import GameSaveDialogue from "@/components/modals/GameSaveDialogue";
 import SettingsDialogue from "@/components/modals/SettingsDialogue";
@@ -70,7 +70,7 @@ function RootComponent() {
                 <RootSetup />
                 <SettingsDialogue />
                 <GameSaveDialogue />
-                <HotkeysMenu />
+                <ControlsMenu />
                 <OfflineAllert />
                 <Outlet />
             </RootProvider>

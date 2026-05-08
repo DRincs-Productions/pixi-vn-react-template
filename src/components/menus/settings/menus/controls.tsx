@@ -26,7 +26,7 @@ function isRegistrationEnabled(registration: HotkeyRegistrationView) {
  * `useHotkeyRegistrations` (which reads the same store that
  * `useHotkeys` writes, causing an infinite loop when co-located).
  */
-function HotkeysMenuHotkeys() {
+function ControlsMenuHotkeys() {
     const setSettingsOpen = useSetSearchParamState<boolean>("settings");
     const setSettingsTab = useSetSearchParamState<string>("settings_tab");
     const { t } = useTranslation(["ui"]);
@@ -156,6 +156,6 @@ export function ControlsListSettingsPage() {
  * that neither component causes a re-render of the other when the TanStack
  * hotkeys store changes.
  */
-export default function HotkeysMenu() {
-    return <HotkeysMenuHotkeys />;
+export default function ControlsMenu() {
+    return <ControlsMenuHotkeys />;
 }

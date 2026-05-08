@@ -1,4 +1,4 @@
-import { ControlsListSettingsPage } from "@/components/menus/hotkeys-menu";
+import { ControlsListSettingsPage } from "@/components/menus/settings/menus/controls";
 import { About } from "@/components/menus/settings/about";
 import { DialoguesControls } from "@/components/menus/settings/dialogues-controls";
 import { QuickMenus } from "@/components/menus/settings/quick-menus";
