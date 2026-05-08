@@ -1,8 +1,7 @@
-import { Dialog, FullscreenDialogContent } from "@/components/ui/fullscreen-dialog";
 import { Input } from "@/components/ui/input";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useSearchParamState, useSetSearchParamState } from "@/hooks/useSearchParamState";
+import { useSetSearchParamState } from "@/hooks/useSearchParamState";
 import { cn } from "@/lib/utils";
 import {
     type HotkeyRegistrationView,
@@ -22,24 +21,25 @@ function isRegistrationEnabled(registration: HotkeyRegistrationView) {
 }
 
 /**
- * Registers the Ctrl+K hotkey to toggle the hotkeys menu.
+ * Registers the Ctrl+K hotkey to open settings on the controls subpage.
  * Kept in its own component so it never shares a render with
  * `useHotkeyRegistrations` (which reads the same store that
  * `useHotkeys` writes, causing an infinite loop when co-located).
  */
 function HotkeysMenuHotkeys() {
-    const open = useSearchParamState<boolean>("hotkeys");
-    const setOpen = useSetSearchParamState<boolean>("hotkeys");
+    const setSettingsOpen = useSetSearchParamState<boolean>("settings");
+    const setSettingsTab = useSetSearchParamState<string>("settings_tab");
     const { t } = useTranslation(["ui"]);
 
-    const toggleOpen = useCallback(() => {
-        setOpen(open ? undefined : true);
-    }, [open, setOpen]);
+    const openControlsPage = useCallback(() => {
+        setSettingsOpen(true);
+        setSettingsTab("menus/controls");
+    }, [setSettingsOpen, setSettingsTab]);
 
     useHotkeys([
         {
             hotkey: "Control+K",
-            callback: toggleOpen,
+            callback: openControlsPage,
             options: {
                 meta: {
                     name: t("hotkeys_menu"),
@@ -53,13 +53,11 @@ function HotkeysMenuHotkeys() {
 }
 
 /**
- * Renders the hotkeys dialog.
+ * Renders the controls list section used inside Settings subpages.
  * Uses `useHotkeyRegistrations` (reads the store) but never calls `useHotkeys`,
  * so there is no write→read→re-render loop.
  */
-function HotkeysMenuContent() {
-    const open = useSearchParamState<boolean>("hotkeys");
-    const setOpen = useSetSearchParamState<boolean>("hotkeys");
+export function ControlsListSettingsPage() {
     const { hotkeys } = useHotkeyRegistrations();
     const [searchString, setSearchString] = useState("");
     const { t } = useTranslation(["ui"]);
@@ -101,58 +99,55 @@ function HotkeysMenuContent() {
     );
 
     return (
-        <Dialog open={open ?? false} onOpenChange={(isOpen) => setOpen(isOpen || undefined)}>
-            <FullscreenDialogContent title={t("hotkeys_menu")} toolbar={toolbar} centered>
-                <ScrollArea className="flex-1 min-h-0">
-                    <div className="p-4 space-y-2">
-                        {hotkeyRows.map((registration) => {
-                            const label = registration.options.meta?.name ?? registration.hotkey;
-                            const description =
-                                registration.options.meta?.description ??
-                                t("hotkeys_menu_no_description");
-                            const enabled = isRegistrationEnabled(registration);
-                            return (
-                                <div
-                                    key={registration.id}
-                                    className="flex flex-col gap-3 rounded-lg border bg-card/80 p-3 sm:flex-row sm:items-center"
-                                >
-                                    <div className="flex-1 space-y-1">
-                                        <p className="font-medium">{label}</p>
-                                        <p className="text-sm text-muted-foreground">
-                                            {description}
-                                        </p>
-                                    </div>
-                                    <div className="flex flex-wrap items-center gap-1.5 sm:justify-end">
-                                        <KbdGroup>
-                                            {splitHotkey(registration.hotkey).map((part) => (
-                                                <Kbd key={`${registration.id}-${part}`}>{part}</Kbd>
-                                            ))}
-                                        </KbdGroup>
-                                        <span
-                                            className={cn(
-                                                "rounded-full px-2 py-0.5 text-xs font-medium border",
-                                                enabled
-                                                    ? "border-green-500/30 bg-green-500/10 text-green-700 dark:text-green-400"
-                                                    : "border-muted-foreground/30 bg-muted text-muted-foreground",
-                                            )}
-                                        >
-                                            {enabled
-                                                ? t("hotkeys_menu_active")
-                                                : t("hotkeys_menu_inactive")}
-                                        </span>
-                                    </div>
+        <>
+            <div className="border-b p-4">{toolbar}</div>
+            <ScrollArea className="flex-1 min-h-0">
+                <div className="p-4 space-y-2">
+                    {hotkeyRows.map((registration) => {
+                        const label = registration.options.meta?.name ?? registration.hotkey;
+                        const description =
+                            registration.options.meta?.description ??
+                            t("hotkeys_menu_no_description");
+                        const enabled = isRegistrationEnabled(registration);
+                        return (
+                            <div
+                                key={registration.id}
+                                className="flex flex-col gap-3 rounded-lg border bg-card/80 p-3 sm:flex-row sm:items-center"
+                            >
+                                <div className="flex-1 space-y-1">
+                                    <p className="font-medium">{label}</p>
+                                    <p className="text-sm text-muted-foreground">{description}</p>
                                 </div>
-                            );
-                        })}
-                        {hotkeyRows.length === 0 && (
-                            <p className="text-sm text-muted-foreground">
-                                {t("hotkeys_menu_no_results")}
-                            </p>
-                        )}
-                    </div>
-                </ScrollArea>
-            </FullscreenDialogContent>
-        </Dialog>
+                                <div className="flex flex-wrap items-center gap-1.5 sm:justify-end">
+                                    <KbdGroup>
+                                        {splitHotkey(registration.hotkey).map((part) => (
+                                            <Kbd key={`${registration.id}-${part}`}>{part}</Kbd>
+                                        ))}
+                                    </KbdGroup>
+                                    <span
+                                        className={cn(
+                                            "rounded-full px-2 py-0.5 text-xs font-medium border",
+                                            enabled
+                                                ? "border-green-500/30 bg-green-500/10 text-green-700 dark:text-green-400"
+                                                : "border-muted-foreground/30 bg-muted text-muted-foreground",
+                                        )}
+                                    >
+                                        {enabled
+                                            ? t("hotkeys_menu_active")
+                                            : t("hotkeys_menu_inactive")}
+                                    </span>
+                                </div>
+                            </div>
+                        );
+                    })}
+                    {hotkeyRows.length === 0 && (
+                        <p className="text-sm text-muted-foreground">
+                            {t("hotkeys_menu_no_results")}
+                        </p>
+                    )}
+                </div>
+            </ScrollArea>
+        </>
     );
 }
 
@@ -162,10 +157,5 @@ function HotkeysMenuContent() {
  * hotkeys store changes.
  */
 export default function HotkeysMenu() {
-    return (
-        <>
-            <HotkeysMenuHotkeys />
-            <HotkeysMenuContent />
-        </>
-    );
+    return <HotkeysMenuHotkeys />;
 }

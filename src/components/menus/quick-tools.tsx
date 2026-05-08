@@ -33,7 +33,7 @@ export function QuickTools() {
     const setHistory = useSetSearchParamState<boolean>("history");
     const setSaves = useSetSearchParamState<boolean>("saves");
     const setSettings = useSetSearchParamState<boolean>("settings");
-    const setHotkeys = useSetSearchParamState<boolean>("hotkeys");
+    const setSettingsTab = useSetSearchParamState<string>("settings_tab");
 
     return (
         <div className={cn("flex flex-wrap items-center justify-end gap-1")}>
@@ -53,7 +53,14 @@ export function QuickTools() {
             <Button variant="ghost" size="xs" onClick={() => setHistory(true)}>
                 {t("history")}
             </Button>
-            <Button variant="ghost" size="xs" onClick={() => setHotkeys(true)}>
+            <Button
+                variant="ghost"
+                size="xs"
+                onClick={() => {
+                    setSettings(true);
+                    setSettingsTab("menus/controls");
+                }}
+            >
                 {t("hotkeys_menu")}
             </Button>
             <Toggle
