@@ -27,20 +27,18 @@ import {
     useNavigate,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import { useEffect } from "react";
-
-let isGameNavigateHandlerRegistered = false;
+import { useEffect, useState } from "react";
 
 export const Route = createRootRouteWithContext<RouterContext>()({
     validateSearch: (search) => SearchParams.setMany(search),
     component: RootComponent,
     pendingComponent: PendingComponent,
     loader: async ({ context }) => {
-        if (!isGameNavigateHandlerRegistered) {
+        if (!GameNavigation.store.state.listenerRegistered) {
             Game.onNavigate((to) => {
                 GameNavigation.requestNavigation(to);
             });
-            isGameNavigateHandlerRegistered = true;
+            GameNavigation.markListenerRegistered();
         }
         await Promise.all([import("@/content"), import("@/labels")]);
         await Promise.all([initializeIndexedDB(), defineAssets(), useI18n()]);
@@ -62,16 +60,21 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 function RootSetup() {
     const navigate = useNavigate();
     const navigateTo = useStore(GameNavigation.store, (state) => state.to);
+    const navigateRequestId = useStore(GameNavigation.store, (state) => state.requestId);
+    const [processingRequestId, setProcessingRequestId] = useState<number | null>(null);
 
     useEffect(() => {
-        if (!navigateTo) return;
+        if (!navigateTo || processingRequestId !== null) return;
+        const currentRequestId = navigateRequestId;
+        setProcessingRequestId(currentRequestId);
 
         void navigate({ to: navigateTo }).finally(() => {
-            if (GameNavigation.store.state.to === navigateTo) {
-                GameNavigation.clearNavigation();
-            }
+            GameNavigation.clearNavigationByRequestId(currentRequestId);
+            setProcessingRequestId((activeRequestId) =>
+                activeRequestId === currentRequestId ? null : activeRequestId,
+            );
         });
-    }, [navigate, navigateTo]);
+    }, [navigate, navigateRequestId, navigateTo, processingRequestId]);
 
     useSaveHotkeys();
     return null;
