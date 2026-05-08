@@ -8,7 +8,7 @@ export default function NarrationScreen() {
 
     return (
         <div className="absolute flex h-full w-full flex-col">
-            <div className="flex min-h-0 flex-1 flex-col mb-4 mx-4 sm:mx-10 md:mx-20 lg:mx-20">
+            <div className="mb-0 mx-0 flex min-h-0 flex-1 flex-col sm:mb-4 sm:mx-10 md:mx-20 lg:mx-20">
                 <ResizablePanelGroup orientation="vertical">
                     <ResizablePanel>
                         <ChoiceMenu />
@@ -19,7 +19,7 @@ export default function NarrationScreen() {
                         </div>
                     )}
                     {(animatedText || text) && (
-                        <ResizablePanel defaultSize={"30%"}>
+                        <ResizablePanel defaultSize={"40%"}>
                             <NarrationCards />
                         </ResizablePanel>
                     )}

@@ -36,10 +36,15 @@ export function QuickTools() {
     const setSettingsTab = useSetSearchParamState<string>("settings_tab");
 
     return (
-        <div className={cn("flex flex-wrap items-center justify-end gap-1")}>
+        <div
+            className={cn(
+                "flex flex-nowrap items-center justify-end gap-0.5 overflow-x-auto sm:flex-wrap sm:justify-end sm:gap-1 sm:overflow-visible",
+            )}
+        >
             <Button
                 variant="ghost"
                 size="xs"
+                className="h-5 px-1 text-[10px] sm:h-6 sm:px-2 sm:text-xs"
                 onClick={() => {
                     if (skipEnabled) {
                         SkipSettings.setEnabled(false);
@@ -53,6 +58,7 @@ export function QuickTools() {
             <Button
                 variant="ghost"
                 size="xs"
+                className="h-5 px-1 text-[10px] sm:h-6 sm:px-2 sm:text-xs"
                 onClick={() => {
                     setHistory(undefined);
                     setSettings(true);
@@ -64,6 +70,7 @@ export function QuickTools() {
             <Button
                 variant="ghost"
                 size="xs"
+                className="h-5 px-1 text-[10px] sm:h-6 sm:px-2 sm:text-xs"
                 onClick={() => {
                     setSettings(true);
                     setSettingsTab("menus/controls");
@@ -73,6 +80,7 @@ export function QuickTools() {
             </Button>
             <Toggle
                 size="sm"
+                className="h-5 min-w-0 px-1 text-[10px] sm:h-7 sm:px-2.5 sm:text-[0.8rem]"
                 pressed={skipEnabled}
                 onPressedChange={(v) => SkipSettings.setEnabled(v)}
             >
@@ -80,6 +88,7 @@ export function QuickTools() {
             </Toggle>
             <Toggle
                 size="sm"
+                className="h-5 min-w-0 px-1 text-[10px] sm:h-7 sm:px-2.5 sm:text-[0.8rem]"
                 pressed={autoEnabled}
                 onPressedChange={(v) => AutoSettings.setEnabled(v)}
                 disabled={skipEnabled}
@@ -89,6 +98,7 @@ export function QuickTools() {
             <Button
                 variant="ghost"
                 size="xs"
+                className="h-5 px-1 text-[10px] sm:h-6 sm:px-2 sm:text-xs"
                 onClick={() => {
                     setSaves(undefined);
                     setSettings(true);
@@ -100,6 +110,7 @@ export function QuickTools() {
             <Button
                 variant="ghost"
                 size="xs"
+                className="h-5 px-1 text-[10px] sm:h-6 sm:px-2 sm:text-xs"
                 onClick={() => {
                     const savePromise = saveGameToIndexDB().then((save) => {
                         queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
@@ -117,6 +128,7 @@ export function QuickTools() {
             <Button
                 variant="ghost"
                 size="xs"
+                className="h-5 px-1 text-[10px] sm:h-6 sm:px-2 sm:text-xs"
                 onClick={() => {
                     if (!lastSave) return;
                     openAlertDialog({
@@ -142,7 +154,12 @@ export function QuickTools() {
             >
                 {t("load_last_save_restricted")}
             </Button>
-            <Button variant="ghost" size="xs" onClick={() => setSettings(true)}>
+            <Button
+                variant="ghost"
+                size="xs"
+                className="h-5 px-1 text-[10px] sm:h-6 sm:px-2 sm:text-xs"
+                onClick={() => setSettings(true)}
+            >
                 {t("settings_restricted")}
             </Button>
         </div>
