@@ -8,7 +8,6 @@ import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "@/hooks/useQueryInterface";
 import useSaveHotkeys from "@/hooks/useSaveHotkeys";
 import { useI18n } from "@/lib/i18n";
-import { GameNavigation } from "@/lib/stores/game-navigation-store";
 import { SearchParams } from "@/lib/stores/search-param-store";
 import type { RouterContext } from "@/router";
 import { defineAssets } from "@/utils/assets-utility";
@@ -19,7 +18,6 @@ import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { hotkeysDevtoolsPlugin } from "@tanstack/react-hotkeys-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
-import { useStore } from "@tanstack/react-store";
 import {
     createRootRouteWithContext,
     ErrorComponent,
@@ -27,19 +25,18 @@ import {
     useNavigate,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+
+const GAME_NAVIGATE_KEY = "game-navigate-to";
 
 export const Route = createRootRouteWithContext<RouterContext>()({
     validateSearch: (search) => SearchParams.setMany(search),
     component: RootComponent,
     pendingComponent: PendingComponent,
     loader: async ({ context }) => {
-        if (!GameNavigation.store.state.listenerRegistered) {
-            Game.onNavigate((to) => {
-                GameNavigation.requestNavigation(to);
-            });
-            GameNavigation.markListenerRegistered();
-        }
+        Game.onNavigate((to) => {
+            localStorage.setItem(GAME_NAVIGATE_KEY, to);
+        });
         await Promise.all([import("@/content"), import("@/labels")]);
         await Promise.all([initializeIndexedDB(), defineAssets(), useI18n()]);
         setupPixivnViteData();
@@ -59,22 +56,13 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function RootSetup() {
     const navigate = useNavigate();
-    const navigateTo = useStore(GameNavigation.store, (state) => state.to);
-    const navigateRequestId = useStore(GameNavigation.store, (state) => state.requestId);
-    const [processingRequestId, setProcessingRequestId] = useState<number | null>(null);
 
     useEffect(() => {
-        if (!navigateTo || processingRequestId !== null) return;
-        const currentRequestId = navigateRequestId;
-        setProcessingRequestId(currentRequestId);
-
-        void navigate({ to: navigateTo }).finally(() => {
-            GameNavigation.clearNavigationByRequestId(currentRequestId);
-            setProcessingRequestId((activeRequestId) =>
-                activeRequestId === currentRequestId ? null : activeRequestId,
-            );
-        });
-    }, [navigate, navigateRequestId, navigateTo, processingRequestId]);
+        const to = localStorage.getItem(GAME_NAVIGATE_KEY);
+        if (!to) return;
+        localStorage.removeItem(GAME_NAVIGATE_KEY);
+        void navigate({ to });
+    });
 
     useSaveHotkeys();
     return null;
