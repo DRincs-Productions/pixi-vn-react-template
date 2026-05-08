@@ -1,3 +1,4 @@
+import { useAlertDialog } from "@/components/providers/AlertDialogProvider";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
 import useGameProps from "@/hooks/useGameProps";
@@ -16,7 +17,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useAlertDialog } from "../providers/AlertDialogProvider";
 
 export function QuickTools() {
     const { t } = useTranslation(["ui"]);
