@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Dialog, FullscreenDialogContent } from "@/components/ui/fullscreen-dialog";
 import { Input } from "@/components/ui/input";
 import {
     Item,
@@ -12,7 +11,7 @@ import {
 import { Kbd } from "@/components/ui/kbd";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useQueryNarrativeHistory } from "@/hooks/useQueryInterface";
-import { useSearchParamState, useSetSearchParamState } from "@/hooks/useSearchParamState";
+import { useSetSearchParamState } from "@/hooks/useSearchParamState";
 import { cn } from "@/lib/utils";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useDebouncedValue } from "@tanstack/react-pacer";
@@ -108,22 +107,37 @@ export function HistoryList({ searchString }: { searchString?: string }) {
 }
 
 export function HistoryMenu() {
-    const open = useSearchParamState<boolean>("history");
-    const setOpen = useSetSearchParamState<boolean>("history");
-    const [searchString, setSearchString] = useState("");
-    const [debouncedSearchString] = useDebouncedValue(searchString, { wait: 120 });
+    const setSettingsOpen = useSetSearchParamState<boolean>("settings");
+    const setSettingsTab = useSetSearchParamState<string>("settings_tab");
+    const setHistory = useSetSearchParamState<boolean>("history");
     const { t } = useTranslation(["ui"]);
 
-    const toggleOpen = useCallback(() => {
-        setOpen(open ? undefined : true);
-    }, [open, setOpen]);
+    const openHistoryPage = useCallback(() => {
+        setHistory(undefined);
+        setSettingsOpen(true);
+        setSettingsTab("menus/history");
+    }, [setHistory, setSettingsOpen, setSettingsTab]);
 
     useHotkeys([
         {
             hotkey: "Control+H",
-            callback: toggleOpen,
+            callback: openHistoryPage,
+            options: {
+                meta: {
+                    name: t("history"),
+                    description: t("history_hotkey_description"),
+                },
+            },
         },
     ]);
+
+    return null;
+}
+
+export function HistoryListSettingsPage() {
+    const [searchString, setSearchString] = useState("");
+    const [debouncedSearchString] = useDebouncedValue(searchString, { wait: 120 });
+    const { t } = useTranslation(["ui"]);
 
     const toolbar = (
         <div className="relative w-60 max-w-[40vw]">
@@ -139,14 +153,17 @@ export function HistoryMenu() {
     );
 
     return (
-        <Dialog open={open ?? false} onOpenChange={(isOpen) => setOpen(isOpen || undefined)}>
-            <FullscreenDialogContent title={t("history")} toolbar={toolbar}>
-                <ScrollArea className="flex-1 min-h-0">
-                    <div className="p-4 px-2 sm:px-12 md:px-14 lg:px-22 xl:px-28">
-                        <HistoryList searchString={debouncedSearchString} />
-                    </div>
-                </ScrollArea>
-            </FullscreenDialogContent>
-        </Dialog>
+        <>
+            <div className="border-b p-4">{toolbar}</div>
+            <ScrollArea className="flex-1 min-h-0">
+                <div className="p-4 px-2 sm:px-12 md:px-14 lg:px-22 xl:px-28">
+                    <HistoryList searchString={debouncedSearchString} />
+                </div>
+            </ScrollArea>
+        </>
     );
+}
+
+export default function HistorySettingsMenu() {
+    return <HistoryMenu />;
 }

@@ -40,7 +40,19 @@ export function InputRequestDialog() {
         gameProps.invalidateInterfaceData();
     }, [canConfirm, currentValue, gameProps, tempValue]);
 
-    useHotkeys([{ hotkey: "Enter", callback: submitInputValue, options: { enabled: open } }]);
+    useHotkeys([
+        {
+            hotkey: "Enter",
+            callback: submitInputValue,
+            options: {
+                enabled: open,
+                meta: {
+                    name: t("confirm"),
+                    description: t("confirm_input_hotkey_description"),
+                },
+            },
+        },
+    ]);
 
     return (
         <Dialog open={open}>

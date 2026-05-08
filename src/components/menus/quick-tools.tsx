@@ -1,3 +1,4 @@
+import { useAlertDialog } from "@/components/providers/AlertDialogProvider";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
 import useGameProps from "@/hooks/useGameProps";
@@ -16,7 +17,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useAlertDialog } from "../providers/AlertDialogProvider";
 
 export function QuickTools() {
     const { t } = useTranslation(["ui"]);
@@ -33,6 +33,7 @@ export function QuickTools() {
     const setHistory = useSetSearchParamState<boolean>("history");
     const setSaves = useSetSearchParamState<boolean>("saves");
     const setSettings = useSetSearchParamState<boolean>("settings");
+    const setSettingsTab = useSetSearchParamState<string>("settings_tab");
 
     return (
         <div className={cn("flex flex-wrap items-center justify-end gap-1")}>
@@ -49,8 +50,26 @@ export function QuickTools() {
             >
                 {t("back")}
             </Button>
-            <Button variant="ghost" size="xs" onClick={() => setHistory(true)}>
+            <Button
+                variant="ghost"
+                size="xs"
+                onClick={() => {
+                    setHistory(undefined);
+                    setSettings(true);
+                    setSettingsTab("menus/history");
+                }}
+            >
                 {t("history")}
+            </Button>
+            <Button
+                variant="ghost"
+                size="xs"
+                onClick={() => {
+                    setSettings(true);
+                    setSettingsTab("menus/controls");
+                }}
+            >
+                {t("hotkeys_menu")}
             </Button>
             <Toggle
                 size="sm"
@@ -67,7 +86,15 @@ export function QuickTools() {
             >
                 {t("auto_forward_time_restricted")}
             </Toggle>
-            <Button variant="ghost" size="xs" onClick={() => setSaves(true)}>
+            <Button
+                variant="ghost"
+                size="xs"
+                onClick={() => {
+                    setSaves(undefined);
+                    setSettings(true);
+                    setSettingsTab("menus/save-load");
+                }}
+            >
                 {t(`${t("save")}/${t("load")}`)}
             </Button>
             <Button

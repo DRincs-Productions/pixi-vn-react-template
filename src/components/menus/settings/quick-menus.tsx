@@ -15,7 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { useSetSearchParamState } from "@/hooks/useSearchParamState";
 import { Game } from "@drincs/pixi-vn";
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { HistoryIcon, LogOutIcon, SaveIcon } from "lucide-react";
+import { Gamepad2Icon, HistoryIcon, LogOutIcon, SaveIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export function QuickMenus() {
@@ -27,10 +27,35 @@ export function QuickMenus() {
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {isInGame && <OpenHistorySettingButton />}
                 <SaveLoadMenuButton />
+                <OpenControlsListSettingButton />
             </div>
             {isInGame && <Separator />}
             {isInGame && <ReturnMainMenuButton />}
         </div>
+    );
+}
+
+export function OpenControlsListSettingButton() {
+    const { t } = useTranslation(["ui"]);
+    const setSettingsOpen = useSetSearchParamState<boolean>("settings");
+    const setSettingsTab = useSetSearchParamState<string>("settings_tab");
+
+    return (
+        <Button
+            variant="outline"
+            className="w-full justify-start"
+            onClick={() => {
+                setSettingsOpen(true);
+                setSettingsTab("menus/controls");
+            }}
+        >
+            <Gamepad2Icon />
+            {t("hotkeys_menu")}
+            <KbdGroup className="ml-auto">
+                <Kbd>Ctrl</Kbd>
+                <Kbd>K</Kbd>
+            </KbdGroup>
+        </Button>
     );
 }
 
@@ -78,15 +103,15 @@ export default function ReturnMainMenuButton() {
 export function OpenHistorySettingButton() {
     const { t } = useTranslation(["ui"]);
     const setSettings = useSetSearchParamState<boolean>("settings");
-    const setHistory = useSetSearchParamState<boolean>("history");
+    const setSettingsTab = useSetSearchParamState<string>("settings_tab");
 
     return (
         <Button
             variant="outline"
             className="w-full justify-start"
             onClick={() => {
-                setSettings(false);
-                setHistory(true);
+                setSettings(true);
+                setSettingsTab("menus/history");
             }}
         >
             <HistoryIcon />
@@ -101,18 +126,24 @@ export function OpenHistorySettingButton() {
 
 export function SaveLoadMenuButton() {
     const { t } = useTranslation(["ui"]);
-    const setSaves = useSetSearchParamState<boolean>("saves");
+    const setSettingsOpen = useSetSearchParamState<boolean>("settings");
+    const setSettingsTab = useSetSearchParamState<string>("settings_tab");
 
     return (
         <Button
             variant="outline"
             className="w-full justify-start"
             onClick={() => {
-                setSaves(true);
+                setSettingsOpen(true);
+                setSettingsTab("menus/save-load");
             }}
         >
             <SaveIcon />
             {t(`${t("save")}/${t("load")}`)}
+            <KbdGroup className="ml-auto">
+                <Kbd>F5</Kbd>
+                <Kbd>F9</Kbd>
+            </KbdGroup>
         </Button>
     );
 }
