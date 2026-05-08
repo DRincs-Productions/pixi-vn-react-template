@@ -126,18 +126,24 @@ export function OpenHistorySettingButton() {
 
 export function SaveLoadMenuButton() {
     const { t } = useTranslation(["ui"]);
-    const setSaves = useSetSearchParamState<boolean>("saves");
+    const setSettingsOpen = useSetSearchParamState<boolean>("settings");
+    const setSettingsTab = useSetSearchParamState<string>("settings_tab");
 
     return (
         <Button
             variant="outline"
             className="w-full justify-start"
             onClick={() => {
-                setSaves(true);
+                setSettingsOpen(true);
+                setSettingsTab("menus/save-load");
             }}
         >
             <SaveIcon />
             {t(`${t("save")}/${t("load")}`)}
+            <KbdGroup className="ml-auto">
+                <Kbd>F5</Kbd>
+                <Kbd>F9</Kbd>
+            </KbdGroup>
         </Button>
     );
 }

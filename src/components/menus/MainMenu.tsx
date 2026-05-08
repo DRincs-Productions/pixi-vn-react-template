@@ -25,8 +25,8 @@ export default function MainMenu() {
     const { data: lastSave = null, isLoading } = useQueryLastSave();
     const gameProps = useGameProps();
     const { uiTransition: t, navigate, toast } = gameProps;
-    const setSaves = useSetSearchParamState<boolean>("saves");
     const setSettings = useSetSearchParamState<boolean>("settings");
+    const setSettingsTab = useSetSearchParamState<string>("settings_tab");
     const [loading, setLoading] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
@@ -190,7 +190,10 @@ export default function MainMenu() {
 
                     <Button
                         role="menuitem"
-                        onClick={() => setSaves(true)}
+                        onClick={() => {
+                            setSettings(true);
+                            setSettingsTab("menus/save-load");
+                        }}
                         disabled={loading}
                         variant="outline"
                         className={menuButtonClass}

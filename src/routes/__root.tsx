@@ -1,7 +1,6 @@
 import PendingComponent from "@/components/loading";
 import ControlsMenu from "@/components/menus/settings/menus/controls";
 import { OfflineAllert } from "@/components/modals/error-allerts";
-import GameSaveDialogue from "@/components/modals/GameSaveDialogue";
 import SettingsDialogue from "@/components/modals/SettingsDialogue";
 import RootProvider from "@/components/providers/RootProvider";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
@@ -69,7 +68,6 @@ function RootComponent() {
             <RootProvider>
                 <RootSetup />
                 <SettingsDialogue />
-                <GameSaveDialogue />
                 <ControlsMenu />
                 <OfflineAllert />
                 <Outlet />

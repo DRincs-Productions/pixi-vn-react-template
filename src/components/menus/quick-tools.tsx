@@ -86,7 +86,15 @@ export function QuickTools() {
             >
                 {t("auto_forward_time_restricted")}
             </Toggle>
-            <Button variant="ghost" size="xs" onClick={() => setSaves(true)}>
+            <Button
+                variant="ghost"
+                size="xs"
+                onClick={() => {
+                    setSaves(undefined);
+                    setSettings(true);
+                    setSettingsTab("menus/save-load");
+                }}
+            >
                 {t(`${t("save")}/${t("load")}`)}
             </Button>
             <Button

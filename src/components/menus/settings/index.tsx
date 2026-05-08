@@ -2,6 +2,7 @@ import { About } from "@/components/menus/settings/about";
 import { DialoguesControls } from "@/components/menus/settings/dialogues-controls";
 import { ControlsListSettingsPage } from "@/components/menus/settings/menus/controls";
 import { HistoryListSettingsPage } from "@/components/menus/settings/menus/history";
+import { SaveLoadSettingsPage } from "@/components/menus/settings/menus/save-load";
 import { QuickMenus } from "@/components/menus/settings/quick-menus";
 import { SoundControls } from "@/components/menus/settings/sound-controls";
 import { SystemControls } from "@/components/menus/settings/system-controls";
@@ -21,7 +22,7 @@ import { ArrowLeftIcon } from "lucide-react";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 
-type SettingsTabPath = "menus/controls" | "menus/history";
+type SettingsTabPath = "menus/controls" | "menus/history" | "menus/save-load";
 
 type BreadcrumbEntry = {
     id: string;
@@ -34,7 +35,9 @@ export default function Settings() {
     const setSettingsTab = useSetSearchParamState<string>("settings_tab");
 
     const normalizedTab: SettingsTabPath | undefined =
-        currentTab === "menus/controls" || currentTab === "menus/history"
+        currentTab === "menus/controls" ||
+        currentTab === "menus/history" ||
+        currentTab === "menus/save-load"
             ? (currentTab as SettingsTabPath)
             : undefined;
 
@@ -48,11 +51,25 @@ export default function Settings() {
         }
 
         const trail: BreadcrumbEntry[] = [{ id: "home", label: t("home") }];
-        if (normalizedTab === "menus/controls" || normalizedTab === "menus/history") {
+        if (
+            normalizedTab === "menus/controls" ||
+            normalizedTab === "menus/history" ||
+            normalizedTab === "menus/save-load"
+        ) {
             trail.push({ id: "menus", label: t("menus") });
             trail.push({
-                id: normalizedTab === "menus/controls" ? "menus-controls" : "menus-history",
-                label: normalizedTab === "menus/controls" ? t("hotkeys_menu") : t("history"),
+                id:
+                    normalizedTab === "menus/controls"
+                        ? "menus-controls"
+                        : normalizedTab === "menus/history"
+                          ? "menus-history"
+                          : "menus-save-load",
+                label:
+                    normalizedTab === "menus/controls"
+                        ? t("hotkeys_menu")
+                        : normalizedTab === "menus/history"
+                          ? t("history")
+                          : `${t("save")}/${t("load")}`,
             });
         }
         return trail;
@@ -91,7 +108,11 @@ export default function Settings() {
         </Breadcrumb>
     );
 
-    if (normalizedTab === "menus/controls" || normalizedTab === "menus/history") {
+    if (
+        normalizedTab === "menus/controls" ||
+        normalizedTab === "menus/history" ||
+        normalizedTab === "menus/save-load"
+    ) {
         return (
             <>
                 <div className="border-b px-4 py-3">
@@ -105,11 +126,9 @@ export default function Settings() {
                         </div>
                     </div>
                 </div>
-                {normalizedTab === "menus/controls" ? (
-                    <ControlsListSettingsPage />
-                ) : (
-                    <HistoryListSettingsPage />
-                )}
+                {normalizedTab === "menus/controls" ? <ControlsListSettingsPage /> : null}
+                {normalizedTab === "menus/history" ? <HistoryListSettingsPage /> : null}
+                {normalizedTab === "menus/save-load" ? <SaveLoadSettingsPage /> : null}
             </>
         );
     }
