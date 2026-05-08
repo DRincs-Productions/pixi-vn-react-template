@@ -1,5 +1,6 @@
+import PendingComponent from "@/components/loading";
+import ControlsMenu from "@/components/menus/settings/menus/controls";
 import { OfflineAllert } from "@/components/modals/error-allerts";
-import GameSaveDialogue from "@/components/modals/GameSaveDialogue";
 import SettingsDialogue from "@/components/modals/SettingsDialogue";
 import RootProvider from "@/components/providers/RootProvider";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
@@ -9,7 +10,6 @@ import useSaveHotkeys from "@/hooks/useSaveHotkeys";
 import { useI18n } from "@/lib/i18n";
 import { SearchParams } from "@/lib/stores/search-param-store";
 import type { RouterContext } from "@/router";
-import LoadingScreen from "@/screens/LoadingScreen";
 import { defineAssets } from "@/utils/assets-utility";
 import { initializeIndexedDB } from "@/utils/indexedDB-utility";
 import { loadRefreshSave } from "@/utils/save-utility";
@@ -30,7 +30,7 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 export const Route = createRootRouteWithContext<RouterContext>()({
     validateSearch: (search) => SearchParams.setMany(search),
     component: RootComponent,
-    pendingComponent: LoadingScreen,
+    pendingComponent: PendingComponent,
     loader: async ({ context }) => {
         Game.onNavigate(async (to) => {
             redirect({ to });
@@ -68,7 +68,7 @@ function RootComponent() {
             <RootProvider>
                 <RootSetup />
                 <SettingsDialogue />
-                <GameSaveDialogue />
+                <ControlsMenu />
                 <OfflineAllert />
                 <Outlet />
             </RootProvider>

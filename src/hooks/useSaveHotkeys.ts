@@ -78,18 +78,42 @@ export default function useSaveHotkeys(): null {
         {
             hotkey: "F5",
             callback: quickSave,
+            options: {
+                meta: {
+                    name: t("quick_save"),
+                    description: t("quick_save_hotkey_description"),
+                },
+            },
         },
         {
             hotkey: "Control+S",
             callback: quickSave,
+            options: {
+                meta: {
+                    name: t("quick_save"),
+                    description: t("quick_save_hotkey_alternative_description"),
+                },
+            },
         },
         {
             hotkey: "F9",
             callback: quickLoad,
+            options: {
+                meta: {
+                    name: t("load_last_save"),
+                    description: t("quick_load_hotkey_description"),
+                },
+            },
         },
         {
             hotkey: "Control+L",
             callback: quickLoad,
+            options: {
+                meta: {
+                    name: t("load_last_save"),
+                    description: t("quick_load_hotkey_alternative_description"),
+                },
+            },
         },
     ]);
 
