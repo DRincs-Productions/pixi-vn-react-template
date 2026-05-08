@@ -250,7 +250,7 @@ function QuickActionsWheelContent({
         >
             <div
                 ref={wheelContainerRef}
-                className="relative size-[360px] rounded-full border border-primary/20 bg-background/90 shadow-xl"
+                className="relative h-[350px] w-[390px] rounded-[9999px] border border-primary/20 bg-background/90 shadow-xl"
             >
                 {wheelItems.map((registration, index) => {
                     const angle = (index / wheelItems.length) * Math.PI * 2 - Math.PI / 2;
