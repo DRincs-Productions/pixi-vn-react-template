@@ -51,6 +51,10 @@ export function OpenControlsListSettingButton() {
         >
             <Gamepad2Icon />
             {t("hotkeys_menu")}
+            <KbdGroup className="ml-auto">
+                <Kbd>Ctrl</Kbd>
+                <Kbd>K</Kbd>
+            </KbdGroup>
         </Button>
     );
 }
@@ -99,15 +103,15 @@ export default function ReturnMainMenuButton() {
 export function OpenHistorySettingButton() {
     const { t } = useTranslation(["ui"]);
     const setSettings = useSetSearchParamState<boolean>("settings");
-    const setHistory = useSetSearchParamState<boolean>("history");
+    const setSettingsTab = useSetSearchParamState<string>("settings_tab");
 
     return (
         <Button
             variant="outline"
             className="w-full justify-start"
             onClick={() => {
-                setSettings(false);
-                setHistory(true);
+                setSettings(true);
+                setSettingsTab("menus/history");
             }}
         >
             <HistoryIcon />

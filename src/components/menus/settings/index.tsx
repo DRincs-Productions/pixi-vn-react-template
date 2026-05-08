@@ -1,6 +1,7 @@
-import { ControlsListSettingsPage } from "@/components/menus/settings/menus/controls";
 import { About } from "@/components/menus/settings/about";
 import { DialoguesControls } from "@/components/menus/settings/dialogues-controls";
+import { ControlsListSettingsPage } from "@/components/menus/settings/menus/controls";
+import { HistoryListSettingsPage } from "@/components/menus/settings/menus/history";
 import { QuickMenus } from "@/components/menus/settings/quick-menus";
 import { SoundControls } from "@/components/menus/settings/sound-controls";
 import { SystemControls } from "@/components/menus/settings/system-controls";
@@ -20,12 +21,11 @@ import { ArrowLeftIcon } from "lucide-react";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 
-type SettingsTabPath = "menus/controls";
+type SettingsTabPath = "menus/controls" | "menus/history";
 
 type BreadcrumbEntry = {
     id: string;
     label: string;
-    path?: SettingsTabPath;
 };
 
 export default function Settings() {
@@ -34,7 +34,9 @@ export default function Settings() {
     const setSettingsTab = useSetSearchParamState<string>("settings_tab");
 
     const normalizedTab: SettingsTabPath | undefined =
-        currentTab === "menus/controls" ? (currentTab as SettingsTabPath) : undefined;
+        currentTab === "menus/controls" || currentTab === "menus/history"
+            ? (currentTab as SettingsTabPath)
+            : undefined;
 
     const goBack = () => {
         setSettingsTab(undefined);
@@ -42,16 +44,16 @@ export default function Settings() {
 
     const breadcrumbs: BreadcrumbEntry[] = (() => {
         if (!normalizedTab) {
-            return [
-                { id: "settings", label: t("settings") },
-                { id: "main", label: t("main") },
-            ];
+            return [{ id: "home", label: t("home") }];
         }
 
-        const trail: BreadcrumbEntry[] = [{ id: "settings", label: t("settings") }];
-        if (normalizedTab === "menus/controls") {
+        const trail: BreadcrumbEntry[] = [{ id: "home", label: t("home") }];
+        if (normalizedTab === "menus/controls" || normalizedTab === "menus/history") {
             trail.push({ id: "menus", label: t("menus") });
-            trail.push({ id: "menus-controls", label: t("hotkeys_menu") });
+            trail.push({
+                id: normalizedTab === "menus/controls" ? "menus-controls" : "menus-history",
+                label: normalizedTab === "menus/controls" ? t("hotkeys_menu") : t("history"),
+            });
         }
         return trail;
     })();
@@ -61,12 +63,12 @@ export default function Settings() {
             <BreadcrumbList>
                 {breadcrumbs.map((crumb, index) => {
                     const isLast = index === breadcrumbs.length - 1;
-                    const isSettingsRootLink = crumb.id === "settings" && normalizedTab;
+                    const isHomeRootLink = crumb.id === "home" && normalizedTab;
 
                     return (
                         <Fragment key={crumb.id}>
                             <BreadcrumbItem>
-                                {isSettingsRootLink ? (
+                                {isHomeRootLink ? (
                                     <BreadcrumbLink
                                         render={
                                             <button
@@ -77,19 +79,8 @@ export default function Settings() {
                                     >
                                         {crumb.label}
                                     </BreadcrumbLink>
-                                ) : isLast || !crumb.path ? (
-                                    <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
                                 ) : (
-                                    <BreadcrumbLink
-                                        render={
-                                            <button
-                                                type="button"
-                                                onClick={() => setSettingsTab(crumb.path)}
-                                            />
-                                        }
-                                    >
-                                        {crumb.label}
-                                    </BreadcrumbLink>
+                                    <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
                                 )}
                             </BreadcrumbItem>
                             {!isLast && <BreadcrumbSeparator />}
@@ -100,7 +91,7 @@ export default function Settings() {
         </Breadcrumb>
     );
 
-    if (normalizedTab === "menus/controls") {
+    if (normalizedTab === "menus/controls" || normalizedTab === "menus/history") {
         return (
             <>
                 <div className="border-b px-4 py-3">
@@ -114,7 +105,11 @@ export default function Settings() {
                         </div>
                     </div>
                 </div>
-                <ControlsListSettingsPage />
+                {normalizedTab === "menus/controls" ? (
+                    <ControlsListSettingsPage />
+                ) : (
+                    <HistoryListSettingsPage />
+                )}
             </>
         );
     }

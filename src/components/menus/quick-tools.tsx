@@ -50,7 +50,15 @@ export function QuickTools() {
             >
                 {t("back")}
             </Button>
-            <Button variant="ghost" size="xs" onClick={() => setHistory(true)}>
+            <Button
+                variant="ghost"
+                size="xs"
+                onClick={() => {
+                    setHistory(undefined);
+                    setSettings(true);
+                    setSettingsTab("menus/history");
+                }}
+            >
                 {t("history")}
             </Button>
             <Button
