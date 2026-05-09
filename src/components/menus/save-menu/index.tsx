@@ -56,9 +56,9 @@ export default function GameSaveMenu() {
                             className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
                         />
                     </PaginationItem>
-                    {pageNumbers.map((p, i) =>
+                    {pageNumbers.map((p) =>
                         p === "ellipsis" ? (
-                            <PaginationItem key={`ellipsis-${i}`}>
+                            <PaginationItem key={`ellipsis-${currentPage}`}>
                                 <PaginationEllipsis />
                             </PaginationItem>
                         ) : (
