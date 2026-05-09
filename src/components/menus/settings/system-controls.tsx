@@ -13,8 +13,9 @@ import { Toggle } from "@/components/ui/toggle";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguageSettings } from "@/lib/hooks/language-settings-hooks";
 import { downloadResourceToTranslate } from "@/lib/i18n";
-import useQueryIsFullModeScreen, {
+import {
     IS_FULL_SCREEN_MODE_USE_QUEY_KEY,
+    useQueryIsFullModeScreen,
 } from "@/lib/query/settings-query";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { useQueryClient } from "@tanstack/react-query";

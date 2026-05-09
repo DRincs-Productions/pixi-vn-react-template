@@ -28,7 +28,7 @@ function getPageNumbers(current: number, total: number): (number | "ellipsis")[]
     return pages;
 }
 
-export default function GameSaveMenu() {
+export function GameSaveMenu() {
     const page = useStore(GameSaveScreenStore.store, (state) => state.page);
 
     const currentPage = page + 1;

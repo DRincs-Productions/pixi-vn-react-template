@@ -59,7 +59,7 @@ export function OpenControlsListSettingButton() {
     );
 }
 
-export default function ReturnMainMenuButton() {
+export function ReturnMainMenuButton() {
     const navigate = useNavigate();
     const { t } = useTranslation(["ui"]);
     const setOpenSettings = useSetSearchParamState<boolean>("settings");

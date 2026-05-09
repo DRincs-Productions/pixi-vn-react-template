@@ -1,4 +1,4 @@
-import GameSaveMenu from "@/components/menus/save-menu";
+import { GameSaveMenu } from "@/components/menus/save-menu";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useGameProps } from "@/lib/hooks/props-hooks";

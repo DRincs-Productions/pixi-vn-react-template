@@ -85,7 +85,7 @@ function SoundRow({
     );
 }
 
-export default function SoundChannelControl({
+export function SoundChannelControl({
     label,
     alias,
     disabled,
