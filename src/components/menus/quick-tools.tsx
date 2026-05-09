@@ -4,7 +4,7 @@ import { Toggle } from "@/components/ui/toggle";
 import { useNarrationFunctions } from "@/lib/hooks/narration-hooks";
 import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
 import { useGameProps } from "@/lib/hooks/props-hooks";
-import { useWheelActions } from "@/lib/hooks/useWheelActions";
+import { useWheelActions } from "@/lib/hooks/quick-tools-hooks";
 import { useQueryCanGoBack } from "@/lib/query/interface-query";
 import {
     LAST_SAVE_USE_QUEY_KEY,
