@@ -2,10 +2,10 @@ import { PendingComponent } from "@/components/loading";
 import { SettingsDialogue } from "@/components/menus/settings";
 import { OfflineAllert } from "@/components/modals/error-allerts";
 import { RootProvider } from "@/components/providers/root-provider";
-import { useConfirmBackNavigation } from "@/hooks/navigation-hooks";
-import { useAutoSaveOnPageClose } from "@/hooks/save-hooks";
-import { INTERFACE_DATA_USE_QUEY_KEY } from "@/hooks/useQueryInterface";
+import { useConfirmBackNavigation } from "@/lib/hooks/navigation-hooks";
+import { useAutoSaveOnPageClose } from "@/lib/hooks/save-hooks";
 import { useI18n } from "@/lib/i18n";
+import { INTERFACE_DATA_USE_QUEY_KEY } from "@/lib/query/interface-query";
 import { SearchParams } from "@/lib/stores/search-param-store";
 import type { RouterContext } from "@/router";
 import { defineAssets } from "@/utils/assets-utility";
@@ -17,6 +17,7 @@ import { hotkeysDevtoolsPlugin } from "@tanstack/react-hotkeys-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import { createRootRouteWithContext, ErrorComponent, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+
 export const Route = createRootRouteWithContext<RouterContext>()({
     validateSearch: (search) => SearchParams.setMany(search),
     component: RootComponent,

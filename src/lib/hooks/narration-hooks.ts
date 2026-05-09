@@ -1,4 +1,4 @@
-import { useGameProps } from "@/hooks/props-hooks";
+import { useGameProps } from "@/lib/hooks/props-hooks";
 import { GameStatus } from "@/lib/stores/game-status-store";
 import { narration, stepHistory, type StoredIndexedChoiceInterface } from "@drincs/pixi-vn";
 import { useCallback } from "react";

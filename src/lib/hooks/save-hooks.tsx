@@ -1,9 +1,8 @@
 import { SaveNameInput } from "@/components/menus/save-menu/save-forms";
 import { useAlertDialog } from "@/components/providers/alert-dialog-provider";
-import { useGameProps } from "@/hooks/props-hooks";
-import { LAST_SAVE_USE_QUEY_KEY } from "@/hooks/useQueryLastSave";
-import { SAVES_USE_QUEY_KEY } from "@/hooks/useQuerySaves";
-import { useSetSearchParamState } from "@/hooks/useSearchParamState";
+import { useGameProps } from "@/lib/hooks/props-hooks";
+import { useSetSearchParamState } from "@/lib/hooks/useSearchParamState";
+import { LAST_SAVE_USE_QUEY_KEY, SAVES_USE_QUEY_KEY } from "@/lib/query/save-query";
 import type GameSaveData from "@/models/GameSaveData";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import {

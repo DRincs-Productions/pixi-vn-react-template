@@ -1,4 +1,4 @@
-import { CharacterInterface, narration, stepHistory } from "@drincs/pixi-vn";
+import { type CharacterInterface, narration, stepHistory } from "@drincs/pixi-vn";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
@@ -53,7 +53,7 @@ export function useQueryDialogue() {
     return useQuery<DialogueModel>({
         queryKey: [INTERFACE_DATA_USE_QUEY_KEY, DIALOGUE_USE_QUEY_KEY],
         queryFn: async ({ queryKey }) => {
-            let dialogue = narration.dialogue;
+            const dialogue = narration.dialogue;
             let text = dialogue?.text;
             if (Array.isArray(text)) {
                 text = text.map((text) => t(text)).join(" ");
@@ -68,10 +68,10 @@ export function useQueryDialogue() {
                 } as CharacterInterface;
             }
 
-            let prevData = queryClient.getQueryData<DialogueModel>(queryKey) || {};
-            let oldText = (prevData.text || "") + (prevData.animatedText || "");
+            const prevData = queryClient.getQueryData<DialogueModel>(queryKey) || {};
+            const oldText = (prevData.text || "") + (prevData.animatedText || "");
             if (text && character?.id === prevData?.character?.id && text.startsWith(oldText)) {
-                let newText = text.slice(oldText.length);
+                const newText = text.slice(oldText.length);
                 if (!newText && oldText && character === prevData?.character) {
                     return prevData;
                 }
@@ -107,14 +107,14 @@ export function useQueryNarrativeHistory({ searchString }: { searchString?: stri
         queryKey: [INTERFACE_DATA_USE_QUEY_KEY, NARRATIVE_HISTORY_USE_QUEY_KEY],
         queryFn: async () => {
             const promises = stepHistory.narrativeHistory.map(async (step) => {
-                let character = step.dialogue?.character;
+                const character = step.dialogue?.character;
                 let icon: string | undefined;
                 let characterName: string | undefined;
                 if (typeof character === "string") {
                     characterName = t(character);
                 } else {
                     characterName = character?.name
-                        ? character.name + (character.surname ? " " + character.surname : "")
+                        ? character.name + (character.surname ? ` ${character.surname}` : "")
                         : undefined;
                     icon = character?.icon;
                 }

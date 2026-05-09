@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/item";
 import { Kbd } from "@/components/ui/kbd";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useQueryNarrativeHistory } from "@/hooks/useQueryInterface";
+import { useQueryNarrativeHistory } from "@/lib/query/interface-query";
 import { cn } from "@/lib/utils";
 import { useDebouncedValue } from "@tanstack/react-pacer";
 import { Check, Search } from "lucide-react";

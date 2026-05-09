@@ -1,6 +1,6 @@
 import NarrationScreen from "@/components/menus/narration";
-import useNarrationPointerHandlers from "@/hooks/useNarrationPointerHandlers";
-import useSkipAutoDetector from "@/hooks/useSkipAutoDetector";
+import useNarrationPointerHandlers from "@/lib/hooks/useNarrationPointerHandlers";
+import useSkipAutoDetector from "@/lib/hooks/useSkipAutoDetector";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/game/narration")({

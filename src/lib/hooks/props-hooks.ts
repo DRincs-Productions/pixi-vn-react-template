@@ -1,4 +1,4 @@
-import { INTERFACE_DATA_USE_QUEY_KEY } from "@/hooks/useQueryInterface";
+import { INTERFACE_DATA_USE_QUEY_KEY } from "@/lib/query/interface-query";
 import type { StepLabelProps } from "@drincs/pixi-vn";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";

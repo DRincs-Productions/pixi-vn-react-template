@@ -1,7 +1,7 @@
+import { CANVAS_MINIGAME_LAYER_NAME } from "@/constans";
 import { canvas, type Layer } from "@drincs/pixi-vn";
 import { Container } from "@drincs/pixi-vn/pixi.js";
 import { useEffect, useRef } from "react";
-import { CANVAS_MINIGAME_LAYER_NAME } from "../constans";
 
 export function useMinigame(
     game: (layer: Layer) => void,

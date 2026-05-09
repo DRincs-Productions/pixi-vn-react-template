@@ -1,4 +1,4 @@
-import { useNarrationFunctions } from "@/hooks/narration-hooks";
+import { useNarrationFunctions } from "@/lib/hooks/narration-hooks";
 import { SkipSettings } from "@/lib/stores/skip-settings-store";
 import { hasScrollableParent, isScrollableElement } from "@/utils/scroll-utils";
 import { useStore } from "@tanstack/react-store";

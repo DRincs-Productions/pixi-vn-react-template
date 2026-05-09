@@ -1,5 +1,5 @@
 import { SKIP_DELAY } from "@/constans";
-import { useNarrationFunctions } from "@/hooks/narration-hooks";
+import { useNarrationFunctions } from "@/lib/hooks/narration-hooks";
 import { AutoSettings } from "@/lib/stores/auto-settings-store";
 import { SkipSettings } from "@/lib/stores/skip-settings-store";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";

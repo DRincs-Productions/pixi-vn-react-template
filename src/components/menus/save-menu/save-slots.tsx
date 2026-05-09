@@ -1,8 +1,8 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useSaveActions } from "@/hooks/save-hooks";
-import useQuerySaves from "@/hooks/useQuerySaves";
+import { useSaveActions } from "@/lib/hooks/save-hooks";
+import { useQuerySaves } from "@/lib/query/save-query";
 import { cn, overlayTextShadowClass } from "@/lib/utils";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import { downloadGameSave } from "@/utils/save-utility";

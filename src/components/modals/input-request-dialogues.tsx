@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useGameProps } from "@/hooks/props-hooks";
-import { useQueryDialogue, useQueryInputValue } from "@/hooks/useQueryInterface";
+import { useGameProps } from "@/lib/hooks/props-hooks";
+import { useQueryDialogue, useQueryInputValue } from "@/lib/query/interface-query";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { narration } from "@drincs/pixi-vn";
 import { useHotkeys } from "@tanstack/react-hotkeys";

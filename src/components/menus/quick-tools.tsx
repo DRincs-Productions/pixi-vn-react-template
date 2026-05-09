@@ -1,13 +1,16 @@
 import { useAlertDialog } from "@/components/providers/alert-dialog-provider";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
-import { useNarrationFunctions } from "@/hooks/narration-hooks";
-import { useGameProps } from "@/hooks/props-hooks";
-import { useQueryCanGoBack } from "@/hooks/useQueryInterface";
-import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "@/hooks/useQueryLastSave";
-import { SAVES_USE_QUEY_KEY } from "@/hooks/useQuerySaves";
-import { useSetSearchParamState } from "@/hooks/useSearchParamState";
-import { useWheelActions } from "@/hooks/useWheelActions";
+import { useNarrationFunctions } from "@/lib/hooks/narration-hooks";
+import { useGameProps } from "@/lib/hooks/props-hooks";
+import { useSetSearchParamState } from "@/lib/hooks/useSearchParamState";
+import { useWheelActions } from "@/lib/hooks/useWheelActions";
+import { useQueryCanGoBack } from "@/lib/query/interface-query";
+import {
+    LAST_SAVE_USE_QUEY_KEY,
+    SAVES_USE_QUEY_KEY,
+    useQueryLastSave,
+} from "@/lib/query/save-query";
 import { AutoSettings } from "@/lib/stores/auto-settings-store";
 import { GameStatus } from "@/lib/stores/game-status-store";
 import { SkipSettings } from "@/lib/stores/skip-settings-store";

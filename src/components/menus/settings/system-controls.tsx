@@ -11,11 +11,11 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Toggle } from "@/components/ui/toggle";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useLanguageSettings } from "@/hooks/language-settings-hooks";
+import { useLanguageSettings } from "@/lib/hooks/language-settings-hooks";
+import { downloadResourceToTranslate } from "@/lib/i18n";
 import useQueryIsFullModeScreen, {
     IS_FULL_SCREEN_MODE_USE_QUEY_KEY,
-} from "@/hooks/useQueryIsFullModeScreen";
-import { downloadResourceToTranslate } from "@/lib/i18n";
+} from "@/lib/query/settings-query";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { useQueryClient } from "@tanstack/react-query";
 import { useStore } from "@tanstack/react-store";
