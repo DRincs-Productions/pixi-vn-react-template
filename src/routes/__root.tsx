@@ -8,7 +8,7 @@ import { useI18n } from "@/lib/i18n";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "@/lib/query/interface-query";
 import { SearchParams } from "@/lib/stores/search-param-store";
 import { defineAssets } from "@/lib/utils/assets-utility";
-import { initializeIndexedDB } from "@/lib/utils/indexedDB-utility";
+import { initializeIndexedDB } from "@/lib/utils/db-utility";
 import { loadRefreshSave } from "@/lib/utils/save-utility";
 import type { RouterContext } from "@/router";
 import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";

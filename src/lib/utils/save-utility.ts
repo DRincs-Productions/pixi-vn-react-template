@@ -5,7 +5,7 @@ import {
     getRowFromIndexDB,
     INDEXED_DB_SAVE_TABLE,
     putRowIntoIndexDB,
-} from "@/lib/utils/indexedDB-utility";
+} from "@/lib/utils/db-utility";
 import type GameSaveData from "@/models/GameSaveData";
 import { canvas, Game } from "@drincs/pixi-vn";
 
