@@ -156,3 +156,31 @@ export function useSettingsHotkeys(): null {
 
     return null;
 }
+
+export function useGameHotkeys(): null {
+    const setSettingsOpen = useSetSearchParamState<boolean>("settings");
+    const setSettingsTab = useSetSearchParamState<string>("settings_tab");
+    const setHistory = useSetSearchParamState<boolean>("history");
+    const { t } = useTranslation(["ui"]);
+
+    const openHistoryPage = useCallback(() => {
+        setHistory(undefined);
+        setSettingsOpen(true);
+        setSettingsTab("menus/history");
+    }, [setHistory, setSettingsOpen, setSettingsTab]);
+
+    useHotkeys([
+        {
+            hotkey: "Control+H",
+            callback: openHistoryPage,
+            options: {
+                meta: {
+                    name: t("history"),
+                    description: t("history_hotkey_description"),
+                },
+            },
+        },
+    ]);
+
+    return null;
+}
