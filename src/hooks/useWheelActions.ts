@@ -1,5 +1,5 @@
 import { HTML_CANVAS_LAYER_NAME, HTML_UI_LAYER_NAME } from "@/constans";
-import useGameProps from "@/hooks/useGameProps";
+import { useGameProps } from "@/hooks/props-hooks";
 import { GameStatus } from "@/lib/stores/game-status-store";
 import { hasScrollableParent } from "@/utils/scroll-utils";
 import { type StepLabelProps, stepHistory } from "@drincs/pixi-vn";

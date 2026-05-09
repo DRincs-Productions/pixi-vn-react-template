@@ -1,11 +1,11 @@
+import { INTERFACE_DATA_USE_QUEY_KEY } from "@/hooks/useQueryInterface";
 import type { StepLabelProps } from "@drincs/pixi-vn";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { INTERFACE_DATA_USE_QUEY_KEY } from "./useQueryInterface";
 
-export default function useGameProps(): StepLabelProps {
+export function useGameProps(): StepLabelProps {
     const navigate = useNavigate();
     const { t } = useTranslation(["narration"]);
     const { t: uiTransition } = useTranslation(["ui"]);

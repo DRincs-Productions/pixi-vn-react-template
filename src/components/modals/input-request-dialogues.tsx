@@ -1,3 +1,9 @@
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { useGameProps } from "@/hooks/props-hooks";
+import { useQueryDialogue, useQueryInputValue } from "@/hooks/useQueryInterface";
+import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { narration } from "@drincs/pixi-vn";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useDebouncedValue } from "@tanstack/react-pacer";
@@ -7,12 +13,6 @@ import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import useGameProps from "@/hooks/useGameProps";
-import { useQueryDialogue, useQueryInputValue } from "@/hooks/useQueryInterface";
-import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 
 export function InputRequestDialog() {
     const { data: { animatedText: text } = {} } = useQueryDialogue();

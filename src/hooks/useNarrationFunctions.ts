@@ -1,7 +1,7 @@
 import { narration, stepHistory, type StoredIndexedChoiceInterface } from "@drincs/pixi-vn";
 import { useCallback } from "react";
 import { GameStatus } from "../lib/stores/game-status-store";
-import useGameProps from "./useGameProps";
+import { useGameProps } from "./props-hooks";
 
 export default function useNarrationFunctions() {
     const gameProps = useGameProps();

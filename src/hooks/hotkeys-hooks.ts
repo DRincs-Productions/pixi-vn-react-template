@@ -1,5 +1,5 @@
 import { useAlertDialog } from "@/components/providers/alert-dialog-provider";
-import useGameProps from "@/hooks/useGameProps";
+import { useGameProps } from "@/hooks/props-hooks";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "@/hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "@/hooks/useQuerySaves";
 import { useSetSearchParamState } from "@/hooks/useSearchParamState";

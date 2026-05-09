@@ -1,7 +1,7 @@
 import GameSaveMenu from "@/components/menus/save-menu";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import useGameProps from "@/hooks/useGameProps";
+import { useGameProps } from "@/hooks/props-hooks";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import { downloadGameSave, loadGameSaveFromFile } from "@/utils/save-utility";
 import { useLocation } from "@tanstack/react-router";
