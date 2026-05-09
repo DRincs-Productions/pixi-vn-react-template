@@ -1,3 +1,4 @@
+import { james, mc, sly, steph, steph_fullname } from "@/content/characters";
 import {
     moveIn,
     narration,
@@ -8,9 +9,8 @@ import {
     Text,
     TextStyle,
 } from "@drincs/pixi-vn";
-import { james, mc, sly, steph, steph_fullname } from "../characters";
 
-const secondPart = newLabel("second_part", [
+export const secondPart = newLabel("second_part", [
     async ({ t }) => {
         narration.dialogue = undefined;
         const skewStyle = new TextStyle({
@@ -1205,4 +1205,3 @@ const secondPart = newLabel("second_part", [
         narration.dialogue = `...freedom...`;
     },
 ]);
-export default secondPart;

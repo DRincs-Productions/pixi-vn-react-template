@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { CANVAS_UI_LAYER_NAME } from "@/constans";
-import startLabel from "@/content/labels/startLabel";
+import { startLabel } from "@/content/labels/start-label";
 import useGameProps from "@/hooks/useGameProps";
 import { INTERFACE_DATA_USE_QUEY_KEY as INTERFACE_DATA_USE_QUERY_KEY } from "@/hooks/useQueryInterface";
 import useQueryLastSave from "@/hooks/useQueryLastSave";
