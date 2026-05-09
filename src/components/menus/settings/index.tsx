@@ -15,6 +15,7 @@ import {
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
+import { Dialog, FullscreenDialogContent } from "@/components/ui/fullscreen-dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { useSearchParamState, useSetSearchParamState } from "@/hooks/useSearchParamState";
@@ -29,7 +30,7 @@ type BreadcrumbEntry = {
     label: string;
 };
 
-export default function Settings() {
+export function Settings() {
     const { t } = useTranslation(["ui"]);
     const currentTab = useSearchParamState<string>("settings_tab");
     const setSettingsTab = useSetSearchParamState<string>("settings_tab");
@@ -192,5 +193,28 @@ export default function Settings() {
                 </div>
             </ScrollArea>
         </div>
+    );
+}
+
+export function SettingsDialogue() {
+    const open = useSearchParamState<boolean>("settings");
+    const setOpen = useSetSearchParamState<boolean>("settings");
+    const setSettingsTab = useSetSearchParamState<string>("settings_tab");
+    const { t } = useTranslation(["ui"]);
+
+    return (
+        <Dialog
+            open={open ?? false}
+            onOpenChange={(isOpen) => {
+                setOpen(isOpen || undefined);
+                if (!isOpen) {
+                    setSettingsTab(undefined);
+                }
+            }}
+        >
+            <FullscreenDialogContent title={t("settings")}>
+                <Settings />
+            </FullscreenDialogContent>
+        </Dialog>
     );
 }

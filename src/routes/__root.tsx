@@ -1,6 +1,6 @@
 import PendingComponent from "@/components/loading";
+import { SettingsDialogue } from "@/components/menus/settings";
 import { OfflineAllert } from "@/components/modals/error-allerts";
-import SettingsDialogue from "@/components/modals/SettingsDialogue";
 import RootProvider from "@/components/providers/RootProvider";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
 import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
