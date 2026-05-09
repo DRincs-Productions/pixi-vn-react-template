@@ -61,7 +61,7 @@ export async function putRowIntoIndexDB<T extends {}>(tableName: string, data: T
 
 export async function getRowFromIndexDB<T extends {}>(
     tableName: string,
-    id: any,
+    id: number | string,
 ): Promise<T | null> {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open(INDEXED_DB_NAME);
@@ -123,7 +123,7 @@ export async function getLastRowFromIndexDB<T extends {}>(tableName: string): Pr
     });
 }
 
-export async function deleteRowFromIndexDB(tableName: string, id: any): Promise<void> {
+export async function deleteRowFromIndexDB(tableName: string, id: number | string): Promise<void> {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open(INDEXED_DB_NAME);
         request.onsuccess = (_event) => {
