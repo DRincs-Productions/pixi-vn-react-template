@@ -7,7 +7,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import useNetworkDetector from "@/lib/hooks/network-hooks";
+import { useNetworkDetector } from "@/lib/hooks/network-hooks";
 import { RefreshCwIcon, WifiOffIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 

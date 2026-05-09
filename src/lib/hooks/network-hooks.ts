@@ -5,7 +5,7 @@ type NetworkStatus = {
     retry: () => void;
 };
 
-export default function useNetworkDetector(): NetworkStatus {
+export function useNetworkDetector(): NetworkStatus {
     const [isOnline, setIsOnline] = useState(() => navigator.onLine);
 
     const checkOnline = useCallback(() => {
