@@ -1,5 +1,4 @@
 import { canvas, Game } from "@drincs/pixi-vn";
-import { REFRESH_SAVE_DATE_LOCAL_STORAGE_KEY, REFRESH_SAVE_LOCAL_STORAGE_KEY } from "../constans";
 import type GameSaveData from "../models/GameSaveData";
 import {
     deleteRowFromIndexDB,
@@ -11,6 +10,7 @@ import {
 } from "./indexedDB-utility";
 
 const SAVE_FILE_EXTENSION = "json";
+const REFRESH_SAVE_LOCAL_STORAGE_KEY = "refresh_save";
 
 export function createGameSave(options?: { image?: string; name?: string }): GameSaveData {
     const { image, name = "" } = options || {};
@@ -70,7 +70,7 @@ export async function getLastSaveFromIndexDB(): Promise<(GameSaveData & { id: nu
     const refreshJsonString = localStorage.getItem(REFRESH_SAVE_LOCAL_STORAGE_KEY);
     if (refreshJsonString) {
         const refreshSave: GameSaveData & { id: number } = {
-            ...JSON.parse(refreshJsonString) as GameSaveData,
+            ...(JSON.parse(refreshJsonString) as GameSaveData),
             id: -1,
         };
         if (!indexedDbSave || new Date(refreshSave.date) > new Date(indexedDbSave.date)) {
@@ -129,7 +129,6 @@ export async function addRefreshSave() {
     const jsonString = JSON.stringify(data);
     if (jsonString) {
         localStorage.setItem(REFRESH_SAVE_LOCAL_STORAGE_KEY, jsonString);
-        localStorage.setItem(REFRESH_SAVE_DATE_LOCAL_STORAGE_KEY, data.date.toISOString());
     }
 }
 
