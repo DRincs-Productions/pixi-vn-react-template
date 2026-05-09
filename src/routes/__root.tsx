@@ -6,7 +6,6 @@ import RootProvider from "@/components/providers/RootProvider";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
 import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "@/hooks/useQueryInterface";
-import useSaveHotkeys from "@/hooks/useSaveHotkeys";
 import { useI18n } from "@/lib/i18n";
 import { SearchParams } from "@/lib/stores/search-param-store";
 import type { RouterContext } from "@/router";
@@ -44,11 +43,6 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     ),
 });
 
-function RootSetup() {
-    useSaveHotkeys();
-    return null;
-}
-
 function RootComponent() {
     useClosePageDetector();
     useConfirmBackNavigation();
@@ -56,7 +50,6 @@ function RootComponent() {
     return (
         <>
             <RootProvider>
-                <RootSetup />
                 <SettingsDialogue />
                 <ControlsMenu />
                 <OfflineAllert />
