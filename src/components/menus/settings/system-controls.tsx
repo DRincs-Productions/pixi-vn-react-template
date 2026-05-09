@@ -1,15 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { useStore } from "@tanstack/react-store";
-import {
-    DownloadIcon,
-    FullscreenIcon,
-    Minimize2Icon,
-    MonitorIcon,
-    MoonIcon,
-    SunIcon,
-} from "lucide-react";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useTheme } from "@/components/providers/theme-provider";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -23,12 +11,24 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Toggle } from "@/components/ui/toggle";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useLanguageSettings } from "@/hooks/useLanguageSettings";
+import { useLanguageSettings } from "@/hooks/language-settings-hooks";
 import useQueryIsFullModeScreen, {
     IS_FULL_SCREEN_MODE_USE_QUEY_KEY,
 } from "@/hooks/useQueryIsFullModeScreen";
 import { downloadResourceToTranslate } from "@/lib/i18n";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
+import { useQueryClient } from "@tanstack/react-query";
+import { useStore } from "@tanstack/react-store";
+import {
+    DownloadIcon,
+    FullscreenIcon,
+    Minimize2Icon,
+    MonitorIcon,
+    MoonIcon,
+    SunIcon,
+} from "lucide-react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export function SystemControls() {
     return (
