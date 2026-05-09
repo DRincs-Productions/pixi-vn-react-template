@@ -1,5 +1,5 @@
 import NarrationScreen from "@/components/menus/narration";
-import useNarrationPointerHandlers from "@/lib/hooks/useNarrationPointerHandlers";
+import { useNarrationPointerHandlers } from "@/lib/hooks/narration-hooks";
 import useSkipAutoDetector from "@/lib/hooks/useSkipAutoDetector";
 import { createFileRoute } from "@tanstack/react-router";
 

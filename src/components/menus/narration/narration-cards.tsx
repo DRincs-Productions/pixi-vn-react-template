@@ -4,7 +4,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import useNarrationPointerHandlers from "@/lib/hooks/useNarrationPointerHandlers";
+import { useNarrationPointerHandlers } from "@/lib/hooks/narration-hooks";
 import { useQueryDialogue } from "@/lib/query/interface-query";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { useStore } from "@tanstack/react-store";
