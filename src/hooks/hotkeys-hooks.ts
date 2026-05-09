@@ -1,4 +1,5 @@
 import { useSetSearchParamState } from "@/hooks/useSearchParamState";
+import { QuickActionsWheelState } from "@/lib/stores/quick-actions-wheel-store";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "@tanstack/react-router";
@@ -169,6 +170,15 @@ export function useGameHotkeys(): null {
         setSettingsTab("menus/history");
     }, [setHistory, setSettingsOpen, setSettingsTab]);
 
+    const toggleQuickActionsWheel = useCallback(() => {
+        const isOpen = QuickActionsWheelState.store.state.open;
+        if (isOpen) {
+            QuickActionsWheelState.setOpen(false);
+        } else {
+            QuickActionsWheelState.setOpen(true);
+        }
+    }, []);
+
     useHotkeys([
         {
             hotkey: "Control+H",
@@ -177,6 +187,16 @@ export function useGameHotkeys(): null {
                 meta: {
                     name: t("history"),
                     description: t("history_hotkey_description"),
+                },
+            },
+        },
+        {
+            hotkey: "Tab",
+            callback: toggleQuickActionsWheel,
+            options: {
+                meta: {
+                    name: t("quick_actions"),
+                    description: t("quick_actions_open_description"),
                 },
             },
         },
