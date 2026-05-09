@@ -1,5 +1,4 @@
-import { useStore } from "@tanstack/react-store";
-import SavSlot from "@/components/menus/save-menu/save-slots";
+import { SaveSlot } from "@/components/menus/save-menu/save-slots";
 import {
     Pagination,
     PaginationContent,
@@ -11,6 +10,7 @@ import {
 } from "@/components/ui/pagination";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { GameSaveScreenStore } from "@/lib/stores/useGameSaveScreenStore";
+import { useStore } from "@tanstack/react-store";
 
 const TOTAL_PAGES = 999;
 
@@ -40,7 +40,7 @@ export default function GameSaveMenu() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
                     {Array.from({ length: 6 }).map((_, index) => {
                         const id = page * 6 + index;
-                        return <SavSlot key={`SaveFile${id}`} saveId={id} />;
+                        return <SaveSlot key={`SaveFile${id}`} saveId={id} />;
                     })}
                 </div>
             </ScrollArea>

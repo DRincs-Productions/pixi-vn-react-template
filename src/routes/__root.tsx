@@ -2,7 +2,7 @@ import { PendingComponent } from "@/components/loading";
 import { SettingsDialogue } from "@/components/menus/settings";
 import { OfflineAllert } from "@/components/modals/error-allerts";
 import { RootProvider } from "@/components/providers/root-provider";
-import useClosePageDetector from "@/hooks/useClosePageDetector";
+import { useAutoSaveOnPageClose } from "@/hooks/save-hooks";
 import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "@/hooks/useQueryInterface";
 import { useI18n } from "@/lib/i18n";
@@ -42,7 +42,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 });
 
 function RootComponent() {
-    useClosePageDetector();
+    useAutoSaveOnPageClose();
     useConfirmBackNavigation();
 
     return (
