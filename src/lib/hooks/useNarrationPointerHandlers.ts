@@ -1,6 +1,6 @@
 import { useNarrationFunctions } from "@/lib/hooks/narration-hooks";
 import { SkipSettings } from "@/lib/stores/skip-settings-store";
-import { hasScrollableParent, isScrollableElement } from "@/utils/scroll-utils";
+import { hasScrollableParent, isScrollableElement } from "@/lib/utils/scroll-utils";
 import { useStore } from "@tanstack/react-store";
 import type React from "react";
 import { useCallback, useRef } from "react";
