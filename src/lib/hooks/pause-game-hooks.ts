@@ -20,7 +20,7 @@ function resumeGameFromMenuClose() {
  * Must be called from a component that is only rendered on the `/game` route
  * so that pause/resume is automatically scoped to the game screen.
  */
-export default function usePauseGameWhenMenuIsOpen() {
+export function usePauseGameWhenMenuIsOpen() {
     const searchParams = useStore(SearchParams.store, (state) => state);
     const pausedByMenuRef = useRef(false);
 
