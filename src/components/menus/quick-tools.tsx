@@ -1,8 +1,8 @@
 import { useAlertDialog } from "@/components/providers/alert-dialog-provider";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
+import { useNarrationFunctions } from "@/hooks/narration-hooks";
 import { useGameProps } from "@/hooks/props-hooks";
-import useNarrationFunctions from "@/hooks/useNarrationFunctions";
 import { useQueryCanGoBack } from "@/hooks/useQueryInterface";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "@/hooks/useQueryLastSave";
 import { SAVES_USE_QUEY_KEY } from "@/hooks/useQuerySaves";

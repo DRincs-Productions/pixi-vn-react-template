@@ -1,9 +1,9 @@
-import { canvas, Layer } from "@drincs/pixi-vn";
+import { canvas, type Layer } from "@drincs/pixi-vn";
 import { Container } from "@drincs/pixi-vn/pixi.js";
 import { useEffect, useRef } from "react";
 import { CANVAS_MINIGAME_LAYER_NAME } from "../constans";
 
-export default function useMinigame(
+export function useMinigame(
     game: (layer: Layer) => void,
     props?: {
         onStart?: () => Promise<void>;

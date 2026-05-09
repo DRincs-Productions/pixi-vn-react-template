@@ -1,9 +1,9 @@
+import { useNarrationFunctions } from "@/hooks/narration-hooks";
+import { SkipSettings } from "@/lib/stores/skip-settings-store";
+import { hasScrollableParent, isScrollableElement } from "@/utils/scroll-utils";
 import { useStore } from "@tanstack/react-store";
 import type React from "react";
 import { useCallback, useRef } from "react";
-import { SkipSettings } from "@/lib/stores/skip-settings-store";
-import { hasScrollableParent, isScrollableElement } from "@/utils/scroll-utils";
-import useNarrationFunctions from "./useNarrationFunctions";
 
 /** Maximum pointer displacement (px) between pointerdown and pointerup that is still considered a tap/click. */
 const DRAG_THRESHOLD_PX = 5;

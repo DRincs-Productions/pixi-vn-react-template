@@ -1,9 +1,9 @@
+import { useGameProps } from "@/hooks/props-hooks";
+import { GameStatus } from "@/lib/stores/game-status-store";
 import { narration, stepHistory, type StoredIndexedChoiceInterface } from "@drincs/pixi-vn";
 import { useCallback } from "react";
-import { GameStatus } from "../lib/stores/game-status-store";
-import { useGameProps } from "./props-hooks";
 
-export default function useNarrationFunctions() {
+export function useNarrationFunctions() {
     const gameProps = useGameProps();
 
     const goNext = useCallback(async () => {
