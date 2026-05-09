@@ -1,8 +1,9 @@
 import { QuickActionsWheelState } from "@/lib/stores/quick-actions-wheel-store";
 import { cn } from "@/lib/utils";
-import { type HotkeyRegistrationView, useHotkeyRegistrations } from "@tanstack/react-hotkeys";
+import { getHotkeyManager, toHotkeyRegistrationView } from "@tanstack/hotkeys";
+import type { HotkeyRegistrationView } from "@tanstack/react-hotkeys";
 import { useStore } from "@tanstack/react-store";
-import { type MouseEvent, useEffect, useMemo, useRef, useState } from "react";
+import { type MouseEvent, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 function dispatchKeyboardEvent(
@@ -110,23 +111,17 @@ function QuickActionsWheelContent({
     setSelectedId: (id: string | undefined) => void;
 }) {
     const { t } = useTranslation(["ui"]);
-    const { hotkeys } = useHotkeyRegistrations();
     const wheelContainerRef = useRef<HTMLDivElement>(null);
 
     const wheelItems = useMemo(() => {
+        if (!open) {
+            return [];
+        }
+        const hotkeys = Array.from(getHotkeyManager().registrations.state.values()).map(
+            toHotkeyRegistrationView,
+        );
         return buildWheelItems(hotkeys);
-    }, [hotkeys]);
-
-    useEffect(() => {
-        if (!wheelItems.length) {
-            setSelectedId(undefined);
-            QuickActionsWheelState.setOpen(false);
-            return;
-        }
-        if (!selectedId || !wheelItems.some((item) => item.id === selectedId)) {
-            setSelectedId(wheelItems[0]?.id);
-        }
-    }, [wheelItems, selectedId, setSelectedId]);
+    }, [open]);
 
     if (!open || !wheelItems.length) {
         return null;
