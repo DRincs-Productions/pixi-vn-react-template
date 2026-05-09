@@ -20,7 +20,7 @@ import { useEffect, useRef, useState } from "react";
 const menuButtonClass =
     "justify-start hover:scale-105 focus-visible:scale-105 transition-transform duration-150 ease-out";
 
-export default function MainMenu() {
+export function MainMenu() {
     const queryClient = useQueryClient();
     const { data: lastSave = null, isLoading } = useQueryLastSave();
     const gameProps = useGameProps();
