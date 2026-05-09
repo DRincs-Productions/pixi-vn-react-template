@@ -7,7 +7,7 @@ import {
     useQueryLastSave,
 } from "@/lib/query/save-query";
 import { QuickActionsWheelState } from "@/lib/stores/quick-actions-wheel-store";
-import { loadSave, saveGameToIndexDB } from "@/utils/save-utility";
+import { loadSave, saveGameToIndexDB } from "@/lib/utils/save-utility";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "@tanstack/react-router";

@@ -15,7 +15,7 @@ import { AutoSettings } from "@/lib/stores/auto-settings-store";
 import { GameStatus } from "@/lib/stores/game-status-store";
 import { SkipSettings } from "@/lib/stores/skip-settings-store";
 import { cn } from "@/lib/utils";
-import { loadSave, saveGameToIndexDB } from "@/utils/save-utility";
+import { loadSave, saveGameToIndexDB } from "@/lib/utils/save-utility";
 import { useQueryClient } from "@tanstack/react-query";
 import { useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";

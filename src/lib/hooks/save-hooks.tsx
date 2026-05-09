@@ -3,14 +3,14 @@ import { useAlertDialog } from "@/components/providers/alert-dialog-provider";
 import { useGameProps } from "@/lib/hooks/props-hooks";
 import { useSetSearchParamState } from "@/lib/hooks/useSearchParamState";
 import { LAST_SAVE_USE_QUEY_KEY, SAVES_USE_QUEY_KEY } from "@/lib/query/save-query";
-import type GameSaveData from "@/models/GameSaveData";
-import type { FileRouteTypes } from "@/routeTree.gen";
 import {
     addRefreshSave,
     deleteSaveFromIndexDB,
     loadSave,
     saveGameToIndexDB,
-} from "@/utils/save-utility";
+} from "@/lib/utils/save-utility";
+import type GameSaveData from "@/models/GameSaveData";
+import type { FileRouteTypes } from "@/routeTree.gen";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef } from "react";
