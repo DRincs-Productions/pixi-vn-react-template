@@ -25,7 +25,7 @@ import { SAVES_USE_QUEY_KEY } from "./useQuerySaves";
  * This hook accepts no parameters and returns `null` because it is used
  * only for side effects (registering hotkeys).
  */
-export default function useSaveHotkeys(): null {
+export function useSaveHotkeys(): null {
     const queryClient = useQueryClient();
     const { t } = useTranslation(["ui"]);
     const location = useLocation();

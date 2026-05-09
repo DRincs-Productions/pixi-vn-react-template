@@ -2,7 +2,7 @@ import { AlertDialogProvider } from "@/components/providers/AlertDialogProvider"
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import useSaveHotkeys from "@/hooks/useSaveHotkeys";
+import { useSaveHotkeys } from "@/hooks/hotkeys-hooks";
 import { Game } from "@drincs/pixi-vn";
 import { HotkeysProvider } from "@tanstack/react-hotkeys";
 import { useNavigate } from "@tanstack/react-router";
