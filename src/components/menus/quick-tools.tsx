@@ -1,4 +1,4 @@
-import { useAlertDialog } from "@/components/providers/AlertDialogProvider";
+import { useAlertDialog } from "@/components/providers/alert-dialog-provider";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
 import useGameProps from "@/hooks/useGameProps";

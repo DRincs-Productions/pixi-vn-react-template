@@ -6,7 +6,7 @@ import { useLocation } from "@tanstack/react-router";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useAlertDialog } from "../components/providers/AlertDialogProvider";
+import { useAlertDialog } from "../components/providers/alert-dialog-provider";
 import { loadSave, saveGameToIndexDB } from "../utils/save-utility";
 import useGameProps from "./useGameProps";
 import useQueryLastSave, { LAST_SAVE_USE_QUEY_KEY } from "./useQueryLastSave";

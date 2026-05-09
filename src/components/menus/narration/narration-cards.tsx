@@ -1,4 +1,4 @@
-import AnimatedDots from "@/components/AnimatedDots";
+import { AnimatedDots } from "@/components/loading";
 import { QuickTools } from "@/components/menus/quick-tools";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";

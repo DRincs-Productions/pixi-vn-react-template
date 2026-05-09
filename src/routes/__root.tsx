@@ -1,7 +1,7 @@
-import PendingComponent from "@/components/loading";
+import { PendingComponent } from "@/components/loading";
 import { SettingsDialogue } from "@/components/menus/settings";
 import { OfflineAllert } from "@/components/modals/error-allerts";
-import RootProvider from "@/components/providers/RootProvider";
+import { RootProvider } from "@/components/providers/root-provider";
 import useClosePageDetector from "@/hooks/useClosePageDetector";
 import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
 import { INTERFACE_DATA_USE_QUEY_KEY } from "@/hooks/useQueryInterface";
