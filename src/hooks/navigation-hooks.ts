@@ -15,7 +15,7 @@ import { useEffect } from "react";
  * Usage: call this hook at the app root to avoid unintended back navigations
  * (e.g. accidental taps or gestures). Returns `null`.
  */
-export default function useConfirmBackNavigation() {
+export function useConfirmBackNavigation() {
     const { href } = useLocation();
 
     useEffect(() => {
