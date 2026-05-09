@@ -10,8 +10,8 @@ import {
     showImageContainer,
     sound,
 } from "@drincs/pixi-vn";
-import { BGM_CHANNEL_NAME } from "../constans";
-import { james, mc, sly, steph, steph_fullname } from "../content/characters";
+import { BGM_CHANNEL_NAME } from "../../constans";
+import { james, mc, sly, steph, steph_fullname } from "../characters";
 import { animation01 } from "./animations-labels";
 import secondPart from "./secondPart";
 

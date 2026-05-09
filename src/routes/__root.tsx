@@ -35,8 +35,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         Game.onNavigate(async (to) => {
             redirect({ to });
         });
-        await Promise.all([import("@/content"), import("@/labels")]);
-        await Promise.all([initializeIndexedDB(), defineAssets(), useI18n()]);
+        await Promise.all([import("@/content"), initializeIndexedDB(), defineAssets(), useI18n()]);
         setupPixivnViteData();
         const isRefreshSaveExist = await loadRefreshSave();
         if (isRefreshSaveExist) {

@@ -1,8 +1,8 @@
 import { AUDIO_BUNDLE_NAME } from "@/constans";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import type { AssetsManifest } from "@drincs/pixi-vn";
-import secondPart from "../labels/secondPart";
-import startLabel from "../labels/startLabel";
+import secondPart from "../content/labels/secondPart";
+import startLabel from "../content/labels/startLabel";
 import generatedManifestJson from "./manifest.gen.json";
 
 /**
