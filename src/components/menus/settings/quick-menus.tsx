@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { Separator } from "@/components/ui/separator";
-import { useSetSearchParamState } from "@/lib/hooks/useSearchParamState";
+import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
 import { Game } from "@drincs/pixi-vn";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { Gamepad2Icon, HistoryIcon, LogOutIcon, SaveIcon } from "lucide-react";

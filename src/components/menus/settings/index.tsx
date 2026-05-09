@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, FullscreenDialogContent } from "@/components/ui/fullscreen-dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { useSearchParamState, useSetSearchParamState } from "@/lib/hooks/useSearchParamState";
+import { useSearchParamState, useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
 import { ArrowLeftIcon } from "lucide-react";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";

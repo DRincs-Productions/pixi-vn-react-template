@@ -2,8 +2,8 @@ import { useAlertDialog } from "@/components/providers/alert-dialog-provider";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
 import { useNarrationFunctions } from "@/lib/hooks/narration-hooks";
+import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
 import { useGameProps } from "@/lib/hooks/props-hooks";
-import { useSetSearchParamState } from "@/lib/hooks/useSearchParamState";
 import { useWheelActions } from "@/lib/hooks/useWheelActions";
 import { useQueryCanGoBack } from "@/lib/query/interface-query";
 import {
