@@ -1,15 +1,10 @@
 import { Input } from "@/components/ui/input";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useSetSearchParamState } from "@/hooks/useSearchParamState";
 import { cn } from "@/lib/utils";
-import {
-    type HotkeyRegistrationView,
-    useHotkeyRegistrations,
-    useHotkeys,
-} from "@tanstack/react-hotkeys";
+import { type HotkeyRegistrationView, useHotkeyRegistrations } from "@tanstack/react-hotkeys";
 import { Search } from "lucide-react";
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 function splitHotkey(hotkey: string) {
@@ -18,38 +13,6 @@ function splitHotkey(hotkey: string) {
 
 function isRegistrationEnabled(registration: HotkeyRegistrationView) {
     return registration.options.enabled !== false;
-}
-
-/**
- * Registers the Ctrl+K hotkey to open settings on the controls subpage.
- * Kept in its own component so it never shares a render with
- * `useHotkeyRegistrations` (which reads the same store that
- * `useHotkeys` writes, causing an infinite loop when co-located).
- */
-function ControlsMenuHotkeys() {
-    const setSettingsOpen = useSetSearchParamState<boolean>("settings");
-    const setSettingsTab = useSetSearchParamState<string>("settings_tab");
-    const { t } = useTranslation(["ui"]);
-
-    const openControlsPage = useCallback(() => {
-        setSettingsOpen(true);
-        setSettingsTab("menus/controls");
-    }, [setSettingsOpen, setSettingsTab]);
-
-    useHotkeys([
-        {
-            hotkey: "Control+K",
-            callback: openControlsPage,
-            options: {
-                meta: {
-                    name: t("hotkeys_menu"),
-                    description: t("hotkeys_menu_shortcut_description"),
-                },
-            },
-        },
-    ]);
-
-    return null;
 }
 
 /**
@@ -149,13 +112,4 @@ export function ControlsListSettingsPage() {
             </ScrollArea>
         </>
     );
-}
-
-/**
- * Mounts both the hotkey registration and the dialog display as siblings so
- * that neither component causes a re-render of the other when the TanStack
- * hotkeys store changes.
- */
-export default function ControlsMenu() {
-    return <ControlsMenuHotkeys />;
 }

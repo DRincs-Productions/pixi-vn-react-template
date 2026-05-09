@@ -1,8 +1,8 @@
+import { SearchParams } from "@/lib/stores/search-param-store";
 import { useDebouncedCallback } from "@tanstack/react-pacer";
 import { useNavigate } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
 import { useCallback } from "react";
-import { SearchParams } from "@/lib/stores/search-param-store";
 
 /**
  * Returns the current value of the given URL search param from the internal store.
@@ -25,9 +25,11 @@ export function useSearchParamState<T>(field: string): T | undefined {
  * Pass `undefined` to remove the param from the URL.
  *
  * @param field - The search param key to write.
- * @returns A stable callback `(value: T | undefined) => void`.
+ * @returns A stable callback that accepts either a value or an updater function.
  */
-export function useSetSearchParamState<T>(field: string): (value: T | undefined) => void {
+export function useSetSearchParamState<T>(
+    field: string,
+): (value: T | undefined | ((previous: T | undefined) => T | undefined)) => void {
     const navigate = useNavigate();
 
     const debouncedNavigate = useDebouncedCallback(
@@ -38,10 +40,16 @@ export function useSetSearchParamState<T>(field: string): (value: T | undefined)
     );
 
     return useCallback(
-        (value: T | undefined) => {
-            if (value === false) value = undefined;
-            SearchParams.set(field, value);
-            debouncedNavigate(field, value);
+        (value) => {
+            const currentValue = SearchParams.store.state[field] as T | undefined;
+            const nextValue =
+                typeof value === "function"
+                    ? (value as (previous: T | undefined) => T | undefined)(currentValue)
+                    : value;
+            const normalizedValue = nextValue === false ? undefined : nextValue;
+
+            SearchParams.set(field, normalizedValue);
+            debouncedNavigate(field, normalizedValue);
         },
         [field, debouncedNavigate],
     );

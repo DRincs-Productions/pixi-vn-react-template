@@ -1,3 +1,4 @@
+import { useSetSearchParamState } from "@/hooks/useSearchParamState";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "@tanstack/react-router";
@@ -112,6 +113,42 @@ export function useSaveHotkeys(): null {
                 meta: {
                     name: t("load_last_save"),
                     description: t("quick_load_hotkey_alternative_description"),
+                },
+            },
+        },
+    ]);
+
+    return null;
+}
+
+export function useSettingsHotkeys(): null {
+    const { t } = useTranslation(["ui"]);
+    const setSettingsOpen = useSetSearchParamState<boolean>("settings");
+    const setSettingsTab = useSetSearchParamState<string>("settings_tab");
+
+    const openControlsPage = useCallback(() => {
+        setSettingsOpen(true);
+        setSettingsTab("menus/controls");
+    }, [setSettingsOpen, setSettingsTab]);
+
+    useHotkeys([
+        {
+            hotkey: "Escape",
+            callback: () => setSettingsOpen((prev) => !prev),
+            options: {
+                meta: {
+                    name: t("settings"),
+                    description: t("settings_toggle_hotkey_description"),
+                },
+            },
+        },
+        {
+            hotkey: "Control+K",
+            callback: openControlsPage,
+            options: {
+                meta: {
+                    name: t("hotkeys_menu"),
+                    description: t("hotkeys_menu_shortcut_description"),
                 },
             },
         },
