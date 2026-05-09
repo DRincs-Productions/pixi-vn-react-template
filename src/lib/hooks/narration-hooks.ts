@@ -152,7 +152,12 @@ export function useSkipAutoDetector() {
     }, [skipEnabled]);
 
     const autoDebouncer = useDebouncer(
-        () => {
+        (_trigger: {
+            autoEnabled: boolean;
+            skipEnabled: boolean;
+            typewriterInProgress: boolean;
+            autoTime: number;
+        }) => {
             goNext();
         },
         {
@@ -161,9 +166,11 @@ export function useSkipAutoDetector() {
         },
     );
 
+    const { maybeExecute } = autoDebouncer;
+
     useEffect(() => {
-        autoDebouncer.maybeExecute();
-    }, [autoEnabled, skipEnabled, typewriterInProgress, autoTime]);
+        maybeExecute({ autoEnabled, skipEnabled, typewriterInProgress, autoTime });
+    }, [maybeExecute, autoEnabled, skipEnabled, typewriterInProgress, autoTime]);
 
     const onSkipKeyDown = useCallback(() => SkipSettings.setEnabled(true), []);
     const onSkipKeyUp = useCallback(() => {
