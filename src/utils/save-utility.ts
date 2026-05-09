@@ -1,5 +1,4 @@
-import { canvas, Game } from "@drincs/pixi-vn";
-import type GameSaveData from "../models/GameSaveData";
+import type GameSaveData from "@/models/GameSaveData";
 import {
     deleteRowFromIndexDB,
     getLastRowFromIndexDB,
@@ -7,7 +6,8 @@ import {
     getRowFromIndexDB,
     INDEXED_DB_SAVE_TABLE,
     putRowIntoIndexDB,
-} from "./indexedDB-utility";
+} from "@/utils/indexedDB-utility";
+import { canvas, Game } from "@drincs/pixi-vn";
 
 const SAVE_FILE_EXTENSION = "json";
 const REFRESH_SAVE_LOCAL_STORAGE_KEY = "refresh_save";
