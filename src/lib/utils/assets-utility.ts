@@ -1,7 +1,7 @@
-import { Assets, sound } from "@drincs/pixi-vn";
+import manifest from "@/assets/manifest";
+import { AUDIO_BUNDLE_NAME } from "@/constans";
 import type { FileRouteTypes } from "@/routeTree.gen";
-import manifest from "../assets/manifest";
-import { AUDIO_BUNDLE_NAME } from "../constans";
+import { Assets, sound } from "@drincs/pixi-vn";
 
 let assetsInitialized = false;
 
