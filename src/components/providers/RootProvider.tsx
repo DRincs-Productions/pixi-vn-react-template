@@ -18,9 +18,11 @@ export default function RootProvider({ children }: { children: React.ReactNode }
                     hotkey: { preventDefault: true },
                 }}
             >
-                <SaveHotkeys />
                 <AlertDialogProvider>
-                    <TooltipProvider>{children}</TooltipProvider>
+                    <TooltipProvider>
+                        <SaveHotkeys />
+                        {children}
+                    </TooltipProvider>
                 </AlertDialogProvider>
                 <Toaster position="top-center" />
             </HotkeysProvider>
