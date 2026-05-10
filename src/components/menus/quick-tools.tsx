@@ -70,17 +70,6 @@ export function QuickTools() {
             >
                 {t("history")}
             </Button>
-            <Button
-                variant="ghost"
-                size="xs"
-                className="h-5 px-1 text-[10px] sm:h-6 sm:px-2 sm:text-xs"
-                onClick={() => {
-                    setSettings(true);
-                    setSettingsTab("menus/controls");
-                }}
-            >
-                {t("hotkeys_menu")}
-            </Button>
             <Toggle
                 size="sm"
                 className="h-5 min-w-0 px-1 text-[10px] sm:h-7 sm:px-2.5 sm:text-[0.8rem]"
