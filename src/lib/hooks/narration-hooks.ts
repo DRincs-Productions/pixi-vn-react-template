@@ -81,6 +81,9 @@ export function useNarrationFunctions() {
 /** Maximum pointer displacement (px) between pointerdown and pointerup that is still considered a tap/click. */
 const DRAG_THRESHOLD_PX = 5;
 const LONG_PRESS_SKIP_DELAY_MS = 2000;
+const isDragGesture = (dx: number, dy: number) =>
+    dx * dx + dy * dy > DRAG_THRESHOLD_PX * DRAG_THRESHOLD_PX;
+
 export function useNarrationPointerHandlers() {
     const { goNext } = useNarrationFunctions();
     const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
@@ -102,7 +105,6 @@ export function useNarrationPointerHandlers() {
         pointerDownPos.current = { x: e.clientX, y: e.clientY };
         clearLongPressTimer();
         longPressTimer.current = setTimeout(() => {
-            if (!longPressTimer.current) return;
             longPressTimer.current = null;
             if (!pointerDownPos.current) return;
             longPressTriggered.current = true;
@@ -139,7 +141,7 @@ export function useNarrationPointerHandlers() {
             pointerDownPos.current = null;
 
             // If the pointer moved significantly it was a drag (e.g. resize), not a tap.
-            if (dx * dx + dy * dy > DRAG_THRESHOLD_PX * DRAG_THRESHOLD_PX) return;
+            if (isDragGesture(dx, dy)) return;
 
             // Let resize handles manage their own drag behaviour
             if ((e.target as HTMLElement).closest('[data-slot="resizable-handle"]')) return;
@@ -165,7 +167,7 @@ export function useNarrationPointerHandlers() {
             if (!pointerDownPos.current) return;
             const dx = e.clientX - pointerDownPos.current.x;
             const dy = e.clientY - pointerDownPos.current.y;
-            if (dx * dx + dy * dy <= DRAG_THRESHOLD_PX * DRAG_THRESHOLD_PX) return;
+            if (!isDragGesture(dx, dy)) return;
             clearLongPressTimer();
             pointerDownPos.current = null;
         },
