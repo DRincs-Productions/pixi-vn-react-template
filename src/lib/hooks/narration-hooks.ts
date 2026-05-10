@@ -102,6 +102,8 @@ export function useNarrationPointerHandlers() {
         pointerDownPos.current = { x: e.clientX, y: e.clientY };
         clearLongPressTimer();
         longPressTimer.current = setTimeout(() => {
+            if (!longPressTimer.current) return;
+            longPressTimer.current = null;
             if (!pointerDownPos.current) return;
             longPressTriggered.current = true;
             SkipSettings.setEnabled(true);
@@ -165,6 +167,7 @@ export function useNarrationPointerHandlers() {
             const dy = e.clientY - pointerDownPos.current.y;
             if (dx * dx + dy * dy <= DRAG_THRESHOLD_PX * DRAG_THRESHOLD_PX) return;
             clearLongPressTimer();
+            pointerDownPos.current = null;
         },
         [clearLongPressTimer],
     );
