@@ -105,7 +105,6 @@ export function useNarrationPointerHandlers() {
         pointerDownPos.current = { x: e.clientX, y: e.clientY };
         clearLongPressTimer();
         longPressTimer.current = setTimeout(() => {
-            longPressTimer.current = null;
             if (!pointerDownPos.current) return;
             longPressTriggered.current = true;
             SkipSettings.setEnabled(true);
