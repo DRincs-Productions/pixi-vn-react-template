@@ -170,6 +170,10 @@ export function useNarrationPointerHandlers() {
             if (!isDragGesture(dx, dy)) return;
             clearLongPressTimer();
             pointerDownPos.current = null;
+            if (longPressTriggered.current) {
+                SkipSettings.setEnabled(false);
+                longPressTriggered.current = false;
+            }
         },
         [clearLongPressTimer],
     );
