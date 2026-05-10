@@ -50,6 +50,7 @@ export function InputRequestDialog() {
                     name: t("confirm"),
                     description: t("confirm_input_hotkey_description"),
                 },
+                conflictBehavior: "replace"
             },
         },
     ]);

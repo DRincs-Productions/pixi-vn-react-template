@@ -1,12 +1,15 @@
 import { useAlertDialog } from "@/components/providers/alert-dialog-provider";
+import { useNarrationFunctions } from "@/lib/hooks/narration-hooks";
 import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
 import { useGameProps } from "@/lib/hooks/props-hooks";
+import { useQueryInputValue } from "@/lib/query/interface-query";
 import {
     LAST_SAVE_USE_QUEY_KEY,
     SAVES_USE_QUEY_KEY,
     useQueryLastSave,
 } from "@/lib/query/save-query";
 import { QuickActionsWheelState } from "@/lib/stores/quick-actions-wheel-store";
+import { SkipSettings } from "@/lib/stores/skip-settings-store";
 import { loadSave, saveGameToIndexDB } from "@/lib/utils/save-utility";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
@@ -201,6 +204,69 @@ export function useGameHotkeys(): null {
                     name: t("quick_actions"),
                     description: t("quick_actions_open_description"),
                 },
+            },
+        },
+    ]);
+
+    return null;
+}
+
+export function useNarrationHotkeys(): null {
+    const { t } = useTranslation(["ui"]);
+    const { goNext } = useNarrationFunctions();
+    const { data: { isRequired } = {} } = useQueryInputValue<string | number>();
+
+    const onSkipKeyDown = useCallback(() => SkipSettings.setEnabled(true), []);
+    const onSkipKeyUp = useCallback(() => {
+        SkipSettings.setEnabled(false);
+        goNext();
+    }, [goNext]);
+
+    useHotkeys([
+        {
+            hotkey: "Enter",
+            callback: onSkipKeyDown,
+            options: {
+                meta: {
+                    name: t("skip"),
+                    description: t("skip_hold_description"),
+                },
+                enabled: !isRequired,
+            },
+        },
+        {
+            hotkey: "Space",
+            callback: onSkipKeyDown,
+            options: {
+                meta: {
+                    name: t("skip"),
+                    description: t("skip_hold_space_description"),
+                },
+                enabled: !isRequired,
+            },
+        },
+        {
+            hotkey: "Enter",
+            callback: onSkipKeyUp,
+            options: {
+                eventType: "keyup",
+                meta: {
+                    name: t("next"),
+                    description: t("skip_release_description"),
+                },
+                enabled: !isRequired,
+            },
+        },
+        {
+            hotkey: "Space",
+            callback: onSkipKeyUp,
+            options: {
+                eventType: "keyup",
+                meta: {
+                    name: t("next"),
+                    description: t("skip_release_space_description"),
+                },
+                enabled: !isRequired,
             },
         },
     ]);

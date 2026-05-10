@@ -6,12 +6,10 @@ import { SkipSettings } from "@/lib/stores/skip-settings-store";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { hasScrollableParent, isScrollableElement } from "@/lib/utils/scroll-utils";
 import { narration, stepHistory, type StoredIndexedChoiceInterface } from "@drincs/pixi-vn";
-import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useDebouncer } from "@tanstack/react-pacer";
 import { useSelector } from "@tanstack/react-store";
 import type React from "react";
 import { useCallback, useEffect, useRef } from "react";
-import { useTranslation } from "react-i18next";
 
 export function useNarrationFunctions() {
     const gameProps = useGameProps();
@@ -188,7 +186,6 @@ export function useNarrationPointerHandlers() {
 }
 
 export function useSkipAutoDetector() {
-    const { t } = useTranslation(["ui"]);
     const skipEnabled = useSelector(SkipSettings.store, (state) => state.enabled);
     const autoEnabled = useSelector(AutoSettings.store, (state) => state.enabled);
     const autoTime = useSelector(AutoSettings.store, (state) => state.time);
@@ -227,56 +224,6 @@ export function useSkipAutoDetector() {
         maybeExecute({ autoEnabled, skipEnabled, typewriterInProgress, autoTime });
     }, [maybeExecute, autoEnabled, skipEnabled, typewriterInProgress, autoTime]);
 
-    const onSkipKeyDown = useCallback(() => SkipSettings.setEnabled(true), []);
-    const onSkipKeyUp = useCallback(() => {
-        SkipSettings.setEnabled(false);
-        goNext();
-    }, [goNext]);
-
-    useHotkeys([
-        {
-            hotkey: "Enter",
-            callback: onSkipKeyDown,
-            options: {
-                meta: {
-                    name: t("skip"),
-                    description: t("skip_hold_description"),
-                },
-            },
-        },
-        {
-            hotkey: "Space",
-            callback: onSkipKeyDown,
-            options: {
-                meta: {
-                    name: t("skip"),
-                    description: t("skip_hold_space_description"),
-                },
-            },
-        },
-        {
-            hotkey: "Enter",
-            callback: onSkipKeyUp,
-            options: {
-                eventType: "keyup",
-                meta: {
-                    name: t("next"),
-                    description: t("skip_release_description"),
-                },
-            },
-        },
-        {
-            hotkey: "Space",
-            callback: onSkipKeyUp,
-            options: {
-                eventType: "keyup",
-                meta: {
-                    name: t("next"),
-                    description: t("skip_release_space_description"),
-                },
-            },
-        },
-    ]);
 
     return null;
 }
