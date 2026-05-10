@@ -80,16 +80,36 @@ export function useNarrationFunctions() {
 
 /** Maximum pointer displacement (px) between pointerdown and pointerup that is still considered a tap/click. */
 const DRAG_THRESHOLD_PX = 5;
+const LONG_PRESS_SKIP_DELAY_MS = 700;
+const isDragGesture = (dx: number, dy: number) =>
+    dx * dx + dy * dy > DRAG_THRESHOLD_PX * DRAG_THRESHOLD_PX;
+
 export function useNarrationPointerHandlers() {
     const { goNext } = useNarrationFunctions();
     const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
     const pointerDownPos = useRef<{ x: number; y: number } | null>(null);
+    const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const longPressTriggered = useRef(false);
+
+    const clearLongPressTimer = useCallback(() => {
+        if (!longPressTimer.current) return;
+        clearTimeout(longPressTimer.current);
+        longPressTimer.current = null;
+    }, []);
 
     const handlePointerDown = useCallback((e: React.PointerEvent) => {
         if (e.button !== 0) return;
         if (hasScrollableParent(e.target)) return;
+
+        longPressTriggered.current = false;
         pointerDownPos.current = { x: e.clientX, y: e.clientY };
-    }, []);
+        clearLongPressTimer();
+        longPressTimer.current = setTimeout(() => {
+            if (!pointerDownPos.current) return;
+            longPressTriggered.current = true;
+            SkipSettings.setEnabled(true);
+        }, LONG_PRESS_SKIP_DELAY_MS);
+    }, [clearLongPressTimer]);
 
     /**
      * Clear the pending gesture on cancel.
@@ -99,8 +119,13 @@ export function useNarrationPointerHandlers() {
      * is cleaned up in the cases where the browser itself cancels the gesture.
      */
     const handlePointerCancel = useCallback(() => {
+        clearLongPressTimer();
         pointerDownPos.current = null;
-    }, []);
+        if (longPressTriggered.current) {
+            SkipSettings.setEnabled(false);
+            longPressTriggered.current = false;
+        }
+    }, [clearLongPressTimer]);
 
     const handlePointerUp = useCallback(
         (e: React.PointerEvent) => {
@@ -111,25 +136,55 @@ export function useNarrationPointerHandlers() {
 
             const dx = e.clientX - pointerDownPos.current.x;
             const dy = e.clientY - pointerDownPos.current.y;
+            clearLongPressTimer();
             pointerDownPos.current = null;
 
             // If the pointer moved significantly it was a drag (e.g. resize), not a tap.
-            if (dx * dx + dy * dy > DRAG_THRESHOLD_PX * DRAG_THRESHOLD_PX) return;
+            if (isDragGesture(dx, dy)) return;
 
             // Let resize handles manage their own drag behaviour
             if ((e.target as HTMLElement).closest('[data-slot="resizable-handle"]')) return;
             // Let native scrollbar interactions through
             if (isScrollableElement(e.target as HTMLElement)) return;
 
+            if (longPressTriggered.current) {
+                SkipSettings.setEnabled(false);
+                longPressTriggered.current = false;
+                return;
+            }
+
             if (skipEnabled) {
                 SkipSettings.setEnabled(false);
             }
             goNext();
         },
-        [goNext, skipEnabled],
+        [clearLongPressTimer, goNext, skipEnabled],
     );
 
-    return { handlePointerDown, handlePointerCancel, handlePointerUp };
+    const handlePointerMove = useCallback(
+        (e: React.PointerEvent) => {
+            if (!pointerDownPos.current) return;
+            const dx = e.clientX - pointerDownPos.current.x;
+            const dy = e.clientY - pointerDownPos.current.y;
+            if (!isDragGesture(dx, dy)) return;
+            clearLongPressTimer();
+            pointerDownPos.current = null;
+            if (longPressTriggered.current) {
+                SkipSettings.setEnabled(false);
+                longPressTriggered.current = false;
+            }
+        },
+        [clearLongPressTimer],
+    );
+
+    useEffect(
+        () => () => {
+            clearLongPressTimer();
+        },
+        [clearLongPressTimer],
+    );
+
+    return { handlePointerDown, handlePointerCancel, handlePointerMove, handlePointerUp };
 }
 
 export function useSkipAutoDetector() {
