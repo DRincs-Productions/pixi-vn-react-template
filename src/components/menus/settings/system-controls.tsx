@@ -86,7 +86,7 @@ export function ModeToggle() {
             <ButtonGroup className="shrink-0">
                 <TooltipProvider>
                     <Tooltip>
-                        <TooltipTrigger>
+                        <TooltipTrigger render={<span />}>
                             <Toggle
                                 size="sm"
                                 pressed={theme === "light"}
@@ -99,7 +99,7 @@ export function ModeToggle() {
                         <TooltipContent>Light Mode</TooltipContent>
                     </Tooltip>
                     <Tooltip>
-                        <TooltipTrigger>
+                        <TooltipTrigger render={<span />}>
                             <Toggle
                                 size="sm"
                                 pressed={theme === "system"}
@@ -112,7 +112,7 @@ export function ModeToggle() {
                         <TooltipContent>System Mode</TooltipContent>
                     </Tooltip>
                     <Tooltip>
-                        <TooltipTrigger>
+                        <TooltipTrigger render={<span />}>
                             <Toggle
                                 size="sm"
                                 pressed={theme === "dark"}
@@ -190,7 +190,7 @@ export function LanguageSettings() {
                 {!import.meta.env.PROD && (
                     <TooltipProvider>
                         <Tooltip>
-                            <TooltipTrigger>
+                            <TooltipTrigger render={<span />}>
                                 <Button
                                     variant="ghost"
                                     size="icon"
