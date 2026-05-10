@@ -17,18 +17,18 @@ import { SkipSettings } from "@/lib/stores/skip-settings-store";
 import { cn } from "@/lib/utils";
 import { loadSave, saveGameToIndexDB } from "@/lib/utils/save-utility";
 import { useQueryClient } from "@tanstack/react-query";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 export function QuickTools() {
     const { t } = useTranslation(["ui"]);
-    const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
-    const autoEnabled = useStore(AutoSettings.store, (state) => state.enabled);
+    const skipEnabled = useSelector(SkipSettings.store, (state) => state.enabled);
+    const autoEnabled = useSelector(AutoSettings.store, (state) => state.enabled);
     const queryClient = useQueryClient();
     const { data: lastSave = null } = useQueryLastSave();
     const { data: canGoBack = null } = useQueryCanGoBack();
-    const nextStepLoading = useStore(GameStatus.store, (state) => state.loading);
+    const nextStepLoading = useSelector(GameStatus.store, (state) => state.loading);
     const { goBack } = useNarrationFunctions();
     const { openAlertDialog } = useAlertDialog();
     const gameProps = useGameProps();

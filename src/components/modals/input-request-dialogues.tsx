@@ -7,7 +7,7 @@ import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { narration } from "@drincs/pixi-vn";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useDebouncedValue } from "@tanstack/react-pacer";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
@@ -19,7 +19,7 @@ export function InputRequestDialog() {
     const {
         data: { isRequired, type, currentValue } = { currentValue: undefined, isRequired: false },
     } = useQueryInputValue<string | number>();
-    const isTyping = useStore(TextDisplaySettings.store, (state) => state.inProgress);
+    const isTyping = useSelector(TextDisplaySettings.store, (state) => state.inProgress);
     const [open] = useDebouncedValue(!isTyping && isRequired, { wait: 50 });
     const [tempValue, setTempValue] = useState<string | number>();
     const gameProps = useGameProps();

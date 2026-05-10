@@ -4,11 +4,11 @@ import { Switch } from "@/components/ui/switch";
 import { AutoSettings } from "@/lib/stores/auto-settings-store";
 import { SkipSettings } from "@/lib/stores/skip-settings-store";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
 
 export function DialoguesControls() {
-    const typewriterDelay = useStore(TextDisplaySettings.store, (state) => state.delay);
+    const typewriterDelay = useSelector(TextDisplaySettings.store, (state) => state.delay);
     const { t } = useTranslation(["ui"]);
 
     return (
@@ -49,8 +49,8 @@ export function DialoguesControls() {
 
 export function AutoForwardToggle() {
     const { t } = useTranslation(["ui"]);
-    const autoEnabled = useStore(AutoSettings.store, (state) => state.enabled);
-    const autoTime = useStore(AutoSettings.store, (state) => state.time);
+    const autoEnabled = useSelector(AutoSettings.store, (state) => state.enabled);
+    const autoTime = useSelector(AutoSettings.store, (state) => state.time);
 
     return (
         <div className="flex flex-col gap-2 rounded-md border p-3">
@@ -88,7 +88,7 @@ export function AutoForwardToggle() {
 
 export function SkipToggle() {
     const { t } = useTranslation(["ui"]);
-    const enabled = useStore(SkipSettings.store, (state) => state.enabled);
+    const enabled = useSelector(SkipSettings.store, (state) => state.enabled);
 
     return (
         <div className="flex items-center justify-between gap-4 rounded-md border p-3">

@@ -4,13 +4,13 @@ import { useQueryChoiceMenuOptions } from "@/lib/query/interface-query";
 import { GameStatus } from "@/lib/stores/game-status-store";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { useDebouncedValue } from "@tanstack/react-pacer";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import { CornerDownLeft } from "lucide-react";
 
 export function ChoiceMenu() {
-    const loading = useStore(GameStatus.store, (state) => state.loading);
+    const loading = useSelector(GameStatus.store, (state) => state.loading);
     const { data: menu = [] } = useQueryChoiceMenuOptions();
-    const isTyping = useStore(TextDisplaySettings.store, (state) => state.inProgress);
+    const isTyping = useSelector(TextDisplaySettings.store, (state) => state.inProgress);
     const { selectChoice } = useNarrationFunctions();
     const [debouncedMenu] = useDebouncedValue(isTyping ? [] : menu, { wait: 50 });
 

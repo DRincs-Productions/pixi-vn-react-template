@@ -8,7 +8,7 @@ import { hasScrollableParent, isScrollableElement } from "@/lib/utils/scroll-uti
 import { narration, stepHistory, type StoredIndexedChoiceInterface } from "@drincs/pixi-vn";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useDebouncer } from "@tanstack/react-pacer";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import type React from "react";
 import { useCallback, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -86,7 +86,7 @@ const isDragGesture = (dx: number, dy: number) =>
 
 export function useNarrationPointerHandlers() {
     const { goNext } = useNarrationFunctions();
-    const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
+    const skipEnabled = useSelector(SkipSettings.store, (state) => state.enabled);
     const pointerDownPos = useRef<{ x: number; y: number } | null>(null);
     const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const longPressTriggered = useRef(false);
@@ -189,10 +189,10 @@ export function useNarrationPointerHandlers() {
 
 export function useSkipAutoDetector() {
     const { t } = useTranslation(["ui"]);
-    const skipEnabled = useStore(SkipSettings.store, (state) => state.enabled);
-    const autoEnabled = useStore(AutoSettings.store, (state) => state.enabled);
-    const autoTime = useStore(AutoSettings.store, (state) => state.time);
-    const typewriterInProgress = useStore(TextDisplaySettings.store, (state) => state.inProgress);
+    const skipEnabled = useSelector(SkipSettings.store, (state) => state.enabled);
+    const autoEnabled = useSelector(AutoSettings.store, (state) => state.enabled);
+    const autoTime = useSelector(AutoSettings.store, (state) => state.time);
+    const typewriterInProgress = useSelector(TextDisplaySettings.store, (state) => state.inProgress);
     const { goNext } = useNarrationFunctions();
 
     const savedGoNext = useRef(goNext);

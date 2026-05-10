@@ -1,7 +1,7 @@
 import { SearchParams } from "@/lib/stores/search-param-store";
 import { useDebouncedCallback } from "@tanstack/react-pacer";
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import { useCallback, useEffect } from "react";
 
 /**
@@ -48,7 +48,7 @@ export function useConfirmBackNavigation() {
  * @returns The current value, or `undefined` if not set.
  */
 export function useSearchParamState<T>(field: string): T | undefined {
-    const storeValue = useStore(SearchParams.store, (state) => state[field]) as T | undefined;
+    const storeValue = useSelector(SearchParams.store, (state) => state[field]) as T | undefined;
     return storeValue;
 }
 

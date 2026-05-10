@@ -1,6 +1,6 @@
 import { SearchParams } from "@/lib/stores/search-param-store";
 import { canvas, sound } from "@drincs/pixi-vn";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import { useEffect, useMemo, useRef } from "react";
 
 function pauseGameFromMenuOpen() {
@@ -21,7 +21,7 @@ function resumeGameFromMenuClose() {
  * so that pause/resume is automatically scoped to the game screen.
  */
 export function usePauseGameWhenMenuIsOpen() {
-    const searchParams = useStore(SearchParams.store, (state) => state);
+    const searchParams = useSelector(SearchParams.store, (state) => state);
     const pausedByMenuRef = useRef(false);
 
     const hasOpenMenu = useMemo(

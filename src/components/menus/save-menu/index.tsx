@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/pagination";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { GameSaveScreenStore } from "@/lib/stores/useGameSaveScreenStore";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 
 const TOTAL_PAGES = 999;
 
@@ -29,7 +29,7 @@ function getPageNumbers(current: number, total: number): (number | "ellipsis")[]
 }
 
 export function GameSaveMenu() {
-    const page = useStore(GameSaveScreenStore.store, (state) => state.page);
+    const page = useSelector(GameSaveScreenStore.store, (state) => state.page);
 
     const currentPage = page + 1;
     const pageNumbers = getPageNumbers(currentPage, TOTAL_PAGES);

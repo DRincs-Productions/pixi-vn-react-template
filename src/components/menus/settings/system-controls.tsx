@@ -19,7 +19,7 @@ import {
 } from "@/lib/query/settings-query";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { useQueryClient } from "@tanstack/react-query";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import {
     DownloadIcon,
     FullscreenIcon,
@@ -44,7 +44,7 @@ export function SystemControls() {
 
 export function TextSizeSettings() {
     const { t } = useTranslation(["ui"]);
-    const fontSize = useStore(TextDisplaySettings.store, (state) => state.fontSize);
+    const fontSize = useSelector(TextDisplaySettings.store, (state) => state.fontSize);
 
     return (
         <div className="flex flex-col gap-1.5">

@@ -2,7 +2,7 @@ import { QuickActionsWheelState } from "@/lib/stores/quick-actions-wheel-store";
 import { cn } from "@/lib/utils";
 import { getHotkeyManager, toHotkeyRegistrationView } from "@tanstack/hotkeys";
 import type { HotkeyRegistrationView } from "@tanstack/react-hotkeys";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import { type MouseEvent, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -247,7 +247,7 @@ function QuickActionsWheelContent({
  * Mounts the wheel display and reads state from the shared store.
  */
 export function QuickActionsWheel() {
-    const open = useStore(QuickActionsWheelState.store, (state) => state.open);
+    const open = useSelector(QuickActionsWheelState.store, (state) => state.open);
     const [selectedId, setSelectedId] = useState<string>();
 
     return (
