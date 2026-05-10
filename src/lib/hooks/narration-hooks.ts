@@ -80,7 +80,7 @@ export function useNarrationFunctions() {
 
 /** Maximum pointer displacement (px) between pointerdown and pointerup that is still considered a tap/click. */
 const DRAG_THRESHOLD_PX = 5;
-const LONG_PRESS_SKIP_DELAY_MS = 2000;
+const LONG_PRESS_SKIP_DELAY_MS = 700;
 const isDragGesture = (dx: number, dy: number) =>
     dx * dx + dy * dy > DRAG_THRESHOLD_PX * DRAG_THRESHOLD_PX;
 
