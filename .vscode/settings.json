@@ -9,10 +9,6 @@
     "**/*.gen.*": true
   },
   "extensions.ignoreRecommendations": false,
-  "workbench.editor.enablePreview": true,
-  "workbench.editorAssociations": {
-    "*.md": "vscode.markdown.preview.editor"
-  },
   // formatter
   "[javascript]": {
     "editor.defaultFormatter": "biomejs.biome",
