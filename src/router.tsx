@@ -1,7 +1,7 @@
-import PendingComponent from "@/components/loading";
+import { PendingComponent } from "@/components/loading";
+import { routeTree } from "@/routeTree.gen";
 import type { QueryClient } from "@tanstack/react-query";
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
-import { routeTree } from "./routeTree.gen";
 
 export interface RouterContext {
     queryClient: QueryClient;

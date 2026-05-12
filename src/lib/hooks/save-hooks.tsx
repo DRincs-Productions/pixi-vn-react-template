@@ -1,17 +1,23 @@
 import { SaveNameInput } from "@/components/menus/save-menu/save-forms";
-import { useAlertDialog } from "@/components/providers/AlertDialogProvider";
-import useGameProps from "@/hooks/useGameProps";
-import { LAST_SAVE_USE_QUEY_KEY } from "@/hooks/useQueryLastSave";
-import { SAVES_USE_QUEY_KEY } from "@/hooks/useQuerySaves";
-import { useSetSearchParamState } from "@/hooks/useSearchParamState";
+import { useAlertDialog } from "@/components/providers/alert-dialog-provider";
+import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
+import { useGameProps } from "@/lib/hooks/props-hooks";
+import { LAST_SAVE_USE_QUEY_KEY, SAVES_USE_QUEY_KEY } from "@/lib/query/save-query";
+import {
+    addRefreshSave,
+    deleteSaveFromIndexDB,
+    loadSave,
+    saveGameToIndexDB,
+} from "@/lib/utils/save-utility";
 import type GameSaveData from "@/models/GameSaveData";
-import { deleteSaveFromIndexDB, loadSave, saveGameToIndexDB } from "@/utils/save-utility";
+import type { FileRouteTypes } from "@/routeTree.gen";
 import { useQueryClient } from "@tanstack/react-query";
-import { useCallback, useRef } from "react";
+import { useLocation } from "@tanstack/react-router";
+import { useCallback, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
-export default function useSaveActions() {
+export function useSaveActions() {
     const setSettingsOpen = useSetSearchParamState<boolean>("settings");
     const setSettingsTab = useSetSearchParamState<string>("settings_tab");
     const { t } = useTranslation(["ui"]);
@@ -158,4 +164,40 @@ export default function useSaveActions() {
         handleSave,
         handleOverwriteSave,
     };
+}
+
+/**
+ * useAutoSaveOnPageClose
+ *
+ * Trigger a refresh/save when the user is about to leave the page or when the
+ * document becomes hidden. Skips the root path (`/`).
+ *
+ * This hook does not return a value.
+ */
+export function useAutoSaveOnPageClose(): void {
+    const location = useLocation();
+
+    const callback = useCallback(() => {
+        if ((location.pathname as FileRouteTypes["fullPaths"]) === "/") {
+            return;
+        }
+        addRefreshSave();
+    }, [location.pathname]);
+
+    useEffect(() => {
+        const onBeforeUnload = () => callback();
+        const onVisibilityChange = () => {
+            if (document.visibilityState === "hidden") {
+                callback();
+            }
+        };
+
+        window.addEventListener("beforeunload", onBeforeUnload);
+        document.addEventListener("visibilitychange", onVisibilityChange);
+
+        return () => {
+            window.removeEventListener("beforeunload", onBeforeUnload);
+            document.removeEventListener("visibilitychange", onVisibilityChange);
+        };
+    }, [callback]);
 }

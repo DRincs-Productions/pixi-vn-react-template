@@ -1,5 +1,4 @@
-import { useStore } from "@tanstack/react-store";
-import SavSlot from "@/components/menus/save-menu/save-slots";
+import { SaveSlot } from "@/components/menus/save-menu/save-slots";
 import {
     Pagination,
     PaginationContent,
@@ -11,6 +10,7 @@ import {
 } from "@/components/ui/pagination";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { GameSaveScreenStore } from "@/lib/stores/useGameSaveScreenStore";
+import { useSelector } from "@tanstack/react-store";
 
 const TOTAL_PAGES = 999;
 
@@ -28,8 +28,8 @@ function getPageNumbers(current: number, total: number): (number | "ellipsis")[]
     return pages;
 }
 
-export default function GameSaveMenu() {
-    const page = useStore(GameSaveScreenStore.store, (state) => state.page);
+export function GameSaveMenu() {
+    const page = useSelector(GameSaveScreenStore.store, (state) => state.page);
 
     const currentPage = page + 1;
     const pageNumbers = getPageNumbers(currentPage, TOTAL_PAGES);
@@ -40,7 +40,7 @@ export default function GameSaveMenu() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
                     {Array.from({ length: 6 }).map((_, index) => {
                         const id = page * 6 + index;
-                        return <SavSlot key={`SaveFile${id}`} saveId={id} />;
+                        return <SaveSlot key={`SaveFile${id}`} saveId={id} />;
                     })}
                 </div>
             </ScrollArea>
@@ -56,9 +56,9 @@ export default function GameSaveMenu() {
                             className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
                         />
                     </PaginationItem>
-                    {pageNumbers.map((p, i) =>
+                    {pageNumbers.map((p) =>
                         p === "ellipsis" ? (
-                            <PaginationItem key={`ellipsis-${i}`}>
+                            <PaginationItem key={`ellipsis-${currentPage}`}>
                                 <PaginationEllipsis />
                             </PaginationItem>
                         ) : (

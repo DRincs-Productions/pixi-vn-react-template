@@ -1,3 +1,7 @@
+import { BGM_CHANNEL_NAME } from "@/constans";
+import { james, mc, sly, steph, steph_fullname } from "@/content/characters";
+import { animation01 } from "@/content/labels/animations-labels";
+import { secondPart } from "@/content/labels/second-label";
 import {
     Assets,
     moveIn,
@@ -10,12 +14,8 @@ import {
     showImageContainer,
     sound,
 } from "@drincs/pixi-vn";
-import { BGM_CHANNEL_NAME } from "../constans";
-import { james, mc, sly, steph, steph_fullname } from "../content/characters";
-import { animation01 } from "./animations-labels";
-import secondPart from "./secondPart";
 
-const startLabel = newLabel(
+export const startLabel = newLabel(
     "start",
     [
         async () => {
@@ -566,4 +566,3 @@ const startLabel = newLabel(
         },
     },
 );
-export default startLabel;

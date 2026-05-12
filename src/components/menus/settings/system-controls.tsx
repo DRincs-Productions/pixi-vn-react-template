@@ -1,15 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { useStore } from "@tanstack/react-store";
-import {
-    DownloadIcon,
-    FullscreenIcon,
-    Minimize2Icon,
-    MonitorIcon,
-    MoonIcon,
-    SunIcon,
-} from "lucide-react";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useTheme } from "@/components/providers/theme-provider";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -23,12 +11,25 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Toggle } from "@/components/ui/toggle";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useLanguageSettings } from "@/hooks/useLanguageSettings";
-import useQueryIsFullModeScreen, {
-    IS_FULL_SCREEN_MODE_USE_QUEY_KEY,
-} from "@/hooks/useQueryIsFullModeScreen";
+import { useLanguageSettings } from "@/lib/hooks/language-settings-hooks";
 import { downloadResourceToTranslate } from "@/lib/i18n";
+import {
+    IS_FULL_SCREEN_MODE_USE_QUEY_KEY,
+    useQueryIsFullModeScreen,
+} from "@/lib/query/settings-query";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
+import { useQueryClient } from "@tanstack/react-query";
+import { useSelector } from "@tanstack/react-store";
+import {
+    DownloadIcon,
+    FullscreenIcon,
+    Minimize2Icon,
+    MonitorIcon,
+    MoonIcon,
+    SunIcon,
+} from "lucide-react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export function SystemControls() {
     return (
@@ -43,7 +44,7 @@ export function SystemControls() {
 
 export function TextSizeSettings() {
     const { t } = useTranslation(["ui"]);
-    const fontSize = useStore(TextDisplaySettings.store, (state) => state.fontSize);
+    const fontSize = useSelector(TextDisplaySettings.store, (state) => state.fontSize);
 
     return (
         <div className="flex flex-col gap-1.5">
@@ -85,7 +86,7 @@ export function ModeToggle() {
             <ButtonGroup className="shrink-0">
                 <TooltipProvider>
                     <Tooltip>
-                        <TooltipTrigger>
+                        <TooltipTrigger render={<span />}>
                             <Toggle
                                 size="sm"
                                 pressed={theme === "light"}
@@ -98,7 +99,7 @@ export function ModeToggle() {
                         <TooltipContent>Light Mode</TooltipContent>
                     </Tooltip>
                     <Tooltip>
-                        <TooltipTrigger>
+                        <TooltipTrigger render={<span />}>
                             <Toggle
                                 size="sm"
                                 pressed={theme === "system"}
@@ -111,7 +112,7 @@ export function ModeToggle() {
                         <TooltipContent>System Mode</TooltipContent>
                     </Tooltip>
                     <Tooltip>
-                        <TooltipTrigger>
+                        <TooltipTrigger render={<span />}>
                             <Toggle
                                 size="sm"
                                 pressed={theme === "dark"}
@@ -189,7 +190,7 @@ export function LanguageSettings() {
                 {!import.meta.env.PROD && (
                     <TooltipProvider>
                         <Tooltip>
-                            <TooltipTrigger>
+                            <TooltipTrigger render={<span />}>
                                 <Button
                                     variant="ghost"
                                     size="icon"

@@ -1,8 +1,8 @@
-import { canvas, ImageContainer, moveIn, newLabel } from "@drincs/pixi-vn";
+import { canvas, type ImageContainer, moveIn, newLabel } from "@drincs/pixi-vn";
 
 export const animation01 = newLabel("animation_01", [
     async () => {
-        let tickerId = canvas.animate<ImageContainer>(
+        const tickerId = canvas.animate<ImageContainer>(
             "steph",
             {
                 scaleX: 1,

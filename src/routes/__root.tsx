@@ -1,50 +1,38 @@
-import PendingComponent from "@/components/loading";
-import ControlsMenu from "@/components/menus/settings/menus/controls";
+import { PendingComponent } from "@/components/loading";
+import { SettingsDialogue } from "@/components/menus/settings";
 import { OfflineAllert } from "@/components/modals/error-allerts";
-import SettingsDialogue from "@/components/modals/SettingsDialogue";
-import RootProvider from "@/components/providers/RootProvider";
-import useClosePageDetector from "@/hooks/useClosePageDetector";
-import useConfirmBackNavigation from "@/hooks/useConfirmBackNavigation";
-import { INTERFACE_DATA_USE_QUEY_KEY } from "@/hooks/useQueryInterface";
-import useSaveHotkeys from "@/hooks/useSaveHotkeys";
+import { RootProvider } from "@/components/providers/root-provider";
+import { useConfirmBackNavigation } from "@/lib/hooks/navigation-hooks";
+import { useAutoSaveOnPageClose } from "@/lib/hooks/save-hooks";
 import { useI18n } from "@/lib/i18n";
+import { INTERFACE_DATA_USE_QUEY_KEY } from "@/lib/query/interface-query";
 import { SearchParams } from "@/lib/stores/search-param-store";
+import { defineAssets } from "@/lib/utils/assets-utility";
+import { initializeIndexedDB } from "@/lib/utils/db-utility";
+import { loadRefreshSave } from "@/lib/utils/save-utility";
 import type { RouterContext } from "@/router";
-import { defineAssets } from "@/utils/assets-utility";
-import { initializeIndexedDB } from "@/utils/indexedDB-utility";
-import { loadRefreshSave } from "@/utils/save-utility";
-import { Game } from "@drincs/pixi-vn";
 import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { hotkeysDevtoolsPlugin } from "@tanstack/react-hotkeys-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
-import {
-    createRootRouteWithContext,
-    ErrorComponent,
-    Outlet,
-    redirect,
-    useNavigate,
-} from "@tanstack/react-router";
+import { createRootRouteWithContext, ErrorComponent, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
 export const Route = createRootRouteWithContext<RouterContext>()({
     validateSearch: (search) => SearchParams.setMany(search),
     component: RootComponent,
     pendingComponent: PendingComponent,
-    loader: async ({ context }) => {
-        Game.onNavigate(async (to) => {
-            redirect({ to });
-        });
-        await Promise.all([import("@/content"), import("@/labels")]);
-        await Promise.all([initializeIndexedDB(), defineAssets(), useI18n()]);
+    loader: async ({ context, location }) => {
+        // Game.onNavigate(async (to) => redirect({ to }));
+        await Promise.all([import("@/content"), initializeIndexedDB(), defineAssets(), useI18n()]);
         setupPixivnViteData();
-        const isRefreshSaveExist = await loadRefreshSave();
-        if (isRefreshSaveExist) {
-            await context.queryClient.invalidateQueries({
-                queryKey: [INTERFACE_DATA_USE_QUEY_KEY],
-            });
-        } else {
-            redirect({ to: "/demo" });
+        if (location.pathname !== "/") {
+            const isRefreshSaveExist = await loadRefreshSave();
+            if (isRefreshSaveExist) {
+                await context.queryClient.invalidateQueries({
+                    queryKey: [INTERFACE_DATA_USE_QUEY_KEY],
+                });
+            }
         }
     },
     errorComponent: (props) => (
@@ -54,23 +42,14 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     ),
 });
 
-function RootSetup() {
-    const navigate = useNavigate();
-    Game.onNavigate((to) => navigate({ to }));
-    useSaveHotkeys();
-    return null;
-}
-
 function RootComponent() {
-    useClosePageDetector();
+    useAutoSaveOnPageClose();
     useConfirmBackNavigation();
 
     return (
         <>
             <RootProvider>
-                <RootSetup />
                 <SettingsDialogue />
-                <ControlsMenu />
                 <OfflineAllert />
                 <Outlet />
             </RootProvider>

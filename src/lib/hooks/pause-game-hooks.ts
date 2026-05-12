@@ -1,6 +1,6 @@
 import { SearchParams } from "@/lib/stores/search-param-store";
 import { canvas, sound } from "@drincs/pixi-vn";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import { useEffect, useMemo, useRef } from "react";
 
 function pauseGameFromMenuOpen() {
@@ -20,8 +20,8 @@ function resumeGameFromMenuClose() {
  * Must be called from a component that is only rendered on the `/game` route
  * so that pause/resume is automatically scoped to the game screen.
  */
-export default function usePauseGameWhenMenuIsOpen() {
-    const searchParams = useStore(SearchParams.store, (state) => state);
+export function usePauseGameWhenMenuIsOpen() {
+    const searchParams = useSelector(SearchParams.store, (state) => state);
     const pausedByMenuRef = useRef(false);
 
     const hasOpenMenu = useMemo(

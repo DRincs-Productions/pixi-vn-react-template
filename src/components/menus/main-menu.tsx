@@ -3,14 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { CANVAS_UI_LAYER_NAME } from "@/constans";
-import useGameProps from "@/hooks/useGameProps";
-import { INTERFACE_DATA_USE_QUEY_KEY as INTERFACE_DATA_USE_QUERY_KEY } from "@/hooks/useQueryInterface";
-import useQueryLastSave from "@/hooks/useQueryLastSave";
-import { useSetSearchParamState } from "@/hooks/useSearchParamState";
-import startLabel from "@/labels/startLabel";
+import { startLabel } from "@/content/labels/start-label";
+import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
+import { useGameProps } from "@/lib/hooks/props-hooks";
+import { INTERFACE_DATA_USE_QUEY_KEY as INTERFACE_DATA_USE_QUERY_KEY } from "@/lib/query/interface-query";
+import { useQueryLastSave } from "@/lib/query/save-query";
 import { InterfaceSettings } from "@/lib/stores/interface-settings-store";
 import { cn, overlayTextShadowClass } from "@/lib/utils";
-import { loadSave } from "@/utils/save-utility";
+import { loadSave } from "@/lib/utils/save-utility";
 import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
@@ -20,7 +20,7 @@ import { useEffect, useRef, useState } from "react";
 const menuButtonClass =
     "justify-start hover:scale-105 focus-visible:scale-105 transition-transform duration-150 ease-out";
 
-export default function MainMenu() {
+export function MainMenu() {
     const queryClient = useQueryClient();
     const { data: lastSave = null, isLoading } = useQueryLastSave();
     const gameProps = useGameProps();
@@ -133,7 +133,7 @@ export default function MainMenu() {
     return (
         <div className="relative h-full w-full flex items-center justify-start p-3 sm:p-6 md:p-10">
             {/* Buttons card – semi-transparent, fade-in from left on mount */}
-            <Card className="w-full max-w-xs sm:max-w-sm bg-background/70 backdrop-blur-sm animate-in fade-in slide-in-from-left-10 duration-500 ease-out fill-mode-both">
+            <Card className="relative z-10 w-full max-w-xs sm:max-w-sm bg-background/70 backdrop-blur-sm animate-in fade-in slide-in-from-left-10 duration-500 ease-out fill-mode-both">
                 <CardContent ref={menuRef} role="menu" className="flex flex-col gap-2 pt-4">
                     <Button
                         role="menuitem"
@@ -226,7 +226,7 @@ export default function MainMenu() {
             </Card>
 
             {/* Game name + version – bottom right, outlined for readability on any bg */}
-            <div className="absolute bottom-3 right-3 text-right pointer-events-none">
+            <div className="absolute bottom-3 right-3 z-0 text-right pointer-events-none">
                 <p className={cn("text-xs font-semibold text-white", overlayTextShadowClass)}>
                     {packageJson.name}
                 </p>

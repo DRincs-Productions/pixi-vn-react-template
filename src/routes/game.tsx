@@ -1,7 +1,7 @@
 import { QuickActionsWheel } from "@/components/menus/quick-actions-wheel";
-import HistorySettingsMenu from "@/components/menus/settings/menus/history";
 import { InputRequestDialog } from "@/components/modals/input-request-dialogues";
-import usePauseGameWhenMenuIsOpen from "@/hooks/usePauseGameWhenMenuIsOpen";
+import { useGameHotkeys } from "@/lib/hooks/hotkeys-hooks";
+import { usePauseGameWhenMenuIsOpen } from "@/lib/hooks/pause-game-hooks";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/game")({
@@ -10,10 +10,11 @@ export const Route = createFileRoute("/game")({
 
 function GameElement() {
     usePauseGameWhenMenuIsOpen();
+    useGameHotkeys();
+
     return (
         <>
             <InputRequestDialog />
-            <HistorySettingsMenu />
             <QuickActionsWheel />
             <Outlet />
         </>

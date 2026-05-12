@@ -1,13 +1,13 @@
-import AnimatedDots from "@/components/AnimatedDots";
+import { AnimatedDots } from "@/components/loading";
 import { QuickTools } from "@/components/menus/quick-tools";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import useNarrationPointerHandlers from "@/hooks/useNarrationPointerHandlers";
-import { useQueryDialogue } from "@/hooks/useQueryInterface";
+import { useNarrationPointerHandlers } from "@/lib/hooks/narration-hooks";
+import { useQueryDialogue } from "@/lib/query/interface-query";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import { type RefObject, useCallback, useRef } from "react";
 import Markdown from "react-markdown";
 import { MarkdownTypewriterHooks } from "react-markdown-typewriter";
@@ -23,7 +23,7 @@ export function NarrationCards() {
 
     return (
         <div className="flex h-full flex-col">
-            <Card className="pointer-events-none min-h-0 flex-1 gap-1 px-2 pb-2">
+            <Card className="pointer-events-none min-h-0 flex-1 gap-1 px-1.5 pb-1.5">
                 <div className="min-h-0 flex-1">
                     <ResizablePanelGroup orientation="horizontal">
                         {character?.icon && (
@@ -36,13 +36,13 @@ export function NarrationCards() {
                             <div className="flex h-full flex-col">
                                 {character && (
                                     <p
-                                        className="shrink-0 px-4 text-xl font-bold"
+                                        className="shrink-0 px-3 text-xl font-bold"
                                         style={{ color: character?.color }}
                                     >
                                         {characterName}
                                     </p>
                                 )}
-                                <CardContent className="min-h-0 flex-1">
+                                <CardContent className="min-h-0 flex-1 px-3">
                                     <ScrollArea
                                         ref={paragraphRef}
                                         className="h-full"
@@ -64,7 +64,7 @@ export function NarrationCards() {
 }
 
 export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement | null> }) {
-    const typewriterDelay = useStore(TextDisplaySettings.store, (state) => state.delay);
+    const typewriterDelay = useSelector(TextDisplaySettings.store, (state) => state.delay);
     const { data: { animatedText, text } = {} } = useQueryDialogue();
 
     const handleCharacterAnimationComplete = useCallback(

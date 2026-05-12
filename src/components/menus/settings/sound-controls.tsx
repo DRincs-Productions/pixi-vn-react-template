@@ -3,7 +3,7 @@ import { Slider } from "@/components/ui/slider";
 import { ChannelSound } from "@/lib/stores/channel-sound-stores";
 import { MasterSound } from "@/lib/stores/master-sound-storage";
 import { sound } from "@drincs/pixi-vn";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import { Volume2Icon, VolumeXIcon } from "lucide-react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,8 +11,8 @@ import { useTranslation } from "react-i18next";
 export function SoundControls() {
     const { t } = useTranslation(["ui"]);
 
-    const masterVolume = useStore(MasterSound.store, (s) => s.volume);
-    const masterMuted = useStore(MasterSound.store, (s) => s.muted);
+    const masterVolume = useSelector(MasterSound.store, (s) => s.volume);
+    const masterMuted = useSelector(MasterSound.store, (s) => s.muted);
 
     return (
         <div className="flex flex-col gap-4">
@@ -85,7 +85,7 @@ function SoundRow({
     );
 }
 
-export default function SoundChannelControl({
+export function SoundChannelControl({
     label,
     alias,
     disabled,
@@ -97,8 +97,8 @@ export default function SoundChannelControl({
     helper?: string;
 }) {
     const store = useMemo(() => ChannelSound.getStore(alias), [alias]);
-    const volume = useStore(store, (s) => s.volume);
-    const muted = useStore(store, (s) => s.muted);
+    const volume = useSelector(store, (s) => s.volume);
+    const muted = useSelector(store, (s) => s.muted);
 
     return (
         <SoundRow

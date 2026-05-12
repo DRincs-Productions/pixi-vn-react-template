@@ -10,13 +10,11 @@ import {
 } from "@/components/ui/item";
 import { Kbd } from "@/components/ui/kbd";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useQueryNarrativeHistory } from "@/hooks/useQueryInterface";
-import { useSetSearchParamState } from "@/hooks/useSearchParamState";
+import { useQueryNarrativeHistory } from "@/lib/query/interface-query";
 import { cn } from "@/lib/utils";
-import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useDebouncedValue } from "@tanstack/react-pacer";
 import { Check, Search } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
@@ -106,34 +104,6 @@ export function HistoryList({ searchString }: { searchString?: string }) {
     );
 }
 
-export function HistoryMenu() {
-    const setSettingsOpen = useSetSearchParamState<boolean>("settings");
-    const setSettingsTab = useSetSearchParamState<string>("settings_tab");
-    const setHistory = useSetSearchParamState<boolean>("history");
-    const { t } = useTranslation(["ui"]);
-
-    const openHistoryPage = useCallback(() => {
-        setHistory(undefined);
-        setSettingsOpen(true);
-        setSettingsTab("menus/history");
-    }, [setHistory, setSettingsOpen, setSettingsTab]);
-
-    useHotkeys([
-        {
-            hotkey: "Control+H",
-            callback: openHistoryPage,
-            options: {
-                meta: {
-                    name: t("history"),
-                    description: t("history_hotkey_description"),
-                },
-            },
-        },
-    ]);
-
-    return null;
-}
-
 export function HistoryListSettingsPage() {
     const [searchString, setSearchString] = useState("");
     const [debouncedSearchString] = useDebouncedValue(searchString, { wait: 120 });
@@ -162,8 +132,4 @@ export function HistoryListSettingsPage() {
             </ScrollArea>
         </>
     );
-}
-
-export default function HistorySettingsMenu() {
-    return <HistoryMenu />;
 }

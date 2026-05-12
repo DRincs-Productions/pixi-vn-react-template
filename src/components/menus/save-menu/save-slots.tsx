@@ -1,16 +1,16 @@
-import { useLocation } from "@tanstack/react-router";
-import { Download, Save, SquarePen, Trash2 } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import useQuerySaves from "@/hooks/useQuerySaves";
-import useSaveActions from "@/hooks/useSaveActions";
+import { useSaveActions } from "@/lib/hooks/save-hooks";
+import { useQuerySaves } from "@/lib/query/save-query";
 import { cn, overlayTextShadowClass } from "@/lib/utils";
+import { downloadGameSave } from "@/lib/utils/save-utility";
 import type { FileRouteTypes } from "@/routeTree.gen";
-import { downloadGameSave } from "@/utils/save-utility";
+import { useLocation } from "@tanstack/react-router";
+import { Download, Save, SquarePen, Trash2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-export default function SavSlot({ saveId }: { saveId: number }) {
+export function SaveSlot({ saveId }: { saveId: number }) {
     const { t } = useTranslation(["ui"]);
     const { isLoading, data: saveData, isError } = useQuerySaves({ id: saveId });
     const location = useLocation();
