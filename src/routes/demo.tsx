@@ -1,5 +1,5 @@
-import useGameProps from "@/hooks/useGameProps";
-import startLabel from "@/labels/startLabel";
+import { startLabel } from "@/content/labels/start-label";
+import { useGameProps } from "@/lib/hooks/props-hooks";
 import { Game } from "@drincs/pixi-vn";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
