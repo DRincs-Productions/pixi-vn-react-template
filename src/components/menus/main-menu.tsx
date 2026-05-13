@@ -48,6 +48,33 @@ export function MainMenu() {
             })
             .finally(() => setLoading(false));
     };
+    const continueButtonProps = {
+        role: "menuitem" as const,
+        onClick: handleContinue,
+        disabled: (!isLoading && !lastSave) || loading,
+        className: menuButtonClass,
+    };
+    const continueButtonContent = (
+        <>
+            {isLoading ? (
+                <>
+                    <Spinner className="size-4" />
+                    <span className="sr-only">Loading</span>
+                </>
+            ) : (
+                <CirclePlay className="size-4" />
+            )}
+            {t("continue")}
+            {hasRefreshSave ? (
+                <span
+                    aria-hidden="true"
+                    className="ml-1 inline-flex size-4 items-center justify-center rounded-full bg-orange-500 text-[10px] font-bold text-white"
+                >
+                    !
+                </span>
+            ) : null}
+        </>
+    );
 
     /** Returns all enabled menuitem buttons inside the menu container. */
     function getMenuItems(): HTMLButtonElement[] {
@@ -158,49 +185,13 @@ export function MainMenu() {
                         <Tooltip>
                             <TooltipTrigger
                                 render={
-                                    <Button
-                                        role="menuitem"
-                                        onClick={handleContinue}
-                                        disabled={(!isLoading && !lastSave) || loading}
-                                        className={menuButtonClass}
-                                    />
+                                    <Button {...continueButtonProps}>{continueButtonContent}</Button>
                                 }
-                            >
-                                {isLoading ? (
-                                    <>
-                                        <Spinner className="size-4" />
-                                        <span className="sr-only">Loading</span>
-                                    </>
-                                ) : (
-                                    <CirclePlay className="size-4" />
-                                )}
-                                {t("continue")}
-                                <span
-                                    aria-hidden="true"
-                                    className="ml-1 inline-flex size-4 items-center justify-center rounded-full bg-orange-500 text-[10px] font-bold text-white"
-                                >
-                                    !
-                                </span>
-                            </TooltipTrigger>
+                            />
                             <TooltipContent>{t("continue_refresh_save_tooltip")}</TooltipContent>
                         </Tooltip>
                     ) : (
-                        <Button
-                            role="menuitem"
-                            onClick={handleContinue}
-                            disabled={(!isLoading && !lastSave) || loading}
-                            className={menuButtonClass}
-                        >
-                            {isLoading ? (
-                                <>
-                                    <Spinner className="size-4" />
-                                    <span className="sr-only">Loading</span>
-                                </>
-                            ) : (
-                                <CirclePlay className="size-4" />
-                            )}
-                            {t("continue")}
-                        </Button>
+                        <Button {...continueButtonProps}>{continueButtonContent}</Button>
                     )}
 
                     <Button
