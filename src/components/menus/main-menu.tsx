@@ -2,6 +2,7 @@ import packageJson from "@/../package.json";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { CANVAS_UI_LAYER_NAME } from "@/constans";
 import { startLabel } from "@/content/labels/start-label";
 import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
@@ -29,6 +30,7 @@ export function MainMenu() {
     const setSettingsTab = useSetSearchParamState<string>("settings_tab");
     const [loading, setLoading] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
+    const hasRefreshSave = lastSave?.id === -1;
 
     /** Returns all enabled menuitem buttons inside the menu container. */
     function getMenuItems(): HTMLButtonElement[] {
@@ -166,6 +168,17 @@ export function MainMenu() {
                             <CirclePlay className="size-4" />
                         )}
                         {t("continue")}
+                        {hasRefreshSave ? (
+                            <Tooltip>
+                                <TooltipTrigger render={<span />}>
+                                    <span
+                                        className="ml-1 size-2 rounded-full bg-orange-500"
+                                        aria-label={t("continue_refresh_save_tooltip")}
+                                    />
+                                </TooltipTrigger>
+                                <TooltipContent>{t("continue_refresh_save_tooltip")}</TooltipContent>
+                            </Tooltip>
+                        ) : null}
                     </Button>
 
                     <Button

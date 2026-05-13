@@ -10,6 +10,7 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "continue": "Continue",
+    "continue_refresh_save_tooltip": "Last time you exited without saving. You can continue from where you left off.",
     "delete": "Delete",
     "dialogues": "Dialogues",
     "display": "Display",
