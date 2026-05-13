@@ -65,15 +65,12 @@ export function MainMenu() {
             )}
             {t("continue")}
             {hasRefreshSave ? (
-                <>
-                    <span
-                        aria-hidden="true"
-                        className="ml-1 inline-flex size-4 items-center justify-center rounded-full bg-orange-500 text-[10px] font-bold text-white"
-                    >
-                        !
-                    </span>
-                    <span className="sr-only">{t("continue_refresh_save_tooltip")}</span>
-                </>
+                <span
+                    aria-hidden="true"
+                    className="ml-1 inline-flex size-4 items-center justify-center rounded-full bg-orange-500 text-[10px] font-bold text-white"
+                >
+                    !
+                </span>
             ) : null}
         </Button>
     );
