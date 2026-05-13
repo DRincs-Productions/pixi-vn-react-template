@@ -5,7 +5,6 @@ import { useGameProps } from "@/lib/hooks/props-hooks";
 import { useQueryDialogue, useQueryInputValue } from "@/lib/query/interface-query";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { narration } from "@drincs/pixi-vn";
-import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useDebouncedValue } from "@tanstack/react-pacer";
 import { useSelector } from "@tanstack/react-store";
 import { useCallback, useEffect, useState } from "react";
@@ -40,21 +39,6 @@ export function InputRequestDialog() {
         gameProps.invalidateInterfaceData();
     }, [canConfirm, currentValue, gameProps, tempValue]);
 
-    useHotkeys([
-        {
-            hotkey: "Enter",
-            callback: submitInputValue,
-            options: {
-                enabled: open,
-                meta: {
-                    name: t("confirm"),
-                    description: t("confirm_input_hotkey_description"),
-                },
-                conflictBehavior: "replace"
-            },
-        },
-    ]);
-
     return (
         <Dialog open={open}>
             <DialogContent showCloseButton={false}>
@@ -72,6 +56,11 @@ export function InputRequestDialog() {
                 <Input
                     value={tempValue ?? ""}
                     type={type}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter" && canConfirm) {
+                            submitInputValue();
+                        }
+                    }}
                     onChange={(e) => {
                         switch (e.target.type) {
                             case "number":
