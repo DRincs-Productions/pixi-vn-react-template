@@ -32,6 +32,52 @@ export function MainMenu() {
     const menuRef = useRef<HTMLDivElement>(null);
     const hasRefreshSave = lastSave?.id === -1;
 
+    const continueButton = (
+        <Button
+            role="menuitem"
+            onClick={() => {
+                if (!lastSave) {
+                    return;
+                }
+                setLoading(true);
+                loadSave(lastSave)
+                    .then(() =>
+                        queryClient.invalidateQueries({
+                            queryKey: [INTERFACE_DATA_USE_QUERY_KEY],
+                        }),
+                    )
+                    .catch((e) => {
+                        toast.error(t("fail_load"));
+                        console.error(e);
+                    })
+                    .finally(() => setLoading(false));
+            }}
+            disabled={(!isLoading && !lastSave) || loading}
+            className={menuButtonClass}
+        >
+            {isLoading ? (
+                <>
+                    <Spinner className="size-4" />
+                    <span className="sr-only">Loading</span>
+                </>
+            ) : (
+                <CirclePlay className="size-4" />
+            )}
+            {t("continue")}
+            {hasRefreshSave ? (
+                <>
+                    <span
+                        aria-hidden="true"
+                        className="ml-1 inline-flex size-4 items-center justify-center rounded-full bg-orange-500 text-[10px] font-bold text-white"
+                    >
+                        !
+                    </span>
+                    <span className="sr-only">{t("continue_refresh_save_tooltip")}</span>
+                </>
+            ) : null}
+        </Button>
+    );
+
     /** Returns all enabled menuitem buttons inside the menu container. */
     function getMenuItems(): HTMLButtonElement[] {
         if (!menuRef.current) return [];
@@ -137,46 +183,16 @@ export function MainMenu() {
             {/* Buttons card – semi-transparent, fade-in from left on mount */}
             <Card className="relative z-10 w-full max-w-xs sm:max-w-sm bg-background/70 backdrop-blur-sm animate-in fade-in slide-in-from-left-10 duration-500 ease-out fill-mode-both">
                 <CardContent ref={menuRef} role="menu" className="flex flex-col gap-2 pt-4">
-                    <Button
-                        role="menuitem"
-                        onClick={() => {
-                            if (!lastSave) {
-                                return;
-                            }
-                            setLoading(true);
-                            loadSave(lastSave)
-                                .then(() =>
-                                    queryClient.invalidateQueries({
-                                        queryKey: [INTERFACE_DATA_USE_QUERY_KEY],
-                                    }),
-                                )
-                                .catch((e) => {
-                                    toast.error(t("fail_load"));
-                                    console.error(e);
-                                })
-                                .finally(() => setLoading(false));
-                        }}
-                        disabled={(!isLoading && !lastSave) || loading}
-                        className={menuButtonClass}
-                    >
-                        {isLoading ? (
-                            <>
-                                <Spinner className="size-4" />
-                                <span className="sr-only">Loading</span>
-                            </>
-                        ) : (
-                            <CirclePlay className="size-4" />
-                        )}
-                        {t("continue")}
-                        {hasRefreshSave ? (
-                            <Tooltip>
-                                <TooltipTrigger render={<span />}>
-                                    <span className="ml-1 size-2 rounded-full bg-orange-500" />
-                                </TooltipTrigger>
-                                <TooltipContent>{t("continue_refresh_save_tooltip")}</TooltipContent>
-                            </Tooltip>
-                        ) : null}
-                    </Button>
+                    {hasRefreshSave ? (
+                        <Tooltip>
+                            <TooltipTrigger render={<span className="w-full" />}>
+                                {continueButton}
+                            </TooltipTrigger>
+                            <TooltipContent>{t("continue_refresh_save_tooltip")}</TooltipContent>
+                        </Tooltip>
+                    ) : (
+                        continueButton
+                    )}
 
                     <Button
                         role="menuitem"
