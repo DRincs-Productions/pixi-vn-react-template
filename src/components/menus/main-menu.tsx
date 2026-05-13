@@ -171,10 +171,7 @@ export function MainMenu() {
                         {hasRefreshSave ? (
                             <Tooltip>
                                 <TooltipTrigger render={<span />}>
-                                    <span
-                                        className="ml-1 size-2 rounded-full bg-orange-500"
-                                        aria-label={t("continue_refresh_save_tooltip")}
-                                    />
+                                    <span className="ml-1 size-2 rounded-full bg-orange-500" />
                                 </TooltipTrigger>
                                 <TooltipContent>{t("continue_refresh_save_tooltip")}</TooltipContent>
                             </Tooltip>
