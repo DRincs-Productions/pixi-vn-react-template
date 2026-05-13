@@ -13,9 +13,11 @@ function Demo() {
     const nevigate = useNavigate();
 
     useEffect(() => {
-        nevigate({ to: "/game/narration" }).then(() => {
-            Game.start(startLabel, props);
-        });
+        setTimeout(() => {
+            nevigate({ to: "/game/narration" }).then(() => {
+                Game.start(startLabel, props);
+            });
+        }, 1000);
     }, [props, nevigate]);
 
     return null;
