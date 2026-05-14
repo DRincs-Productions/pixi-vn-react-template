@@ -15,15 +15,16 @@ type MasterSoundStorage = {
 export namespace MasterSound {
     export const store = new Store<MasterSoundStorage>({
         volume: Number(localStorage.getItem(`master_volume`) ?? sound.volumeAll * 100),
-        muted: Boolean(localStorage.getItem(`master_muted`) ?? false),
+        muted: localStorage.getItem(`master_muted`) === "true",
     });
 
     /**
      * Initialize the master sound storage, syncing the sound library with stored values
      */
     export function init() {
+        const muted = store.state.muted;
         setVolume(store.state.volume);
-        setMuted(store.state.muted);
+        setMuted(muted);
     }
 
     /**

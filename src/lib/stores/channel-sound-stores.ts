@@ -15,8 +15,9 @@ export namespace ChannelSound {
     export function init() {
         sound.channels.forEach((c) => {
             const store = getStore(c.alias);
+            const muted = store.state.muted;
             setVolume(c.alias, store.state.volume);
-            setMuted(c.alias, store.state.muted);
+            setMuted(c.alias, muted);
         });
     }
 
@@ -25,13 +26,12 @@ export namespace ChannelSound {
         if (store) {
             return store;
         }
+        const storedMuted = localStorage.getItem(`${alias}_muted`);
         store = new Store<ChannelSoundState>({
             volume: Number(
                 localStorage.getItem(`${alias}_volume`) ?? sound.findChannel(alias).volume * 100,
             ),
-            muted: Boolean(
-                localStorage.getItem(`${alias}_muted`) ?? sound.findChannel(alias).muted,
-            ),
+            muted: storedMuted !== null ? storedMuted === "true" : sound.findChannel(alias).muted,
         });
         storeCache.set(alias, store);
         return store;
