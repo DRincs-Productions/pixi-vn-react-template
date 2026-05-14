@@ -16,7 +16,7 @@ import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
 import { CirclePlay, Play, Save, Settings } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const menuButtonClass =
     "justify-start hover:scale-105 focus-visible:scale-105 transition-transform duration-150 ease-out";
@@ -31,7 +31,7 @@ export function MainMenu() {
     const [loading, setLoading] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
     const hasRefreshSave = lastSave?.id === -1;
-    const handleContinue = () => {
+    const handleContinue = useCallback(() => {
         if (!lastSave) {
             return;
         }
@@ -47,13 +47,16 @@ export function MainMenu() {
                 console.error(e);
             })
             .finally(() => setLoading(false));
-    };
-    const continueButtonProps = {
-        role: "menuitem" as const,
-        onClick: handleContinue,
-        disabled: (!isLoading && !lastSave) || loading,
-        className: menuButtonClass,
-    };
+    }, [lastSave, queryClient, toast, t]);
+    const continueButtonProps = useMemo(
+        () => ({
+            role: "menuitem" as const,
+            onClick: handleContinue,
+            disabled: (!isLoading && !lastSave) || loading,
+            className: menuButtonClass,
+        }),
+        [isLoading, lastSave, loading, handleContinue],
+    );
     const continueButtonContent = useMemo(
         () => (
             <>
