@@ -1,79 +1,32 @@
 import packageJson from "@/../package.json";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { ContinueMenuButton } from "@/components/menus/main-menu-continue-button";
 import { Spinner } from "@/components/ui/spinner";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { CANVAS_UI_LAYER_NAME } from "@/constans";
 import { startLabel } from "@/content/labels/start-label";
 import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
 import { useGameProps } from "@/lib/hooks/props-hooks";
 import { INTERFACE_DATA_USE_QUEY_KEY as INTERFACE_DATA_USE_QUERY_KEY } from "@/lib/query/interface-query";
-import { useQueryLastSave } from "@/lib/query/save-query";
 import { InterfaceSettings } from "@/lib/stores/interface-settings-store";
 import { cn, overlayTextShadowClass } from "@/lib/utils";
-import { loadSave } from "@/lib/utils/save-utility";
 import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
-import { CirclePlay, Play, Save, Settings } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Play, Save, Settings } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 const menuButtonClass =
     "justify-start hover:scale-105 focus-visible:scale-105 transition-transform duration-150 ease-out";
 
 export function MainMenu() {
     const queryClient = useQueryClient();
-    const { data: lastSave = null, isLoading } = useQueryLastSave();
     const gameProps = useGameProps();
-    const { uiTransition: t, navigate, toast } = gameProps;
+    const { uiTransition: t, navigate } = gameProps;
     const setSettings = useSetSearchParamState<boolean>("settings");
     const setSettingsTab = useSetSearchParamState<string>("settings_tab");
     const [loading, setLoading] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
-    const hasRefreshSave = lastSave?.id === -1;
-    const handleContinue = useCallback(() => {
-        if (!lastSave) {
-            return;
-        }
-        setLoading(true);
-        loadSave(lastSave)
-            .then(() =>
-                queryClient.invalidateQueries({
-                    queryKey: [INTERFACE_DATA_USE_QUERY_KEY],
-                }),
-            )
-            .catch((e) => {
-                toast.error(t("fail_load"));
-                console.error(e);
-            })
-            .finally(() => setLoading(false));
-    }, [lastSave, queryClient, toast, t]);
-    const continueButtonProps = useMemo(
-        () => ({
-            role: "menuitem" as const,
-            onClick: handleContinue,
-            disabled: (!isLoading && !lastSave) || loading,
-            className: menuButtonClass,
-        }),
-        [isLoading, lastSave, loading, handleContinue],
-    );
-    const continueButtonContent = useMemo(
-        () => (
-            <>
-                {isLoading ? <Spinner className="size-4" /> : <CirclePlay className="size-4" />}
-                {t("continue")}
-                {hasRefreshSave ? (
-                    <span
-                        aria-hidden="true"
-                        className="ml-1 inline-flex size-4 items-center justify-center rounded-full bg-orange-500 text-[10px] font-bold text-white"
-                    >
-                        !
-                    </span>
-                ) : null}
-            </>
-        ),
-        [hasRefreshSave, isLoading, t],
-    );
 
     /** Returns all enabled menuitem buttons inside the menu container. */
     function getMenuItems(): HTMLButtonElement[] {
@@ -180,20 +133,7 @@ export function MainMenu() {
             {/* Buttons card – semi-transparent, fade-in from left on mount */}
             <Card className="relative z-10 w-full max-w-xs sm:max-w-sm bg-background/70 backdrop-blur-sm animate-in fade-in slide-in-from-left-10 duration-500 ease-out fill-mode-both">
                 <CardContent ref={menuRef} role="menu" className="flex flex-col gap-2 pt-4">
-                    {hasRefreshSave ? (
-                        <Tooltip>
-                            <TooltipTrigger
-                                render={
-                                    <Button {...continueButtonProps}>
-                                        {continueButtonContent}
-                                    </Button>
-                                }
-                            />
-                            <TooltipContent>{t("continue_refresh_save_tooltip")}</TooltipContent>
-                        </Tooltip>
-                    ) : (
-                        <Button {...continueButtonProps}>{continueButtonContent}</Button>
-                    )}
+                    <ContinueMenuButton disabled={loading} onLoadingChange={setLoading} />
 
                     <Button
                         role="menuitem"
