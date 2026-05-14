@@ -16,7 +16,7 @@ import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
 import { CirclePlay, Play, Save, Settings } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const menuButtonClass =
     "justify-start hover:scale-105 focus-visible:scale-105 transition-transform duration-150 ease-out";
@@ -54,26 +54,22 @@ export function MainMenu() {
         disabled: (!isLoading && !lastSave) || loading,
         className: menuButtonClass,
     };
-    const continueButtonContent = (
-        <>
-            {isLoading ? (
-                <>
-                    <Spinner className="size-4" />
-                    <span className="sr-only">Loading</span>
-                </>
-            ) : (
-                <CirclePlay className="size-4" />
-            )}
-            {t("continue")}
-            {hasRefreshSave ? (
-                <span
-                    aria-hidden="true"
-                    className="ml-1 inline-flex size-4 items-center justify-center rounded-full bg-orange-500 text-[10px] font-bold text-white"
-                >
-                    !
-                </span>
-            ) : null}
-        </>
+    const continueButtonContent = useMemo(
+        () => (
+            <>
+                {isLoading ? <Spinner className="size-4" /> : <CirclePlay className="size-4" />}
+                {t("continue")}
+                {hasRefreshSave ? (
+                    <span
+                        aria-hidden="true"
+                        className="ml-1 inline-flex size-4 items-center justify-center rounded-full bg-orange-500 text-[10px] font-bold text-white"
+                    >
+                        !
+                    </span>
+                ) : null}
+            </>
+        ),
+        [hasRefreshSave, isLoading, t],
     );
 
     /** Returns all enabled menuitem buttons inside the menu container. */
@@ -185,7 +181,9 @@ export function MainMenu() {
                         <Tooltip>
                             <TooltipTrigger
                                 render={
-                                    <Button {...continueButtonProps}>{continueButtonContent}</Button>
+                                    <Button {...continueButtonProps}>
+                                        {continueButtonContent}
+                                    </Button>
                                 }
                             />
                             <TooltipContent>{t("continue_refresh_save_tooltip")}</TooltipContent>
