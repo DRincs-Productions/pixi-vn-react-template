@@ -2,6 +2,7 @@ import packageJson from "@/../package.json";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { CANVAS_UI_LAYER_NAME } from "@/constans";
 import { startLabel } from "@/content/labels/start-label";
 import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
@@ -14,17 +15,18 @@ import { loadSave } from "@/lib/utils/save-utility";
 import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
-import { CirclePlay, Play, Save, Settings } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { AlertCircle, CirclePlay, Play, Save, Settings } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 const menuButtonClass =
     "justify-start hover:scale-105 focus-visible:scale-105 transition-transform duration-150 ease-out";
 
 export function MainMenu() {
     const queryClient = useQueryClient();
-    const { data: lastSave = null, isLoading } = useQueryLastSave();
     const gameProps = useGameProps();
-    const { uiTransition: t, navigate, toast } = gameProps;
+    const { uiTransition: t, navigate } = gameProps;
     const setSettings = useSetSearchParamState<boolean>("settings");
     const setSettingsTab = useSetSearchParamState<string>("settings_tab");
     const [loading, setLoading] = useState(false);
@@ -135,38 +137,7 @@ export function MainMenu() {
             {/* Buttons card – semi-transparent, fade-in from left on mount */}
             <Card className="relative z-10 w-full max-w-xs sm:max-w-sm bg-background/70 backdrop-blur-sm animate-in fade-in slide-in-from-left-10 duration-500 ease-out fill-mode-both">
                 <CardContent ref={menuRef} role="menu" className="flex flex-col gap-2 pt-4">
-                    <Button
-                        role="menuitem"
-                        onClick={() => {
-                            if (!lastSave) {
-                                return;
-                            }
-                            setLoading(true);
-                            loadSave(lastSave)
-                                .then(() =>
-                                    queryClient.invalidateQueries({
-                                        queryKey: [INTERFACE_DATA_USE_QUERY_KEY],
-                                    }),
-                                )
-                                .catch((e) => {
-                                    toast.error(t("fail_load"));
-                                    console.error(e);
-                                })
-                                .finally(() => setLoading(false));
-                        }}
-                        disabled={(!isLoading && !lastSave) || loading}
-                        className={menuButtonClass}
-                    >
-                        {isLoading ? (
-                            <>
-                                <Spinner className="size-4" />
-                                <span className="sr-only">Loading</span>
-                            </>
-                        ) : (
-                            <CirclePlay className="size-4" />
-                        )}
-                        {t("continue")}
-                    </Button>
+                    <ContinueMenuButton disabled={loading} onLoadingChange={setLoading} />
 
                     <Button
                         role="menuitem"
@@ -235,5 +206,88 @@ export function MainMenu() {
                 </p>
             </div>
         </div>
+    );
+}
+
+export function ContinueMenuButton({
+    disabled = false,
+    onLoadingChange,
+}: {
+    /** Disables the button when another action is in progress. */
+    disabled?: boolean;
+    /** Called when the continue action starts or finishes loading. */
+    onLoadingChange?: (loading: boolean) => void;
+}) {
+    const { data: lastSave = null, isLoading } = useQueryLastSave();
+    const { t } = useTranslation(["ui"]);
+    const queryClient = useQueryClient();
+    const [loading, setLoading] = useState(false);
+    const hasRefreshSave = lastSave?.id === -1;
+
+    const handleClick = useCallback(() => {
+        if (!lastSave) return;
+        setLoading(true);
+        onLoadingChange?.(true);
+        loadSave(lastSave)
+            .then(() =>
+                queryClient.invalidateQueries({
+                    queryKey: [INTERFACE_DATA_USE_QUERY_KEY],
+                }),
+            )
+            .catch((e) => {
+                toast.error(t("fail_load"));
+                console.error(e);
+            })
+            .finally(() => {
+                setLoading(false);
+                onLoadingChange?.(false);
+            });
+    }, [lastSave, queryClient, t, onLoadingChange]);
+
+    const isDisabled = (!isLoading && !lastSave) || loading || disabled;
+
+    const buttonContent = (
+        <>
+            {isLoading || loading ? (
+                <Spinner className="size-4" />
+            ) : (
+                <CirclePlay className="size-4" />
+            )}
+            {t("continue")}
+            {hasRefreshSave ? (
+                <AlertCircle aria-hidden="true" className="ml-1 size-4 text-orange-500" />
+            ) : null}
+        </>
+    );
+
+    if (hasRefreshSave) {
+        return (
+            <Tooltip>
+                <TooltipTrigger
+                    render={
+                        <Button
+                            role="menuitem"
+                            onClick={handleClick}
+                            disabled={isDisabled}
+                            className={menuButtonClass}
+                        >
+                            {buttonContent}
+                        </Button>
+                    }
+                />
+                <TooltipContent>{t("continue_refresh_save_tooltip")}</TooltipContent>
+            </Tooltip>
+        );
+    }
+
+    return (
+        <Button
+            role="menuitem"
+            onClick={handleClick}
+            disabled={isDisabled}
+            className={menuButtonClass}
+        >
+            {buttonContent}
+        </Button>
     );
 }
