@@ -2,7 +2,6 @@ import { RegisteredCharacters } from "@drincs/pixi-vn";
 import {
     convertInkText,
     HashtagCommands,
-    importInkText,
     onInkTranslate,
     onReplaceTextBeforeTranslation,
 } from "@drincs/pixi-vn-ink";
@@ -14,11 +13,6 @@ async function getInkText() {
             return importFile;
         }),
     );
-}
-
-export async function importAllInkLabels() {
-    const fileEntries = await getInkText();
-    await importInkText(fileEntries);
 }
 
 export async function getInkToJson() {

@@ -58,7 +58,7 @@
   "js/ts.updateImportsOnFileMove.enabled": "always",
   // ink
   "ink.mainFile": "start.ink",
-  "ink.rootFolder": "src/ink",
+  "ink.rootFolder": "ink",
   "ink.markup": "Markdown",
   "ink.engine": "pixi-vn"
 }

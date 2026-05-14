@@ -17,7 +17,7 @@
   "dependencies": {
     "@base-ui/react": "^1.4.1",
     "@drincs/pixi-vn": "^1.8.1",
-    "@drincs/pixi-vn-ink": "^1.0.0",
+    "@drincs/pixi-vn-ink": "^1.0.1",
     "@drincs/pixi-vn-spine": "^0.2.1",
     "@fontsource-variable/inter": "^5.2.8",
     "@tailwindcss/vite": "^4.2.4",

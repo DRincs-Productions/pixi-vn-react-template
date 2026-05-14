@@ -35,8 +35,8 @@ export default defineConfig({
         vitePluginPixivn(),
         vitePluginInk({
             inkGlob: "./ink/**/*.ink",
-            inkJsonOutputPattern: "./public/ink-json/[dir]/[name].json",
-            // inkJsonPublicDir: "./public/ink-json",
+            inkJsonOutputPattern: "./public/ink-json/[path][name].gen.json",
+            inkJsonManifestPath: "./src/assets/ink-manifest.gen.json",
         }),
         VitePWA({
             // you can generate the icons using: https://favicon.io/favicon-converter/
