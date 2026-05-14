@@ -17,12 +17,12 @@ async function getInkText() {
 }
 
 export async function importAllInkLabels() {
-    let fileEntries = await getInkText();
+    const fileEntries = await getInkText();
     await importInkText(fileEntries);
 }
 
-export async function convertInkToJson() {
-    let fileEntries = await getInkText();
+export async function getInkToJson() {
+    const fileEntries = await getInkText();
     return await Promise.all(fileEntries.map((data) => convertInkText(data)));
 }
 
@@ -36,7 +36,7 @@ export function initializeInk(options: { t: (key: string) => string }) {
             }
         }
         if (script[0] === "rename" && script.length === 3) {
-            let character = RegisteredCharacters.get(script[1]);
+            const character = RegisteredCharacters.get(script[1]);
             if (character) {
                 character.name = script[2];
             }

@@ -33,7 +33,11 @@ export default defineConfig({
         react(),
         tailwindcss(),
         vitePluginPixivn(),
-        vitePluginInk(),
+        vitePluginInk({
+            inkGlob: "./ink/**/*.ink",
+            inkJsonOutputPattern: "./public/ink-json/[dir]/[name].json",
+            inkJsonPublicDir: "./public/ink-json",
+        }),
         VitePWA({
             // you can generate the icons using: https://favicon.io/favicon-converter/
             // and the maskable icon using: https://progressier.com/maskable-icons-editor
