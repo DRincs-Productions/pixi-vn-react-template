@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+.assetpack
+public/assets
 
 # Editor directories and files
 .idea
@@ -20,4 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-package-lock.json
