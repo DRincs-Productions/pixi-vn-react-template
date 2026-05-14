@@ -15,7 +15,7 @@ import { loadSave } from "@/lib/utils/save-utility";
 import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
-import { CirclePlay, Play, Save, Settings, TriangleAlert } from "lucide-react";
+import { AlertCircle, CirclePlay, Play, Save, Settings } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -255,7 +255,7 @@ export function ContinueMenuButton({
             )}
             {t("continue")}
             {hasRefreshSave ? (
-                <TriangleAlert aria-hidden="true" className="ml-1 size-4 text-orange-500" />
+                <AlertCircle aria-hidden="true" className="ml-1 size-4 text-orange-500" />
             ) : null}
         </>
     );
