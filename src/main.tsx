@@ -10,7 +10,6 @@ import { ChannelSound } from "@/lib/stores/channel-sound-stores";
 import { MasterSound } from "@/lib/stores/master-sound-storage";
 import "@/styles.css";
 import { Assets, canvas, Container, drawCanvasErrorHandler, Game, sound } from "@drincs/pixi-vn";
-import { setupInkHmrListener } from "@drincs/pixi-vn-ink/vite-listener";
 import "@drincs/pixi-vn-spine";
 import { createRoot } from "react-dom/client";
 
@@ -63,5 +62,3 @@ Game.addOnError((error, { toast, uiTransition }) => {
 });
 
 Game.onLoadingLabel((_stepId, { id }) => Assets.backgroundLoadBundle(id));
-
-setupInkHmrListener();

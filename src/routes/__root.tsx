@@ -12,6 +12,7 @@ import { defineAssets } from "@/lib/utils/assets-utility";
 import { initializeIndexedDB } from "@/lib/utils/db-utility";
 import { loadRefreshSave } from "@/lib/utils/save-utility";
 import type { RouterContext } from "@/router";
+import { setupInkHmrListener } from "@drincs/pixi-vn-ink/vite-listener";
 import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { hotkeysDevtoolsPlugin } from "@tanstack/react-hotkeys-devtools";
@@ -27,7 +28,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         // Game.onNavigate(async (to) => redirect({ to }));
         await Promise.all([import("@/content"), initializeIndexedDB(), defineAssets(), useI18n()]);
         setupPixivnViteData();
-        useInkInitialization();
+        setupInkHmrListener();
         if (location.pathname !== "/") {
             const isRefreshSaveExist = await loadRefreshSave();
             if (isRefreshSaveExist) {
@@ -45,6 +46,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 });
 
 function RootComponent() {
+    useInkInitialization();
     useAutoSaveOnPageClose();
     useConfirmBackNavigation();
 
