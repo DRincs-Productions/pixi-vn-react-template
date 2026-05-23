@@ -32,7 +32,11 @@ export default defineConfig({
         tanstackRouter({ target: "react", autoCodeSplitting: true }),
         react(),
         tailwindcss(),
-        vitePluginPixivn(),
+        vitePluginPixivn({
+            content: "./src/content/index.ts",
+            characters: "./src/content/characters.ts",
+            labels: "./src/content/labels/*.label.ts",
+        }),
         vitePluginInk({
             inkGlob: "./ink/**/*.ink",
             inkJsonOutputPattern: "./public/ink-json/[path][name].gen.json",
