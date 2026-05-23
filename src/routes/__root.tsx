@@ -27,8 +27,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     loader: async ({ context, location }) => {
         // Game.onNavigate(async (to) => redirect({ to }));
         await Promise.all([import("@/content"), initializeIndexedDB(), defineAssets(), useI18n()]);
-        setupPixivnViteData();
-        setupInkHmrListener();
+        await setupPixivnViteData();
+        await setupInkHmrListener();
         if (location.pathname !== "/") {
             const isRefreshSaveExist = await loadRefreshSave();
             if (isRefreshSaveExist) {
