@@ -33,6 +33,6 @@ HashtagCommands.add(
 \`\`\`ink
 # rename <characterId> <newName>
 \`\`\``,
-        validation: zod.tuple([zod.literal("rename"), zod.string()]),
+        validation: zod.tuple([zod.literal("rename"), zod.string(), zod.string()]),
     },
 );
