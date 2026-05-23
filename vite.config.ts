@@ -31,7 +31,11 @@ export default defineConfig({
         tanstackRouter({ target: "react", autoCodeSplitting: true }),
         react(),
         tailwindcss(),
-        vitePluginPixivn(),
+        vitePluginPixivn({
+            content: "./src/content/index.ts",
+            characters: "./src/content/characters.ts",
+            labels: "./src/content/labels/*.label.ts",
+        }),
         VitePWA({
             // you can generate the icons using: https://favicon.io/favicon-converter/
             // and the maskable icon using: https://progressier.com/maskable-icons-editor
