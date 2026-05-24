@@ -4,7 +4,7 @@ import zod from "zod";
 
 HashtagCommands.add(
     async (script, { navigate }) => {
-        await navigate(script[1]);
+        await navigate({ to: script[1] });
         return true;
     },
     {
