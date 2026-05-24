@@ -1,4 +1,3 @@
-import { getInkToJson } from "@/lib/utils/ink-utility";
 import { generateJsonInkTranslation } from "@drincs/pixi-vn-ink";
 import i18n, { type ReadCallback } from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
@@ -63,7 +62,9 @@ async function generateResourceToTranslate(lng: string): Promise<any> {
     if (res.default) {
         delete res.default;
     }
-    for (const element of await getInkToJson()) {
+    const manifest = await import("@/assets/ink-manifest.gen.json");
+    for (const path of manifest.default) {
+        const element = await fetch(path).then((r) => r.json());
         element && (await generateJsonInkTranslation(element, res.narration));
     }
     return res;
