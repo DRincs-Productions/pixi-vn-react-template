@@ -35,25 +35,9 @@ export const useI18n = async () => {
                     order: ["localStorage"],
                     caches: ["localStorage"],
                 },
-                // backend: {
-                //     backends: [
-                //         resourcesToBackend(async (lng: string, ns: string) => {
-                //             const object = await getLocalesResource(lng);
-                //             return object[ns];
-                //         }),
-                //     ],
-                // },
-                // missingInterpolationHandler(_text, value, _options) {
-                //     const key = value[1];
-                //     if (key === "steph_fullname") {
-                //         return "Stephanie";
-                //     }
-                //     const character = RegisteredCharacters.get(key);
-                //     if (character) {
-                //         return character.name;
-                //     }
-                //     return `[${key}]`;
-                // },
+                missingInterpolationHandler(_text, value, _options) {
+                    return value[1];
+                },
             });
     }
 };
@@ -83,6 +67,10 @@ async function generateResourceToTranslate(lng: string): Promise<any> {
         element && (await generateJsonInkTranslation(element, res.narration));
     }
     return res;
+}
+
+export function i18nInterpolation(value: string | undefined): string {
+    return `{{${value}}}`;
 }
 
 export async function downloadResourceToTranslate() {
