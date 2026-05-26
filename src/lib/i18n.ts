@@ -70,10 +70,6 @@ async function generateResourceToTranslate(lng: string): Promise<any> {
     return res;
 }
 
-export function i18nInterpolation(value: string | undefined): string {
-    return `{{${value}}}`;
-}
-
 export async function downloadResourceToTranslate() {
     const lng = i18n.options.fallbackLng?.toString() || "en";
     const data = await generateResourceToTranslate(lng);
