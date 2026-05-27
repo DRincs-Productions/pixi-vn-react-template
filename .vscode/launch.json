@@ -21,7 +21,10 @@
           "--no-default-features"
         ]
       },
-      "preLaunchTask": "ui:dev"
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Start Vite Desktop Server",
+      "postDebugTask": "Stop Vite Desktop Server"
     },
     {
       "name": "Debug Game Preview",

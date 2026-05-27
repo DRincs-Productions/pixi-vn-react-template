@@ -84,11 +84,38 @@
       }
     },
     {
-      "label": "ui:dev",
+      "label": "Start Vite Desktop Server",
       "type": "shell",
+      "command": "npm run dev",
       "isBackground": true,
-      "command": "npm",
-      "args": ["dev"]
+      "dependsOn": ["Install Dependencies"],
+      "problemMatcher": {
+        "owner": "vite",
+        "pattern": {
+          "regexp": "^(?!x)x"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".",
+          "endsPattern": "localhost:1420"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": false,
+        "close": true
+      }
+    },
+    {
+      "label": "Stop Vite Desktop Server",
+      "type": "shell",
+      "command": "pkill -f 'vite' 2>/dev/null; pkill -f 'npm run dev' 2>/dev/null; exit 0",
+      "presentation": {
+        "reveal": "never",
+        "panel": "dedicated",
+        "close": true
+      }
     }
   ]
 }
