@@ -22,3 +22,6 @@ public/assets
 *.njsproj
 *.sln
 *.sw?
+
+# Tauri
+*Cargo.lock
