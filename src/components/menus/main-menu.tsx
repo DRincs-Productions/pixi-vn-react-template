@@ -187,7 +187,10 @@ export function MainMenu() {
                     {window.__TAURI__ && (
                         <Button
                             role="menuitem"
-                            onClick={() => window.close()}
+                            onClick={async () => {
+                                const { getCurrentWindow } = await import("@tauri-apps/api/window");
+                                await getCurrentWindow().close();
+                            }}
                             disabled={loading}
                             variant="outline"
                             className={menuButtonClass}
