@@ -84,6 +84,19 @@
       }
     },
     {
+      "label": "Cargo Build (Desktop Dev)",
+      "type": "shell",
+      "command": "cargo build --manifest-path=./src-tauri/Cargo.toml --no-default-features",
+      "dependsOn": ["Start Vite Desktop Server"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true,
+        "close": true
+      },
+      "problemMatcher": ["$rustc"]
+    },
+    {
       "label": "Start Vite Desktop Server",
       "type": "shell",
       "command": "npm run dev",
