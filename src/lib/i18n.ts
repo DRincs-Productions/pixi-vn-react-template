@@ -33,14 +33,12 @@ export const useI18n = async () => {
                     order: ["localStorage"],
                     caches: ["localStorage"],
                 },
+                missingInterpolationHandler(_text, value, _options) {
+                    return value[1];
+                },
             });
     }
 };
-
-export function getBrowserLang(): string {
-    const userLang: string = navigator.language || "en";
-    return userLang?.toLocaleLowerCase()?.split("-")[0];
-}
 
 function getLocalesResource(lng: string): Promise<Record<string, Record<string, string>>> {
     return import(`./../locales/${lng}.json`);
