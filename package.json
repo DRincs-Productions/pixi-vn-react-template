@@ -7,10 +7,11 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
-    "tauri:dev": "tauri dev",
     "preview": "npm run build:fast && vite preview",
     "build": "tsc -b && vite build",
     "build:fast": "vite build",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
     "lint": "biome lint",
     "check": "biome check",
     "format": "biome format --write"
