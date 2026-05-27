@@ -2,6 +2,15 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Debug Game",
+      "request": "launch",
+      "type": "editor-browser",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "Start Vite Dev Server",
+      "postDebugTask": "Stop Vite Dev Server"
+    },
+    {
       "type": "lldb",
       "request": "launch",
       "name": "Run as Desktop App (Dev)",
@@ -14,15 +23,6 @@
       },
       // task for the `beforeDevCommand` if used, must be configured in `.vscode/tasks.json`
       "preLaunchTask": "ui:dev"
-    },
-    {
-      "name": "Debug Game",
-      "request": "launch",
-      "type": "editor-browser",
-      "url": "http://localhost:5173",
-      "webRoot": "${workspaceFolder}",
-      "preLaunchTask": "Start Vite Dev Server",
-      "postDebugTask": "Stop Vite Dev Server"
     },
     {
       "name": "Debug Game Preview",
