@@ -1,7 +1,9 @@
-import { AssetsManifest } from "@drincs/pixi-vn";
-import { AUDIO_BUNDLE_NAME, MAIN_MENU_ROUTE } from "../constans";
-import secondPart from "../labels/secondPart";
-import startLabel from "../labels/startLabel";
+import generatedManifestJson from "@/assets/manifest.gen.json";
+import { AUDIO_BUNDLE_NAME } from "@/constans";
+import { secondPart } from "@/content/labels/second.label";
+import { startLabel } from "@/content/labels/start.label";
+import type { FileRouteTypes } from "@/routeTree.gen";
+import type { AssetsManifest } from "@drincs/pixi-vn";
 
 /**
  * Manifest for the assets used in the game.
@@ -9,6 +11,7 @@ import startLabel from "../labels/startLabel";
  */
 const manifest: AssetsManifest = {
     bundles: [
+        ...generatedManifestJson.bundles,
         {
             name: AUDIO_BUNDLE_NAME,
             assets: [
@@ -24,7 +27,7 @@ const manifest: AssetsManifest = {
         },
         // screens
         {
-            name: MAIN_MENU_ROUTE,
+            name: "/" as FileRouteTypes["fullPaths"],
             assets: [
                 {
                     alias: "background_main_menu",
@@ -269,4 +272,5 @@ const manifest: AssetsManifest = {
         },
     ],
 };
+
 export default manifest;

@@ -1,29 +1,100 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "ui:dev",
-            "type": "shell",
-            // `dev` keeps running in the background
-            // ideally you should also configure a `problemMatcher`
-            // see https://code.visualstudio.com/docs/editor/tasks#_can-a-background-task-be-used-as-a-prelaunchtask-in-launchjson
-            "isBackground": true,
-            // change this to your `beforeDevCommand`:
-            "command": "yarn",
-            "args": [
-                "dev"
-            ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Install Dependencies",
+      "type": "shell",
+      "command": "[ -d node_modules ] || npm i",
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": false,
+        "close": true
+      }
+    },
+    {
+      "label": "Start Vite Dev Server",
+      "type": "shell",
+      "command": "npm run dev",
+      "isBackground": true,
+      "dependsOn": ["Install Dependencies"],
+      "problemMatcher": {
+        "owner": "vite",
+        "pattern": {
+          "regexp": "^(?!x)x"
         },
-        {
-            "label": "ui:build",
-            "type": "shell",
-            // change this to your `beforeBuildCommand`:
-            "command": "yarn",
-            "args": [
-                "build"
-            ]
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".",
+          "endsPattern": "Local:\\s+http://localhost:5173/"
         }
-    ]
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": false,
+        "close": true
+      }
+    },
+    {
+      "label": "Stop Vite Dev Server",
+      "type": "shell",
+      "command": "pkill -f 'vite' 2>/dev/null; pkill -f 'npm run dev' 2>/dev/null; exit 0",
+      "presentation": {
+        "reveal": "never",
+        "panel": "dedicated",
+        "close": true
+      }
+    },
+    {
+      "label": "Start Vite Preview Server",
+      "type": "shell",
+      "command": "npm run preview",
+      "isBackground": true,
+      "dependsOn": ["Install Dependencies"],
+      "problemMatcher": {
+        "owner": "vite",
+        "pattern": {
+          "regexp": "^(?!x)x"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".",
+          "endsPattern": "Local:\\s+http://localhost:4173/"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": false,
+        "close": true
+      }
+    },
+    {
+      "label": "Stop Vite Preview Server",
+      "type": "shell",
+      "command": "pkill -f 'vite' 2>/dev/null; pkill -f 'npm run preview' 2>/dev/null; exit 0",
+      "presentation": {
+        "reveal": "never",
+        "panel": "dedicated",
+        "close": true
+      }
+    },
+    {
+      "label": "ui:dev",
+      "type": "shell",
+      "isBackground": true,
+      "command": "npm",
+      "args": ["dev"]
+    },
+    {
+      "label": "ui:build",
+      "type": "shell",
+      "command": "npm",
+      "args": ["build"]
+    }
+  ]
 }
