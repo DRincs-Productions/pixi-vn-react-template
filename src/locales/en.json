@@ -74,6 +74,7 @@
     "solid_color": "Solid Color",
     "solid_color_description": "Choose the solid color for the theme. It can be black or white and will be contrasting with the primary color. So if the primary color is dark, the solid color will be white, and a the other way around.",
     "start": "Start",
+    "quit": "Quit",
     "menu_navigation": "Menu Navigation",
     "menu_navigation_down_description": "Focus the next menu item.",
     "menu_navigation_up_description": "Focus the previous menu item.",
