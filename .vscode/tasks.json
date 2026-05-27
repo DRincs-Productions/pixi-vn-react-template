@@ -89,12 +89,6 @@
       "isBackground": true,
       "command": "npm",
       "args": ["dev"]
-    },
-    {
-      "label": "ui:build",
-      "type": "shell",
-      "command": "npm",
-      "args": ["build"]
     }
   ]
 }
