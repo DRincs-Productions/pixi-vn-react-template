@@ -5,7 +5,7 @@
       "name": "Debug Game",
       "request": "launch",
       "type": "editor-browser",
-      "url": "http://localhost:1420",
+      "url": "http://localhost:5173",
       "webRoot": "${workspaceFolder}",
       "preLaunchTask": "Start Vite Dev Server",
       "postDebugTask": "Stop Vite Dev Server"

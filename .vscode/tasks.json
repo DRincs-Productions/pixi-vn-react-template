@@ -29,7 +29,7 @@
         "background": {
           "activeOnStart": true,
           "beginsPattern": ".",
-          "endsPattern": "Local:\\s+http://localhost:1420/"
+          "endsPattern": "Local:\\s+http://localhost:5173/"
         }
       },
       "presentation": {
@@ -110,7 +110,7 @@
         "background": {
           "activeOnStart": true,
           "beginsPattern": ".",
-          "endsPattern": "localhost:1420"
+          "endsPattern": "localhost:5173"
         }
       },
       "presentation": {
