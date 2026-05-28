@@ -1,14 +1,13 @@
-// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet])
+        .on_page_load(on_page_load)
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+fn on_page_load(window: &tauri::Webview, _: &tauri::webview::PageLoadPayload<'_>) {
+    #[cfg(not(debug_assertions))]
+    let _ = window.eval("document.addEventListener('contextmenu', e => e.preventDefault())");
 }

@@ -6,7 +6,12 @@
   "permissions": [
     "core:default",
     "core:window:allow-close",
+    "core:window:allow-is-fullscreen",
     "core:window:allow-set-fullscreen",
+    "core:window:allow-minimize",
+    "core:window:allow-maximize",
+    "core:window:allow-unminimize",
+    "core:window:allow-set-title",
     "opener:default"
   ]
 }
