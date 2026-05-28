@@ -1,14 +1,4 @@
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { useAlertDialog } from "@/components/providers/alert-dialog-provider";
 import { Button } from "@/components/ui/button";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { Separator } from "@/components/ui/separator";
@@ -63,40 +53,27 @@ export function ReturnMainMenuButton() {
     const navigate = useNavigate();
     const { t } = useTranslation(["ui"]);
     const setOpenSettings = useSetSearchParamState<boolean>("settings");
+    const { openAlertDialog } = useAlertDialog();
 
     return (
-        <AlertDialog>
-            <AlertDialogTrigger
-                render={
-                    <Button variant="destructive">
-                        <LogOutIcon />
-                        {t("return_main_menu")}
-                    </Button>
-                }
-            />
-            <AlertDialogContent>
-                <AlertDialogHeader>
-                    <AlertDialogTitle>{t("attention")}</AlertDialogTitle>
-                    <AlertDialogDescription>
-                        {t("you_sure_to_return_main_menu")}
-                    </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                    <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-                    <AlertDialogAction
-                        variant="destructive"
-                        onClick={() => {
-                            Game.clear();
-                            navigate({ to: "/" });
-                            setOpenSettings(false);
-                        }}
-                    >
-                        <LogOutIcon />
-                        {t("exit")}
-                    </AlertDialogAction>
-                </AlertDialogFooter>
-            </AlertDialogContent>
-        </AlertDialog>
+        <Button
+            variant="destructive"
+            onClick={() => {
+                openAlertDialog({
+                    head: t("attention"),
+                    content: t("you_sure_to_return_main_menu"),
+                    onConfirm: () => {
+                        Game.clear();
+                        navigate({ to: "/" });
+                        setOpenSettings(false);
+                        return true;
+                    },
+                });
+            }}
+        >
+            <LogOutIcon />
+            {t("return_main_menu")}
+        </Button>
     );
 }
 
