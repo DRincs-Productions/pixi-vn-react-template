@@ -15,10 +15,16 @@
       {
         "title": "my-app-project-name",
         "backgroundColor": "#303030",
-        "width": 900,
-        "height": 600,
+        "theme": "Dark",
+        "width": 1280,
+        "height": 720,
+        "minWidth": 640,
+        "minHeight": 360,
+        "center": true,
         "fullscreen": false,
-        "resizable": true
+        "resizable": true,
+        "dragDropEnabled": false,
+        "zoomHotkeysEnabled": false
       }
     ],
     "security": {
