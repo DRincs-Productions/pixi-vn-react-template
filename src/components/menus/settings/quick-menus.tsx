@@ -1,21 +1,12 @@
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { useAlertDialog } from "@/components/providers/alert-dialog-provider";
 import { Button } from "@/components/ui/button";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { Separator } from "@/components/ui/separator";
 import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
+import { useQuit } from "@/lib/hooks/quit-hooks";
 import { Game } from "@drincs/pixi-vn";
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { Gamepad2Icon, HistoryIcon, LogOutIcon, SaveIcon } from "lucide-react";
+import { Gamepad2Icon, HistoryIcon, LogOutIcon, PowerIcon, SaveIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export function QuickMenus() {
@@ -31,6 +22,7 @@ export function QuickMenus() {
             </div>
             {isInGame && <Separator />}
             {isInGame && <ReturnMainMenuButton />}
+            <QuitButton />
         </div>
     );
 }
@@ -63,40 +55,27 @@ export function ReturnMainMenuButton() {
     const navigate = useNavigate();
     const { t } = useTranslation(["ui"]);
     const setOpenSettings = useSetSearchParamState<boolean>("settings");
+    const { openAlertDialog } = useAlertDialog();
 
     return (
-        <AlertDialog>
-            <AlertDialogTrigger
-                render={
-                    <Button variant="destructive">
-                        <LogOutIcon />
-                        {t("return_main_menu")}
-                    </Button>
-                }
-            />
-            <AlertDialogContent>
-                <AlertDialogHeader>
-                    <AlertDialogTitle>{t("attention")}</AlertDialogTitle>
-                    <AlertDialogDescription>
-                        {t("you_sure_to_return_main_menu")}
-                    </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                    <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-                    <AlertDialogAction
-                        variant="destructive"
-                        onClick={() => {
-                            Game.clear();
-                            navigate({ to: "/" });
-                            setOpenSettings(false);
-                        }}
-                    >
-                        <LogOutIcon />
-                        {t("exit")}
-                    </AlertDialogAction>
-                </AlertDialogFooter>
-            </AlertDialogContent>
-        </AlertDialog>
+        <Button
+            variant="destructive"
+            onClick={() => {
+                openAlertDialog({
+                    head: t("attention"),
+                    content: t("you_sure_to_return_main_menu"),
+                    onConfirm: () => {
+                        Game.clear();
+                        navigate({ to: "/" });
+                        setOpenSettings(false);
+                        return true;
+                    },
+                });
+            }}
+        >
+            <LogOutIcon />
+            {t("return_main_menu")}
+        </Button>
     );
 }
 
@@ -120,6 +99,20 @@ export function OpenHistorySettingButton() {
                 <Kbd>Ctrl</Kbd>
                 <Kbd>H</Kbd>
             </KbdGroup>
+        </Button>
+    );
+}
+
+export function QuitButton() {
+    const { t } = useTranslation(["ui"]);
+    const { quit, canQuit } = useQuit();
+
+    if (!canQuit) return null;
+
+    return (
+        <Button variant="destructive" onClick={quit}>
+            <PowerIcon />
+            {t("quit")}
         </Button>
     );
 }

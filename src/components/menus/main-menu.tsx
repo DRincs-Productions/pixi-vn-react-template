@@ -7,6 +7,7 @@ import { CANVAS_UI_LAYER_NAME } from "@/constans";
 import { startLabel } from "@/content/labels/start.label";
 import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
 import { useGameProps } from "@/lib/hooks/props-hooks";
+import { useQuit } from "@/lib/hooks/quit-hooks";
 import { INTERFACE_DATA_USE_QUEY_KEY as INTERFACE_DATA_USE_QUERY_KEY } from "@/lib/query/interface-query";
 import { useQueryLastSave } from "@/lib/query/save-query";
 import { InterfaceSettings } from "@/lib/stores/interface-settings-store";
@@ -31,6 +32,7 @@ export function MainMenu() {
     const setSettingsTab = useSetSearchParamState<string>("settings_tab");
     const [loading, setLoading] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
+    const { quit, canQuit } = useQuit();
 
     /** Returns all enabled menuitem buttons inside the menu container. */
     function getMenuItems(): HTMLButtonElement[] {
@@ -184,13 +186,10 @@ export function MainMenu() {
                         {t("settings")}
                     </Button>
 
-                    {window.__TAURI__ && (
+                    {canQuit && (
                         <Button
                             role="menuitem"
-                            onClick={async () => {
-                                const { getCurrentWindow } = await import("@tauri-apps/api/window");
-                                await getCurrentWindow().close();
-                            }}
+                            onClick={quit}
                             disabled={loading}
                             variant="outline"
                             className={menuButtonClass}
