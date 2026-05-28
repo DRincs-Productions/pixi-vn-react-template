@@ -2,7 +2,6 @@ import { PendingComponent } from "@/components/loading";
 import { SettingsDialogue } from "@/components/menus/settings";
 import { OfflineAllert } from "@/components/modals/error-allerts";
 import { RootProvider } from "@/components/providers/root-provider";
-import { restoreTauriFullscreen } from "@/lib/utils/fullscreen-utility";
 import { useConfirmBackNavigation } from "@/lib/hooks/navigation-hooks";
 import { useAutoSaveOnPageClose } from "@/lib/hooks/save-hooks";
 import { useI18n } from "@/lib/i18n";
@@ -25,13 +24,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     pendingComponent: PendingComponent,
     loader: async ({ context, location }) => {
         // Game.onNavigate(async (to) => redirect({ to }));
-        await Promise.all([
-            import("@/content"),
-            initializeIndexedDB(),
-            defineAssets(),
-            useI18n(),
-            restoreTauriFullscreen(),
-        ]);
+        await Promise.all([import("@/content"), initializeIndexedDB(), defineAssets(), useI18n()]);
         await setupPixivnViteData();
         if (location.pathname !== "/") {
             const isRefreshSaveExist = await loadRefreshSave();

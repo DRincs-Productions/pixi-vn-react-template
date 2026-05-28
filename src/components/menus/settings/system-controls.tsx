@@ -11,7 +11,6 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Toggle } from "@/components/ui/toggle";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { saveTauriFullscreenPreference } from "@/lib/utils/fullscreen-utility";
 import { useLanguageSettings } from "@/lib/hooks/language-settings-hooks";
 import { downloadResourceToTranslate } from "@/lib/i18n";
 import {
@@ -164,10 +163,7 @@ export function FullScreenSettings() {
                     setLoading(true);
                     let promise: Promise<void>;
                     if (window.__TAURI__) {
-                        const newState = !isFullScreenMode;
-                        promise = getCurrentWindow()
-                            .setFullscreen(newState)
-                            .then(() => saveTauriFullscreenPreference(newState));
+                        promise = getCurrentWindow().setFullscreen(!isFullScreenMode);
                     } else if (isFullScreenMode) {
                         promise = document.exitFullscreen();
                     } else {
