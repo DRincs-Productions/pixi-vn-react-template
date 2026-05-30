@@ -46,9 +46,9 @@ pub fn run() {
         .expect("error while running tauri application");
 }
 
-fn on_page_load(window: &tauri::Webview, _: &tauri::webview::PageLoadPayload<'_>) {
+fn on_page_load(_window: &tauri::Webview, _: &tauri::webview::PageLoadPayload<'_>) {
     #[cfg(not(debug_assertions))]
-    let _ = window.eval("document.addEventListener('contextmenu', e => e.preventDefault())");
+    let _ = _window.eval("document.addEventListener('contextmenu', e => e.preventDefault())");
 }
 
 fn on_window_event(window: &tauri::Window, event: &tauri::WindowEvent) {
