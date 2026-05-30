@@ -2,7 +2,7 @@ import { PendingComponent } from "@/components/loading";
 import { SettingsDialogue } from "@/components/menus/settings";
 import { OfflineAllert } from "@/components/modals/error-allerts";
 import { RootProvider } from "@/components/providers/root-provider";
-import useInkInitialization from "@/hooks/useInkInitialization";
+import useInkInitialization from "@/lib/hooks/ink-hooks";
 import { useConfirmBackNavigation } from "@/lib/hooks/navigation-hooks";
 import { useAutoSaveOnPageClose } from "@/lib/hooks/save-hooks";
 import { useI18n } from "@/lib/i18n";
