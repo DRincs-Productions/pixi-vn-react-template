@@ -10,6 +10,7 @@
     "preview": "npm run build:fast && vite preview",
     "build": "tsc -b && vite build && npm tauri build",
     "build:fast": "vite build",
+    "prebuild": "npm run icon",
     "icon": "pwa-assets-generator && tauri icon public/icon.png",
     "tauri:dev": "tauri dev",
     "tauri:android:dev": "tauri android dev",
