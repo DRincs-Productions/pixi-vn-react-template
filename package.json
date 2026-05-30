@@ -12,7 +12,7 @@
     "build:fast": "vite build",
     "tauri:dev": "tauri dev",
     "tauri:build": "npm run tauri:icon && tauri build",
-    "tauri:icon": "tauri icon public/pwa-512x512.png",
+    "tauri:icon": "tauri icon icon.png",
     "tauri:android:dev": "tauri android dev",
     "tauri:ios:dev": "tauri ios dev",
     "lint": "biome lint",
