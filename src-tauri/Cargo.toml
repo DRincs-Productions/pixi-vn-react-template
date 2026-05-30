@@ -7,6 +7,21 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+# ── Steam (optional) ─────────────────────────────────────────────────────────
+# To enable Steam support:
+#   1. Set your App ID in steam_appid.txt (root of the repo, use 480 for testing)
+#   2. Change `default = []` to `default = ["steam"]` below, or pass
+#      `--features steam` to cargo / tauri build.
+#   3. On Windows, ship steam_api64.dll next to the executable.
+#   4. On Linux,   ship libsteam_api.so next to the executable.
+#   5. On macOS,   ship libsteam_api.dylib next to the executable.
+#      (The steamworks-sys crate copies the library to the build output
+#       automatically; you only need to include it in the Tauri bundle.)
+# ─────────────────────────────────────────────────────────────────────────────
+[features]
+default = []
+steam = ["dep:steamworks"]
+
 [lib]
 # The `_lib` suffix may seem redundant but it is necessary
 # to make the lib name unique and wouldn't conflict with the bin name.
@@ -20,6 +35,8 @@ tauri-build = { version = "2", features = [] }
 [dependencies]
 tauri = { version = "2", features = [] }
 tauri-plugin-opener = "2"
+tauri-plugin-window-state = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+steamworks = { version = "0.13", optional = true }
 

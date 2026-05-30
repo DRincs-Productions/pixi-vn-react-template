@@ -1,4 +1,4 @@
-import { GameState } from "@drincs/pixi-vn";
+import type { GameState } from "@drincs/pixi-vn";
 
 export default interface GameSaveData {
     saveData: GameState;

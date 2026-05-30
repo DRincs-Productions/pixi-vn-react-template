@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+.assetpack
+public/assets
 
 # Editor directories and files
 .idea
@@ -20,5 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-package-lock.json
-src-tauri/Cargo.lock
+
+# Tauri
+*Cargo.lock
+
+# Steam redistributable libraries (copied automatically by build.rs)
+src-tauri/steam_api64.dll
+src-tauri/libsteam_api.so
+src-tauri/libsteam_api.dylib

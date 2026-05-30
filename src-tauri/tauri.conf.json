@@ -5,7 +5,7 @@
   "identifier": "com.my-app-identifier.app",
   "build": {
     "beforeDevCommand": "npm run dev",
-    "devUrl": "http://localhost:1420",
+    "devUrl": "http://localhost:5173",
     "beforeBuildCommand": "npm run build",
     "frontendDist": "../dist"
   },
@@ -13,10 +13,18 @@
     "withGlobalTauri": true,
     "windows": [
       {
-        "fullscreen": true,
         "title": "my-app-project-name",
-        "width": 800,
-        "height": 600
+        "backgroundColor": "#303030",
+        "theme": "Dark",
+        "width": 1280,
+        "height": 720,
+        "minWidth": 640,
+        "minHeight": 360,
+        "center": true,
+        "fullscreen": false,
+        "resizable": true,
+        "dragDropEnabled": false,
+        "zoomHotkeysEnabled": false
       }
     ],
     "security": {
