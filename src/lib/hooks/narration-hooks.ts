@@ -1,4 +1,4 @@
-import { SKIP_DELAY } from "@/constans";
+import { SKIP_DELAY } from "@/constants";
 import { useGameProps } from "@/lib/hooks/props-hooks";
 import { AutoSettings } from "@/lib/stores/auto-settings-store";
 import { GameStatus } from "@/lib/stores/game-status-store";
@@ -95,19 +95,22 @@ export function useNarrationPointerHandlers() {
         longPressTimer.current = null;
     }, []);
 
-    const handlePointerDown = useCallback((e: React.PointerEvent) => {
-        if (e.button !== 0) return;
-        if (hasScrollableParent(e.target)) return;
+    const handlePointerDown = useCallback(
+        (e: React.PointerEvent) => {
+            if (e.button !== 0) return;
+            if (hasScrollableParent(e.target)) return;
 
-        longPressTriggered.current = false;
-        pointerDownPos.current = { x: e.clientX, y: e.clientY };
-        clearLongPressTimer();
-        longPressTimer.current = setTimeout(() => {
-            if (!pointerDownPos.current) return;
-            longPressTriggered.current = true;
-            SkipSettings.setEnabled(true);
-        }, LONG_PRESS_SKIP_DELAY_MS);
-    }, [clearLongPressTimer]);
+            longPressTriggered.current = false;
+            pointerDownPos.current = { x: e.clientX, y: e.clientY };
+            clearLongPressTimer();
+            longPressTimer.current = setTimeout(() => {
+                if (!pointerDownPos.current) return;
+                longPressTriggered.current = true;
+                SkipSettings.setEnabled(true);
+            }, LONG_PRESS_SKIP_DELAY_MS);
+        },
+        [clearLongPressTimer],
+    );
 
     /**
      * Clear the pending gesture on cancel.
@@ -189,7 +192,10 @@ export function useSkipAutoDetector() {
     const skipEnabled = useSelector(SkipSettings.store, (state) => state.enabled);
     const autoEnabled = useSelector(AutoSettings.store, (state) => state.enabled);
     const autoTime = useSelector(AutoSettings.store, (state) => state.time);
-    const typewriterInProgress = useSelector(TextDisplaySettings.store, (state) => state.inProgress);
+    const typewriterInProgress = useSelector(
+        TextDisplaySettings.store,
+        (state) => state.inProgress,
+    );
     const { goNext } = useNarrationFunctions();
 
     const savedGoNext = useRef(goNext);
@@ -223,7 +229,6 @@ export function useSkipAutoDetector() {
     useEffect(() => {
         maybeExecute({ autoEnabled, skipEnabled, typewriterInProgress, autoTime });
     }, [maybeExecute, autoEnabled, skipEnabled, typewriterInProgress, autoTime]);
-
 
     return null;
 }

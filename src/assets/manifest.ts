@@ -1,5 +1,5 @@
 import generatedManifestJson from "@/assets/manifest.gen.json";
-import { AUDIO_BUNDLE_NAME } from "@/constans";
+import { AUDIO_BUNDLE_NAME } from "@/constants";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import type { AssetsManifest } from "@drincs/pixi-vn";
 
