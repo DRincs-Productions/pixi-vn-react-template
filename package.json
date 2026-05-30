@@ -10,6 +10,8 @@
     "preview": "npm run build:fast && vite preview",
     "build": "tsc -b && vite build",
     "build:fast": "vite build",
+    "prebuild": "npm run icon",
+    "icon": "pwa-assets-generator",
     "lint": "biome lint",
     "check": "biome check",
     "format": "biome format --write"
@@ -32,6 +34,7 @@
     "@tanstack/react-store": "latest",
     "@tanstack/router-plugin": "latest",
     "@tanstack/store": "latest",
+    "@vite-pwa/assets-generator": "^1.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.6.0",
