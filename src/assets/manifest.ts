@@ -1,5 +1,5 @@
 import generatedManifestJson from "@/assets/manifest.gen.json";
-import { AUDIO_BUNDLE_NAME } from "@/constans";
+import { AUDIO_BUNDLE_NAME } from "@/constants";
 import { secondPart } from "@/content/labels/second.label";
 import { startLabel } from "@/content/labels/start.label";
 import type { FileRouteTypes } from "@/routeTree.gen";
