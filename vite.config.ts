@@ -45,9 +45,8 @@ export default defineConfig({
             inkJsonManifestPath: "./src/assets/ink-manifest.gen.json",
         }),
         VitePWA({
-            // you can generate the icons using: https://favicon.io/favicon-converter/
-            // and the maskable icon using: https://progressier.com/maskable-icons-editor
-            includeAssets: ["favicon.ico", "apple-touch-icon.png", "mask-icon.svg"],
+            // generate icons with: npm run icon
+            includeAssets: ["favicon.ico", "apple-touch-icon-180x180.png"],
             manifest: {
                 name: "my-app-project-name",
                 short_name: "my-app-package-name",
@@ -66,6 +65,12 @@ export default defineConfig({
                         src: "pwa-512x512.png",
                         sizes: "512x512",
                         type: "image/png",
+                    },
+                    {
+                        src: "maskable-icon-512x512.png",
+                        sizes: "512x512",
+                        type: "image/png",
+                        purpose: "maskable",
                     },
                 ],
             },
