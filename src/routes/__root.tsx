@@ -2,6 +2,7 @@ import { PendingComponent } from "@/components/loading";
 import { SettingsDialogue } from "@/components/menus/settings";
 import { OfflineAllert } from "@/components/modals/error-allerts";
 import { RootProvider } from "@/components/providers/root-provider";
+import useInkInitialization from "@/hooks/useInkInitialization";
 import { useConfirmBackNavigation } from "@/lib/hooks/navigation-hooks";
 import { useAutoSaveOnPageClose } from "@/lib/hooks/save-hooks";
 import { useI18n } from "@/lib/i18n";
@@ -11,6 +12,7 @@ import { defineAssets } from "@/lib/utils/assets-utility";
 import { initializeIndexedDB } from "@/lib/utils/db-utility";
 import { loadRefreshSave } from "@/lib/utils/save-utility";
 import type { RouterContext } from "@/router";
+import { setupInkHmrListener } from "@drincs/pixi-vn-ink/vite-listener";
 import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { hotkeysDevtoolsPlugin } from "@tanstack/react-hotkeys-devtools";
@@ -26,6 +28,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         // Game.onNavigate(async (to) => redirect({ to }));
         await Promise.all([import("@/content"), initializeIndexedDB(), defineAssets(), useI18n()]);
         await setupPixivnViteData();
+        await setupInkHmrListener();
         if (location.pathname !== "/") {
             const isRefreshSaveExist = await loadRefreshSave();
             if (isRefreshSaveExist) {
@@ -43,6 +46,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 });
 
 function RootComponent() {
+    useInkInitialization();
     useAutoSaveOnPageClose();
     useConfirmBackNavigation();
 

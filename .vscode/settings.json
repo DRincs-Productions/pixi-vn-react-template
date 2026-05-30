@@ -55,5 +55,10 @@
   // does fetch when he does Pull
   "git.fetchOnPull": true,
   // move file
-  "js/ts.updateImportsOnFileMove.enabled": "always"
+  "js/ts.updateImportsOnFileMove.enabled": "always",
+  // ink
+  "ink.mainFile": "start.ink",
+  "ink.rootFolder": "ink",
+  "ink.markup": "Markdown",
+  "ink.engine": "pixi-vn"
 }
