@@ -5,7 +5,7 @@ import {
     HTML_CANVAS_LAYER_NAME,
     HTML_UI_LAYER_NAME,
     SFX_CHANNEL_NAME,
-} from "@/constans";
+} from "@/constants";
 import { ChannelSound } from "@/lib/stores/channel-sound-stores";
 import { MasterSound } from "@/lib/stores/master-sound-storage";
 import "@/styles.css";
