@@ -7,11 +7,39 @@ on:
   workflow_dispatch:
 
 jobs:
+  # ── Create the release exactly once before the builds start ──────────────────
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      release_tag: ${{ steps.version.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: get version
+        id: version
+        run: |
+          VERSION=$(jq -r '.version' src-tauri/tauri.conf.json)
+          echo "tag=app-v${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: create release
+        run: |
+          gh release view "${{ steps.version.outputs.tag }}" 2>/dev/null || \
+          gh release create "${{ steps.version.outputs.tag }}" \
+            --title "App v$(jq -r '.version' src-tauri/tauri.conf.json)" \
+            --notes "See the assets to download this version and install."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   # ---------------------------------------------------------------------------
-  # Android debug — unsigned APK, available as a workflow artifact
+  # Android debug — unsigned APK uploaded to the release
   # ---------------------------------------------------------------------------
   build-android:
+    needs: create-release
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -58,17 +86,23 @@ jobs:
           mobile: android
           args: --debug
 
-      - name: upload APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-debug
-          path: src-tauri/gen/android/app/build/outputs/apk/**/*.apk
+      - name: upload APK to release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ needs.create-release.outputs.release_tag }}
+        run: |
+          find src-tauri/gen/android -name "*.apk" | while IFS= read -r f; do
+            gh release upload "$TAG" "$f" --clobber
+          done
 
   # ---------------------------------------------------------------------------
-  # iOS debug — unsigned IPA for simulator, available as a workflow artifact
+  # iOS debug — unsigned build uploaded to the release
   # ---------------------------------------------------------------------------
   build-ios:
+    needs: create-release
     runs-on: macos-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -95,8 +129,27 @@ jobs:
           mobile: ios
           args: --debug
 
-      - name: upload IPA artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ios-debug
-          path: src-tauri/gen/apple/build/**/*.ipa
+      - name: upload iOS build to release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ needs.create-release.outputs.release_tag }}
+        run: |
+          BIN_NAME=$(grep '^name = ' src-tauri/Cargo.toml | head -1 | cut -d'"' -f2)
+          VERSION=$(jq -r '.version' src-tauri/tauri.conf.json)
+
+          # Prefer a signed IPA; fall back to zipping the .app bundle
+          IPA=$(find src-tauri/gen/apple -name "*.ipa" 2>/dev/null | head -1)
+          if [ -n "$IPA" ]; then
+            gh release upload "$TAG" "$IPA" --clobber
+          else
+            APP=$(find src-tauri/gen/apple/build -name "*.app" -maxdepth 6 2>/dev/null | head -1)
+            if [ -n "$APP" ]; then
+              ZIP="${BIN_NAME}_${VERSION}_ios-debug.zip"
+              zip -r "$ZIP" "$APP"
+              gh release upload "$TAG" "$ZIP" --clobber
+            else
+              echo "No iOS artifacts found under src-tauri/gen/apple"
+              find src-tauri/gen/apple 2>/dev/null | head -30
+              exit 1
+            fi
+          fi

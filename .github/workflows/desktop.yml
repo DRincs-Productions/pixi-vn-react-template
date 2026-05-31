@@ -22,13 +22,12 @@ jobs:
           VERSION=$(jq -r '.version' src-tauri/tauri.conf.json)
           echo "tag=app-v${VERSION}" >> $GITHUB_OUTPUT
 
-      - name: create draft release
+      - name: create release
         run: |
           gh release view "${{ steps.version.outputs.tag }}" 2>/dev/null || \
           gh release create "${{ steps.version.outputs.tag }}" \
             --title "App v$(jq -r '.version' src-tauri/tauri.conf.json)" \
-            --notes "See the assets to download this version and install." \
-            --draft
+            --notes "See the assets to download this version and install."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
