@@ -56,3 +56,32 @@ jobs:
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
+
+      - name: Package Windows portable
+        if: matrix.platform == 'windows-latest'
+        shell: pwsh
+        run: |
+          $version = (Get-Content src-tauri/tauri.conf.json | ConvertFrom-Json).version
+          $binName = (Select-String -Path src-tauri/Cargo.toml -Pattern '^name = "(.+)"').Matches[0].Groups[1].Value
+          Compress-Archive -Path "src-tauri/target/release/$binName.exe" -DestinationPath "${binName}_${version}_windows_x64-portable.zip"
+          gh release upload "app-v$version" "${binName}_${version}_windows_x64-portable.zip" --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Package macOS portable
+        if: matrix.platform == 'macos-latest'
+        run: |
+          VERSION=$(jq -r '.version' src-tauri/tauri.conf.json)
+          BIN_NAME=$(grep '^name = ' src-tauri/Cargo.toml | head -1 | cut -d'"' -f2)
+          if [[ "${{ matrix.args }}" == *"aarch64"* ]]; then
+            ARCH="aarch64"
+            BUNDLE_DIR="src-tauri/target/aarch64-apple-darwin/release/bundle/macos"
+          else
+            ARCH="x86_64"
+            BUNDLE_DIR="src-tauri/target/x86_64-apple-darwin/release/bundle/macos"
+          fi
+          APP_NAME=$(find "$BUNDLE_DIR" -maxdepth 1 -name "*.app" | head -1 | xargs basename)
+          tar -czf "${BIN_NAME}_${VERSION}_macos_${ARCH}-portable.tar.gz" -C "$BUNDLE_DIR" "$APP_NAME"
+          gh release upload "app-v$VERSION" "${BIN_NAME}_${VERSION}_macos_${ARCH}-portable.tar.gz" --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
