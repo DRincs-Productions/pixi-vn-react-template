@@ -6,26 +6,20 @@ on:
       - 'v*'
 
 jobs:
-  # ── Create the draft release exactly once before the matrix starts ──────────
+  # ── Create the release exactly once before the matrix starts ────────────────
   create-release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     outputs:
-      release_tag: ${{ steps.version.outputs.tag }}
+      release_tag: ${{ github.ref_name }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: get version
-        id: version
-        run: |
-          VERSION=$(jq -r '.version' src-tauri/tauri.conf.json)
-          echo "tag=app-v${VERSION}" >> $GITHUB_OUTPUT
-
       - name: create release
         run: |
-          gh release view "${{ steps.version.outputs.tag }}" 2>/dev/null || \
-          gh release create "${{ steps.version.outputs.tag }}" \
+          gh release view "${{ github.ref_name }}" 2>/dev/null || \
+          gh release create "${{ github.ref_name }}" \
             --title "App v$(jq -r '.version' src-tauri/tauri.conf.json)" \
             --notes "See the assets to download this version and install."
         env:
