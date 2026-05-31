@@ -38,7 +38,7 @@ jobs:
           targets: aarch64-linux-android,armv7-linux-androideabi,i686-linux-android,x86_64-linux-android
 
       - name: install frontend dependencies
-        run: npm ci
+        run: npm i
 
       - name: init Tauri Android project
         run: npx tauri android init
@@ -78,7 +78,7 @@ jobs:
           targets: aarch64-apple-ios,aarch64-apple-ios-sim,x86_64-apple-ios
 
       - name: install frontend dependencies
-        run: npm ci
+        run: npm i
 
       - name: init Tauri iOS project
         run: npx tauri ios init
