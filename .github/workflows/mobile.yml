@@ -38,10 +38,10 @@ jobs:
           targets: aarch64-linux-android,armv7-linux-androideabi,i686-linux-android,x86_64-linux-android
 
       - name: install frontend dependencies
-        run: yarn install
+        run: npm ci
 
       - name: init Tauri Android project
-        run: yarn tauri android init
+        run: npx tauri android init
         env:
           NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.12077973
 
@@ -78,10 +78,10 @@ jobs:
           targets: aarch64-apple-ios,aarch64-apple-ios-sim,x86_64-apple-ios
 
       - name: install frontend dependencies
-        run: yarn install
+        run: npm ci
 
       - name: init Tauri iOS project
-        run: yarn tauri ios init
+        run: npx tauri ios init
 
       - uses: tauri-apps/tauri-action@v0
         env:
