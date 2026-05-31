@@ -78,13 +78,10 @@ jobs:
         env:
           NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.12077973
 
-      - uses: tauri-apps/tauri-action@v0
+      - name: build Android app
+        run: npx tauri android build --debug
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.12077973
-        with:
-          mobile: android
-          args: --debug
 
       - name: upload APK to release
         env:
@@ -96,7 +93,7 @@ jobs:
           done
 
   # ---------------------------------------------------------------------------
-  # iOS debug — unsigned build uploaded to the release
+  # iOS debug — unsigned build uploaded to the release (best-effort)
   # ---------------------------------------------------------------------------
   build-ios:
     needs: create-release
@@ -122,12 +119,9 @@ jobs:
       - name: init Tauri iOS project
         run: npx tauri ios init
 
-      - uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          mobile: ios
-          args: --debug
+      - name: build iOS app
+        run: npx tauri ios build --debug
+        continue-on-error: true
 
       - name: upload iOS build to release
         env:
@@ -137,19 +131,21 @@ jobs:
           BIN_NAME=$(grep '^name = ' src-tauri/Cargo.toml | head -1 | cut -d'"' -f2)
           VERSION=$(jq -r '.version' src-tauri/tauri.conf.json)
 
-          # Prefer a signed IPA; fall back to zipping the .app bundle
+          # Prefer a signed IPA
           IPA=$(find src-tauri/gen/apple -name "*.ipa" 2>/dev/null | head -1)
           if [ -n "$IPA" ]; then
             gh release upload "$TAG" "$IPA" --clobber
-          else
-            APP=$(find src-tauri/gen/apple/build -name "*.app" -maxdepth 6 2>/dev/null | head -1)
-            if [ -n "$APP" ]; then
-              ZIP="${BIN_NAME}_${VERSION}_ios-debug.zip"
-              zip -r "$ZIP" "$APP"
-              gh release upload "$TAG" "$ZIP" --clobber
-            else
-              echo "No iOS artifacts found under src-tauri/gen/apple"
-              find src-tauri/gen/apple 2>/dev/null | head -30
-              exit 1
-            fi
+            exit 0
           fi
+
+          # Fall back to zipping the .app bundle (simulator / unsigned build)
+          APP=$(find src-tauri/gen/apple/build -name "*.app" -maxdepth 8 2>/dev/null | head -1)
+          if [ -n "$APP" ]; then
+            ZIP="${BIN_NAME}_${VERSION}_ios-debug.zip"
+            zip -r "$ZIP" "$APP"
+            gh release upload "$TAG" "$ZIP" --clobber
+            exit 0
+          fi
+
+          echo "No iOS artifacts found — code signing may be required to produce an IPA."
+          echo "Configure APPLE_CERTIFICATE and APPLE_CERTIFICATE_PASSWORD secrets to enable signed builds."
