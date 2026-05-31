@@ -1,3 +1,4 @@
+import { steam } from "@/lib/steam";
 import { RegisteredCharacters } from "@drincs/pixi-vn";
 import { HashtagCommands } from "@drincs/pixi-vn-ink";
 import zod from "zod";
@@ -34,5 +35,21 @@ HashtagCommands.add(
 # rename <characterId> <newName>
 \`\`\``,
         validation: zod.tuple([zod.literal("rename"), zod.string(), zod.string()]),
+    },
+);
+
+HashtagCommands.add(
+    async (script) => {
+        await steam.unlockAchievement(script[2]);
+        return true;
+    },
+    {
+        name: "achievement",
+        description: `Unlocks a Steam achievement.
+
+\`\`\`ink
+# unlock achievement <achievementId>
+\`\`\``,
+        validation: zod.tuple([zod.literal("unlock"), zod.literal("achievement"), zod.string()]),
     },
 );
