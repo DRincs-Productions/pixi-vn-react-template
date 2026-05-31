@@ -21,7 +21,9 @@ jobs:
           gh release view "${{ github.ref_name }}" 2>/dev/null || \
           gh release create "${{ github.ref_name }}" \
             --title "App v$(jq -r '.version' src-tauri/tauri.conf.json)" \
-            --notes "See the assets to download this version and install."
+            --notes "See the assets to download this version and install." \
+            2>/dev/null || \
+          gh release view "${{ github.ref_name }}" > /dev/null
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
