@@ -115,28 +115,36 @@ jobs:
       - name: init Tauri iOS project
         run: npx tauri ios init
 
-      - name: build iOS simulator app (no signing required)
+      - name: disable code signing in Xcode project
         run: |
-          PROJECT=$(find src-tauri/gen/apple -name "*.xcodeproj" | head -1)
-          SCHEME=$(basename "$PROJECT" .xcodeproj)_iOS
-          xcodebuild \
-            -project "$PROJECT" \
-            -scheme "$SCHEME" \
-            -configuration Debug \
-            -sdk iphonesimulator \
-            -destination "generic/platform=iOS Simulator" \
-            -derivedDataPath src-tauri/gen/apple/build \
-            build
+          python3 << 'PYEOF'
+          import glob, re
+          pbxproj = glob.glob('src-tauri/gen/apple/*.xcodeproj/project.pbxproj')[0]
+          with open(pbxproj) as f:
+              content = f.read()
+          sign_off = (
+              '\n\t\t\t\tCODE_SIGN_IDENTITY = "";'
+              '\n\t\t\t\tCODE_SIGNING_REQUIRED = NO;'
+              '\n\t\t\t\tCODE_SIGNING_ALLOWED = NO;'
+              '\n\t\t\t\tDEVELOPMENT_TEAM = "";'
+          )
+          content = re.sub(r'(buildSettings = \{)', r'\1' + sign_off, content)
+          with open(pbxproj, 'w') as f:
+              f.write(content)
+          print(f'Patched {pbxproj}')
+          PYEOF
 
-      - name: upload iOS simulator build to release
+      - name: build iOS app
+        run: npx tauri ios build --debug
+
+      - name: upload iOS build to release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ needs.create-release.outputs.release_tag }}
         run: |
           BIN_NAME=$(grep '^name = ' src-tauri/Cargo.toml | head -1 | cut -d'"' -f2)
           VERSION=$(jq -r '.version' src-tauri/tauri.conf.json)
-          APP=$(find src-tauri/gen/apple/build -name "*.app" \
-            -path "*/Debug-iphonesimulator/*" | head -1)
-          ZIP="${BIN_NAME}_${VERSION}_ios-simulator-debug.zip"
+          APP=$(find src-tauri/gen/apple -name "*.app" 2>/dev/null | head -1)
+          ZIP="${BIN_NAME}_${VERSION}_ios-debug.zip"
           zip -r "$ZIP" "$APP"
           gh release upload "$TAG" "$ZIP" --clobber
