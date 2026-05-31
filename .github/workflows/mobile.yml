@@ -113,33 +113,28 @@ jobs:
       - name: init Tauri iOS project
         run: npx tauri ios init
 
-      - name: build iOS app
-        run: npx tauri ios build --debug
-        continue-on-error: true
+      - name: build iOS simulator app (no signing required)
+        run: |
+          PROJECT=$(find src-tauri/gen/apple -name "*.xcodeproj" | head -1)
+          SCHEME=$(basename "$PROJECT" .xcodeproj)_iOS
+          xcodebuild \
+            -project "$PROJECT" \
+            -scheme "$SCHEME" \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination "generic/platform=iOS Simulator" \
+            -derivedDataPath src-tauri/gen/apple/build \
+            build
 
-      - name: upload iOS build to release
+      - name: upload iOS simulator build to release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ needs.create-release.outputs.release_tag }}
         run: |
           BIN_NAME=$(grep '^name = ' src-tauri/Cargo.toml | head -1 | cut -d'"' -f2)
           VERSION=$(jq -r '.version' src-tauri/tauri.conf.json)
-
-          # Prefer a signed IPA
-          IPA=$(find src-tauri/gen/apple -name "*.ipa" 2>/dev/null | head -1)
-          if [ -n "$IPA" ]; then
-            gh release upload "$TAG" "$IPA" --clobber
-            exit 0
-          fi
-
-          # Fall back to zipping the .app bundle (simulator / unsigned build)
-          APP=$(find src-tauri/gen/apple/build -name "*.app" -maxdepth 8 2>/dev/null | head -1)
-          if [ -n "$APP" ]; then
-            ZIP="${BIN_NAME}_${VERSION}_ios-debug.zip"
-            zip -r "$ZIP" "$APP"
-            gh release upload "$TAG" "$ZIP" --clobber
-            exit 0
-          fi
-
-          echo "No iOS artifacts found — code signing may be required to produce an IPA."
-          echo "Configure APPLE_CERTIFICATE and APPLE_CERTIFICATE_PASSWORD secrets to enable signed builds."
+          APP=$(find src-tauri/gen/apple/build -name "*.app" \
+            -path "*/Debug-iphonesimulator/*" | head -1)
+          ZIP="${BIN_NAME}_${VERSION}_ios-simulator-debug.zip"
+          zip -r "$ZIP" "$APP"
+          gh release upload "$TAG" "$ZIP" --clobber
