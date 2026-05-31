@@ -101,8 +101,8 @@ export default defineConfig({
                         id.includes("rehype-raw") ||
                         id.includes("remark-gfm")
                     )
-                        return "react-markdown";
-                    if (id.includes("@pixi/sound")) return "sound";
+                        return "markdown";
+                    if (id.includes("tone")) return "tone";
                     if (id.includes("@drincs/pixi-vn-spine")) return "spine";
                     if (id.includes("pixi.js")) return "pixi.js";
                     if (id.includes("@drincs/pixi-vn")) return "pixi-vn";
