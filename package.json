@@ -12,6 +12,7 @@
     "build:fast": "vite build",
     "prebuild": "npm run icon",
     "icon": "pwa-assets-generator && tauri icon public/icon.png",
+    "tauri": "tauri",
     "tauri:dev": "tauri dev",
     "tauri:android:dev": "tauri android dev",
     "tauri:ios:dev": "tauri ios dev",
