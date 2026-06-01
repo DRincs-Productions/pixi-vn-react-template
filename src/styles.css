@@ -142,3 +142,14 @@ body {
     @apply font-sans;
   }
 }
+
+@layer components {
+  [data-slot="button"],
+  [data-slot="card"],
+  [data-slot="resizable-handle"],
+  [data-slot="scroll-area"],
+  [data-slot="scroll-area-scrollbar"],
+  [data-slot="toggle"] {
+    pointer-events: auto;
+  }
+}
