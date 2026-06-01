@@ -7,11 +7,35 @@ on:
   workflow_dispatch:
 
 jobs:
+  # ── Create the release exactly once before the builds start ──────────────────
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      release_tag: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: create release
+        run: |
+          gh release view "${{ github.ref_name }}" 2>/dev/null || \
+          gh release create "${{ github.ref_name }}" \
+            --title "App v$(jq -r '.version' src-tauri/tauri.conf.json)" \
+            --notes "See the assets to download this version and install." \
+            2>/dev/null || \
+          gh release view "${{ github.ref_name }}" > /dev/null
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   # ---------------------------------------------------------------------------
-  # Android debug — unsigned APK, available as a workflow artifact
+  # Android debug — unsigned APK uploaded to the release
   # ---------------------------------------------------------------------------
   build-android:
+    needs: create-release
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -37,6 +61,11 @@ jobs:
         with:
           targets: aarch64-linux-android,armv7-linux-androideabi,i686-linux-android,x86_64-linux-android
 
+      - name: install Linux dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
       - name: install frontend dependencies
         run: npm i
 
@@ -45,25 +74,76 @@ jobs:
         env:
           NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.12077973
 
-      - uses: tauri-apps/tauri-action@v0
+      - name: patch Android manifest (landscape + fullscreen)
+        run: |
+          python3 << 'PYEOF'
+          import glob, re
+
+          manifest = glob.glob('src-tauri/gen/android/app/src/main/AndroidManifest.xml')[0]
+          with open(manifest) as f:
+              content = f.read()
+          # Remove any pre-existing screenOrientation to avoid duplicates
+          content = re.sub(r'\s+android:screenOrientation="[^"]*"', '', content)
+          # Insert screenOrientation directly on the first <activity tag (robust, independent
+          # of which other attributes Tauri generates)
+          patched, n = re.subn(
+              r'(<activity\b)',
+              r'\1\n            android:screenOrientation="sensorLandscape"',
+              content,
+              count=1
+          )
+          if n == 0:
+              print('WARNING: <activity> tag not found in manifest — orientation NOT patched')
+          else:
+              content = patched
+              print(f'Patched {manifest} (screenOrientation=sensorLandscape)')
+          with open(manifest, 'w') as f:
+              f.write(content)
+
+          # Tauri may generate styles.xml or themes.xml depending on the version
+          styles_candidates = (
+              glob.glob('src-tauri/gen/android/app/src/main/res/values/styles.xml') +
+              glob.glob('src-tauri/gen/android/app/src/main/res/values/themes.xml')
+          )
+          if not styles_candidates:
+              print('Warning: no styles.xml/themes.xml found, skipping fullscreen patch')
+          else:
+              styles = styles_candidates[0]
+              with open(styles) as f:
+                  content = f.read()
+              # Hide status bar (fullscreen)
+              content = content.replace(
+                  '</style>',
+                  '    <item name="android:windowFullscreen">true</item>\n    </style>',
+                  1
+              )
+              with open(styles, 'w') as f:
+                  f.write(content)
+              print(f'Patched {styles}')
+          PYEOF
+
+      - name: build Android app
+        run: npx tauri android build --debug
+        env:
+          NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.12077973
+
+      - name: upload APK to release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.12077973
-        with:
-          mobile: android
-          args: --debug
-
-      - name: upload APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-debug
-          path: src-tauri/gen/android/app/build/outputs/apk/**/*.apk
+          TAG: ${{ needs.create-release.outputs.release_tag }}
+        run: |
+          find src-tauri/gen/android -name "*.apk" | while IFS= read -r f; do
+            gh release upload "$TAG" "$f" --clobber
+          done
 
   # ---------------------------------------------------------------------------
-  # iOS debug — unsigned IPA for simulator, available as a workflow artifact
+  # iOS debug — unsigned build uploaded to the release (best-effort)
   # ---------------------------------------------------------------------------
   build-ios:
+    needs: create-release
     runs-on: macos-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -83,15 +163,108 @@ jobs:
       - name: init Tauri iOS project
         run: npx tauri ios init
 
-      - uses: tauri-apps/tauri-action@v0
+      - name: disable code signing in Xcode project
+        run: |
+          python3 << 'PYEOF'
+          import glob, re
+          pbxproj = glob.glob('src-tauri/gen/apple/*.xcodeproj/project.pbxproj')[0]
+          with open(pbxproj) as f:
+              content = f.read()
+          sign_off = (
+              '\n\t\t\t\tCODE_SIGN_IDENTITY = "";'
+              '\n\t\t\t\tCODE_SIGNING_REQUIRED = NO;'
+              '\n\t\t\t\tCODE_SIGNING_ALLOWED = NO;'
+              '\n\t\t\t\tDEVELOPMENT_TEAM = "";'
+          )
+          content = re.sub(r'(buildSettings = \{)', r'\1' + sign_off, content)
+          with open(pbxproj, 'w') as f:
+              f.write(content)
+          print(f'Patched {pbxproj}')
+          PYEOF
+
+      - name: patch iOS Info.plist (landscape + hide status bar)
+        run: |
+          python3 << 'PYEOF'
+          import glob, re
+
+          plists = glob.glob('src-tauri/gen/apple/*/Info.plist')
+          if not plists:
+              plists = glob.glob('src-tauri/gen/apple/*/*/Info.plist')
+          for plist in plists:
+              with open(plist) as f:
+                  content = f.read()
+
+              # Remove any existing orientation / status bar keys so we can replace them
+              for key in [
+                  'UISupportedInterfaceOrientations',
+                  'UISupportedInterfaceOrientations~ipad',
+                  'UIStatusBarHidden',
+                  'UIViewControllerBasedStatusBarAppearance',
+              ]:
+                  content = re.sub(
+                      rf'\s*<key>{re.escape(key)}</key>\s*(<(true|false)/>|<array>.*?</array>)',
+                      '', content, flags=re.DOTALL
+                  )
+
+              additions = (
+                  '\t<key>UIStatusBarHidden</key>\n'
+                  '\t<true/>\n'
+                  '\t<key>UIViewControllerBasedStatusBarAppearance</key>\n'
+                  '\t<false/>\n'
+                  '\t<key>UISupportedInterfaceOrientations</key>\n'
+                  '\t<array>\n'
+                  '\t\t<string>UIInterfaceOrientationLandscapeLeft</string>\n'
+                  '\t\t<string>UIInterfaceOrientationLandscapeRight</string>\n'
+                  '\t</array>\n'
+                  '\t<key>UISupportedInterfaceOrientations~ipad</key>\n'
+                  '\t<array>\n'
+                  '\t\t<string>UIInterfaceOrientationLandscapeLeft</string>\n'
+                  '\t\t<string>UIInterfaceOrientationLandscapeRight</string>\n'
+                  '\t</array>\n'
+              )
+              new_content, n = re.subn(
+                  r'</dict>\s*</plist>\s*$',
+                  additions + '</dict>\n</plist>\n',
+                  content.rstrip(),
+                  flags=re.DOTALL
+              )
+              if n == 0:
+                  print(f'WARNING: </dict></plist> not found in {plist} — orientation NOT patched')
+              else:
+                  content = new_content
+                  print(f'Patched {plist}')
+              with open(plist, 'w') as f:
+                  f.write(content)
+          PYEOF
+
+      - name: build iOS app
+        run: npx tauri ios build --debug
+        # Export step fails without a signing team; archive still succeeds.
+        # We extract the .app from the .xcarchive below instead.
+        continue-on-error: true
+
+      - name: package and upload iOS app from archive
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          mobile: ios
-          args: --debug
+          TAG: ${{ needs.create-release.outputs.release_tag }}
+        run: |
+          BIN_NAME=$(grep '^name = ' src-tauri/Cargo.toml | head -1 | cut -d'"' -f2)
+          VERSION=$(jq -r '.version' src-tauri/tauri.conf.json)
 
-      - name: upload IPA artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ios-debug
-          path: src-tauri/gen/apple/build/**/*.ipa
+          ARCHIVE=$(find src-tauri/gen/apple/build -name "*.xcarchive" 2>/dev/null | head -1)
+          if [ -z "$ARCHIVE" ]; then
+            echo "No .xcarchive found — build may have failed before archiving"
+            exit 1
+          fi
+
+          APP=$(find "$ARCHIVE/Products/Applications" -name "*.app" | head -1)
+          if [ -z "$APP" ]; then
+            echo "No .app found inside archive $ARCHIVE"
+            exit 1
+          fi
+
+          mkdir Payload
+          cp -r "$APP" Payload/
+          IPA="${BIN_NAME}_${VERSION}_ios-debug.ipa"
+          zip -r "$IPA" Payload/
+          gh release upload "$TAG" "$IPA" --clobber

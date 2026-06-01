@@ -6,21 +6,52 @@ on:
       - 'v*'
 
 jobs:
+  # ── Create the release exactly once before the matrix starts ────────────────
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      release_tag: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: create release
+        run: |
+          gh release view "${{ github.ref_name }}" 2>/dev/null || \
+          gh release create "${{ github.ref_name }}" \
+            --title "App v$(jq -r '.version' src-tauri/tauri.conf.json)" \
+            --notes "See the assets to download this version and install." \
+            2>/dev/null || \
+          gh release view "${{ github.ref_name }}" > /dev/null
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ── Build and upload per platform ───────────────────────────────────────────
   publish-tauri:
+    needs: create-release
     permissions:
       contents: write
     strategy:
       fail-fast: false
       matrix:
         include:
-          - platform: 'macos-latest' # for Arm based macs (M1 and above).
+          - platform: 'macos-latest'
             args: '--target aarch64-apple-darwin'
-          - platform: 'macos-latest' # for Intel based macs.
+            target: 'aarch64-apple-darwin'
+            arch: 'aarch64'
+          - platform: 'macos-latest'
             args: '--target x86_64-apple-darwin'
+            target: 'x86_64-apple-darwin'
+            arch: 'x86_64'
           - platform: 'ubuntu-22.04'
             args: ''
+            target: ''
+            arch: 'x64'
           - platform: 'windows-latest'
             args: ''
+            target: ''
+            arch: 'x64'
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -34,11 +65,10 @@ jobs:
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
-          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
       - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
+        if: matrix.platform == 'ubuntu-22.04'
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
@@ -46,13 +76,113 @@ jobs:
       - name: install frontend dependencies
         run: npm i
 
-      - uses: tauri-apps/tauri-action@v0
+      - name: build app
+        uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
-          releaseName: 'App v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
-          releaseDraft: true
-          prerelease: false
           args: ${{ matrix.args }}
+
+      # ── Linux: .deb + .AppImage (AppImage is already portable) ─────────────
+      - name: upload artifacts (Linux)
+        if: matrix.platform == 'ubuntu-22.04'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ needs.create-release.outputs.release_tag }}
+        run: |
+          upload_file() {
+            local file="$1"
+            local limit=$((1900 * 1024 * 1024))
+            local size; size=$(stat -c%s "$file")
+            if [ "$size" -gt "$limit" ]; then
+              echo "Splitting $(basename "$file") (${size} bytes) into 1.9 GB parts..."
+              split -b 1900m "$file" "${file}.part"
+              for part in "${file}.part"*; do
+                gh release upload "$TAG" "$part" --clobber
+              done
+            else
+              gh release upload "$TAG" "$file" --clobber
+            fi
+          }
+          find src-tauri/target/release/bundle -type f \
+            \( -name "*.deb" -o -name "*.AppImage" -o -name "*.rpm" \) |
+          while IFS= read -r f; do upload_file "$f"; done
+
+      # ── macOS: .dmg installer + portable .app.tar.gz ───────────────────────
+      - name: upload artifacts (macOS)
+        if: matrix.platform == 'macos-latest'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ needs.create-release.outputs.release_tag }}
+        run: |
+          BIN_NAME=$(grep '^name = ' src-tauri/Cargo.toml | head -1 | cut -d'"' -f2)
+          VERSION=$(jq -r '.version' src-tauri/tauri.conf.json)
+          ARCH="${{ matrix.arch }}"
+          BUNDLE_DIR="src-tauri/target/${{ matrix.target }}/release/bundle"
+
+          upload_file() {
+            local file="$1"
+            local limit=$((1900 * 1024 * 1024))
+            local size; size=$(stat -f%z "$file")
+            if [ "$size" -gt "$limit" ]; then
+              echo "Splitting $(basename "$file") (${size} bytes) into 1.9 GB parts..."
+              split -b 1900m "$file" "${file}.part"
+              for part in "${file}.part"*; do
+                gh release upload "$TAG" "$part" --clobber
+              done
+            else
+              gh release upload "$TAG" "$file" --clobber
+            fi
+          }
+
+          # DMG installer
+          find "$BUNDLE_DIR/dmg" -name "*.dmg" |
+          while IFS= read -r f; do upload_file "$f"; done
+
+          # Portable: bundle .app into a tar.gz
+          APP_PATH=$(find "$BUNDLE_DIR/macos" -maxdepth 1 -name "*.app" | head -1)
+          PORTABLE="${BIN_NAME}_${VERSION}_macos_${ARCH}-portable.tar.gz"
+          tar -czf "$PORTABLE" -C "$(dirname "$APP_PATH")" "$(basename "$APP_PATH")"
+          upload_file "$PORTABLE"
+
+      # ── Windows: NSIS/.msi installers + portable .zip ──────────────────────
+      - name: upload artifacts (Windows)
+        if: matrix.platform == 'windows-latest'
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $tag  = "${{ needs.create-release.outputs.release_tag }}"
+          $ver  = (Get-Content src-tauri/tauri.conf.json | ConvertFrom-Json).version
+          $name = (Select-String -Path src-tauri/Cargo.toml `
+                    -Pattern '^name = "(.+)"').Matches[0].Groups[1].Value
+
+          function Upload-File($Path, $Tag) {
+            $limitBytes = 1900 * 1MB
+            $item = Get-Item $Path
+            if ($item.Length -gt $limitBytes) {
+              Write-Host "Splitting $($item.Name) ($($item.Length) bytes) into 1.9 GB parts..."
+              $stream = [System.IO.File]::OpenRead($Path)
+              $buf    = New-Object byte[] $limitBytes
+              $i      = 0
+              while (($n = $stream.Read($buf, 0, $buf.Length)) -gt 0) {
+                $part = "$Path.part$($i.ToString('D3'))"
+                $data = if ($n -eq $buf.Length) { $buf } else { $buf[0..($n - 1)] }
+                [System.IO.File]::WriteAllBytes($part, $data)
+                gh release upload $Tag $part --clobber
+                $i++
+              }
+              $stream.Dispose()
+            } else {
+              gh release upload $Tag $Path --clobber
+            }
+          }
+
+          # NSIS and MSI installers
+          Get-ChildItem -Recurse src-tauri/target/release/bundle -Include "*.exe","*.msi" |
+            ForEach-Object { Upload-File $_.FullName $tag }
+
+          # Portable ZIP (single EXE, no installer)
+          $zip = "${name}_${ver}_windows_x64-portable.zip"
+          Compress-Archive -Path "src-tauri/target/release/$name.exe" -DestinationPath $zip
+          Upload-File $zip $tag

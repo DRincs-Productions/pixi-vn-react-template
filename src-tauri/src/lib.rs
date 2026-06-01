@@ -1,4 +1,5 @@
 use tauri::Manager;
+#[cfg(not(mobile))]
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 
 // Steam is only compiled on desktop targets when the "steam" feature is on.
@@ -10,8 +11,11 @@ pub fn run() {
     #[allow(unused_mut)]
     let mut builder = tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
+        .on_page_load(on_page_load);
+
+    #[cfg(not(mobile))]
+    let mut builder = builder
         .plugin(tauri_plugin_window_state::Builder::new().build())
-        .on_page_load(on_page_load)
         .on_window_event(on_window_event);
 
     // ── Steam ─────────────────────────────────────────────────────────────────
@@ -51,6 +55,7 @@ fn on_page_load(_window: &tauri::Webview, _: &tauri::webview::PageLoadPayload<'_
     let _ = _window.eval("document.addEventListener('contextmenu', e => e.preventDefault())");
 }
 
+#[cfg(not(mobile))]
 fn on_window_event(window: &tauri::Window, event: &tauri::WindowEvent) {
     if let tauri::WindowEvent::CloseRequested { .. } = event {
         let _ = window.app_handle().save_window_state(StateFlags::all());
