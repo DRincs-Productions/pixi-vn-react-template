@@ -136,15 +136,32 @@ jobs:
 
       - name: build iOS app
         run: npx tauri ios build --debug
+        # Export step fails without a signing team; archive still succeeds.
+        # We extract the .app from the .xcarchive below instead.
+        continue-on-error: true
 
-      - name: upload iOS build to release
+      - name: package and upload iOS app from archive
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ needs.create-release.outputs.release_tag }}
         run: |
           BIN_NAME=$(grep '^name = ' src-tauri/Cargo.toml | head -1 | cut -d'"' -f2)
           VERSION=$(jq -r '.version' src-tauri/tauri.conf.json)
-          APP=$(find src-tauri/gen/apple -name "*.app" 2>/dev/null | head -1)
-          ZIP="${BIN_NAME}_${VERSION}_ios-debug.zip"
-          zip -r "$ZIP" "$APP"
-          gh release upload "$TAG" "$ZIP" --clobber
+
+          ARCHIVE=$(find src-tauri/gen/apple/build -name "*.xcarchive" 2>/dev/null | head -1)
+          if [ -z "$ARCHIVE" ]; then
+            echo "No .xcarchive found — build may have failed before archiving"
+            exit 1
+          fi
+
+          APP=$(find "$ARCHIVE/Products/Applications" -name "*.app" | head -1)
+          if [ -z "$APP" ]; then
+            echo "No .app found inside archive $ARCHIVE"
+            exit 1
+          fi
+
+          mkdir Payload
+          cp -r "$APP" Payload/
+          IPA="${BIN_NAME}_${VERSION}_ios-debug.ipa"
+          zip -r "$IPA" Payload/
+          gh release upload "$TAG" "$IPA" --clobber
