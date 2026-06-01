@@ -82,15 +82,23 @@ jobs:
           manifest = glob.glob('src-tauri/gen/android/app/src/main/AndroidManifest.xml')[0]
           with open(manifest) as f:
               content = f.read()
-          # Force landscape orientation
-          content = re.sub(
-              r'(android:windowSoftInputMode="adjustResize")',
+          # Remove any pre-existing screenOrientation to avoid duplicates
+          content = re.sub(r'\s+android:screenOrientation="[^"]*"', '', content)
+          # Insert screenOrientation directly on the first <activity tag (robust, independent
+          # of which other attributes Tauri generates)
+          patched, n = re.subn(
+              r'(<activity\b)',
               r'\1\n            android:screenOrientation="sensorLandscape"',
-              content
+              content,
+              count=1
           )
+          if n == 0:
+              print('WARNING: <activity> tag not found in manifest — orientation NOT patched')
+          else:
+              content = patched
+              print(f'Patched {manifest} (screenOrientation=sensorLandscape)')
           with open(manifest, 'w') as f:
               f.write(content)
-          print(f'Patched {manifest}')
 
           # Tauri may generate styles.xml or themes.xml depending on the version
           styles_candidates = (
@@ -214,11 +222,19 @@ jobs:
                   '\t\t<string>UIInterfaceOrientationLandscapeRight</string>\n'
                   '\t</array>\n'
               )
-              content = content.replace('</dict>\n</plist>', additions + '</dict>\n</plist>')
-
+              new_content, n = re.subn(
+                  r'</dict>\s*</plist>\s*$',
+                  additions + '</dict>\n</plist>\n',
+                  content.rstrip(),
+                  flags=re.DOTALL
+              )
+              if n == 0:
+                  print(f'WARNING: </dict></plist> not found in {plist} — orientation NOT patched')
+              else:
+                  content = new_content
+                  print(f'Patched {plist}')
               with open(plist, 'w') as f:
                   f.write(content)
-              print(f'Patched {plist}')
           PYEOF
 
       - name: build iOS app
