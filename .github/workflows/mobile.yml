@@ -74,6 +74,38 @@ jobs:
         env:
           NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.12077973
 
+      - name: patch Android manifest (landscape + fullscreen)
+        run: |
+          python3 << 'PYEOF'
+          import glob, re
+
+          manifest = glob.glob('src-tauri/gen/android/app/src/main/AndroidManifest.xml')[0]
+          with open(manifest) as f:
+              content = f.read()
+          # Force landscape orientation
+          content = re.sub(
+              r'(android:windowSoftInputMode="adjustResize")',
+              r'\1\n            android:screenOrientation="sensorLandscape"',
+              content
+          )
+          with open(manifest, 'w') as f:
+              f.write(content)
+          print(f'Patched {manifest}')
+
+          styles = glob.glob('src-tauri/gen/android/app/src/main/res/values/styles.xml')[0]
+          with open(styles) as f:
+              content = f.read()
+          # Hide status bar (fullscreen)
+          content = content.replace(
+              '</style>',
+              '    <item name="android:windowFullscreen">true</item>\n    </style>',
+              1
+          )
+          with open(styles, 'w') as f:
+              f.write(content)
+          print(f'Patched {styles}')
+          PYEOF
+
       - name: build Android app
         run: npx tauri android build --debug
         env:
@@ -132,6 +164,53 @@ jobs:
           with open(pbxproj, 'w') as f:
               f.write(content)
           print(f'Patched {pbxproj}')
+          PYEOF
+
+      - name: patch iOS Info.plist (landscape + hide status bar)
+        run: |
+          python3 << 'PYEOF'
+          import glob, re
+
+          plists = glob.glob('src-tauri/gen/apple/*/Info.plist')
+          if not plists:
+              plists = glob.glob('src-tauri/gen/apple/*/*/Info.plist')
+          for plist in plists:
+              with open(plist) as f:
+                  content = f.read()
+
+              # Remove any existing orientation / status bar keys so we can replace them
+              for key in [
+                  'UISupportedInterfaceOrientations',
+                  'UISupportedInterfaceOrientations~ipad',
+                  'UIStatusBarHidden',
+                  'UIViewControllerBasedStatusBarAppearance',
+              ]:
+                  content = re.sub(
+                      rf'\s*<key>{re.escape(key)}</key>\s*(<(true|false)/>|<array>.*?</array>)',
+                      '', content, flags=re.DOTALL
+                  )
+
+              additions = (
+                  '\t<key>UIStatusBarHidden</key>\n'
+                  '\t<true/>\n'
+                  '\t<key>UIViewControllerBasedStatusBarAppearance</key>\n'
+                  '\t<false/>\n'
+                  '\t<key>UISupportedInterfaceOrientations</key>\n'
+                  '\t<array>\n'
+                  '\t\t<string>UIInterfaceOrientationLandscapeLeft</string>\n'
+                  '\t\t<string>UIInterfaceOrientationLandscapeRight</string>\n'
+                  '\t</array>\n'
+                  '\t<key>UISupportedInterfaceOrientations~ipad</key>\n'
+                  '\t<array>\n'
+                  '\t\t<string>UIInterfaceOrientationLandscapeLeft</string>\n'
+                  '\t\t<string>UIInterfaceOrientationLandscapeRight</string>\n'
+                  '\t</array>\n'
+              )
+              content = content.replace('</dict>\n</plist>', additions + '</dict>\n</plist>')
+
+              with open(plist, 'w') as f:
+                  f.write(content)
+              print(f'Patched {plist}')
           PYEOF
 
       - name: build iOS app
