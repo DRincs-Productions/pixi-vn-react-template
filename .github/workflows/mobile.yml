@@ -92,18 +92,26 @@ jobs:
               f.write(content)
           print(f'Patched {manifest}')
 
-          styles = glob.glob('src-tauri/gen/android/app/src/main/res/values/styles.xml')[0]
-          with open(styles) as f:
-              content = f.read()
-          # Hide status bar (fullscreen)
-          content = content.replace(
-              '</style>',
-              '    <item name="android:windowFullscreen">true</item>\n    </style>',
-              1
+          # Tauri may generate styles.xml or themes.xml depending on the version
+          styles_candidates = (
+              glob.glob('src-tauri/gen/android/app/src/main/res/values/styles.xml') +
+              glob.glob('src-tauri/gen/android/app/src/main/res/values/themes.xml')
           )
-          with open(styles, 'w') as f:
-              f.write(content)
-          print(f'Patched {styles}')
+          if not styles_candidates:
+              print('Warning: no styles.xml/themes.xml found, skipping fullscreen patch')
+          else:
+              styles = styles_candidates[0]
+              with open(styles) as f:
+                  content = f.read()
+              # Hide status bar (fullscreen)
+              content = content.replace(
+                  '</style>',
+                  '    <item name="android:windowFullscreen">true</item>\n    </style>',
+                  1
+              )
+              with open(styles, 'w') as f:
+                  f.write(content)
+              print(f'Patched {styles}')
           PYEOF
 
       - name: build Android app
