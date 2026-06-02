@@ -1,5 +1,4 @@
 import { getPixiJSAsset } from "@/lib/utils/assets-utility";
-import { toUnpicImageUrl } from "@/lib/utils/image-utility";
 import { Image as UnpicImage } from "@unpic/react";
 import type * as React from "react";
 import { useMemo } from "react";
@@ -15,8 +14,7 @@ export function Image({
         if (!src) {
             return undefined;
         }
-        const resolved = getPixiJSAsset(src);
-        return toUnpicImageUrl(resolved);
+        return getPixiJSAsset(src);
     }, [src]);
 
     if (!resolvedSrc) {
