@@ -2,12 +2,12 @@ import { AnimatedDots } from "@/components/loading";
 import { QuickTools } from "@/components/quick-tools";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";
+import { Image } from "@/components/ui/image";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNarrationPointerHandlers } from "@/lib/hooks/narration-hooks";
 import { useQueryDialogue } from "@/lib/query/interface-query";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
-import { toUnpicImageUrl } from "@/lib/utils/image-utility";
 import { useSelector } from "@tanstack/react-store";
 import { type RefObject, useCallback, useRef } from "react";
 import Markdown from "react-markdown";
@@ -128,12 +128,7 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
 export function CharacterIcon({ alt, icon }: { icon: string; alt: string }) {
     return (
         <AspectRatio ratio={16 / 9}>
-            <img
-                src={toUnpicImageUrl(icon)}
-                loading="lazy"
-                alt={alt}
-                className="h-full w-full object-cover"
-            />
+            <Image src={icon} alt={alt} className="h-full w-full object-cover" />
         </AspectRatio>
     );
 }

@@ -10,9 +10,9 @@ import {
 } from "@/components/ui/item";
 import { Kbd } from "@/components/ui/kbd";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useImageSrc } from "@/lib/hooks/image-hooks";
 import { useQueryNarrativeHistory } from "@/lib/query/interface-query";
 import { cn } from "@/lib/utils";
-import { toUnpicImageUrl } from "@/lib/utils/image-utility";
 import { useDebouncedValue } from "@tanstack/react-pacer";
 import { Check, Search } from "lucide-react";
 import { useState } from "react";
@@ -20,6 +20,16 @@ import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
+
+function HistoryItemAvatar({ icon, character }: { icon?: string; character: string }) {
+    const resolvedSrc = useImageSrc(icon);
+    return (
+        <Avatar size="sm">
+            <AvatarImage src={resolvedSrc} loading="lazy" />
+            <AvatarFallback>{character.slice(0, 1).toUpperCase()}</AvatarFallback>
+        </Avatar>
+    );
+}
 
 export function HistoryList({ searchString }: { searchString?: string }) {
     const { data = [] } = useQueryNarrativeHistory({ searchString });
@@ -32,12 +42,10 @@ export function HistoryList({ searchString }: { searchString?: string }) {
                     <Item key={key} variant="outline">
                         {item.character && (
                             <ItemMedia variant="image">
-                                <Avatar size="sm">
-                                    <AvatarImage src={toUnpicImageUrl(item.icon)} loading="lazy" />
-                                    <AvatarFallback>
-                                        {item.character?.slice(0, 1).toUpperCase() ?? "?"}
-                                    </AvatarFallback>
-                                </Avatar>
+                                <HistoryItemAvatar
+                                    icon={item.icon}
+                                    character={item.character}
+                                />
                             </ItemMedia>
                         )}
                         <ItemContent
