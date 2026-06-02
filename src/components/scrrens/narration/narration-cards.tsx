@@ -128,7 +128,7 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
 export function CharacterIcon({ alt, icon }: { icon: string; alt: string }) {
     return (
         <AspectRatio ratio={16 / 9}>
-            <Image src={icon} alt={alt} className="h-full w-full object-cover" />
+            <Image src={icon} layout="fullWidth" alt={alt} className="h-full w-full object-cover" />
         </AspectRatio>
     );
 }
