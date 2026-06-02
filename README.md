@@ -1,3 +1,3 @@
-# my-app-package-name
+# my-app-project-name
 
 my-app-description
