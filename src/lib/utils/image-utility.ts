@@ -1,8 +1,8 @@
 const unpicPrefix = "https://unpic.pics/img/";
 
-export function toUnpicImageUrl(src?: string | null) {
+export function toUnpicImageUrl(src?: string | null): string | undefined {
     if (!src) {
-        return src;
+        return undefined;
     }
 
     if (
