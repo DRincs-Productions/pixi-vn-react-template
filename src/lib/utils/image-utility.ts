@@ -1,12 +1,17 @@
-const unpicPrefix = "https://unpic.pics/img/";
+/** Base URL for unpic.pics image optimization CDN. */
+export const UNPIC_PREFIX = "https://unpic.pics/img/";
 
+/**
+ * Converts an image URL to use unpic.pics for CDN delivery and optimization.
+ * Local paths (data:, blob:, /, ./) are returned as-is.
+ */
 export function toUnpicImageUrl(src?: string | null): string | undefined {
     if (!src) {
         return undefined;
     }
 
     if (
-        src.startsWith(unpicPrefix) ||
+        src.startsWith(UNPIC_PREFIX) ||
         src.startsWith("data:") ||
         src.startsWith("blob:") ||
         src.startsWith("/") ||
@@ -19,7 +24,7 @@ export function toUnpicImageUrl(src?: string | null): string | undefined {
     try {
         const url = new URL(src);
         if (url.protocol === "http:" || url.protocol === "https:") {
-            return `${unpicPrefix}${encodeURIComponent(src)}`;
+            return `${UNPIC_PREFIX}${encodeURIComponent(src)}`;
         }
     } catch {
         return src;
