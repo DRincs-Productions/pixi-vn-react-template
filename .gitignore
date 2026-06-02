@@ -30,3 +30,5 @@ public/assets
 src-tauri/steam_api64.dll
 src-tauri/libsteam_api.so
 src-tauri/libsteam_api.dylib
+src-tauri/target
+src-tauri/gen
