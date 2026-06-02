@@ -19,15 +19,26 @@ export function Image({
         return toUnpicImageUrl(resolved);
     }, [src]);
 
+    if (!resolvedSrc) {
+        return null;
+    }
+
     const parsedWidth =
         typeof width === "number" ? width : width ? Number.parseFloat(width) : undefined;
     const parsedHeight =
         typeof height === "number" ? height : height ? Number.parseFloat(height) : undefined;
 
-    if (parsedWidth && parsedHeight) {
+    if (
+        parsedWidth !== undefined &&
+        parsedHeight !== undefined &&
+        Number.isFinite(parsedWidth) &&
+        Number.isFinite(parsedHeight) &&
+        parsedWidth > 0 &&
+        parsedHeight > 0
+    ) {
         return (
             <UnpicImage
-                src={resolvedSrc ?? ""}
+                src={resolvedSrc}
                 width={parsedWidth}
                 height={parsedHeight}
                 layout="constrained"
@@ -37,5 +48,5 @@ export function Image({
         );
     }
 
-    return <UnpicImage src={resolvedSrc ?? ""} layout="fullWidth" loading={loading} {...props} />;
+    return <UnpicImage src={resolvedSrc} layout="fullWidth" loading={loading} {...props} />;
 }
