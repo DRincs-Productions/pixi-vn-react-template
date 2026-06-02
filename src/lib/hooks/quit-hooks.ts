@@ -1,5 +1,5 @@
 import { useAlertDialog } from "@/components/providers/alert-dialog-provider";
-import { getCurrentWindow } from "@tauri-apps/api/window";
+import { exit } from "@tauri-apps/plugin-process";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -14,7 +14,7 @@ export function useQuit() {
             head: t("quit"),
             content: t("quit_confirm"),
             onConfirm: async () => {
-                await getCurrentWindow().close();
+                await exit();
                 return true;
             },
         });
