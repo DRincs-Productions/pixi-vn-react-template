@@ -19,14 +19,14 @@
     "tauri:ios:dev": "tauri ios dev",
     "lint": "biome lint",
     "check": "biome check",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "ui:reinit": "npx shadcn@latest init -f -b base --reinstall && npm run format"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
     "@drincs/pixi-vn": "^1.8.11",
     "@drincs/pixi-vn-ink": "^1.0.4",
     "@drincs/pixi-vn-spine": "^0.2.1",
-    "@fontsource-variable/inter": "^5.2.8",
     "@tailwindcss/vite": "^4.3.0",
     "@tanstack/react-devtools": "^0.10.5",
     "@tanstack/react-hotkeys": "^0.10.0",
@@ -60,7 +60,7 @@
     "react-resizable-panels": "^4.11.2",
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.1",
-    "shadcn": "^4.8.3",
+    "shadcn": "^4.10.0",
     "shade-generator": "^1.2.7",
     "sonner": "^2.0.7",
     "tailwind-animations": "^1.0.1",
