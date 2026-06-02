@@ -1,7 +1,6 @@
-import { getPixiJSAsset } from "@/lib/utils/assets-utility";
+import { useImageSrc } from "@/lib/hooks/image-hooks";
 import { Image as UnpicImage } from "@unpic/react";
 import type * as React from "react";
-import { useMemo } from "react";
 
 export function Image({
     src,
@@ -10,12 +9,7 @@ export function Image({
     height,
     ...props
 }: React.ComponentProps<"img">) {
-    const resolvedSrc = useMemo(() => {
-        if (!src) {
-            return undefined;
-        }
-        return getPixiJSAsset(src);
-    }, [src]);
+    const resolvedSrc = useImageSrc(src);
 
     if (!resolvedSrc) {
         return null;
