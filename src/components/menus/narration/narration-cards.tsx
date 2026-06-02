@@ -34,14 +34,6 @@ export function NarrationCards() {
                         {character?.icon && <ResizableHandle />}
                         <ResizablePanel>
                             <div className="flex h-full flex-col">
-                                {character && (
-                                    <p
-                                        className="shrink-0 px-3 text-xl font-bold"
-                                        style={{ color: character?.color }}
-                                    >
-                                        {characterName}
-                                    </p>
-                                )}
                                 <CardContent className="min-h-0 flex-1 px-3">
                                     <ScrollArea
                                         ref={paragraphRef}
@@ -50,6 +42,14 @@ export function NarrationCards() {
                                         onPointerCancel={handlePointerCancel}
                                         onPointerUp={handlePointerUp}
                                     >
+                                        {character && (
+                                            <p
+                                                className="text-xl font-bold"
+                                                style={{ color: character?.color }}
+                                            >
+                                                {characterName}
+                                            </p>
+                                        )}
                                         <Text paragraphRef={paragraphRef} />
                                     </ScrollArea>
                                 </CardContent>
