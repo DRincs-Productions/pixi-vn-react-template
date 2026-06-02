@@ -1,5 +1,6 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
+import { Image } from "@/components/ui/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { overlayTextShadowClass } from "@/constants";
 import { useSaveActions } from "@/lib/hooks/save-hooks";
@@ -49,7 +50,7 @@ export function SaveSlot({ saveId }: { saveId: number }) {
             className="m-2 overflow-hidden sm:m-4 md:m-2 lg:m-4 cursor-pointer"
             onClick={() => handleLoad({ ...saveData, id: saveId })}
         >
-            <img
+            <Image
                 src={saveData.image}
                 alt={saveData.name}
                 className="absolute inset-0 size-full object-contain rounded-lg"
