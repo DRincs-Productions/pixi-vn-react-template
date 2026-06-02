@@ -1,5 +1,5 @@
 import { AnimatedDots } from "@/components/loading";
-import { QuickTools } from "@/components/menus/quick-tools";
+import { QuickTools } from "@/components/quick-tools";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
