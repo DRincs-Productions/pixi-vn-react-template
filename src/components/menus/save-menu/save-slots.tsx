@@ -52,9 +52,9 @@ export function SaveSlot({ saveId }: { saveId: number }) {
         >
             <Image
                 src={saveData.image}
+                layout="fullWidth"
                 alt={saveData.name}
-                className="absolute inset-0 size-full object-contain rounded-lg"
-                style={{ pointerEvents: "none", userSelect: "none" }}
+                className="absolute inset-0 size-full object-contain rounded-lg pointer-events-none select-none"
             />
             {/* top-left metadata */}
             <div className="absolute top-2.5 left-2.5 flex flex-col gap-0.5 pointer-events-none">
