@@ -10,6 +10,7 @@ mod steam;
 pub fn run() {
     #[allow(unused_mut)]
     let mut builder = tauri::Builder::default()
+        .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_opener::init())
         .on_page_load(on_page_load);
 
