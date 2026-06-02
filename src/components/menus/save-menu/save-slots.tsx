@@ -50,14 +50,12 @@ export function SaveSlot({ saveId }: { saveId: number }) {
             className="m-2 overflow-hidden sm:m-4 md:m-2 lg:m-4 cursor-pointer"
             onClick={() => handleLoad({ ...saveData, id: saveId })}
         >
-            {saveData.image && (
-                <Image
-                    src={saveData.image}
-                    layout="fullWidth"
-                    alt={saveData.name}
-                    className="absolute inset-0 size-full object-contain rounded-lg pointer-events-none select-none"
-                />
-            )}
+            <Image
+                src={saveData.image}
+                layout="fullWidth"
+                alt={saveData.name}
+                className="absolute inset-0 size-full object-contain rounded-lg pointer-events-none select-none"
+            />
             {/* top-left metadata */}
             <div className="absolute top-2.5 left-2.5 flex flex-col gap-0.5 pointer-events-none">
                 <span
