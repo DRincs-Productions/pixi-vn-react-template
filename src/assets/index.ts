@@ -1,7 +1,7 @@
 import generatedManifestJson from "@/assets/manifest.gen.json";
-import { AUDIO_BUNDLE_NAME } from "@/constans";
-import { secondPart } from "@/content/labels/second-label";
-import { startLabel } from "@/content/labels/start-label";
+import { AUDIO_BUNDLE_NAME } from "@/constants";
+import { secondPart } from "@/content/labels/second.label";
+import { startLabel } from "@/content/labels/start.label";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import type { AssetsManifest } from "@drincs/pixi-vn";
 
@@ -9,7 +9,7 @@ import type { AssetsManifest } from "@drincs/pixi-vn";
  * Manifest for the assets used in the game.
  * You can read more about the manifest here: https://pixijs.com/8.x/guides/components/assets#loading-multiple-assets
  */
-const manifest: AssetsManifest = {
+export const manifest: AssetsManifest = {
     bundles: [
         ...generatedManifestJson.bundles,
         {
@@ -272,5 +272,3 @@ const manifest: AssetsManifest = {
         },
     ],
 };
-
-export default manifest;

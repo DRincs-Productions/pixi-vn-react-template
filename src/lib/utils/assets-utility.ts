@@ -1,5 +1,5 @@
-import manifest from "@/assets/manifest";
-import { AUDIO_BUNDLE_NAME } from "@/constans";
+import { manifest } from "@/assets";
+import { AUDIO_BUNDLE_NAME } from "@/constants";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import { Assets, sound } from "@drincs/pixi-vn";
 

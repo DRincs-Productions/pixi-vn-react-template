@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/inter";
 @import "tailwind-animations";
 
 @custom-variant dark (&:is(.dark *));
@@ -141,5 +140,16 @@ body {
   }
   html {
     @apply font-sans;
+  }
+}
+
+@layer components {
+  [data-slot="button"],
+  [data-slot="card"],
+  [data-slot="resizable-handle"],
+  [data-slot="scroll-area"],
+  [data-slot="scroll-area-scrollbar"],
+  [data-slot="toggle"] {
+    pointer-events: auto;
   }
 }

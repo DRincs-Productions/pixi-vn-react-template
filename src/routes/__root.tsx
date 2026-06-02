@@ -25,7 +25,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     loader: async ({ context, location }) => {
         // Game.onNavigate(async (to) => redirect({ to }));
         await Promise.all([import("@/content"), initializeIndexedDB(), defineAssets(), useI18n()]);
-        setupPixivnViteData();
+        await setupPixivnViteData();
         if (location.pathname !== "/" && location.pathname !== "/demo") {
             const isRefreshSaveExist = await loadRefreshSave();
             if (isRefreshSaveExist) {

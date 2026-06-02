@@ -1,7 +1,8 @@
 import { AnimatedDots } from "@/components/loading";
-import { QuickTools } from "@/components/menus/quick-tools";
+import { QuickTools } from "@/components/quick-tools";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";
+import { Image } from "@/components/ui/image";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNarrationPointerHandlers } from "@/lib/hooks/narration-hooks";
@@ -23,7 +24,7 @@ export function NarrationCards() {
 
     return (
         <div className="flex h-full flex-col">
-            <Card className="pointer-events-none min-h-0 flex-1 gap-1 px-1.5 pb-1.5">
+            <Card className="pointer-events-none min-h-0 flex-1 gap-1 px-1.5 pb-1.5 py-4">
                 <div className="min-h-0 flex-1">
                     <ResizablePanelGroup orientation="horizontal">
                         {character?.icon && (
@@ -34,14 +35,6 @@ export function NarrationCards() {
                         {character?.icon && <ResizableHandle />}
                         <ResizablePanel>
                             <div className="flex h-full flex-col">
-                                {character && (
-                                    <p
-                                        className="shrink-0 px-3 text-xl font-bold"
-                                        style={{ color: character?.color }}
-                                    >
-                                        {characterName}
-                                    </p>
-                                )}
                                 <CardContent className="min-h-0 flex-1 px-3">
                                     <ScrollArea
                                         ref={paragraphRef}
@@ -50,6 +43,14 @@ export function NarrationCards() {
                                         onPointerCancel={handlePointerCancel}
                                         onPointerUp={handlePointerUp}
                                     >
+                                        {character && (
+                                            <p
+                                                className="text-xl font-bold"
+                                                style={{ color: character?.color }}
+                                            >
+                                                {characterName}
+                                            </p>
+                                        )}
                                         <Text paragraphRef={paragraphRef} />
                                     </ScrollArea>
                                 </CardContent>
@@ -127,7 +128,7 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
 export function CharacterIcon({ alt, icon }: { icon: string; alt: string }) {
     return (
         <AspectRatio ratio={16 / 9}>
-            <img src={icon} loading="lazy" alt={alt} className="h-full w-full object-cover" />
+            <Image src={icon} layout="fullWidth" alt={alt} className="h-full w-full object-cover" />
         </AspectRatio>
     );
 }

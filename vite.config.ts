@@ -31,11 +31,14 @@ export default defineConfig({
         tanstackRouter({ target: "react", autoCodeSplitting: true }),
         react(),
         tailwindcss(),
-        vitePluginPixivn(),
+        vitePluginPixivn({
+            content: "./src/content/index.ts",
+            characters: "./src/content/characters.ts",
+            labels: "./src/content/labels/*.label.ts",
+        }),
         VitePWA({
-            // you can generate the icons using: https://favicon.io/favicon-converter/
-            // and the maskable icon using: https://progressier.com/maskable-icons-editor
-            includeAssets: ["favicon.ico", "apple-touch-icon.png", "mask-icon.svg"],
+            // generate icons with: npm run icon
+            includeAssets: ["favicon.ico", "apple-touch-icon-180x180.png"],
             manifest: {
                 name: "my-app-project-name",
                 short_name: "my-app-package-name",
@@ -43,7 +46,7 @@ export default defineConfig({
                 theme_color: "#ffffff",
                 start_url: "/",
                 display: "fullscreen",
-                orientation: "portrait",
+                orientation: "landscape",
                 icons: [
                     {
                         src: "pwa-192x192.png",
@@ -54,6 +57,12 @@ export default defineConfig({
                         src: "pwa-512x512.png",
                         sizes: "512x512",
                         type: "image/png",
+                    },
+                    {
+                        src: "maskable-icon-512x512.png",
+                        sizes: "512x512",
+                        type: "image/png",
+                        purpose: "maskable",
                     },
                 ],
             },
@@ -92,10 +101,11 @@ export default defineConfig({
                         id.includes("rehype-raw") ||
                         id.includes("remark-gfm")
                     )
-                        return "react-markdown";
-                    if (id.includes("@pixi/sound")) return "sound";
+                        return "markdown";
+                    if (id.includes("tone")) return "tone";
                     if (id.includes("@drincs/pixi-vn-spine")) return "spine";
                     if (id.includes("pixi.js")) return "pixi.js";
+                    if (id.includes("motion")) return "motion";
                     if (id.includes("@drincs/pixi-vn")) return "pixi-vn";
                 },
             },

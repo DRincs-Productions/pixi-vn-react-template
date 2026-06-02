@@ -1,7 +1,7 @@
-import { BGM_CHANNEL_NAME } from "@/constans";
+import { BGM_CHANNEL_NAME } from "@/constants";
 import { james, mc, sly, steph, steph_fullname } from "@/content/characters";
-import { animation01 } from "@/content/labels/animations-labels";
-import { secondPart } from "@/content/labels/second-label";
+import { animation01 } from "@/content/labels/animations.label";
+import { secondPart } from "@/content/labels/second.label";
 import {
     Assets,
     moveIn,
