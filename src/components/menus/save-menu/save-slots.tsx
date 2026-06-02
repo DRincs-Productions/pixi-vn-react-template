@@ -1,9 +1,10 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { overlayTextShadowClass } from "@/constants";
 import { useSaveActions } from "@/lib/hooks/save-hooks";
 import { useQuerySaves } from "@/lib/query/save-query";
-import { cn, overlayTextShadowClass } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { downloadGameSave } from "@/lib/utils/save-utility";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import { useLocation } from "@tanstack/react-router";
