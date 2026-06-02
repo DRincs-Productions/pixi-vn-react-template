@@ -12,6 +12,7 @@ import { Kbd } from "@/components/ui/kbd";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useQueryNarrativeHistory } from "@/lib/query/interface-query";
 import { cn } from "@/lib/utils";
+import { toUnpicImageUrl } from "@/lib/utils/image-utility";
 import { useDebouncedValue } from "@tanstack/react-pacer";
 import { Check, Search } from "lucide-react";
 import { useState } from "react";
@@ -32,7 +33,7 @@ export function HistoryList({ searchString }: { searchString?: string }) {
                         {item.character && (
                             <ItemMedia variant="image">
                                 <Avatar size="sm">
-                                    <AvatarImage src={item.icon} />
+                                    <AvatarImage src={toUnpicImageUrl(item.icon)} loading="lazy" />
                                     <AvatarFallback>
                                         {item.character?.slice(0, 1).toUpperCase() ?? "?"}
                                     </AvatarFallback>

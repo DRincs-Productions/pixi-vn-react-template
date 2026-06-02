@@ -5,6 +5,7 @@ import { overlayTextShadowClass } from "@/constants";
 import { useSaveActions } from "@/lib/hooks/save-hooks";
 import { useQuerySaves } from "@/lib/query/save-query";
 import { cn } from "@/lib/utils";
+import { toUnpicImageUrl } from "@/lib/utils/image-utility";
 import { downloadGameSave } from "@/lib/utils/save-utility";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import { useLocation } from "@tanstack/react-router";
@@ -50,8 +51,9 @@ export function SaveSlot({ saveId }: { saveId: number }) {
             onClick={() => handleLoad({ ...saveData, id: saveId })}
         >
             <img
-                src={saveData.image}
+                src={toUnpicImageUrl(saveData.image)}
                 alt={saveData.name}
+                loading="lazy"
                 className="absolute inset-0 size-full object-contain rounded-lg"
                 style={{ pointerEvents: "none", userSelect: "none" }}
             />
