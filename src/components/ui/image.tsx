@@ -10,7 +10,7 @@ export function Image({
     const resolvedSrc = useImageSrc(src);
 
     if (!resolvedSrc) {
-        return <ImageOff className={props.className} />;
+        return <ImageOff aria-label={props.alt ?? "Image unavailable"} className={props.className} />;
     }
 
     return <UnpicImage src={resolvedSrc as ImageProps["src"]} loading={loading} {...props} />;
