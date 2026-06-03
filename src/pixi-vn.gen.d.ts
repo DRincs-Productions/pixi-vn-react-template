@@ -15,6 +15,8 @@ declare module "@drincs/pixi-vn/narration" {
         "animation_01": never;
         "second_part": never;
         "start": never;
+        "start_|_c-0": never;
+        "start_|_c-1": never;
     }
 }
 export {};
