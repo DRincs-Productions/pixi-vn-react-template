@@ -1,7 +1,5 @@
 import { BGM_CHANNEL_NAME } from "@/constants";
 import { james, mc, sly, steph, steph_fullname } from "@/content/characters";
-import { animation01 } from "@/content/labels/animations.label";
-import { secondPart } from "@/content/labels/second.label";
 import {
     Assets,
     moveIn,
@@ -489,7 +487,7 @@ export const startLabel = newLabel(
             narration.dialogGlue = true;
             narration.dialogue = `and returns with a HUGE tinfoil-covered platter.`;
             await sound.play("sfx_whoosh", { delay: 0.1 });
-            await narration.call(animation01, props);
+            await narration.call("animation_01", props);
         },
         async () => {
             await showImageContainer("james", [
@@ -555,7 +553,7 @@ export const startLabel = newLabel(
             moveOut("steph", { direction: "left", ease: "easeInOut", duration: 0.5, delay: 0.1 });
             narration.dialogue = `You want continue to the next part?`;
             narration.choices = [
-                newChoiceOption("Yes, I want to continue", secondPart, {}, { type: "jump" }),
+                newChoiceOption("Yes, I want to continue", "second_part", {}, { type: "jump" }),
                 newCloseChoiceOption("No, I want to stop here"),
             ];
         },
