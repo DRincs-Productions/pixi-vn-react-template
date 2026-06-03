@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
-    "@drincs/pixi-vn": "^1.8.11",
+    "@drincs/pixi-vn": "^1.8.13",
     "@drincs/pixi-vn-spine": "^0.2.1",
     "@tailwindcss/vite": "^4.3.0",
     "@tanstack/react-devtools": "^0.10.5",
