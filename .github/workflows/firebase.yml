@@ -28,7 +28,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Reinstall shadcn preset
-      run: npx shadcn@latest init --preset b1sS6c7oO --base base --template vite --reinstall -y
+      run: npx shadcn@latest init --preset b1sS6c7oO --base base --template vite --reinstall --force -y
     - name: npm install and ci and build
       run: |
         npm install
