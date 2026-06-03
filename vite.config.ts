@@ -36,6 +36,7 @@ export default defineConfig({
             content: "./src/content/index.ts",
             characters: "./src/content/characters.ts",
             labels: "./src/content/labels/*.label.ts",
+            typeFilePath: "./src/pixi-vn.gen.d.ts",
         }),
         vitePluginInk({
             inkGlob: "./ink/**/*.ink",
