@@ -1,14 +1,14 @@
 import { Store } from "@tanstack/store";
 
-type GameSaveScreenStoreState = {
+type SaveMenuPaginationStorage = {
     /**
      * The current page of the save screen
      */
     page: number;
 };
 
-export namespace GameSaveScreenStore {
-    export const store = new Store<GameSaveScreenStoreState>({
+export namespace SaveMenuPagination {
+    export const store = new Store<SaveMenuPaginationStorage>({
         page: localStorage.getItem("save_screen_page")
             ? parseInt(localStorage.getItem("save_screen_page") as string, 10)
             : 0,
