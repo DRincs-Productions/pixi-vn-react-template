@@ -1,13 +1,12 @@
+import { INTERFACE_DATA_USE_QUERY_KEY } from "@/constants";
 import { type CharacterInterface, narration, stepHistory } from "@drincs/pixi-vn";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-export const INTERFACE_DATA_USE_QUEY_KEY = "interface_data_use_quey_key";
-
 const CAN_GO_BACK_USE_QUEY_KEY = "can_go_back_use_quey_key";
 export function useQueryCanGoBack() {
     return useQuery({
-        queryKey: [INTERFACE_DATA_USE_QUEY_KEY, CAN_GO_BACK_USE_QUEY_KEY],
+        queryKey: [INTERFACE_DATA_USE_QUERY_KEY, CAN_GO_BACK_USE_QUEY_KEY],
         queryFn: async () => stepHistory.canGoBack,
     });
 }
@@ -16,7 +15,7 @@ const CHOICE_MENU_OPTIONS_USE_QUEY_KEY = "choice_menu_options_use_quey_key";
 export function useQueryChoiceMenuOptions() {
     const { t } = useTranslation(["narration"]);
     return useQuery({
-        queryKey: [INTERFACE_DATA_USE_QUEY_KEY, CHOICE_MENU_OPTIONS_USE_QUEY_KEY],
+        queryKey: [INTERFACE_DATA_USE_QUERY_KEY, CHOICE_MENU_OPTIONS_USE_QUEY_KEY],
         queryFn: async () =>
             narration.choices?.map((option) => ({
                 ...option,
@@ -31,7 +30,7 @@ export function useQueryChoiceMenuOptions() {
 const INPUT_VALUE_USE_QUEY_KEY = "input_value_use_quey_key";
 export function useQueryInputValue<T>() {
     return useQuery({
-        queryKey: [INTERFACE_DATA_USE_QUEY_KEY, INPUT_VALUE_USE_QUEY_KEY],
+        queryKey: [INTERFACE_DATA_USE_QUERY_KEY, INPUT_VALUE_USE_QUEY_KEY],
         queryFn: async () => ({
             isRequired: narration.isRequiredInput,
             type: narration.inputType,
@@ -51,7 +50,7 @@ export function useQueryDialogue() {
     const queryClient = useQueryClient();
 
     return useQuery<DialogueModel>({
-        queryKey: [INTERFACE_DATA_USE_QUEY_KEY, DIALOGUE_USE_QUEY_KEY],
+        queryKey: [INTERFACE_DATA_USE_QUERY_KEY, DIALOGUE_USE_QUEY_KEY],
         queryFn: async ({ queryKey }) => {
             const dialogue = narration.dialogue;
             let text = dialogue?.text;
@@ -93,7 +92,7 @@ export function useQueryDialogue() {
 const CAN_GO_NEXT_USE_QUEY_KEY = "can_go_next_use_quey_key";
 export function useQueryCanGoNext() {
     return useQuery({
-        queryKey: [INTERFACE_DATA_USE_QUEY_KEY, CAN_GO_NEXT_USE_QUEY_KEY],
+        queryKey: [INTERFACE_DATA_USE_QUERY_KEY, CAN_GO_NEXT_USE_QUEY_KEY],
         queryFn: async () => narration.canContinue && !narration.isRequiredInput,
     });
 }
@@ -104,7 +103,7 @@ export function useQueryNarrativeHistory({ searchString }: { searchString?: stri
     const normalizedSearch = searchString?.toLowerCase().trim();
 
     return useQuery({
-        queryKey: [INTERFACE_DATA_USE_QUEY_KEY, NARRATIVE_HISTORY_USE_QUEY_KEY],
+        queryKey: [INTERFACE_DATA_USE_QUERY_KEY, NARRATIVE_HISTORY_USE_QUEY_KEY],
         queryFn: async () => {
             const promises = stepHistory.narrativeHistory.map(async (step) => {
                 const character = step.dialogue?.character;
