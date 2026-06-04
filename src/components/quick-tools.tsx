@@ -7,8 +7,8 @@ import { useGameProps } from "@/lib/hooks/props-hooks";
 import { useWheelActions } from "@/lib/hooks/quick-tools-hooks";
 import { useQueryCanGoBack } from "@/lib/query/narration-query";
 import {
-    LAST_SAVE_USE_QUEY_KEY,
-    SAVES_USE_QUEY_KEY,
+    LAST_SAVE_USE_QUERY_KEY,
+    SAVES_USE_QUERY_KEY,
     useQueryLastSave,
 } from "@/lib/query/save-query";
 import { AutoSettings } from "@/lib/stores/auto-settings-store";
@@ -105,8 +105,8 @@ export function QuickTools() {
                 className="h-5 px-1 text-[10px] sm:h-6 sm:px-2 sm:text-xs"
                 onClick={() => {
                     const savePromise = saveGameToIndexDB().then((save) => {
-                        queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
-                        queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
+                        queryClient.setQueryData([SAVES_USE_QUERY_KEY, save.id], save);
+                        queryClient.setQueryData([LAST_SAVE_USE_QUERY_KEY], save);
                     });
                     toast.promise(savePromise, {
                         loading: t("saving"),
