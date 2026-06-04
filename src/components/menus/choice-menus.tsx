@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNarrationFunctions } from "@/lib/hooks/narration-hooks";
-import { useQueryChoiceMenuOptions } from "@/lib/query/interface-query";
+import { useQueryChoiceMenuOptions } from "@/lib/query/narration-query";
 import { GameStatus } from "@/lib/stores/game-status-store";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { useDebouncedValue } from "@tanstack/react-pacer";
