@@ -4,8 +4,8 @@ import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
 import { useGameProps } from "@/lib/hooks/props-hooks";
 import { useQueryInputValue } from "@/lib/query/narration-query";
 import {
-    LAST_SAVE_USE_QUEY_KEY,
-    SAVES_USE_QUEY_KEY,
+    LAST_SAVE_USE_QUERY_KEY,
+    SAVES_USE_QUERY_KEY,
     useQueryLastSave,
 } from "@/lib/query/save-query";
 import { QuickActionsWheelState } from "@/lib/stores/quick-actions-wheel-store";
@@ -47,8 +47,8 @@ export function useSaveHotkeys(): null {
             return;
         }
         const savePromise = saveGameToIndexDB().then((save) => {
-            queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
-            queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
+            queryClient.setQueryData([SAVES_USE_QUERY_KEY, save.id], save);
+            queryClient.setQueryData([LAST_SAVE_USE_QUERY_KEY], save);
         });
         toast.promise(savePromise, {
             loading: t("saving"),

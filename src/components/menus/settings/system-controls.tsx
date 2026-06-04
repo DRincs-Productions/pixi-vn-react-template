@@ -14,7 +14,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { useLanguageSettings } from "@/lib/hooks/language-settings-hooks";
 import { downloadResourceToTranslate } from "@/lib/i18n";
 import {
-    IS_FULL_SCREEN_MODE_USE_QUEY_KEY,
+    IS_FULL_SCREEN_MODE_USE_QUERY_KEY,
     useQueryIsFullModeScreen,
 } from "@/lib/query/settings-query";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
@@ -172,7 +172,7 @@ export function FullScreenSettings() {
                     promise.finally(() => {
                         setLoading(false);
                         queryClient.invalidateQueries({
-                            queryKey: [IS_FULL_SCREEN_MODE_USE_QUEY_KEY],
+                            queryKey: [IS_FULL_SCREEN_MODE_USE_QUERY_KEY],
                         });
                     });
                 }}
