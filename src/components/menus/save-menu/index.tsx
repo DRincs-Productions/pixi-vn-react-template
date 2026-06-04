@@ -9,7 +9,7 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { GameSaveScreenStore } from "@/lib/stores/useGameSaveScreenStore";
+import { SaveMenuPagination } from "@/lib/stores/save-menu-pagination-store";
 import { useSelector } from "@tanstack/react-store";
 
 const TOTAL_PAGES = 999;
@@ -29,7 +29,7 @@ function getPageNumbers(current: number, total: number): (number | "ellipsis")[]
 }
 
 export function GameSaveMenu() {
-    const page = useSelector(GameSaveScreenStore.store, (state) => state.page);
+    const page = useSelector(SaveMenuPagination.store, (state) => state.page);
 
     const currentPage = page + 1;
     const pageNumbers = getPageNumbers(currentPage, TOTAL_PAGES);
@@ -50,7 +50,7 @@ export function GameSaveMenu() {
                         <PaginationPrevious
                             onClick={(e) => {
                                 e.preventDefault();
-                                if (currentPage > 1) GameSaveScreenStore.setPage(page - 1);
+                                if (currentPage > 1) SaveMenuPagination.setPage(page - 1);
                             }}
                             aria-disabled={currentPage === 1}
                             className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
@@ -67,7 +67,7 @@ export function GameSaveMenu() {
                                     isActive={p === currentPage}
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        GameSaveScreenStore.setPage((p as number) - 1);
+                                        SaveMenuPagination.setPage((p as number) - 1);
                                     }}
                                 >
                                     {p}
@@ -79,8 +79,7 @@ export function GameSaveMenu() {
                         <PaginationNext
                             onClick={(e) => {
                                 e.preventDefault();
-                                if (currentPage < TOTAL_PAGES)
-                                    GameSaveScreenStore.setPage(page + 1);
+                                if (currentPage < TOTAL_PAGES) SaveMenuPagination.setPage(page + 1);
                             }}
                             aria-disabled={currentPage === TOTAL_PAGES}
                             className={
