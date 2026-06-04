@@ -2,7 +2,7 @@ import { SaveNameInput } from "@/components/menus/save-menu/save-forms";
 import { useAlertDialog } from "@/components/providers/alert-dialog-provider";
 import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
 import { useGameProps } from "@/lib/hooks/props-hooks";
-import { LAST_SAVE_USE_QUEY_KEY, SAVES_USE_QUEY_KEY } from "@/lib/query/save-query";
+import { LAST_SAVE_USE_QUERY_KEY, SAVES_USE_QUERY_KEY } from "@/lib/query/save-query";
 import {
     addRefreshSave,
     deleteSaveFromIndexDB,
@@ -62,8 +62,8 @@ export function useSaveActions() {
                 onConfirm: () =>
                     deleteSaveFromIndexDB(id)
                         .then(() => {
-                            queryClient.setQueryData([SAVES_USE_QUEY_KEY, id], null);
-                            queryClient.invalidateQueries({ queryKey: [LAST_SAVE_USE_QUEY_KEY] });
+                            queryClient.setQueryData([SAVES_USE_QUERY_KEY, id], null);
+                            queryClient.invalidateQueries({ queryKey: [LAST_SAVE_USE_QUERY_KEY] });
                             toast.success(t("success_delete"));
                             return true;
                         })
@@ -95,8 +95,8 @@ export function useSaveActions() {
                         id,
                         name: tempSaveNameRef.current,
                     }).then((save) => {
-                        queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
-                        queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
+                        queryClient.setQueryData([SAVES_USE_QUERY_KEY, save.id], save);
+                        queryClient.setQueryData([LAST_SAVE_USE_QUERY_KEY], save);
                     });
                     toast.promise(savePromise, {
                         loading: t("saving"),
@@ -138,8 +138,8 @@ export function useSaveActions() {
                         id,
                         name: tempSaveNameRef.current,
                     }).then((save) => {
-                        queryClient.setQueryData([SAVES_USE_QUEY_KEY, save.id], save);
-                        queryClient.setQueryData([LAST_SAVE_USE_QUEY_KEY], save);
+                        queryClient.setQueryData([SAVES_USE_QUERY_KEY, save.id], save);
+                        queryClient.setQueryData([LAST_SAVE_USE_QUERY_KEY], save);
                     });
                     toast.promise(savePromise, {
                         loading: t("saving"),
