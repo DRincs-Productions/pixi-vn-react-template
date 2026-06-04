@@ -11,7 +11,7 @@ import {
 import { Kbd } from "@/components/ui/kbd";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useImageSrc } from "@/lib/hooks/image-hooks";
-import { useQueryNarrativeHistory } from "@/lib/query/interface-query";
+import { useQueryNarrativeHistory } from "@/lib/query/narration-query";
 import { cn } from "@/lib/utils";
 import { useDebouncedValue } from "@tanstack/react-pacer";
 import { Check, Search } from "lucide-react";
@@ -42,10 +42,7 @@ export function HistoryList({ searchString }: { searchString?: string }) {
                     <Item key={key} variant="outline">
                         {item.character && (
                             <ItemMedia variant="image">
-                                <HistoryItemAvatar
-                                    icon={item.icon}
-                                    character={item.character}
-                                />
+                                <HistoryItemAvatar icon={item.icon} character={item.character} />
                             </ItemMedia>
                         )}
                         <ItemContent

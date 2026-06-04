@@ -1,7 +1,7 @@
 import { ChoiceMenu } from "@/components/menus/choice-menus";
 import { NarrationCards } from "@/components/screens/narration/narration-cards";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-import { useQueryDialogue } from "@/lib/query/interface-query";
+import { useQueryDialogue } from "@/lib/query/narration-query";
 
 export function NarrationScreen() {
     const { data: { animatedText, text } = {} } = useQueryDialogue();

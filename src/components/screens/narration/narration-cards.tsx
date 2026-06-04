@@ -6,7 +6,7 @@ import { Image } from "@/components/ui/image";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNarrationPointerHandlers } from "@/lib/hooks/narration-hooks";
-import { useQueryDialogue } from "@/lib/query/interface-query";
+import { useQueryDialogue } from "@/lib/query/narration-query";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { useSelector } from "@tanstack/react-store";
 import { type RefObject, useCallback, useRef } from "react";
