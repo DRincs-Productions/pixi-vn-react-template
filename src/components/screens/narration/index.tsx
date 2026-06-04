@@ -1,5 +1,5 @@
 import { ChoiceMenu } from "@/components/menus/choice-menus";
-import { NarrationCards } from "@/components/scrrens/narration/narration-cards";
+import { NarrationCards } from "@/components/screens/narration/narration-cards";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { useQueryDialogue } from "@/lib/query/interface-query";
 
