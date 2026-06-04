@@ -2,11 +2,11 @@ import { PendingComponent } from "@/components/loading";
 import { SettingsDialogue } from "@/components/menus/settings";
 import { OfflineAllert } from "@/components/modals/error-allerts";
 import { RootProvider } from "@/components/providers/root-provider";
+import { INTERFACE_DATA_USE_QUERY_KEY } from "@/constants";
 import useInkInitialization from "@/lib/hooks/ink-hooks";
 import { useConfirmBackNavigation } from "@/lib/hooks/navigation-hooks";
 import { useAutoSaveOnPageClose } from "@/lib/hooks/save-hooks";
 import { useI18n } from "@/lib/i18n";
-import { INTERFACE_DATA_USE_QUEY_KEY } from "@/lib/query/interface-query";
 import { SearchParams } from "@/lib/stores/search-param-store";
 import { defineAssets } from "@/lib/utils/assets-utility";
 import { initializeIndexedDB } from "@/lib/utils/db-utility";
@@ -33,7 +33,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
             const isRefreshSaveExist = await loadRefreshSave();
             if (isRefreshSaveExist) {
                 await context.queryClient.invalidateQueries({
-                    queryKey: [INTERFACE_DATA_USE_QUEY_KEY],
+                    queryKey: [INTERFACE_DATA_USE_QUERY_KEY],
                 });
             }
         }
