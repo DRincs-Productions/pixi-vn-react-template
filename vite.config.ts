@@ -22,7 +22,7 @@ const CACHED_EXTERNAL_HOSTNAMES: string[] = ["raw.githubusercontent.com"];
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
     plugins: [
         assetpackPlugin(),
         checker({
@@ -30,7 +30,7 @@ export default defineConfig({
                 tsconfigPath: "tsconfig.app.json",
             },
         }),
-        devtools(),
+        mode !== "production" && devtools(),
         tanstackRouter({ target: "react", autoCodeSplitting: true }),
         react(),
         tailwindcss(),
@@ -142,7 +142,7 @@ export default defineConfig({
             ignored: ["**/src-tauri/**"],
         },
     },
-});
+}));
 
 function assetpackPlugin(): Plugin {
     let mode: ResolvedConfig["command"];
