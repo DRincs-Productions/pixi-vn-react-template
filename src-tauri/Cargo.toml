@@ -41,3 +41,10 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 steamworks = { version = "0.13", optional = true }
 
+[profile.release]
+opt-level = "z"     # max runtime performance
+lto = true          # link-time optimization — removes dead code across crates
+codegen-units = 1   # slower compile, smaller output
+panic = "abort"     # no stack unwinding machinery
+strip = true        # strip symbols from the binary
+
