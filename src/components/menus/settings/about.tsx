@@ -19,7 +19,7 @@ export function About() {
                 <span className="font-medium text-muted-foreground">
                     {t("powered_by")}{" "}
                     <a
-                        href="https://pixi-vn.web.app"
+                        href="https://pixi-vn.com"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="underline hover:text-foreground"
