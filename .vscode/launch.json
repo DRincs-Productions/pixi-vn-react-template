@@ -7,6 +7,10 @@
       "type": "editor-browser",
       "url": "http://localhost:5173",
       "webRoot": "${workspaceFolder}",
+      "sourceMapPathOverrides": {
+        "/@fs/*": "${workspaceFolder}/*",
+        "/src/*": "${workspaceFolder}/src/*"
+      },
       "preLaunchTask": "Start Vite Dev Server",
       "postDebugTask": "Stop Vite Dev Server"
     },
@@ -16,6 +20,10 @@
       "type": "editor-browser",
       "url": "http://localhost:4173",
       "webRoot": "${workspaceFolder}",
+      "sourceMapPathOverrides": {
+        "/@fs/*": "${workspaceFolder}/*",
+        "/src/*": "${workspaceFolder}/src/*"
+      },
       "preLaunchTask": "Start Vite Preview Server",
       "postDebugTask": "Stop Vite Preview Server"
     }
