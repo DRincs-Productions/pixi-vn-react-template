@@ -1,6 +1,6 @@
 import { INTERFACE_DATA_USE_QUERY_KEY } from "@/constants";
 import { type CharacterInterface, narration, stepHistory } from "@drincs/pixi-vn";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
 const CAN_GO_BACK_USE_QUERY_KEY = "can_go_back_use_query_key";
@@ -24,6 +24,7 @@ export function useQueryChoiceMenuOptions() {
                         ? t(option.text)
                         : option.text.map((text) => t(text)).join(" "),
             })) || [],
+        placeholderData: keepPreviousData,
     });
 }
 
@@ -36,6 +37,7 @@ export function useQueryInputValue<T>() {
             type: narration.inputType,
             currentValue: narration.inputValue as T | undefined,
         }),
+        placeholderData: keepPreviousData,
     });
 }
 
@@ -86,6 +88,7 @@ export function useQueryDialogue() {
                 character: character,
             };
         },
+        placeholderData: keepPreviousData,
     });
 }
 
@@ -144,5 +147,6 @@ export function useQueryNarrativeHistory({ searchString }: { searchString?: stri
                 );
             });
         },
+        placeholderData: keepPreviousData,
     });
 }
