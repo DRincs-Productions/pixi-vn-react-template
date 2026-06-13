@@ -27,7 +27,7 @@ export function QuickTools() {
     const autoEnabled = useSelector(AutoSettings.store, (state) => state.enabled);
     const queryClient = useQueryClient();
     const { data: lastSave = null } = useQueryLastSave();
-    const { data: canGoBack = null } = useQueryCanGoBack();
+    const { data: canGoBack = false } = useQueryCanGoBack();
     const nextStepLoading = useSelector(GameStatus.store, (state) => state.loading);
     const { goBack } = useNarrationFunctions();
     const { openAlertDialog } = useAlertDialog();
