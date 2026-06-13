@@ -8,7 +8,7 @@ let assetsInitialized = false;
 /**
  * Define all the assets that will be used in the game.
  * This function will be called before the game starts.
- * You can read more about assets management in the documentation: https://pixi-vn.web.app/start/assets-management.html
+ * You can read more about assets management in the documentation: https://pixi-vn.com/start/assets-management.html
  */
 export async function defineAssets() {
     if (!assetsInitialized) {
