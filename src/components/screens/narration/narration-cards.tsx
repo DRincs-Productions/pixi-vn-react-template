@@ -1,6 +1,5 @@
 import { AnimatedDots } from "@/components/loading";
 import { QuickTools } from "@/components/quick-tools";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";
 import { Image } from "@/components/ui/image";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
@@ -127,8 +126,8 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
 
 export function CharacterIcon({ alt, icon }: { icon: string; alt: string }) {
     return (
-        <AspectRatio ratio={16 / 9}>
+        <div className="h-full w-full">
             <Image src={icon} layout="fullWidth" alt={alt} className="h-full w-full object-cover" />
-        </AspectRatio>
+        </div>
     );
 }
