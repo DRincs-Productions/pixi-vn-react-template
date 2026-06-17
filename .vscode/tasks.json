@@ -5,6 +5,9 @@
       "label": "Install Dependencies",
       "type": "shell",
       "command": "[ -d node_modules ] || npm i",
+      "windows": {
+        "command": "if (!(Test-Path node_modules)) { npm i }"
+      },
       "runOptions": {
         "runOn": "folderOpen"
       },
@@ -18,8 +21,11 @@
     {
       "label": "Start Vite Dev Server",
       "type": "shell",
-      "command": "echo $$ > /tmp/vite-watcher.pid; kill -- -$(cat /tmp/vite-dev.pid 2>/dev/null) 2>/dev/null; rm -f /tmp/vite-dev.log /tmp/vite-dev.pid; FORCE_COLOR=1 setsid npm run dev >/tmp/vite-dev.log 2>&1 & echo $! > /tmp/vite-dev.pid; tail -f /tmp/vite-dev.log",
+      "command": "npm run dev",
       "isBackground": true,
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
       "dependsOn": ["Install Dependencies"],
       "dependsOrder": "sequence",
       "problemMatcher": {
@@ -41,9 +47,12 @@
       }
     },
     {
-      "label": "Kill Vite Watcher",
+      "label": "Stop Vite Dev Server",
       "type": "shell",
-      "command": "kill $(cat /tmp/vite-watcher.pid 2>/dev/null) 2>/dev/null; rm -f /tmp/vite-watcher.pid; exit 0",
+      "command": "kill $(lsof -ti:5173 -sTCP:LISTEN 2>/dev/null) 2>/dev/null; sleep 0.5; true",
+      "windows": {
+        "command": "$p = Get-NetTCPConnection -LocalPort 5173 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique; $p | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }; Start-Sleep -Milliseconds 500"
+      },
       "presentation": {
         "reveal": "never",
         "panel": "dedicated",
@@ -52,18 +61,8 @@
     },
     {
       "label": "Restart Vite Dev Server",
-      "dependsOn": ["Kill Vite Watcher", "Start Vite Dev Server"],
+      "dependsOn": ["Stop Vite Dev Server", "Start Vite Dev Server"],
       "dependsOrder": "sequence"
-    },
-    {
-      "label": "Stop Vite Dev Server",
-      "type": "shell",
-      "command": "kill -- -$(cat /tmp/vite-dev.pid 2>/dev/null) 2>/dev/null; kill $(cat /tmp/vite-watcher.pid 2>/dev/null) 2>/dev/null; rm -f /tmp/vite-dev.pid /tmp/vite-dev.log /tmp/vite-watcher.pid; exit 0",
-      "presentation": {
-        "reveal": "never",
-        "panel": "dedicated",
-        "close": true
-      }
     },
     {
       "label": "Start Vite Preview Server",
@@ -71,6 +70,7 @@
       "command": "npm run preview",
       "isBackground": true,
       "dependsOn": ["Install Dependencies"],
+      "dependsOrder": "sequence",
       "problemMatcher": {
         "owner": "vite",
         "pattern": {
@@ -92,7 +92,10 @@
     {
       "label": "Stop Vite Preview Server",
       "type": "shell",
-      "command": "pkill -f 'vite' 2>/dev/null; pkill -f 'npm run preview' 2>/dev/null; exit 0",
+      "command": "kill $(lsof -ti:4173 -sTCP:LISTEN 2>/dev/null) 2>/dev/null; true",
+      "windows": {
+        "command": "$p = Get-NetTCPConnection -LocalPort 4173 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique; $p | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }"
+      },
       "presentation": {
         "reveal": "never",
         "panel": "dedicated",
