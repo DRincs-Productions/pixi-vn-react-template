@@ -18,9 +18,10 @@
     {
       "label": "Start Vite Dev Server",
       "type": "shell",
-      "command": "npm run dev",
+      "command": "echo $$ > /tmp/vite-watcher.pid; kill -- -$(cat /tmp/vite-dev.pid 2>/dev/null) 2>/dev/null; rm -f /tmp/vite-dev.log /tmp/vite-dev.pid; FORCE_COLOR=1 setsid npm run dev >/tmp/vite-dev.log 2>&1 & echo $! > /tmp/vite-dev.pid; tail -f /tmp/vite-dev.log",
       "isBackground": true,
       "dependsOn": ["Install Dependencies"],
+      "dependsOrder": "sequence",
       "problemMatcher": {
         "owner": "vite",
         "pattern": {
@@ -29,20 +30,35 @@
         "background": {
           "activeOnStart": true,
           "beginsPattern": ".",
-          "endsPattern": "Local:\\s+http://localhost:5173/"
+          "endsPattern": "Local:\\s+http://localhost:\\d+/"
         }
       },
       "presentation": {
         "reveal": "always",
         "panel": "dedicated",
-        "clear": false,
+        "clear": true,
+        "close": false
+      }
+    },
+    {
+      "label": "Kill Vite Watcher",
+      "type": "shell",
+      "command": "kill $(cat /tmp/vite-watcher.pid 2>/dev/null) 2>/dev/null; rm -f /tmp/vite-watcher.pid; exit 0",
+      "presentation": {
+        "reveal": "never",
+        "panel": "dedicated",
         "close": true
       }
     },
     {
+      "label": "Restart Vite Dev Server",
+      "dependsOn": ["Kill Vite Watcher", "Start Vite Dev Server"],
+      "dependsOrder": "sequence"
+    },
+    {
       "label": "Stop Vite Dev Server",
       "type": "shell",
-      "command": "pkill -f 'vite' 2>/dev/null; pkill -f 'npm run dev' 2>/dev/null; exit 0",
+      "command": "kill -- -$(cat /tmp/vite-dev.pid 2>/dev/null) 2>/dev/null; kill $(cat /tmp/vite-watcher.pid 2>/dev/null) 2>/dev/null; rm -f /tmp/vite-dev.pid /tmp/vite-dev.log /tmp/vite-watcher.pid; exit 0",
       "presentation": {
         "reveal": "never",
         "panel": "dedicated",
