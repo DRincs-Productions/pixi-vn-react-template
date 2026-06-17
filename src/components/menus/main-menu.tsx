@@ -3,11 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { CANVAS_UI_LAYER_NAME, overlayTextShadowClass } from "@/constants";
-import { startLabel } from "@/content/labels/start.label";
+import {
+    CANVAS_UI_LAYER_NAME,
+    INTERFACE_DATA_USE_QUERY_KEY,
+    overlayTextShadowClass,
+} from "@/constants";
 import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
 import { useGameProps } from "@/lib/hooks/props-hooks";
-import { INTERFACE_DATA_USE_QUEY_KEY as INTERFACE_DATA_USE_QUERY_KEY } from "@/lib/query/interface-query";
 import { useQueryLastSave } from "@/lib/query/save-query";
 import { InterfaceSettings } from "@/lib/stores/interface-settings-store";
 import { cn } from "@/lib/utils";
@@ -144,7 +146,7 @@ export function MainMenu() {
                         onClick={async () => {
                             setLoading(true);
                             await navigate({ to: "/game/narration" });
-                            Game.start(startLabel, gameProps)
+                            Game.start("start", gameProps)
                                 .then(() =>
                                     queryClient.invalidateQueries({
                                         queryKey: [INTERFACE_DATA_USE_QUERY_KEY],

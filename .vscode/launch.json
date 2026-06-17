@@ -7,8 +7,15 @@
       "type": "editor-browser",
       "url": "http://localhost:5173",
       "webRoot": "${workspaceFolder}",
-      "preLaunchTask": "Start Vite Dev Server",
-      "postDebugTask": "Stop Vite Dev Server"
+      "preLaunchTask": "Restart Vite Dev Server"
+    },
+    {
+      "name": "Debug Game (Chrome)",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "Restart Vite Dev Server"
     },
     {
       "name": "Debug Game Preview",

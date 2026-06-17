@@ -19,7 +19,7 @@ import assetPackConfig from "./.assetpack.ts";
 const CACHED_EXTERNAL_HOSTNAMES: string[] = ["raw.githubusercontent.com"];
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
     plugins: [
         assetpackPlugin(),
         checker({
@@ -27,7 +27,7 @@ export default defineConfig({
                 tsconfigPath: "tsconfig.app.json",
             },
         }),
-        devtools(),
+        mode !== "production" && devtools(),
         tanstackRouter({ target: "react", autoCodeSplitting: true }),
         react(),
         tailwindcss(),
@@ -35,6 +35,7 @@ export default defineConfig({
             content: "./src/content/index.ts",
             characters: "./src/content/characters.ts",
             labels: "./src/content/labels/*.label.ts",
+            typeFilePath: "./src/pixi-vn-keys.gen.d.ts",
         }),
         VitePWA({
             // generate icons with: npm run icon
@@ -111,7 +112,7 @@ export default defineConfig({
             },
         },
     },
-});
+}));
 
 function assetpackPlugin(): Plugin {
     let mode: ResolvedConfig["command"];
