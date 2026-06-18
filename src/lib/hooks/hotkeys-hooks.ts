@@ -250,6 +250,7 @@ export function useNarrationHotkeys(): null {
             callback: onSkipKeyUp,
             options: {
                 eventType: "keyup",
+                conflictBehavior: "allow",
                 meta: {
                     name: t("next"),
                     description: t("skip_release_description"),
@@ -262,6 +263,7 @@ export function useNarrationHotkeys(): null {
             callback: onSkipKeyUp,
             options: {
                 eventType: "keyup",
+                conflictBehavior: "allow",
                 meta: {
                     name: t("next"),
                     description: t("skip_release_space_description"),
