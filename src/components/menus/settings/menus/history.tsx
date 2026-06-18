@@ -72,7 +72,7 @@ export function HistoryList({ searchString }: { searchString?: string }) {
                                 </Markdown>
                             </ItemContent>
                             {(item.choices?.some((c) => !c.hidden) || item.inputValue) && (
-                                <ItemFooter className="flex-wrap justify-start gap-1.5">
+                                <ItemFooter className="flex-wrap justify-center gap-1.5">
                                     {item.choices?.map((choice) => {
                                         const choiceKey = `${choice.text}-${choice.isResponse ? "1" : "0"}-${choice.hidden ? "1" : "0"}`;
                                         if (choice.hidden) {
