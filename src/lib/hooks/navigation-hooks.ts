@@ -1,8 +1,36 @@
 import { SearchParams } from "@/lib/stores/search-param-store";
-import { useDebouncedCallback } from "@tanstack/react-pacer";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { useSelector } from "@tanstack/react-store";
 import { useCallback, useEffect } from "react";
+
+// Shared pending param changes — all synchronous setters accumulate here
+// and a single navigate fires after a very short delay.
+const _pendingParams: Record<string, unknown> = {};
+let _pendingTimer: ReturnType<typeof setTimeout> | null = null;
+let _pendingNavigate: ((...args: unknown[]) => unknown) | null = null;
+
+function scheduleNavigate(
+    navigate: ((...args: unknown[]) => unknown),
+    key: string,
+    value: unknown,
+) {
+    _pendingParams[key] = value;
+    _pendingNavigate = navigate;
+    if (_pendingTimer !== null) {
+        clearTimeout(_pendingTimer);
+    }
+    _pendingTimer = setTimeout(() => {
+        _pendingTimer = null;
+        if (_pendingNavigate) {
+            const snapshot = { ..._pendingParams };
+            for (const k of Object.keys(_pendingParams)) {
+                delete _pendingParams[k];
+            }
+            _pendingNavigate({ search: (prev: Record<string, unknown>) => ({ ...prev, ...snapshot }) });
+            _pendingNavigate = null;
+        }
+    }, 10);
+}
 
 /**
  * useConfirmBackNavigation
@@ -69,13 +97,6 @@ export function useSetSearchParamState<T>(
 ): (value: T | undefined | ((previous: T | undefined) => T | undefined)) => void {
     const navigate = useNavigate();
 
-    const debouncedNavigate = useDebouncedCallback(
-        (key: string, value: unknown) => {
-            navigate({ search: ((prev: any) => ({ ...prev, [key]: value })) as any });
-        },
-        { wait: 300 },
-    );
-
     return useCallback(
         (value) => {
             const currentValue = SearchParams.store.state[field] as T | undefined;
@@ -86,8 +107,8 @@ export function useSetSearchParamState<T>(
             const normalizedValue = nextValue === false ? undefined : nextValue;
 
             SearchParams.set(field, normalizedValue);
-            debouncedNavigate(field, normalizedValue);
+            scheduleNavigate(navigate as never, field, normalizedValue);
         },
-        [field, debouncedNavigate],
+        [field, navigate],
     );
 }
