@@ -15,7 +15,7 @@ import { useQueryNarrativeHistory } from "@/lib/query/narration-query";
 import { cn } from "@/lib/utils";
 import { useDebouncedValue } from "@tanstack/react-pacer";
 import { Check, Search } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
@@ -33,80 +33,90 @@ function HistoryItemAvatar({ icon, character }: { icon?: string; character: stri
 
 export function HistoryList({ searchString }: { searchString?: string }) {
     const { data = [] } = useQueryNarrativeHistory({ searchString });
+    const bottomRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (data.length > 0) {
+            bottomRef.current?.scrollIntoView();
+        }
+    }, [data]);
 
     return (
-        <ItemGroup>
-            {data.map((item, index) => {
-                const key = `${item.character ?? "unknown"}-${item.text}-${index}`;
-                return (
-                    <Item key={key} variant="outline">
-                        {item.character && (
-                            <ItemMedia variant="image">
-                                <HistoryItemAvatar icon={item.icon} character={item.character} />
-                            </ItemMedia>
-                        )}
-                        <ItemContent
-                            className={!item.character ? "items-center text-center" : undefined}
-                        >
-                            {item.character && <ItemTitle>{item.character}</ItemTitle>}
-                            <Markdown
-                                remarkPlugins={[remarkGfm]}
-                                rehypePlugins={[rehypeRaw]}
-                                components={{
-                                    p: ({ children, id }) => (
-                                        <p key={id} className="m-0 text-sm text-muted-foreground">
-                                            {children}
-                                        </p>
-                                    ),
-                                }}
+        <>
+            <ItemGroup>
+                {data.map((item, index) => {
+                    const key = `${item.character ?? "unknown"}-${item.text}-${index}`;
+                    return (
+                        <Item key={key} variant="outline">
+                            {item.character && (
+                                <ItemMedia variant="image">
+                                    <HistoryItemAvatar icon={item.icon} character={item.character} />
+                                </ItemMedia>
+                            )}
+                            <ItemContent
+                                className={!item.character ? "items-center text-center" : undefined}
                             >
-                                {item.text}
-                            </Markdown>
-                        </ItemContent>
-                        {(item.choices?.some((c) => !c.hidden) || item.inputValue) && (
-                            <ItemFooter className="flex-wrap justify-start gap-1.5">
-                                {item.choices?.map((choice) => {
-                                    const choiceKey = `${choice.text}-${choice.isResponse ? "1" : "0"}-${choice.hidden ? "1" : "0"}`;
-                                    if (choice.hidden) {
-                                        return null;
-                                    }
-                                    if (choice.isResponse) {
+                                {item.character && <ItemTitle>{item.character}</ItemTitle>}
+                                <Markdown
+                                    remarkPlugins={[remarkGfm]}
+                                    rehypePlugins={[rehypeRaw]}
+                                    components={{
+                                        p: ({ children, id }) => (
+                                            <p key={id} className="m-0 text-sm text-muted-foreground">
+                                                {children}
+                                            </p>
+                                        ),
+                                    }}
+                                >
+                                    {item.text}
+                                </Markdown>
+                            </ItemContent>
+                            {(item.choices?.some((c) => !c.hidden) || item.inputValue) && (
+                                <ItemFooter className="flex-wrap justify-center gap-1.5">
+                                    {item.choices?.map((choice) => {
+                                        const choiceKey = `${choice.text}-${choice.isResponse ? "1" : "0"}-${choice.hidden ? "1" : "0"}`;
+                                        if (choice.hidden) {
+                                            return null;
+                                        }
+                                        if (choice.isResponse) {
+                                            return (
+                                                <Kbd
+                                                    key={`choices-success-${choiceKey}`}
+                                                    className={cn(
+                                                        "h-auto border px-2 py-1",
+                                                        "border-green-500/30 bg-green-500/10 text-green-700 dark:text-green-400",
+                                                    )}
+                                                >
+                                                    {choice.text}
+                                                    <Check className="size-3" />
+                                                </Kbd>
+                                            );
+                                        }
                                         return (
                                             <Kbd
-                                                key={`choices-success-${choiceKey}`}
+                                                key={`choices-${choiceKey}`}
                                                 className={cn(
                                                     "h-auto border px-2 py-1",
-                                                    "border-green-500/30 bg-green-500/10 text-green-700 dark:text-green-400",
+                                                    "border-primary/30 bg-primary/10 text-primary",
                                                 )}
                                             >
                                                 {choice.text}
-                                                <Check className="size-3" />
                                             </Kbd>
                                         );
-                                    }
-                                    return (
-                                        <Kbd
-                                            key={`choices-${choiceKey}`}
-                                            className={cn(
-                                                "h-auto border px-2 py-1",
-                                                "border-primary/30 bg-primary/10 text-primary",
-                                            )}
-                                        >
-                                            {choice.text}
+                                    })}
+                                    {item.inputValue && (
+                                        <Kbd className="h-auto px-2 py-1">
+                                            {item.inputValue.toString()}
                                         </Kbd>
-                                    );
-                                })}
-                                {item.inputValue && (
-                                    <Kbd className="h-auto px-2 py-1">
-                                        {item.inputValue.toString()}
-                                    </Kbd>
-                                )}
-                            </ItemFooter>
-                        )}
-                    </Item>
-                );
-            })}
-        </ItemGroup>
+                                    )}
+                                </ItemFooter>
+                            )}
+                        </Item>
+                    );
+                })}
+            </ItemGroup>
+            <div ref={bottomRef} />
+        </>
     );
 }
 
