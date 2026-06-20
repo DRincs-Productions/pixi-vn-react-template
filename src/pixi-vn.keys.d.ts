@@ -17,4 +17,6 @@ declare module "@drincs/pixi-vn/narration" {
     }
 }
 export const characterIds = ["mc","james","steph","sly"] as const;
+export const characterIdsEnum = {"mc":"mc","james":"james","steph":"steph","sly":"sly"} as const;
 export const labelIds = ["animation_01","second_part","start"] as const;
+export const labelIdsEnum = {"animation_01":"animation_01","second_part":"second_part","start":"start"} as const;
