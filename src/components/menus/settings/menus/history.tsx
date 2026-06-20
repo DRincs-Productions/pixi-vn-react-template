@@ -50,7 +50,10 @@ export function HistoryList({ searchString }: { searchString?: string }) {
                         <Item key={key} variant="outline">
                             {item.character && (
                                 <ItemMedia variant="image">
-                                    <HistoryItemAvatar icon={item.icon} character={item.character} />
+                                    <HistoryItemAvatar
+                                        icon={item.icon}
+                                        character={item.character}
+                                    />
                                 </ItemMedia>
                             )}
                             <ItemContent
@@ -62,7 +65,10 @@ export function HistoryList({ searchString }: { searchString?: string }) {
                                     rehypePlugins={[rehypeRaw]}
                                     components={{
                                         p: ({ children, id }) => (
-                                            <p key={id} className="m-0 text-sm text-muted-foreground">
+                                            <p
+                                                key={id}
+                                                className="m-0 text-sm text-muted-foreground"
+                                            >
                                                 {children}
                                             </p>
                                         ),
