@@ -9,11 +9,7 @@ const _pendingParams: Record<string, unknown> = {};
 let _pendingTimer: ReturnType<typeof setTimeout> | null = null;
 let _pendingNavigate: ((...args: unknown[]) => unknown) | null = null;
 
-function scheduleNavigate(
-    navigate: ((...args: unknown[]) => unknown),
-    key: string,
-    value: unknown,
-) {
+function scheduleNavigate(navigate: (...args: unknown[]) => unknown, key: string, value: unknown) {
     _pendingParams[key] = value;
     _pendingNavigate = navigate;
     if (_pendingTimer !== null) {
@@ -26,7 +22,9 @@ function scheduleNavigate(
             for (const k of Object.keys(_pendingParams)) {
                 delete _pendingParams[k];
             }
-            _pendingNavigate({ search: (prev: Record<string, unknown>) => ({ ...prev, ...snapshot }) });
+            _pendingNavigate({
+                search: (prev: Record<string, unknown>) => ({ ...prev, ...snapshot }),
+            });
             _pendingNavigate = null;
         }
     }, 10);

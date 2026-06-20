@@ -1,8 +1,9 @@
-import { cn } from "@/lib/utils";
+import * as React from "react";
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
+
+import { cn } from "@/lib/utils";
 import { ChevronRightIcon, MoreHorizontalIcon } from "lucide-react";
-import type * as React from "react";
 
 function Breadcrumb({ className, ...props }: React.ComponentProps<"nav">) {
     return (
@@ -93,10 +94,10 @@ function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<"span"
 
 export {
     Breadcrumb,
-    BreadcrumbEllipsis,
+    BreadcrumbList,
     BreadcrumbItem,
     BreadcrumbLink,
-    BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator,
+    BreadcrumbEllipsis,
 };
