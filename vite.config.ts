@@ -37,7 +37,7 @@ export default defineConfig(({ mode }) => ({
             content: "./src/content/index.ts",
             characters: "./src/content/characters.ts",
             labels: "./src/content/labels/*.label.ts",
-            typeFilePath: "./src/pixi-vn.keys.d.ts",
+            typeFilePath: "./src/pixi-vn.keys.ts",
         }),
         VitePWA({
             // generate icons with: npm run icon
