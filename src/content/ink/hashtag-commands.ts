@@ -1,3 +1,4 @@
+import { characterIdsEnum } from "@/pixi-vn.keys";
 import { RegisteredCharacters } from "@drincs/pixi-vn";
 import { HashtagCommands } from "@drincs/pixi-vn-ink";
 import zod from "zod";
@@ -33,6 +34,6 @@ HashtagCommands.add(
 \`\`\`ink
 # rename <characterId> <newName>
 \`\`\``,
-        validation: zod.tuple([zod.literal("rename"), zod.string(), zod.string()]),
+        validation: zod.tuple([zod.literal("rename"), zod.enum(characterIdsEnum), zod.string()]),
     },
 );
