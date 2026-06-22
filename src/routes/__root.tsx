@@ -54,22 +54,24 @@ function RootComponent() {
                 <Outlet />
             </RootProvider>
 
-            <TanStackDevtools
-                config={{
-                    position: "bottom-right",
-                }}
-                plugins={[
-                    {
-                        name: "UI screens",
-                        render: <TanStackRouterDevtoolsPanel />,
-                    },
-                    { ...hotkeysDevtoolsPlugin(), name: "Hotkeys" },
-                    {
-                        name: "UI cache",
-                        render: <ReactQueryDevtoolsPanel />,
-                    },
-                ]}
-            />
+            {import.meta.env.DEV && (
+                <TanStackDevtools
+                    config={{
+                        position: "bottom-right",
+                    }}
+                    plugins={[
+                        {
+                            name: "UI screens",
+                            render: <TanStackRouterDevtoolsPanel />,
+                        },
+                        { ...hotkeysDevtoolsPlugin(), name: "Hotkeys" },
+                        {
+                            name: "UI cache",
+                            render: <ReactQueryDevtoolsPanel />,
+                        },
+                    ]}
+                />
+            )}
         </>
     );
 }
