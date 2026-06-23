@@ -9,17 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as NarrationRouteImport } from './routes/narration'
 import { Route as GameRouteImport } from './routes/game'
 import { Route as DemoRouteImport } from './routes/demo'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GameNarrationRouteImport } from './routes/game/narration'
 
-const NarrationRoute = NarrationRouteImport.update({
-  id: '/narration',
-  path: '/narration',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const GameRoute = GameRouteImport.update({
   id: '/game',
   path: '/game',
@@ -45,14 +39,12 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/demo': typeof DemoRoute
   '/game': typeof GameRouteWithChildren
-  '/narration': typeof NarrationRoute
   '/game/narration': typeof GameNarrationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/demo': typeof DemoRoute
   '/game': typeof GameRouteWithChildren
-  '/narration': typeof NarrationRoute
   '/game/narration': typeof GameNarrationRoute
 }
 export interface FileRoutesById {
@@ -60,33 +52,24 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/demo': typeof DemoRoute
   '/game': typeof GameRouteWithChildren
-  '/narration': typeof NarrationRoute
   '/game/narration': typeof GameNarrationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo' | '/game' | '/narration' | '/game/narration'
+  fullPaths: '/' | '/demo' | '/game' | '/game/narration'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo' | '/game' | '/narration' | '/game/narration'
-  id: '__root__' | '/' | '/demo' | '/game' | '/narration' | '/game/narration'
+  to: '/' | '/demo' | '/game' | '/game/narration'
+  id: '__root__' | '/' | '/demo' | '/game' | '/game/narration'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DemoRoute: typeof DemoRoute
   GameRoute: typeof GameRouteWithChildren
-  NarrationRoute: typeof NarrationRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/narration': {
-      id: '/narration'
-      path: '/narration'
-      fullPath: '/narration'
-      preLoaderRoute: typeof NarrationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/game': {
       id: '/game'
       path: '/game'
@@ -132,7 +115,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DemoRoute: DemoRoute,
   GameRoute: GameRouteWithChildren,
-  NarrationRoute: NarrationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
