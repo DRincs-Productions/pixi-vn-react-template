@@ -22,6 +22,7 @@ export function useNarrationFunctions() {
 
     const goNext = useCallback(async () => {
         if (hasOpenMenu) return;
+        TextDisplaySettings.resetForNext();
         GameStatus.setLoading(true);
         try {
             if (!narration.canContinue) {
@@ -94,6 +95,7 @@ const isDragGesture = (dx: number, dy: number) =>
 export function useNarrationPointerHandlers() {
     const { goNext } = useNarrationFunctions();
     const skipEnabled = useSelector(SkipSettings.store, (state) => state.enabled);
+    const typewriterInProgress = useSelector(TextDisplaySettings.store, (state) => state.inProgress);
     const pointerDownPos = useRef<{ x: number; y: number } | null>(null);
     const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const longPressTriggered = useRef(false);
@@ -166,9 +168,13 @@ export function useNarrationPointerHandlers() {
             if (skipEnabled) {
                 SkipSettings.setEnabled(false);
             }
+            if (typewriterInProgress && !narration.dialogGlue) {
+                TextDisplaySettings.complete();
+                return;
+            }
             goNext();
         },
-        [clearLongPressTimer, goNext, skipEnabled],
+        [clearLongPressTimer, goNext, skipEnabled, typewriterInProgress],
     );
 
     const handlePointerMove = useCallback(

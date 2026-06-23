@@ -65,6 +65,7 @@ export function NarrationCards() {
 
 export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement | null> }) {
     const typewriterDelay = useSelector(TextDisplaySettings.store, (state) => state.delay);
+    const forceComplete = useSelector(TextDisplaySettings.store, (state) => state.forceComplete);
     const { data: { animatedText, text } = {} } = useQueryDialogue();
 
     const handleCharacterAnimationComplete = useCallback(
@@ -105,7 +106,7 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
                 <MarkdownTypewriterHooks
                     remarkPlugins={[remarkGfm]}
                     rehypePlugins={[rehypeRaw]}
-                    delay={typewriterDelay}
+                    delay={forceComplete ? 0 : typewriterDelay}
                     motionProps={{
                         onAnimationStart: TextDisplaySettings.start,
                         onAnimationComplete: (definition: "visible" | "hidden") => {

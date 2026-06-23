@@ -10,11 +10,14 @@ import {
 } from "@/lib/query/save-query";
 import { QuickActionsWheelState } from "@/lib/stores/quick-actions-wheel-store";
 import { SkipSettings } from "@/lib/stores/skip-settings-store";
+import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { loadSave, saveGameToIndexDB } from "@/lib/utils/save-utility";
+import { narration } from "@drincs/pixi-vn";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "@tanstack/react-router";
 import { useCallback } from "react";
+import { useSelector } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
@@ -215,12 +218,17 @@ export function useNarrationHotkeys(): null {
     const { t } = useTranslation(["ui"]);
     const { goNext } = useNarrationFunctions();
     const { data: { isRequired } = {} } = useQueryInputValue<string | number>();
+    const typewriterInProgress = useSelector(TextDisplaySettings.store, (state) => state.inProgress);
 
     const onSkipKeyDown = useCallback(() => SkipSettings.setEnabled(true), []);
     const onSkipKeyUp = useCallback(() => {
         SkipSettings.setEnabled(false);
+        if (typewriterInProgress && !narration.dialogGlue) {
+            TextDisplaySettings.complete();
+            return;
+        }
         goNext();
-    }, [goNext]);
+    }, [goNext, typewriterInProgress]);
 
     useHotkeys([
         {
