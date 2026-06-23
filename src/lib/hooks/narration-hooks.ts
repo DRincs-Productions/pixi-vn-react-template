@@ -205,6 +205,11 @@ export function useSkipAutoDetector() {
         TextDisplaySettings.store,
         (state) => state.inProgress,
     );
+    const searchParams = useSelector(SearchParams.store, (state) => state);
+    const hasOpenMenu = useMemo(
+        () => Object.values(searchParams).some((value) => value !== undefined),
+        [searchParams],
+    );
     const { goNext } = useNarrationFunctions();
 
     const savedGoNext = useRef(goNext);
@@ -212,11 +217,11 @@ export function useSkipAutoDetector() {
         savedGoNext.current = goNext;
     }, [goNext]);
     useEffect(() => {
-        if (skipEnabled) {
+        if (skipEnabled && !hasOpenMenu) {
             const id = setInterval(() => savedGoNext.current(), SKIP_DELAY);
             return () => clearInterval(id);
         }
-    }, [skipEnabled]);
+    }, [skipEnabled, hasOpenMenu]);
 
     const autoDebouncer = useDebouncer(
         (_trigger: {
@@ -224,20 +229,21 @@ export function useSkipAutoDetector() {
             skipEnabled: boolean;
             typewriterInProgress: boolean;
             autoTime: number;
+            hasOpenMenu: boolean;
         }) => {
             goNext();
         },
         {
             wait: autoTime * 1000,
-            enabled: autoEnabled && !skipEnabled && !typewriterInProgress,
+            enabled: autoEnabled && !skipEnabled && !typewriterInProgress && !hasOpenMenu,
         },
     );
 
     const { maybeExecute } = autoDebouncer;
 
     useEffect(() => {
-        maybeExecute({ autoEnabled, skipEnabled, typewriterInProgress, autoTime });
-    }, [maybeExecute, autoEnabled, skipEnabled, typewriterInProgress, autoTime]);
+        maybeExecute({ autoEnabled, skipEnabled, typewriterInProgress, autoTime, hasOpenMenu });
+    }, [maybeExecute, autoEnabled, skipEnabled, typewriterInProgress, autoTime, hasOpenMenu]);
 
     return null;
 }
