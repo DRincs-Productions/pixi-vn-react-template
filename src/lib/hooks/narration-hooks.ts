@@ -2,6 +2,7 @@ import { SKIP_DELAY } from "@/constants";
 import { useGameProps } from "@/lib/hooks/props-hooks";
 import { AutoSettings } from "@/lib/stores/auto-settings-store";
 import { GameStatus } from "@/lib/stores/game-status-store";
+import { SearchParams } from "@/lib/stores/search-param-store";
 import { SkipSettings } from "@/lib/stores/skip-settings-store";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { hasScrollableParent, isScrollableElement } from "@/lib/utils/scroll-utils";
@@ -9,12 +10,18 @@ import { narration, stepHistory, type StoredIndexedChoiceInterface } from "@drin
 import { useDebouncer } from "@tanstack/react-pacer";
 import { useSelector } from "@tanstack/react-store";
 import type React from "react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 
 export function useNarrationFunctions() {
     const gameProps = useGameProps();
+    const searchParams = useSelector(SearchParams.store, (state) => state);
+    const hasOpenMenu = useMemo(
+        () => Object.values(searchParams).some((value) => value !== undefined),
+        [searchParams],
+    );
 
     const goNext = useCallback(async () => {
+        if (hasOpenMenu) return;
         GameStatus.setLoading(true);
         try {
             if (!narration.canContinue) {
@@ -36,9 +43,10 @@ export function useNarrationFunctions() {
             console.error(e);
             return;
         }
-    }, [gameProps]);
+    }, [gameProps, hasOpenMenu]);
 
     const goBack = useCallback(async () => {
+        if (hasOpenMenu) return;
         GameStatus.setLoading(true);
         return stepHistory
             .back(gameProps)
@@ -50,10 +58,11 @@ export function useNarrationFunctions() {
                 GameStatus.setLoading(false);
                 console.error(e);
             });
-    }, [gameProps]);
+    }, [gameProps, hasOpenMenu]);
 
     const selectChoice = useCallback(
         async (item: StoredIndexedChoiceInterface) => {
+            if (hasOpenMenu) return;
             GameStatus.setLoading(true);
             return narration
                 .selectChoice(item, gameProps)
@@ -66,7 +75,7 @@ export function useNarrationFunctions() {
                     console.error(e);
                 });
         },
-        [gameProps],
+        [gameProps, hasOpenMenu],
     );
 
     return {
