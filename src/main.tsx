@@ -10,7 +10,6 @@ import { ChannelSound } from "@/lib/stores/channel-sound-stores";
 import { MasterSound } from "@/lib/stores/master-sound-storage";
 import "@/styles.css";
 import { Assets, canvas, Container, drawCanvasErrorHandler, Game, sound } from "@drincs/pixi-vn";
-import "@drincs/pixi-vn-spine";
 import { createRoot } from "react-dom/client";
 
 // Canvas setup with PIXI

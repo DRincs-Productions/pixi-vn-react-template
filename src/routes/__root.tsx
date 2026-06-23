@@ -12,11 +12,12 @@ import { initializeIndexedDB } from "@/lib/utils/db-utility";
 import { loadRefreshSave } from "@/lib/utils/save-utility";
 import type { RouterContext } from "@/router";
 import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
-import { TanStackDevtools } from "@tanstack/react-devtools";
-import { hotkeysDevtoolsPlugin } from "@tanstack/react-hotkeys-devtools";
-import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import { createRootRouteWithContext, ErrorComponent, Outlet } from "@tanstack/react-router";
-import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { lazy, Suspense } from "react";
+
+const DevDevtools = import.meta.env.DEV
+    ? lazy(() => import("@/components/dev-devtools"))
+    : null;
 
 export const Route = createRootRouteWithContext<RouterContext>()({
     validateSearch: (search) => SearchParams.setMany(search),
@@ -54,22 +55,11 @@ function RootComponent() {
                 <Outlet />
             </RootProvider>
 
-            <TanStackDevtools
-                config={{
-                    position: "bottom-right",
-                }}
-                plugins={[
-                    {
-                        name: "UI screens",
-                        render: <TanStackRouterDevtoolsPanel />,
-                    },
-                    { ...hotkeysDevtoolsPlugin(), name: "Hotkeys" },
-                    {
-                        name: "UI cache",
-                        render: <ReactQueryDevtoolsPanel />,
-                    },
-                ]}
-            />
+            {DevDevtools && (
+                <Suspense>
+                    <DevDevtools />
+                </Suspense>
+            )}
         </>
     );
 }
