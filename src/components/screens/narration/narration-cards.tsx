@@ -103,23 +103,33 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
             </span>
             <span>
                 <span> </span>
-                <MarkdownTypewriterHooks
-                    remarkPlugins={[remarkGfm]}
-                    rehypePlugins={[rehypeRaw]}
-                    delay={forceComplete ? 0 : typewriterDelay}
-                    motionProps={{
-                        onAnimationStart: TextDisplaySettings.start,
-                        onAnimationComplete: (definition: "visible" | "hidden") => {
-                            if (definition === "visible") {
-                                TextDisplaySettings.end();
-                            }
-                        },
-                        onCharacterAnimationComplete: handleCharacterAnimationComplete,
-                    }}
-                    fallback={<AnimatedDots />}
-                >
-                    {animatedText}
-                </MarkdownTypewriterHooks>
+                {forceComplete ? (
+                    <Markdown
+                        remarkPlugins={[remarkGfm]}
+                        rehypePlugins={[rehypeRaw]}
+                        components={{ p: (props) => <span {...props} /> }}
+                    >
+                        {animatedText}
+                    </Markdown>
+                ) : (
+                    <MarkdownTypewriterHooks
+                        remarkPlugins={[remarkGfm]}
+                        rehypePlugins={[rehypeRaw]}
+                        delay={typewriterDelay}
+                        motionProps={{
+                            onAnimationStart: TextDisplaySettings.start,
+                            onAnimationComplete: (definition: "visible" | "hidden") => {
+                                if (definition === "visible") {
+                                    TextDisplaySettings.end();
+                                }
+                            },
+                            onCharacterAnimationComplete: handleCharacterAnimationComplete,
+                        }}
+                        fallback={<AnimatedDots />}
+                    >
+                        {animatedText}
+                    </MarkdownTypewriterHooks>
+                )}
             </span>
         </p>
     );
