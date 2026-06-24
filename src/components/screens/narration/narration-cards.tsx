@@ -65,7 +65,6 @@ export function NarrationCards() {
 
 export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement | null> }) {
     const typewriterDelay = useSelector(TextDisplaySettings.store, (state) => state.delay);
-    const forceComplete = useSelector(TextDisplaySettings.store, (state) => state.forceComplete);
     const { data: { animatedText, text } = {} } = useQueryDialogue();
 
     const handleCharacterAnimationComplete = useCallback(
@@ -103,43 +102,33 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
             </span>
             <span>
                 <span> </span>
-                {forceComplete ? (
-                    <Markdown
-                        remarkPlugins={[remarkGfm]}
-                        rehypePlugins={[rehypeRaw]}
-                        components={{ p: (props) => <span {...props} /> }}
-                    >
-                        {animatedText}
-                    </Markdown>
-                ) : (
-                    <MarkdownTypewriterHooks
-                        remarkPlugins={[remarkGfm]}
-                        rehypePlugins={[rehypeRaw]}
-                        delay={typewriterDelay}
-                        motionProps={{
-                            onAnimationStart: TextDisplaySettings.start,
-                            onAnimationComplete: (definition: "visible" | "hidden") => {
-                                if (definition === "visible") {
-                                    TextDisplaySettings.end();
-                                }
-                            },
-                            onCharacterAnimationComplete: handleCharacterAnimationComplete,
-                        }}
-                        fallback={<AnimatedDots />}
-                        specialCharacters={{
-                            ".": { delayAfter: typewriterDelay + 300 },
-                            "!": { delayAfter: typewriterDelay + 300 },
-                            "?": { delayAfter: typewriterDelay + 300 },
-                            ",": { delayAfter: typewriterDelay + 75 },
-                            ":": {
-                                delay: typewriterDelay + 50,
-                                delayAfter: typewriterDelay + 150,
-                            },
-                        }}
-                    >
-                        {animatedText}
-                    </MarkdownTypewriterHooks>
-                )}
+                <MarkdownTypewriterHooks
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeRaw]}
+                    delay={typewriterDelay}
+                    motionProps={{
+                        onAnimationStart: TextDisplaySettings.start,
+                        onAnimationComplete: (definition: "visible" | "hidden") => {
+                            if (definition === "visible") {
+                                TextDisplaySettings.end();
+                            }
+                        },
+                        onCharacterAnimationComplete: handleCharacterAnimationComplete,
+                    }}
+                    fallback={<AnimatedDots />}
+                    specialCharacters={{
+                        ".": { delayAfter: typewriterDelay + 300 },
+                        "!": { delayAfter: typewriterDelay + 300 },
+                        "?": { delayAfter: typewriterDelay + 300 },
+                        ",": { delayAfter: typewriterDelay + 75 },
+                        ":": {
+                            delay: typewriterDelay + 50,
+                            delayAfter: typewriterDelay + 150,
+                        },
+                    }}
+                >
+                    {animatedText}
+                </MarkdownTypewriterHooks>
             </span>
         </p>
     );

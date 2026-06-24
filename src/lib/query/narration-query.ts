@@ -1,6 +1,8 @@
 import { INTERFACE_DATA_USE_QUERY_KEY } from "@/constants";
+import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { type CharacterInterface, narration, stepHistory } from "@drincs/pixi-vn";
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useSelector } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
 
 const CAN_GO_BACK_USE_QUERY_KEY = "can_go_back_use_query_key";
@@ -50,6 +52,7 @@ const DIALOGUE_USE_QUERY_KEY = "dialogue_use_query_key";
 export function useQueryDialogue() {
     const { t } = useTranslation(["narration"]);
     const queryClient = useQueryClient();
+    const forceComplete = useSelector(TextDisplaySettings.store, (state) => state.forceComplete);
 
     return useQuery<DialogueModel>({
         queryKey: [INTERFACE_DATA_USE_QUERY_KEY, DIALOGUE_USE_QUERY_KEY],
@@ -89,6 +92,13 @@ export function useQueryDialogue() {
             };
         },
         placeholderData: keepPreviousData,
+        select: forceComplete
+            ? (data) => ({
+                  character: data.character,
+                  text: (data.text || "") + (data.animatedText || "") || undefined,
+                  animatedText: undefined,
+              })
+            : undefined,
     });
 }
 
