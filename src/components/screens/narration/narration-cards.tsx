@@ -126,6 +126,16 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
                             onCharacterAnimationComplete: handleCharacterAnimationComplete,
                         }}
                         fallback={<AnimatedDots />}
+                        specialCharacters={{
+                            ".": { delayAfter: typewriterDelay + 300 },
+                            "!": { delayAfter: typewriterDelay + 300 },
+                            "?": { delayAfter: typewriterDelay + 300 },
+                            ",": { delayAfter: typewriterDelay + 75 },
+                            ":": {
+                                delay: typewriterDelay + 50,
+                                delayAfter: typewriterDelay + 150,
+                            },
+                        }}
                     >
                         {animatedText}
                     </MarkdownTypewriterHooks>
