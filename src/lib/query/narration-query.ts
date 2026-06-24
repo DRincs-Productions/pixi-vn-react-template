@@ -3,6 +3,7 @@ import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { type CharacterInterface, narration, stepHistory } from "@drincs/pixi-vn";
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "@tanstack/react-store";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 const CAN_GO_BACK_USE_QUERY_KEY = "can_go_back_use_query_key";
@@ -47,6 +48,7 @@ type DialogueModel = {
     animatedText?: string;
     text?: string;
     character?: CharacterInterface;
+    lastText?: string;
 };
 const DIALOGUE_USE_QUERY_KEY = "dialogue_use_query_key";
 export function useQueryDialogue() {
@@ -54,7 +56,22 @@ export function useQueryDialogue() {
     const queryClient = useQueryClient();
     const forceComplete = useSelector(TextDisplaySettings.store, (state) => state.forceComplete);
 
-    return useQuery<DialogueModel>({
+    const finalizeDialogue = useCallback(() => {
+        queryClient.setQueryData<DialogueModel>(
+            [INTERFACE_DATA_USE_QUERY_KEY, DIALOGUE_USE_QUERY_KEY],
+            (prev) => {
+                if (!prev) return prev;
+                const fullText = (prev.text || "") + (prev.animatedText || "");
+                return {
+                    ...prev,
+                    text: fullText || undefined,
+                    animatedText: undefined,
+                };
+            },
+        );
+    }, [queryClient]);
+
+    const query = useQuery<DialogueModel>({
         queryKey: [INTERFACE_DATA_USE_QUERY_KEY, DIALOGUE_USE_QUERY_KEY],
         queryFn: async ({ queryKey }) => {
             const dialogue = narration.dialogue;
@@ -81,6 +98,7 @@ export function useQueryDialogue() {
                 }
                 return {
                     animatedText: newText,
+                    lastText: newText,
                     text: oldText,
                     character: character,
                 };
@@ -88,18 +106,21 @@ export function useQueryDialogue() {
 
             return {
                 animatedText: text,
+                lastText: text,
                 character: character,
             };
         },
         placeholderData: keepPreviousData,
         select: forceComplete
             ? (data) => ({
-                  character: data.character,
+                  ...data,
                   text: (data.text || "") + (data.animatedText || "") || undefined,
                   animatedText: undefined,
               })
             : undefined,
     });
+
+    return { ...query, finalizeDialogue };
 }
 
 const CAN_GO_NEXT_USE_QUERY_KEY = "can_go_next_use_query_key";

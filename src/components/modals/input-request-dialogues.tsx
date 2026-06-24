@@ -14,7 +14,7 @@ import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 
 export function InputRequestDialog() {
-    const { data: { animatedText: text } = {} } = useQueryDialogue();
+    const { data: { lastText: text } = {} } = useQueryDialogue();
     const {
         data: { isRequired, type, currentValue } = { currentValue: undefined, isRequired: false },
     } = useQueryInputValue<string | number>();
