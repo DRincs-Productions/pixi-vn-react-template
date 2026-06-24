@@ -1,4 +1,4 @@
-import { AnimatedDots } from "@/components/loading";
+import { DelayedAnimatedDots } from "@/components/loading";
 import { QuickTools } from "@/components/quick-tools";
 import { Card, CardContent } from "@/components/ui/card";
 import { Image } from "@/components/ui/image";
@@ -107,7 +107,7 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
                     rehypePlugins={[rehypeRaw]}
                     delay={typewriterDelay}
                     motionProps={{
-                        onAnimationStart: TextDisplaySettings.start,
+                        onAnimationStart: animatedText ? TextDisplaySettings.start : undefined,
                         onAnimationComplete: (definition: "visible" | "hidden") => {
                             if (definition === "visible") {
                                 finalizeDialogue();
@@ -116,7 +116,7 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
                         },
                         onCharacterAnimationComplete: handleCharacterAnimationComplete,
                     }}
-                    fallback={<AnimatedDots />}
+                    fallback={<DelayedAnimatedDots />}
                     specialCharacters={{
                         ".": { delayAfter: typewriterDelay + 300 },
                         "!": { delayAfter: typewriterDelay + 300 },
