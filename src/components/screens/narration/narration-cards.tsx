@@ -1,4 +1,4 @@
-import { AnimatedDots } from "@/components/loading";
+import { DelayedAnimatedDots } from "@/components/loading";
 import { QuickTools } from "@/components/quick-tools";
 import { Card, CardContent } from "@/components/ui/card";
 import { Image } from "@/components/ui/image";
@@ -65,7 +65,7 @@ export function NarrationCards() {
 
 export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement | null> }) {
     const typewriterDelay = useSelector(TextDisplaySettings.store, (state) => state.delay);
-    const { data: { animatedText, text } = {} } = useQueryDialogue();
+    const { data: { animatedText, text } = {}, finalizeDialogue } = useQueryDialogue();
 
     const handleCharacterAnimationComplete = useCallback(
         (ref: { current: HTMLSpanElement | null }) => {
@@ -110,12 +110,23 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
                         onAnimationStart: TextDisplaySettings.start,
                         onAnimationComplete: (definition: "visible" | "hidden") => {
                             if (definition === "visible") {
+                                finalizeDialogue();
                                 TextDisplaySettings.end();
                             }
                         },
                         onCharacterAnimationComplete: handleCharacterAnimationComplete,
                     }}
-                    fallback={<AnimatedDots />}
+                    fallback={<DelayedAnimatedDots />}
+                    specialCharacters={{
+                        ".": { delayAfter: typewriterDelay + 300 },
+                        "!": { delayAfter: typewriterDelay + 300 },
+                        "?": { delayAfter: typewriterDelay + 300 },
+                        ",": { delayAfter: typewriterDelay + 75 },
+                        ":": {
+                            delay: typewriterDelay + 50,
+                            delayAfter: typewriterDelay + 150,
+                        },
+                    }}
                 >
                     {animatedText}
                 </MarkdownTypewriterHooks>
