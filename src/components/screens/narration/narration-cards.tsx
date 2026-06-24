@@ -107,7 +107,7 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
                     rehypePlugins={[rehypeRaw]}
                     delay={typewriterDelay}
                     motionProps={{
-                        onAnimationStart: animatedText ? TextDisplaySettings.start : undefined,
+                        onAnimationStart: TextDisplaySettings.start,
                         onAnimationComplete: (definition: "visible" | "hidden") => {
                             if (definition === "visible") {
                                 finalizeDialogue();
