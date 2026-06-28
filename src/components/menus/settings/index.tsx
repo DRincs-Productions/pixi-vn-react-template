@@ -208,7 +208,9 @@ export function SettingsDialogue() {
             onOpenChange={(isOpen) => {
                 setOpen(isOpen || undefined);
                 if (!isOpen) {
-                    setSettingsTab(undefined);
+                    // Delay clearing the tab until after the 100ms close animation
+                    // to avoid briefly flashing the main settings view during close.
+                    setTimeout(() => setSettingsTab(undefined), 150);
                 }
             }}
         >
