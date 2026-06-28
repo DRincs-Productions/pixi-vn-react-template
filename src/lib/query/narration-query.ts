@@ -27,7 +27,6 @@ export function useQueryChoiceMenuOptions() {
                         ? t(option.text)
                         : option.text.map((text) => t(text)).join(" "),
             })) || [],
-        placeholderData: keepPreviousData,
     });
 }
 
