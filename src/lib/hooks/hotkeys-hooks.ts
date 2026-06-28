@@ -2,7 +2,7 @@ import { useAlertDialog } from "@/components/providers/alert-dialog-provider";
 import { useNarrationFunctions } from "@/lib/hooks/narration-hooks";
 import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
 import { useGameProps } from "@/lib/hooks/props-hooks";
-import { useQueryInputValue } from "@/lib/query/narration-query";
+import { useQueryCanGoNext, useQueryInputValue } from "@/lib/query/narration-query";
 import {
     LAST_SAVE_USE_QUERY_KEY,
     SAVES_USE_QUERY_KEY,
@@ -19,7 +19,7 @@ import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "@tanstack/react-router";
 import { useSelector } from "@tanstack/react-store";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
@@ -246,6 +246,72 @@ export function useGameHotkeys(): null {
     return null;
 }
 
+export function useChoiceMenuHotkeys(menuLength: number) {
+    const { t } = useTranslation(["ui"]);
+    const menuRef = useRef<HTMLDivElement>(null);
+
+    function getMenuItems(): HTMLButtonElement[] {
+        if (!menuRef.current) return [];
+        return Array.from(
+            menuRef.current.querySelectorAll<HTMLButtonElement>(
+                "button[role='menuitem']:not(:disabled)",
+            ),
+        );
+    }
+
+    function focusMenuItem(direction: "up" | "down") {
+        const items = getMenuItems();
+        if (!items.length) return;
+        const active = document.activeElement as HTMLElement;
+        const currentIndex = items.indexOf(active as HTMLButtonElement);
+        let next: number;
+        if (direction === "down") {
+            next = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+        } else {
+            next = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+        }
+        items[next].focus();
+    }
+
+    useEffect(() => {
+        if (menuLength > 0) {
+            const firstItem = menuRef.current?.querySelector<HTMLButtonElement>(
+                "button[role='menuitem']:not(:disabled)",
+            );
+            firstItem?.focus();
+        }
+    }, [menuLength]);
+
+    useHotkeys([
+        {
+            hotkey: "ArrowDown",
+            callback: () => focusMenuItem("down"),
+            options: {
+                enabled: menuLength > 0,
+                preventDefault: true,
+                meta: {
+                    name: t("choice_navigation"),
+                    description: t("choice_navigation_description"),
+                },
+            },
+        },
+        {
+            hotkey: "ArrowUp",
+            callback: () => focusMenuItem("up"),
+            options: {
+                enabled: menuLength > 0,
+                preventDefault: true,
+                meta: {
+                    name: t("choice_navigation"),
+                    description: t("choice_navigation_description"),
+                },
+            },
+        },
+    ]);
+
+    return { menuRef };
+}
+
 export function useNarrationHotkeys(): null {
     const { t } = useTranslation(["ui"]);
     const { goNext } = useNarrationFunctions();
@@ -254,6 +320,7 @@ export function useNarrationHotkeys(): null {
         (state) => state.inProgress,
     );
     const { isAnyMenuOrDialogOpen } = useMenuDialogState();
+    const { data: canGoNext } = useQueryCanGoNext();
 
     const onSkipKeyDown = useCallback(() => SkipSettings.setEnabled(true), []);
     const onSkipKeyUp = useCallback(() => {
@@ -270,7 +337,7 @@ export function useNarrationHotkeys(): null {
             hotkey: "Enter",
             callback: onSkipKeyDown,
             options: {
-                enabled: !isAnyMenuOrDialogOpen,
+                enabled: !isAnyMenuOrDialogOpen && canGoNext,
                 meta: {
                     name: t("skip"),
                     description: t("skip_hold_description"),
@@ -281,7 +348,7 @@ export function useNarrationHotkeys(): null {
             hotkey: "Space",
             callback: onSkipKeyDown,
             options: {
-                enabled: !isAnyMenuOrDialogOpen,
+                enabled: !isAnyMenuOrDialogOpen && canGoNext,
                 meta: {
                     name: t("skip"),
                     description: t("skip_hold_space_description"),
@@ -294,7 +361,7 @@ export function useNarrationHotkeys(): null {
             options: {
                 eventType: "keyup",
                 conflictBehavior: "allow",
-                enabled: !isAnyMenuOrDialogOpen,
+                enabled: !isAnyMenuOrDialogOpen && canGoNext,
                 meta: {
                     name: t("next"),
                     description: t("skip_release_description"),
@@ -307,7 +374,7 @@ export function useNarrationHotkeys(): null {
             options: {
                 eventType: "keyup",
                 conflictBehavior: "allow",
-                enabled: !isAnyMenuOrDialogOpen,
+                enabled: !isAnyMenuOrDialogOpen && canGoNext,
                 meta: {
                     name: t("next"),
                     description: t("skip_release_space_description"),

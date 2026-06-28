@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useChoiceMenuHotkeys } from "@/lib/hooks/hotkeys-hooks";
 import { useNarrationFunctions } from "@/lib/hooks/narration-hooks";
 import { useQueryChoiceMenuOptions } from "@/lib/query/narration-query";
 import { GameStatus } from "@/lib/stores/game-status-store";
@@ -13,9 +14,11 @@ export function ChoiceMenu() {
     const isTyping = useSelector(TextDisplaySettings.store, (state) => state.inProgress);
     const { selectChoice } = useNarrationFunctions();
     const [debouncedMenu] = useDebouncedValue(isTyping ? [] : menu, { wait: 50 });
+    const { menuRef } = useChoiceMenuHotkeys(debouncedMenu.length);
 
     return (
         <div
+            ref={menuRef}
             className="flex flex-col items-center justify-center gap-2 w-full h-full overflow-auto"
             role="menu"
         >
@@ -28,6 +31,7 @@ export function ChoiceMenu() {
                     style={{ animationDelay: `${index * 150}ms` }}
                 >
                     <Button
+                        role="menuitem"
                         disabled={loading}
                         onClick={() => selectChoice(item)}
                         size="sm"
