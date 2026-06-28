@@ -8,7 +8,7 @@ import { useNarrationPointerHandlers } from "@/lib/hooks/narration-hooks";
 import { useQueryDialogue } from "@/lib/query/narration-query";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { useSelector } from "@tanstack/react-store";
-import { type RefObject, useCallback, useRef } from "react";
+import { type RefObject, memo, useCallback, useMemo, useRef } from "react";
 import Markdown from "react-markdown";
 import { MarkdownTypewriterHooks } from "react-markdown-typewriter";
 import rehypeRaw from "rehype-raw";
@@ -63,7 +63,11 @@ export function NarrationCards() {
     );
 }
 
-export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement | null> }) {
+export const Text = memo(function Text({
+    paragraphRef,
+}: {
+    paragraphRef: RefObject<HTMLDivElement | null>;
+}) {
     const typewriterDelay = useSelector(TextDisplaySettings.store, (state) => state.delay);
     const { data: { animatedText, text } = {}, finalizeDialogue } = useQueryDialogue();
 
@@ -74,7 +78,6 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
             if (container && char) {
                 const containerRect = container.getBoundingClientRect();
                 const charRect = char.getBoundingClientRect();
-                // Position of the character relative to the top of the scroll container
                 const charOffsetInContainer =
                     charRect.top - containerRect.top + container.scrollTop;
                 const scrollTop = charOffsetInContainer - container.clientHeight / 2;
@@ -87,15 +90,40 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
         [paragraphRef],
     );
 
+    const markdownComponents = useMemo(() => ({ p: (props: object) => <span {...props} /> }), []);
+
+    const motionProps = useMemo(
+        () => ({
+            onAnimationStart: TextDisplaySettings.start,
+            onAnimationComplete: (definition: "visible" | "hidden") => {
+                if (definition === "visible") {
+                    finalizeDialogue();
+                    TextDisplaySettings.end();
+                }
+            },
+            onCharacterAnimationComplete: handleCharacterAnimationComplete,
+        }),
+        [finalizeDialogue, handleCharacterAnimationComplete],
+    );
+
+    const specialCharacters = useMemo(
+        () => ({
+            ".": { delayAfter: typewriterDelay + 300 },
+            "!": { delayAfter: typewriterDelay + 300 },
+            "?": { delayAfter: typewriterDelay + 300 },
+            ",": { delayAfter: typewriterDelay + 75 },
+            ":": { delay: typewriterDelay + 50, delayAfter: typewriterDelay + 150 },
+        }),
+        [typewriterDelay],
+    );
+
     return (
         <p className="prose dark:prose-invert m-0 max-w-full p-0">
             <span>
                 <Markdown
                     remarkPlugins={[remarkGfm]}
                     rehypePlugins={[rehypeRaw]}
-                    components={{
-                        p: (props) => <span {...props} />,
-                    }}
+                    components={markdownComponents}
                 >
                     {text}
                 </Markdown>
@@ -106,34 +134,16 @@ export function Text({ paragraphRef }: { paragraphRef: RefObject<HTMLDivElement 
                     remarkPlugins={[remarkGfm]}
                     rehypePlugins={[rehypeRaw]}
                     delay={typewriterDelay}
-                    motionProps={{
-                        onAnimationStart: TextDisplaySettings.start,
-                        onAnimationComplete: (definition: "visible" | "hidden") => {
-                            if (definition === "visible") {
-                                finalizeDialogue();
-                                TextDisplaySettings.end();
-                            }
-                        },
-                        onCharacterAnimationComplete: handleCharacterAnimationComplete,
-                    }}
+                    motionProps={motionProps}
                     fallback={<DelayedAnimatedDots />}
-                    specialCharacters={{
-                        ".": { delayAfter: typewriterDelay + 300 },
-                        "!": { delayAfter: typewriterDelay + 300 },
-                        "?": { delayAfter: typewriterDelay + 300 },
-                        ",": { delayAfter: typewriterDelay + 75 },
-                        ":": {
-                            delay: typewriterDelay + 50,
-                            delayAfter: typewriterDelay + 150,
-                        },
-                    }}
+                    specialCharacters={specialCharacters}
                 >
                     {animatedText}
                 </MarkdownTypewriterHooks>
             </span>
         </p>
     );
-}
+});
 
 export function CharacterIcon({ alt, icon }: { icon: string; alt: string }) {
     return (
