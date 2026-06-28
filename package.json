@@ -51,7 +51,7 @@
     "react-dom": "^19.2.6",
     "react-i18next": "^17.0.8",
     "react-markdown": "^10.1.0",
-    "react-markdown-typewriter": "^1.2.0",
+    "react-markdown-typewriter": "^1.3.4",
     "react-resizable-panels": "^4.11.2",
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.1",

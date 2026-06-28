@@ -27,7 +27,6 @@ const menuButtonClass =
     "justify-start hover:scale-105 focus-visible:scale-105 transition-transform duration-150 ease-out";
 
 export function MainMenu() {
-    const queryClient = useQueryClient();
     const gameProps = useGameProps();
     const { uiTransition: t, navigate } = gameProps;
     const setSettings = useSetSearchParamState<boolean>("settings");
@@ -149,11 +148,7 @@ export function MainMenu() {
                             setLoading(true);
                             await navigate({ to: "/game/narration" });
                             Game.start("start", gameProps)
-                                .then(() =>
-                                    queryClient.invalidateQueries({
-                                        queryKey: [INTERFACE_DATA_USE_QUERY_KEY],
-                                    }),
-                                )
+                                .then(() => gameProps.invalidateInterfaceData())
                                 .finally(() => setLoading(false));
                         }}
                         disabled={loading}
