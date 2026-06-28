@@ -147,11 +147,7 @@ export function MainMenu() {
                             setLoading(true);
                             await navigate({ to: "/game/narration" });
                             Game.start("start", gameProps)
-                                .then(() =>
-                                    queryClient.invalidateQueries({
-                                        queryKey: [INTERFACE_DATA_USE_QUERY_KEY],
-                                    }),
-                                )
+                                .then(() => gameProps.invalidateInterfaceData())
                                 .finally(() => setLoading(false));
                         }}
                         disabled={loading}
