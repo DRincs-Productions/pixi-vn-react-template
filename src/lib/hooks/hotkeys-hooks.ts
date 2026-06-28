@@ -19,7 +19,7 @@ import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "@tanstack/react-router";
 import { useSelector } from "@tanstack/react-store";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
@@ -272,15 +272,6 @@ export function useChoiceMenuHotkeys(menuLength: number) {
         }
         items[next].focus();
     }
-
-    useEffect(() => {
-        if (menuLength > 0) {
-            const firstItem = menuRef.current?.querySelector<HTMLButtonElement>(
-                "button[role='menuitem']:not(:disabled)",
-            );
-            firstItem?.focus();
-        }
-    }, [menuLength]);
 
     useHotkeys([
         {
