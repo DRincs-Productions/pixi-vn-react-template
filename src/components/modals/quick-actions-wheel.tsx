@@ -223,7 +223,9 @@ function QuickActionsWheelContent({
                         >
                             <span className="font-semibold">{registration.label}</span>
                             <span className="text-[11px] opacity-85">
-                                {registration.hotkeyLabel}
+                                {registration.hotkeyLabel.length > 15
+                                    ? `${registration.hotkeyLabel.slice(0, 12)}…`
+                                    : registration.hotkeyLabel}
                             </span>
                         </button>
                     );
