@@ -10,6 +10,10 @@ type TextDisplayStorage = {
      */
     inProgress: boolean;
     /**
+     * Whether the typewriter effect should be force-completed instantly
+     */
+    forceComplete: boolean;
+    /**
      * The font size in percent (100 = default)
      */
     fontSize: number;
@@ -22,6 +26,7 @@ export namespace TextDisplaySettings {
     export const store = new Store<TextDisplayStorage>({
         delay: Number(localStorage.getItem("typewriter_delay_millisecond") ?? 10),
         inProgress: false,
+        forceComplete: false,
         fontSize: initialFontSize,
     });
 
@@ -57,6 +62,20 @@ export namespace TextDisplaySettings {
      * End the typewriter effect
      */
     export function end() {
-        store.setState((state) => ({ ...state, inProgress: false }));
+        store.setState((state) => ({ ...state, inProgress: false, forceComplete: false }));
+    }
+
+    /**
+     * Force the typewriter effect to complete instantly
+     */
+    export function complete() {
+        store.setState((state) => ({ ...state, forceComplete: true, inProgress: false }));
+    }
+
+    /**
+     * Clear the forceComplete flag before advancing to the next step
+     */
+    export function resetForNext() {
+        store.setState((state) => ({ ...state, forceComplete: false }));
     }
 }

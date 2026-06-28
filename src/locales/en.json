@@ -81,6 +81,8 @@
     "menu_navigation_up_description": "Focus the previous menu item.",
     "menu_navigation_home_description": "Focus the first menu item.",
     "menu_navigation_end_description": "Focus the last menu item.",
+    "choice_navigation": "Choices",
+    "choice_navigation_description": "Use ↑ / ↓ to select an choice, then Enter to run it.",
     "success_delete": "Delete successful",
     "success_load": "Load successful",
     "success_save": "Save successful",
