@@ -1,3 +1,4 @@
+import { AlertDialogState } from "@/lib/stores/alert-dialog-store";
 import { createContext, type ReactNode, useCallback, useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -47,6 +48,7 @@ export function AlertDialogProvider({ children }: { children: ReactNode }) {
 
     const closeDialog = useCallback((id: string) => {
         setDialogs((prev) => prev.map((d) => (d.id === id ? { ...d, open: false } : d)));
+        AlertDialogState.decrement();
         setTimeout(() => {
             setDialogs((prev) => prev.filter((d) => d.id !== id));
         }, DIALOG_CLOSE_ANIMATION_DURATION_MS);
@@ -54,6 +56,7 @@ export function AlertDialogProvider({ children }: { children: ReactNode }) {
 
     const openAlertDialog = useCallback((options: AlertDialogOptions) => {
         const id = generateId();
+        AlertDialogState.increment();
         setDialogs((prev) => [...prev, { id, open: true, loading: false, options }]);
     }, []);
 
