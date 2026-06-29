@@ -41,7 +41,7 @@ export function QuickTools() {
     return (
         <div
             className={cn(
-                "flex flex-nowrap items-center justify-end gap-0.5 overflow-x-auto sm:flex-wrap sm:justify-end sm:gap-1 sm:overflow-visible",
+                "flex flex-wrap items-center justify-end gap-0.5 sm:gap-1",
             )}
         >
             <Button
