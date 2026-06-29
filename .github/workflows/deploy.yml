@@ -49,4 +49,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=pixi-vn-visual-novel-example
+          projectName: pixi-vn-visual-novel-example
+          directory: dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
