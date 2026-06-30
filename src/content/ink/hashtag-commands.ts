@@ -1,7 +1,7 @@
 import { steam } from "@/lib/steam";
 import { characterIdsEnum } from "@/pixi-vn.keys.gen";
-import { RegisteredCharacters } from "@drincs/pixi-vn";
 import { HashtagCommands } from "@drincs/pixi-vn-ink";
+import { RegisteredCharacters } from "@drincs/pixi-vn/characters";
 import zod from "zod";
 
 HashtagCommands.add(
