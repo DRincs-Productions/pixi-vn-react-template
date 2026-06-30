@@ -1,5 +1,5 @@
-import { RegisteredCharacters } from "@drincs/pixi-vn";
 import { TextReplaces } from "@drincs/pixi-vn-ink";
+import { RegisteredCharacters } from "@drincs/pixi-vn/characters";
 
 TextReplaces.add((key) => RegisteredCharacters.get(key)?.name, {
     name: "character name",
