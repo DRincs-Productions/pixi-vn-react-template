@@ -73,7 +73,9 @@ export const Text = memo(function Text({
 
     const handleCharacterAnimationComplete = useCallback(
         (ref: { current: HTMLSpanElement | null }) => {
-            const container = paragraphRef.current;
+            const container = paragraphRef.current?.querySelector<HTMLElement>(
+                '[data-slot="scroll-area-viewport"]',
+            );
             const char = ref.current;
             if (container && char) {
                 const containerRect = container.getBoundingClientRect();
