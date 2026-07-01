@@ -13,6 +13,7 @@ dist-ssr
 *.local
 .assetpack
 public/assets
+public/ink-json
 
 # Editor directories and files
 .idea

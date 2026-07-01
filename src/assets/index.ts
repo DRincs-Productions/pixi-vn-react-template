@@ -1,7 +1,5 @@
 import generatedManifestJson from "@/assets/manifest.gen.json";
 import { AUDIO_BUNDLE_NAME } from "@/constants";
-import { secondPart } from "@/content/labels/second.label";
-import { startLabel } from "@/content/labels/start.label";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import type { AssetsManifest } from "@drincs/pixi-vn";
 
@@ -37,7 +35,7 @@ export const manifest: AssetsManifest = {
         },
         // labels
         {
-            name: startLabel.id,
+            name: "start",
             assets: [
                 {
                     alias: "bg01-hallway",
@@ -46,7 +44,7 @@ export const manifest: AssetsManifest = {
             ],
         },
         {
-            name: secondPart.id,
+            name: "second_part",
             assets: [
                 {
                     alias: "bg02-dorm",

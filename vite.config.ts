@@ -1,4 +1,5 @@
 import { AssetPack } from "@assetpack/core";
+import { vitePluginInk } from "@drincs/pixi-vn-ink/vite";
 import { vitePluginPixivn } from "@drincs/pixi-vn/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
@@ -36,6 +37,11 @@ export default defineConfig(({ mode }) => ({
             characters: "./src/content/characters.ts",
             labels: "./src/content/labels/*.label.ts",
             typeFilePath: "./src/pixi-vn.keys.gen.ts",
+        }),
+        vitePluginInk({
+            inkGlob: "./ink/**/*.ink",
+            inkJsonOutputPattern: "./public/ink-json/[path][name].gen.json",
+            inkJsonManifestPath: "./src/assets/ink-manifest.gen.json",
         }),
         VitePWA({
             // generate icons with: npm run icon

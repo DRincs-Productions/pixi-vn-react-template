@@ -3,6 +3,7 @@
     "ms-vscode.vscode-typescript-next",
     "anseki.vscode-color",
     "pflannery.vscode-versionlens",
-    "biomejs.biome"
+    "biomejs.biome",
+    "drincs-productions.pixi-vn-ink-vscode"
   ]
 }
