@@ -1,4 +1,3 @@
-import { startLabel } from "@/content/labels/start.label";
 import { useGameProps } from "@/lib/hooks/props-hooks";
 import { Game } from "@drincs/pixi-vn";
 import { createFileRoute } from "@tanstack/react-router";
@@ -14,7 +13,7 @@ function Demo() {
     useEffect(() => {
         setTimeout(async () => {
             props.navigate({ to: "/game/narration" }).then(() => {
-                Game.start(startLabel, props).then(() => {
+                Game.start("start", props).then(() => {
                     props.invalidateInterfaceData();
                 });
             });
