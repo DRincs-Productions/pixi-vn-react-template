@@ -36,8 +36,15 @@ export function HistoryList({ searchString }: { searchString?: string }) {
     const bottomRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (data.length > 0) {
-            bottomRef.current?.scrollIntoView();
+        if (data.length === 0 || !bottomRef.current) return;
+        let parent = bottomRef.current.parentElement;
+        while (parent) {
+            const { overflowY } = window.getComputedStyle(parent);
+            if (overflowY === "auto" || overflowY === "scroll") {
+                parent.scrollTop = parent.scrollHeight;
+                break;
+            }
+            parent = parent.parentElement;
         }
     }, [data]);
 
