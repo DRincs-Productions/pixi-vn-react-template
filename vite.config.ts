@@ -1,4 +1,5 @@
 import { AssetPack } from "@assetpack/core";
+import type { AssetsManifest } from "@drincs/pixi-vn/pixi.js";
 import { vitePluginPixivn } from "@drincs/pixi-vn/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
@@ -38,6 +39,14 @@ export default defineConfig(({ mode }) => ({
             characters: "./src/content/characters.ts",
             labels: "./src/content/labels/*.label.ts",
             typeFilePath: "./src/pixi-vn.keys.gen.ts",
+            assetsManifest: async (ssrLoadModule) => {
+                const mod = (await ssrLoadModule("/src/assets/index.ts")) as {
+                    manifest: AssetsManifest;
+                };
+                if (!mod.manifest)
+                    throw new Error("Assets manifest not found in /src/assets/index.ts");
+                return mod.manifest;
+            },
         }),
         VitePWA({
             // generate icons with: npm run icon
