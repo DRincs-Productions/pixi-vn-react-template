@@ -47,14 +47,14 @@ export function SaveSlot({ saveId }: { saveId: number }) {
     return (
         <AspectRatio
             ratio={16 / 9}
-            className="m-2 overflow-hidden sm:m-4 md:m-2 lg:m-4 cursor-pointer"
+            className="m-2 overflow-hidden sm:m-4 md:m-2 lg:m-4 rounded cursor-pointer"
             onClick={() => handleLoad({ ...saveData, id: saveId })}
         >
             <Image
                 src={saveData.image}
                 layout="fullWidth"
                 alt={saveData.name}
-                className="absolute inset-0 size-full object-contain pointer-events-none select-none"
+                className="absolute inset-0 size-full object-contain pointer-events-none select-none rounded-lg"
             />
             {/* top-left metadata */}
             <div className="absolute top-2.5 left-2.5 flex flex-col gap-0.5 pointer-events-none">
