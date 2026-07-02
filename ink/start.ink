@@ -8,7 +8,7 @@ INCLUDE second_part.ink
 # play sound sfx_whoosh delay 0.1
 # show imagecontainer james [m01-body m01-eyes-smile m01-mouth-neutral01] xAlign 0.5 yAlign 1 with movein direction right ease circInOut type spring
 james: You're my roommate's replacement, huh?
-# play sound sfx_whoosh channel bgm loop true
+# play sound bgm_cheerful channel bgm loop true
 # show imagecontainer james [m01-body m01-eyes-grin m01-mouth-smile01]
 james: Don't worry, you don't have much to live up to. Just don't use heroin like the last guy, and you'll be fine!
 # show imagecontainer james [m01-body m01-eyes-smile m01-mouth-grin00]
