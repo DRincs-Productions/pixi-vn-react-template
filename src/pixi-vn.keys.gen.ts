@@ -18,7 +18,80 @@ declare module "@drincs/pixi-vn/narration" {
         "start_|_c-1": never;
     }
 }
+declare module "@drincs/pixi-vn/canvas" {
+    interface PixivnBundleIds {
+        "default": never;
+        "audio": never;
+        "/": never;
+        "start": never;
+        "second_part": never;
+        "fm01": never;
+        "fm02": never;
+        "m01": never;
+    }
+    interface PixivnAssetAliasIds {
+        "bgm_cheerful": never;
+        "sfx_whoosh": never;
+        "background_main_menu": never;
+        "bg01-hallway": never;
+        "bg02-dorm": never;
+        "fm01-body": never;
+        "fm01-eyes-grin": never;
+        "fm01-eyes-smile": never;
+        "fm01-eyes-soft": never;
+        "fm01-eyes-upset": never;
+        "fm01-eyes-wow": never;
+        "fm01-mouth-grin00": never;
+        "fm01-mouth-serious00": never;
+        "fm01-mouth-serious01": never;
+        "fm01-mouth-smile00": never;
+        "fm01-mouth-smile01": never;
+        "fm01-mouth-soft00": never;
+        "fm01-mouth-soft01": never;
+        "fm01-mouth-upset00": never;
+        "fm01-mouth-upset01": never;
+        "fm01-mouth-wow01": never;
+        "fm02-body": never;
+        "fm02-eyes-bawl": never;
+        "fm02-eyes-joy": never;
+        "fm02-eyes-nervous": never;
+        "fm02-eyes-smile": never;
+        "fm02-eyes-upset": never;
+        "fm02-eyes-wow": never;
+        "fm02-mouth-cry01": never;
+        "fm02-mouth-nervous00": never;
+        "fm02-mouth-nervous01": never;
+        "fm02-mouth-smile00": never;
+        "fm02-mouth-smile01": never;
+        "fm02-mouth-upset00": never;
+        "fm02-mouth-upset01": never;
+        "fm02-mouth-wow01": never;
+        "m01-body": never;
+        "m01-eyes-annoy": never;
+        "m01-eyes-concern": never;
+        "m01-eyes-cry": never;
+        "m01-eyes-grin": never;
+        "m01-eyes-smile": never;
+        "m01-eyes-wow": never;
+        "m01-mouth-annoy00": never;
+        "m01-mouth-annoy01": never;
+        "m01-mouth-concern00": never;
+        "m01-mouth-concern01": never;
+        "m01-mouth-cry00": never;
+        "m01-mouth-cry01": never;
+        "m01-mouth-grin00": never;
+        "m01-mouth-neutral00": never;
+        "m01-mouth-neutral01": never;
+        "m01-mouth-smile00": never;
+        "m01-mouth-smile01": never;
+        "m01-mouth-wow01": never;
+    }
+}
 export const characterIds = ["mc","james","steph","sly"] as const;
 export const characterIdsEnum = {"mc":"mc","james":"james","steph":"steph","sly":"sly"} as const;
 export const labelIds = ["animation_01","second_part","start","start_|_c-0","start_|_c-1"] as const;
 export const labelIdsEnum = {"animation_01":"animation_01","second_part":"second_part","start":"start","start_|_c-0":"start_|_c-0","start_|_c-1":"start_|_c-1"} as const;
+export const bundleIds = ["default","audio","/","start","second_part","fm01","fm02","m01"] as const;
+export const bundleIdsEnum = {"default":"default","audio":"audio","/":"/","start":"start","second_part":"second_part","fm01":"fm01","fm02":"fm02","m01":"m01"} as const;
+export const assetAliasIds = ["bgm_cheerful","sfx_whoosh","background_main_menu","bg01-hallway","bg02-dorm","fm01-body","fm01-eyes-grin","fm01-eyes-smile","fm01-eyes-soft","fm01-eyes-upset","fm01-eyes-wow","fm01-mouth-grin00","fm01-mouth-serious00","fm01-mouth-serious01","fm01-mouth-smile00","fm01-mouth-smile01","fm01-mouth-soft00","fm01-mouth-soft01","fm01-mouth-upset00","fm01-mouth-upset01","fm01-mouth-wow01","fm02-body","fm02-eyes-bawl","fm02-eyes-joy","fm02-eyes-nervous","fm02-eyes-smile","fm02-eyes-upset","fm02-eyes-wow","fm02-mouth-cry01","fm02-mouth-nervous00","fm02-mouth-nervous01","fm02-mouth-smile00","fm02-mouth-smile01","fm02-mouth-upset00","fm02-mouth-upset01","fm02-mouth-wow01","m01-body","m01-eyes-annoy","m01-eyes-concern","m01-eyes-cry","m01-eyes-grin","m01-eyes-smile","m01-eyes-wow","m01-mouth-annoy00","m01-mouth-annoy01","m01-mouth-concern00","m01-mouth-concern01","m01-mouth-cry00","m01-mouth-cry01","m01-mouth-grin00","m01-mouth-neutral00","m01-mouth-neutral01","m01-mouth-smile00","m01-mouth-smile01","m01-mouth-wow01"] as const;
+export const assetAliasIdsEnum = {"bgm_cheerful":"bgm_cheerful","sfx_whoosh":"sfx_whoosh","background_main_menu":"background_main_menu","bg01-hallway":"bg01-hallway","bg02-dorm":"bg02-dorm","fm01-body":"fm01-body","fm01-eyes-grin":"fm01-eyes-grin","fm01-eyes-smile":"fm01-eyes-smile","fm01-eyes-soft":"fm01-eyes-soft","fm01-eyes-upset":"fm01-eyes-upset","fm01-eyes-wow":"fm01-eyes-wow","fm01-mouth-grin00":"fm01-mouth-grin00","fm01-mouth-serious00":"fm01-mouth-serious00","fm01-mouth-serious01":"fm01-mouth-serious01","fm01-mouth-smile00":"fm01-mouth-smile00","fm01-mouth-smile01":"fm01-mouth-smile01","fm01-mouth-soft00":"fm01-mouth-soft00","fm01-mouth-soft01":"fm01-mouth-soft01","fm01-mouth-upset00":"fm01-mouth-upset00","fm01-mouth-upset01":"fm01-mouth-upset01","fm01-mouth-wow01":"fm01-mouth-wow01","fm02-body":"fm02-body","fm02-eyes-bawl":"fm02-eyes-bawl","fm02-eyes-joy":"fm02-eyes-joy","fm02-eyes-nervous":"fm02-eyes-nervous","fm02-eyes-smile":"fm02-eyes-smile","fm02-eyes-upset":"fm02-eyes-upset","fm02-eyes-wow":"fm02-eyes-wow","fm02-mouth-cry01":"fm02-mouth-cry01","fm02-mouth-nervous00":"fm02-mouth-nervous00","fm02-mouth-nervous01":"fm02-mouth-nervous01","fm02-mouth-smile00":"fm02-mouth-smile00","fm02-mouth-smile01":"fm02-mouth-smile01","fm02-mouth-upset00":"fm02-mouth-upset00","fm02-mouth-upset01":"fm02-mouth-upset01","fm02-mouth-wow01":"fm02-mouth-wow01","m01-body":"m01-body","m01-eyes-annoy":"m01-eyes-annoy","m01-eyes-concern":"m01-eyes-concern","m01-eyes-cry":"m01-eyes-cry","m01-eyes-grin":"m01-eyes-grin","m01-eyes-smile":"m01-eyes-smile","m01-eyes-wow":"m01-eyes-wow","m01-mouth-annoy00":"m01-mouth-annoy00","m01-mouth-annoy01":"m01-mouth-annoy01","m01-mouth-concern00":"m01-mouth-concern00","m01-mouth-concern01":"m01-mouth-concern01","m01-mouth-cry00":"m01-mouth-cry00","m01-mouth-cry01":"m01-mouth-cry01","m01-mouth-grin00":"m01-mouth-grin00","m01-mouth-neutral00":"m01-mouth-neutral00","m01-mouth-neutral01":"m01-mouth-neutral01","m01-mouth-smile00":"m01-mouth-smile00","m01-mouth-smile01":"m01-mouth-smile01","m01-mouth-wow01":"m01-mouth-wow01"} as const;
