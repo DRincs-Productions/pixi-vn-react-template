@@ -22,7 +22,7 @@ export function SaveSlot({ saveId }: { saveId: number }) {
 
     if (isLoading) {
         return (
-            <AspectRatio ratio={16 / 9} className="m-2 sm:m-4 md:m-2 lg:m-4">
+            <AspectRatio ratio={16 / 9} className="m-2 sm:m-4 md:m-2 lg:m-4 rounded">
                 <Skeleton className="absolute inset-0" />
             </AspectRatio>
         );
@@ -30,7 +30,7 @@ export function SaveSlot({ saveId }: { saveId: number }) {
 
     if (!saveData || isError) {
         return (
-            <AspectRatio ratio={16 / 9} className="m-2 sm:m-4 md:m-2 lg:m-4">
+            <AspectRatio ratio={16 / 9} className="m-2 sm:m-4 md:m-2 lg:m-4 rounded">
                 <Button
                     variant="ghost"
                     className="absolute inset-0 h-full w-full ring-1 ring-border"
@@ -54,7 +54,7 @@ export function SaveSlot({ saveId }: { saveId: number }) {
                 src={saveData.image}
                 layout="fullWidth"
                 alt={saveData.name}
-                className="absolute inset-0 size-full object-contain rounded-lg pointer-events-none select-none"
+                className="absolute inset-0 size-full object-contain pointer-events-none select-none"
             />
             {/* top-left metadata */}
             <div className="absolute top-2.5 left-2.5 flex flex-col gap-0.5 pointer-events-none">
