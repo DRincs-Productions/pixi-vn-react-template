@@ -1,7 +1,9 @@
-import { characterIdsEnum } from "@/pixi-vn.keys.gen";
-import { HashtagCommands } from "@drincs/pixi-vn-ink";
+import { assetAliasIds, bundleIds, characterIdsEnum } from "@/pixi-vn.keys.gen";
+import { addBaseHashtagCommands, HashtagCommands } from "@drincs/pixi-vn-ink";
 import { RegisteredCharacters } from "@drincs/pixi-vn/characters";
 import zod from "zod";
+
+addBaseHashtagCommands({ bundleIds, assetAliasIds });
 
 HashtagCommands.add(
     async (script, { navigate }) => {
