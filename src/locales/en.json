@@ -40,6 +40,7 @@
     "quick_save_hotkey_description": "Save the current progress immediately.",
     "quick_save_hotkey_alternative_description": "Save the current progress with Ctrl+S.",
     "quick_save_restricted": "Q.Save",
+    "quick_saves": "Quick Saves",
     "return_main_menu": "Return to Main Menu",
     "save": "Save",
     "saving": "Saving…",
