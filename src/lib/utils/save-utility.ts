@@ -12,6 +12,40 @@ import { canvas, Game } from "@drincs/pixi-vn";
 const SAVE_FILE_EXTENSION = "json";
 const REFRESH_SAVE_LOCAL_STORAGE_KEY = "refresh_save";
 
+/**
+ * Quick saves live in a fixed, reserved range of negative ids (`-2`, `-3`, ...) so they
+ * never collide with the auto-incrementing ids used by manual saves (`0`, `1`, ...) or
+ * with the `-1` id reserved for the "refresh save" (see {@link getLastSaveFromIndexDB}).
+ */
+const QUICK_SAVE_ID_START = -2;
+/** Number of quick-save slots. */
+const QUICK_SAVE_SLOTS = 6;
+
+function getQuickSaveId(slotIndex: number): number {
+    return QUICK_SAVE_ID_START - slotIndex;
+}
+
+export function getQuickSaveIds(): number[] {
+    return Array.from({ length: QUICK_SAVE_SLOTS }, (_, index) => getQuickSaveId(index));
+}
+
+export function isQuickSaveId(id: number): boolean {
+    return id <= QUICK_SAVE_ID_START;
+}
+
+/** 1-based slot number for a quick-save id, for display purposes. */
+export function getQuickSaveSlotNumber(id: number): number {
+    return QUICK_SAVE_ID_START - id + 1;
+}
+
+/** Human-readable label for a save slot, e.g. "File 01" or "Quick Save 2". */
+export function getSaveSlotLabel(id: number, t: (key: string) => string): string {
+    if (isQuickSaveId(id)) {
+        return `${t("quick_save")} ${getQuickSaveSlotNumber(id)}`;
+    }
+    return `${t("save_slot")} ${String(id + 1).padStart(2, "0")}`;
+}
+
 export function createGameSave(options?: { image?: string; name?: string }): GameSaveData {
     const { image, name = "" } = options || {};
     return {
@@ -52,6 +86,29 @@ export async function saveGameToIndexDB(
         return item as GameSaveData & { id: number };
     }
     return (await getLastSaveFromIndexDB()) as GameSaveData & { id: number };
+}
+
+/**
+ * Saves into the dedicated quick-save slots (see {@link getQuickSaveIds}). Fills the first
+ * empty slot; once all slots are full, overwrites the least recently saved one.
+ */
+export async function quickSaveGameToIndexDB(): Promise<GameSaveData & { id: number }> {
+    const ids = getQuickSaveIds();
+    const slots = await Promise.all(ids.map((id) => getSaveFromIndexDB(id)));
+
+    let targetIndex = slots.findIndex((slot) => !slot);
+    if (targetIndex === -1) {
+        targetIndex = 0;
+        for (let index = 1; index < slots.length; index++) {
+            const slot = slots[index];
+            const oldest = slots[targetIndex];
+            if (slot && oldest && new Date(slot.date) < new Date(oldest.date)) {
+                targetIndex = index;
+            }
+        }
+    }
+
+    return saveGameToIndexDB({ id: ids[targetIndex] });
 }
 
 export async function getSaveFromIndexDB(

@@ -15,7 +15,7 @@ import { AutoSettings } from "@/lib/stores/auto-settings-store";
 import { GameStatus } from "@/lib/stores/game-status-store";
 import { SkipSettings } from "@/lib/stores/skip-settings-store";
 import { cn } from "@/lib/utils";
-import { loadSave, saveGameToIndexDB } from "@/lib/utils/save-utility";
+import { getSaveSlotLabel, loadSave, quickSaveGameToIndexDB } from "@/lib/utils/save-utility";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
@@ -39,11 +39,7 @@ export function QuickTools() {
     const setSettingsTab = useSetSearchParamState<string>("settings_tab");
 
     return (
-        <div
-            className={cn(
-                "flex flex-wrap items-center justify-end gap-0.5 sm:gap-1",
-            )}
-        >
+        <div className={cn("flex flex-wrap items-center justify-end gap-0.5 sm:gap-1")}>
             <Button
                 variant="ghost"
                 size="xs"
@@ -104,7 +100,7 @@ export function QuickTools() {
                 size="xs"
                 className="h-5 px-1 text-[10px] sm:h-6 sm:px-2 sm:text-xs"
                 onClick={() => {
-                    const savePromise = saveGameToIndexDB().then((save) => {
+                    const savePromise = quickSaveGameToIndexDB().then((save) => {
                         queryClient.setQueryData([SAVES_USE_QUERY_KEY, save.id], save);
                         queryClient.setQueryData([LAST_SAVE_USE_QUERY_KEY], save);
                     });
@@ -126,7 +122,7 @@ export function QuickTools() {
                     openAlertDialog({
                         head: t("load"),
                         content: t("you_sure_to_load_save", {
-                            name: lastSave.name || `${t("save_slot")} ${lastSave.id}`,
+                            name: lastSave.name || getSaveSlotLabel(lastSave.id, t),
                         }),
                         onConfirm: () =>
                             loadSave(lastSave)
