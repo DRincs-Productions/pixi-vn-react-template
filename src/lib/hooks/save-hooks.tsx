@@ -6,6 +6,7 @@ import { LAST_SAVE_USE_QUERY_KEY, SAVES_USE_QUERY_KEY } from "@/lib/query/save-q
 import {
     addRefreshSave,
     deleteSaveFromIndexDB,
+    getSaveSlotLabel,
     loadSave,
     saveGameToIndexDB,
 } from "@/lib/utils/save-utility";
@@ -31,7 +32,7 @@ export function useSaveActions() {
             openAlertDialog({
                 head: t("load"),
                 content: t("you_sure_to_load_save", {
-                    name: data.name || `${t("save_slot")} ${String(data.id + 1).padStart(2, "0")}`,
+                    name: data.name || getSaveSlotLabel(data.id, t),
                 }),
                 onConfirm: () =>
                     loadSave(data)
@@ -57,7 +58,7 @@ export function useSaveActions() {
             openAlertDialog({
                 head: t("delete"),
                 content: t("you_sure_to_delete_save", {
-                    name: `${t("save_slot")} ${String(id + 1).padStart(2, "0")}`,
+                    name: getSaveSlotLabel(id, t),
                 }),
                 onConfirm: () =>
                     deleteSaveFromIndexDB(id)

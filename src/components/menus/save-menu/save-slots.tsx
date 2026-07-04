@@ -6,7 +6,7 @@ import { overlayTextShadowClass } from "@/constants";
 import { useSaveActions } from "@/lib/hooks/save-hooks";
 import { useQuerySaves } from "@/lib/query/save-query";
 import { cn } from "@/lib/utils";
-import { downloadGameSave } from "@/lib/utils/save-utility";
+import { downloadGameSave, getSaveSlotLabel } from "@/lib/utils/save-utility";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import { useLocation } from "@tanstack/react-router";
 import { Download, Save, SquarePen, Trash2 } from "lucide-react";
@@ -54,7 +54,7 @@ export function SaveSlot({ saveId }: { saveId: number }) {
                 src={saveData.image}
                 layout="fullWidth"
                 alt={saveData.name}
-                className="absolute inset-0 size-full object-contain pointer-events-none select-none rounded-lg"
+                className="absolute inset-0 size-full object-contain pointer-events-none select-none rounded-md"
             />
             {/* top-left metadata */}
             <div className="absolute top-2.5 left-2.5 flex flex-col gap-0.5 pointer-events-none">
@@ -73,7 +73,7 @@ export function SaveSlot({ saveId }: { saveId: number }) {
                     {saveData.date.toLocaleTimeString()}
                 </span>
                 <span className={cn("text-sm text-neutral-300", overlayTextShadowClass)}>
-                    {`${t("save_slot")} ${String(saveId + 1).padStart(2, "0")}`}
+                    {getSaveSlotLabel(saveId, t)}
                 </span>
             </div>
             {/* top-right delete */}
