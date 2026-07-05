@@ -3,6 +3,9 @@ import { path } from "@assetpack/core";
 import { pixiPipes } from "@assetpack/core/pixi";
 import fs from "node:fs/promises";
 
+// TAURI_ENV_TARGET_TRIPLE is set by `tauri build` before running beforeBuildCommand
+const isTauri = !!process.env.TAURI_ENV_TARGET_TRIPLE;
+
 const manifestOutput = "src/assets/manifest.gen.json";
 
 /**
@@ -78,9 +81,6 @@ function normalizeAliases(options: { output: string }): AssetPipe<{ output: stri
         },
     };
 }
-
-// TAURI_ENV_TARGET_TRIPLE is set by `tauri build` before running beforeBuildCommand
-const isTauri = !!process.env.TAURI_ENV_TARGET_TRIPLE;
 
 const config: AssetPackConfig = {
     entry: "./src/assets",
