@@ -17,7 +17,7 @@ import assetPackConfig from "./.assetpack.ts";
  *   "cdn.jsdelivr.net"
  *   "your.cdn.domain.com"
  */
-const CACHED_EXTERNAL_HOSTNAMES: string[] = ["raw.githubusercontent.com"];
+const CACHED_EXTERNAL_HOSTNAMES: string[] = ["raw.githubusercontent.com", "pixi-vn.com"];
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -84,10 +84,13 @@ export default defineConfig(({ mode }) => ({
                         options: {
                             cacheName: "external-assets-v1",
                             cacheableResponse: {
-                                statuses: [0, 200],
+                                statuses: [200],
                             },
                             expiration: {
                                 maxAgeSeconds: 7 * 24 * 60 * 60,
+                            },
+                            fetchOptions: {
+                                cache: "no-store",
                             },
                         },
                     },
