@@ -17,11 +17,11 @@ export const manifest: AssetsManifest = {
             assets: [
                 {
                     alias: "bgm_cheerful",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/audio/bgm_cheerful.wav",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/audio/bgm_cheerful.wav",
                 },
                 {
                     alias: "sfx_whoosh",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/audio/sfx_whoosh.wav",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/audio/sfx_whoosh.wav",
                 },
             ],
         },
@@ -31,7 +31,7 @@ export const manifest: AssetsManifest = {
             assets: [
                 {
                     alias: "background_main_menu",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/main-menu.png",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/main-menu.png",
                 },
             ],
         },
@@ -41,7 +41,7 @@ export const manifest: AssetsManifest = {
             assets: [
                 {
                     alias: "bg01-hallway",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/bg01-hallway.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/bg01-hallway.webp",
                 },
             ],
         },
@@ -50,7 +50,7 @@ export const manifest: AssetsManifest = {
             assets: [
                 {
                     alias: "bg02-dorm",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/bg02-dorm.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/bg02-dorm.webp",
                 },
             ],
         },
@@ -60,67 +60,67 @@ export const manifest: AssetsManifest = {
             assets: [
                 {
                     alias: "fm01-body",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-body.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm01/fm01-body.webp",
                 },
                 {
                     alias: "fm01-eyes-grin",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-eyes-grin.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm01/fm01-eyes-grin.webp",
                 },
                 {
                     alias: "fm01-eyes-smile",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-eyes-smile.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm01/fm01-eyes-smile.webp",
                 },
                 {
                     alias: "fm01-eyes-soft",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-eyes-soft.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm01/fm01-eyes-soft.webp",
                 },
                 {
                     alias: "fm01-eyes-upset",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-eyes-upset.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm01/fm01-eyes-upset.webp",
                 },
                 {
                     alias: "fm01-eyes-wow",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-eyes-wow.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm01/fm01-eyes-wow.webp",
                 },
                 {
                     alias: "fm01-mouth-grin00",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-grin00.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm01/fm01-mouth-grin00.webp",
                 },
                 {
                     alias: "fm01-mouth-serious00",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-serious00.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm01/fm01-mouth-serious00.webp",
                 },
                 {
                     alias: "fm01-mouth-serious01",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-serious01.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm01/fm01-mouth-serious01.webp",
                 },
                 {
                     alias: "fm01-mouth-smile00",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-smile00.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm01/fm01-mouth-smile00.webp",
                 },
                 {
                     alias: "fm01-mouth-smile01",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-smile01.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm01/fm01-mouth-smile01.webp",
                 },
                 {
                     alias: "fm01-mouth-soft00",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-soft00.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm01/fm01-mouth-soft00.webp",
                 },
                 {
                     alias: "fm01-mouth-soft01",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-soft01.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm01/fm01-mouth-soft01.webp",
                 },
                 {
                     alias: "fm01-mouth-upset00",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-upset00.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm01/fm01-mouth-upset00.webp",
                 },
                 {
                     alias: "fm01-mouth-upset01",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-upset01.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm01/fm01-mouth-upset01.webp",
                 },
                 {
                     alias: "fm01-mouth-wow01",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm01/fm01-mouth-wow01.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm01/fm01-mouth-wow01.webp",
                 },
             ],
         },
@@ -129,63 +129,63 @@ export const manifest: AssetsManifest = {
             assets: [
                 {
                     alias: "fm02-body",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm02/fm02-body.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm02/fm02-body.webp",
                 },
                 {
                     alias: "fm02-eyes-bawl",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm02/fm02-eyes-bawl.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm02/fm02-eyes-bawl.webp",
                 },
                 {
                     alias: "fm02-eyes-joy",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm02/fm02-eyes-joy.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm02/fm02-eyes-joy.webp",
                 },
                 {
                     alias: "fm02-eyes-nervous",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm02/fm02-eyes-nervous.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm02/fm02-eyes-nervous.webp",
                 },
                 {
                     alias: "fm02-eyes-smile",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm02/fm02-eyes-smile.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm02/fm02-eyes-smile.webp",
                 },
                 {
                     alias: "fm02-eyes-upset",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm02/fm02-eyes-upset.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm02/fm02-eyes-upset.webp",
                 },
                 {
                     alias: "fm02-eyes-wow",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm02/fm02-eyes-wow.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm02/fm02-eyes-wow.webp",
                 },
                 {
                     alias: "fm02-mouth-cry01",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm02/fm02-mouth-cry01.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm02/fm02-mouth-cry01.webp",
                 },
                 {
                     alias: "fm02-mouth-nervous00",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm02/fm02-mouth-nervous00.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm02/fm02-mouth-nervous00.webp",
                 },
                 {
                     alias: "fm02-mouth-nervous01",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm02/fm02-mouth-nervous01.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm02/fm02-mouth-nervous01.webp",
                 },
                 {
                     alias: "fm02-mouth-smile00",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm02/fm02-mouth-smile00.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm02/fm02-mouth-smile00.webp",
                 },
                 {
                     alias: "fm02-mouth-smile01",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm02/fm02-mouth-smile01.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm02/fm02-mouth-smile01.webp",
                 },
                 {
                     alias: "fm02-mouth-upset00",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm02/fm02-mouth-upset00.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm02/fm02-mouth-upset00.webp",
                 },
                 {
                     alias: "fm02-mouth-upset01",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm02/fm02-mouth-upset01.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm02/fm02-mouth-upset01.webp",
                 },
                 {
                     alias: "fm02-mouth-wow01",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/fm02/fm02-mouth-wow01.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/fm02/fm02-mouth-wow01.webp",
                 },
             ],
         },
@@ -194,79 +194,79 @@ export const manifest: AssetsManifest = {
             assets: [
                 {
                     alias: "m01-body",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-body.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-body.webp",
                 },
                 {
                     alias: "m01-eyes-annoy",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-eyes-annoy.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-eyes-annoy.webp",
                 },
                 {
                     alias: "m01-eyes-concern",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-eyes-concern.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-eyes-concern.webp",
                 },
                 {
                     alias: "m01-eyes-cry",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-eyes-cry.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-eyes-cry.webp",
                 },
                 {
                     alias: "m01-eyes-grin",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-eyes-grin.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-eyes-grin.webp",
                 },
                 {
                     alias: "m01-eyes-smile",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-eyes-smile.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-eyes-smile.webp",
                 },
                 {
                     alias: "m01-eyes-wow",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-eyes-wow.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-eyes-wow.webp",
                 },
                 {
                     alias: "m01-mouth-annoy00",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-mouth-annoy00.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-mouth-annoy00.webp",
                 },
                 {
                     alias: "m01-mouth-annoy01",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-mouth-annoy01.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-mouth-annoy01.webp",
                 },
                 {
                     alias: "m01-mouth-concern00",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-mouth-concern00.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-mouth-concern00.webp",
                 },
                 {
                     alias: "m01-mouth-concern01",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-mouth-concern01.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-mouth-concern01.webp",
                 },
                 {
                     alias: "m01-mouth-cry00",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-mouth-cry00.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-mouth-cry00.webp",
                 },
                 {
                     alias: "m01-mouth-cry01",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-mouth-cry01.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-mouth-cry01.webp",
                 },
                 {
                     alias: "m01-mouth-grin00",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-mouth-grin00.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-mouth-grin00.webp",
                 },
                 {
                     alias: "m01-mouth-neutral00",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-mouth-neutral00.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-mouth-neutral00.webp",
                 },
                 {
                     alias: "m01-mouth-neutral01",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-mouth-neutral01.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-mouth-neutral01.webp",
                 },
                 {
                     alias: "m01-mouth-smile00",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-mouth-smile00.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-mouth-smile00.webp",
                 },
                 {
                     alias: "m01-mouth-smile01",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-mouth-smile01.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-mouth-smile01.webp",
                 },
                 {
                     alias: "m01-mouth-wow01",
-                    src: "https://raw.githubusercontent.com/DRincs-Productions/pixi-vn-bucket/refs/heads/main/breakdown/m01/m01-mouth-wow01.webp",
+                    src: "https://pub-72ff059a2c6642fb9eab15df80fb3b45.r2.dev/breakdown/m01/m01-mouth-wow01.webp",
                 },
             ],
         },
