@@ -1,4 +1,3 @@
--> start
 INCLUDE second_part.ink
 
 === start ===
