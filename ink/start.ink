@@ -1,3 +1,4 @@
+-> start
 === start ===
 # lazyload bundle m01 fm01 fm02
 
