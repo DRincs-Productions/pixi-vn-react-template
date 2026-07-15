@@ -206,7 +206,7 @@ steph: Oh! You gotta take in your luggage!
 # remove image steph with moveout direction left ease easeInOut duration 0.5 delay 0.1
 
 You want continue to the next part?<># continue
-* Yes, I want to continue
+* [Yes, I want to continue]
 -> second_part
-* No, I want to stop here
+* [No, I want to stop here]
 -> END
