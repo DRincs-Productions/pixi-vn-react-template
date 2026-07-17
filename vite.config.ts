@@ -90,10 +90,13 @@ export default defineConfig(({ mode }) => ({
                         options: {
                             cacheName: "external-assets-v1",
                             cacheableResponse: {
-                                statuses: [0, 200],
+                                statuses: [200],
                             },
                             expiration: {
                                 maxAgeSeconds: 7 * 24 * 60 * 60,
+                            },
+                            fetchOptions: {
+                                cache: "no-store",
                             },
                         },
                     },
