@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
 import { Game } from "@drincs/pixi-vn";
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { Gamepad2Icon, HistoryIcon, LogOutIcon, SaveIcon } from "lucide-react";
+import { Gamepad2Icon, HistoryIcon, LogOutIcon, SaveIcon, StethoscopeIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export function QuickMenus() {
@@ -18,6 +18,7 @@ export function QuickMenus() {
                 {isInGame && <OpenHistorySettingButton />}
                 <SaveLoadMenuButton />
                 <OpenControlsListSettingButton />
+                <OpenDiagnosticsSettingButton />
             </div>
             {isInGame && <Separator />}
             {isInGame && <ReturnMainMenuButton />}
@@ -44,6 +45,29 @@ export function OpenControlsListSettingButton() {
             <KbdGroup className="ml-auto">
                 <Kbd>Ctrl</Kbd>
                 <Kbd>K</Kbd>
+            </KbdGroup>
+        </Button>
+    );
+}
+
+export function OpenDiagnosticsSettingButton() {
+    const { t } = useTranslation(["ui"]);
+    const setSettingsOpen = useSetSearchParamState<boolean>("settings");
+    const setSettingsTab = useSetSearchParamState<string>("settings_tab");
+
+    return (
+        <Button
+            variant="outline"
+            className="w-full justify-start"
+            onClick={() => {
+                setSettingsOpen(true);
+                setSettingsTab("menus/diagnostics");
+            }}
+        >
+            <StethoscopeIcon />
+            {t("diagnostics")}
+            <KbdGroup className="ml-auto">
+                <Kbd>F8</Kbd>
             </KbdGroup>
         </Button>
     );
