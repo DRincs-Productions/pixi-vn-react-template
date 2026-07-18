@@ -18,12 +18,39 @@ export interface WebglDiagnostics {
     unmaskedRenderer: string | null;
     /** null when it cannot be determined (e.g. WEBGL_debug_renderer_info is blocked). */
     hardwareAccelerated: boolean | null;
+    /** Coarse GPU brand bucket (NVIDIA/AMD/Intel/Apple/Qualcomm/ARM/Imagination/Software/Unknown), including mobile GPU families. */
+    gpuVendorBrand: string;
+    /** Mesa version parsed out of the renderer string, when running on a Linux Mesa driver stack. */
+    mesaVersion: string | null;
     maxTextureSize: number | null;
     floatTexturesSupported: boolean;
     msaaSupported: boolean;
     shadersCompile: boolean;
     keyExtensions: WebglExtensionCheck[];
     allExtensions: string[];
+}
+
+export interface MobileDiagnostics {
+    touchSupported: boolean;
+    maxTouchPoints: number;
+    /** Approximate device RAM in GB. Chromium-only; null elsewhere. */
+    deviceMemoryGb: number | null;
+    /** Coarse connection quality bucket (e.g. "4g", "3g"). Chromium-only; null elsewhere. */
+    networkEffectiveType: string | null;
+    /** e.g. "portrait-primary" / "landscape-primary". */
+    screenOrientation: string | null;
+}
+
+/**
+ * OS/distro and WebView engine details from the native Tauri backend.
+ * `null` when running in a plain browser (browsers deliberately don't expose this).
+ */
+export interface NativeDiagnostics {
+    osType: string;
+    osVersion: string;
+    bitness: string;
+    architecture: string;
+    webviewVersion: string | null;
 }
 
 export interface BrowserCapabilities {
@@ -69,6 +96,27 @@ const KEY_WEBGL_EXTENSIONS = [
 
 const SOFTWARE_RENDERER_PATTERN =
     /swiftshader|llvmpipe|software|microsoft basic render|d3d11 warp|apple software renderer/i;
+
+/**
+ * Coarse GPU brand bucket from the (unmasked) vendor/renderer strings.
+ * Covers mobile GPU families (Adreno/Qualcomm, Mali/ARM, PowerVR/Imagination) too.
+ */
+function classifyGpuVendorBrand(vendorAndRenderer: string): string {
+    if (SOFTWARE_RENDERER_PATTERN.test(vendorAndRenderer)) return "Software (no GPU)";
+    if (/nvidia|geforce|quadro|rtx\s?\d|gtx\s?\d/i.test(vendorAndRenderer)) return "NVIDIA";
+    if (/amd|ati\b|radeon/i.test(vendorAndRenderer)) return "AMD";
+    if (/intel/i.test(vendorAndRenderer)) return "Intel";
+    if (/apple/i.test(vendorAndRenderer)) return "Apple";
+    if (/qualcomm|adreno/i.test(vendorAndRenderer)) return "Qualcomm (Adreno)";
+    if (/arm\b|mali/i.test(vendorAndRenderer)) return "ARM (Mali)";
+    if (/imagination|powervr/i.test(vendorAndRenderer)) return "Imagination (PowerVR)";
+    return "Unknown";
+}
+
+/** Extracts the Mesa driver version from a Linux OpenGL/ANGLE renderer string, when present. */
+function extractMesaVersion(rendererString: string): string | null {
+    return /Mesa\s+([\d.]+)/i.exec(rendererString)?.[1] ?? null;
+}
 
 function testShaderCompilation(gl: WebGLRenderingContext | WebGL2RenderingContext): boolean {
     try {
@@ -128,6 +176,8 @@ export function getWebglDiagnostics(): WebglDiagnostics {
             unmaskedVendor: null,
             unmaskedRenderer: null,
             hardwareAccelerated: null,
+            gpuVendorBrand: "Unknown",
+            mesaVersion: null,
             maxTextureSize: null,
             floatTexturesSupported: false,
             msaaSupported: false,
@@ -150,6 +200,10 @@ export function getWebglDiagnostics(): WebglDiagnostics {
     const hardwareAccelerated = rendererForHeuristic
         ? !SOFTWARE_RENDERER_PATTERN.test(rendererForHeuristic)
         : null;
+    const gpuVendorBrand = classifyGpuVendorBrand(
+        `${unmaskedVendor ?? vendor ?? ""} ${rendererForHeuristic ?? ""}`,
+    );
+    const mesaVersion = rendererForHeuristic ? extractMesaVersion(rendererForHeuristic) : null;
 
     const allExtensions = gl.getSupportedExtensions() ?? [];
     const keyExtensions = KEY_WEBGL_EXTENSIONS.map((name) => ({
@@ -175,6 +229,8 @@ export function getWebglDiagnostics(): WebglDiagnostics {
         unmaskedVendor,
         unmaskedRenderer,
         hardwareAccelerated,
+        gpuVendorBrand,
+        mesaVersion,
         maxTextureSize,
         floatTexturesSupported,
         msaaSupported,
@@ -184,11 +240,23 @@ export function getWebglDiagnostics(): WebglDiagnostics {
     };
 }
 
+interface UserAgentDataBrand {
+    brand: string;
+    version: string;
+}
+
+interface NavigatorUAData {
+    platform?: string;
+    brands?: UserAgentDataBrand[];
+}
+
+function getUserAgentData(): NavigatorUAData | undefined {
+    return (navigator as Navigator & { userAgentData?: NavigatorUAData }).userAgentData;
+}
+
 export function detectPlatform(): string {
     const ua = navigator.userAgent;
-    const uaData = (navigator as Navigator & { userAgentData?: { platform?: string } })
-        .userAgentData;
-    const platformHint = uaData?.platform ?? navigator.platform ?? "";
+    const platformHint = getUserAgentData()?.platform ?? navigator.platform ?? "";
 
     if (/android/i.test(ua)) return "Android";
     if (/iphone|ipod/i.test(ua)) return "iOS";
@@ -203,12 +271,38 @@ export function detectPlatform(): string {
 
 export function detectBrowserEngine(): string {
     const ua = navigator.userAgent;
+    const brands = getUserAgentData()?.brands ?? [];
+
+    // User-Agent Client Hints: WebView2 (Windows) reliably advertises this brand.
+    if (brands.some((brand) => /webview2/i.test(brand.brand))) return "WebView2 (Chromium)";
+    // Chromium's Android WebView appends a distinct "; wv)" token to the UA string.
+    if (/; wv\)/i.test(ua)) return "Android WebView (Chromium)";
+
     if (/edg\//i.test(ua)) return "Chromium (Edge)";
     if (/firefox|fxios/i.test(ua)) return "Gecko (Firefox)";
     if (/crios/i.test(ua)) return "Chromium (Chrome iOS)";
     if (/chrome|chromium/i.test(ua)) return "Chromium";
-    if (/safari/i.test(ua)) return "WebKit (Safari)";
+    if (/safari/i.test(ua)) {
+        // Real desktop/mobile Safari doesn't exist on Linux, so a WebKit UA there is
+        // almost certainly a WebKitGTK-based webview (e.g. Tauri's Linux WebView).
+        return detectPlatform() === "Linux" ? "WebKitGTK (Linux WebView)" : "WebKit (Safari)";
+    }
     return "Unknown";
+}
+
+/** Numeric engine/browser version parsed from the UA string (Chromium/Firefox build, or Safari/WebKit version). */
+export function getEngineVersion(): string | null {
+    const ua = navigator.userAgent;
+    const firefoxMatch = /Firefox\/([\d.]+)/.exec(ua);
+    if (firefoxMatch) return firefoxMatch[1];
+    const chromeMatch = /Chrome\/([\d.]+)/.exec(ua);
+    if (chromeMatch) return chromeMatch[1];
+    // Safari's real version lives in "Version/", not the AppleWebKit build number.
+    const safariVersionMatch = /Version\/([\d.]+)/.exec(ua);
+    if (safariVersionMatch) return safariVersionMatch[1];
+    const webkitMatch = /AppleWebKit\/([\d.]+)/.exec(ua);
+    if (webkitMatch) return webkitMatch[1];
+    return null;
 }
 
 export function getBrowserCapabilities(): BrowserCapabilities {
@@ -237,6 +331,21 @@ export function getBrowserCapabilities(): BrowserCapabilities {
         steamOverlayDetected:
             typeof win.cefQuery === "function" ||
             /Valve Steam|SteamOverlay/i.test(navigator.userAgent),
+    };
+}
+
+export function getMobileDiagnostics(): MobileDiagnostics {
+    const nav = navigator as Navigator & {
+        deviceMemory?: number;
+        connection?: { effectiveType?: string };
+    };
+
+    return {
+        touchSupported: navigator.maxTouchPoints > 0,
+        maxTouchPoints: navigator.maxTouchPoints,
+        deviceMemoryGb: nav.deviceMemory ?? null,
+        networkEffectiveType: nav.connection?.effectiveType ?? null,
+        screenOrientation: window.screen?.orientation?.type ?? null,
     };
 }
 
@@ -297,12 +406,15 @@ function formatBytes(bytes: number): string {
 export interface DeviceDiagnosticsSnapshot {
     webgl: WebglDiagnostics;
     capabilities: BrowserCapabilities;
+    mobile: MobileDiagnostics;
+    native: NativeDiagnostics | null;
     resolution: ResolutionInfo;
     memory: JsMemoryInfo | null;
     fps: number | null;
     userAgent: string;
     platform: string;
     browserEngine: string;
+    engineVersion: string | null;
     gameVersion: string;
     pixiJsVersion: string;
     pixiVnVersion: string;
@@ -311,7 +423,7 @@ export interface DeviceDiagnosticsSnapshot {
 }
 
 export function buildDiagnosticsReportText(snapshot: DeviceDiagnosticsSnapshot): string {
-    const { webgl, capabilities, resolution, memory, fps } = snapshot;
+    const { webgl, capabilities, mobile, native, resolution, memory, fps } = snapshot;
     const yn = (value: boolean | null) => (value === null ? "Unknown" : value ? "Yes" : "No");
 
     const lines = [
@@ -324,6 +436,15 @@ export function buildDiagnosticsReportText(snapshot: DeviceDiagnosticsSnapshot):
         `User Agent: ${snapshot.userAgent}`,
         `Platform: ${snapshot.platform}`,
         `Browser/WebView: ${snapshot.browserEngine}`,
+        `Engine version: ${snapshot.engineVersion ?? "Unknown"}`,
+        "",
+        "-- Native / OS (Tauri only) --",
+        native
+            ? [
+                  `OS: ${native.osType} ${native.osVersion} (${native.bitness}, ${native.architecture})`,
+                  `WebView engine version: ${native.webviewVersion ?? "Unknown"}`,
+              ].join("\n")
+            : "Not available (running in a standard browser)",
         "",
         "-- Graphics --",
         `WebGL1 available: ${yn(webgl.webgl1Supported)}`,
@@ -331,6 +452,8 @@ export function buildDiagnosticsReportText(snapshot: DeviceDiagnosticsSnapshot):
         `Hardware acceleration: ${yn(webgl.hardwareAccelerated)}`,
         `GPU vendor: ${webgl.unmaskedVendor ?? webgl.vendor ?? "Unknown"}`,
         `GPU renderer: ${webgl.unmaskedRenderer ?? webgl.renderer ?? "Unknown"}`,
+        `GPU brand: ${webgl.gpuVendorBrand}`,
+        `Mesa driver version: ${webgl.mesaVersion ?? "Not detected"}`,
         `Max texture size: ${webgl.maxTextureSize ?? "Unknown"}`,
         `Float textures: ${yn(webgl.floatTexturesSupported)}`,
         `MSAA: ${yn(webgl.msaaSupported)}`,
@@ -349,6 +472,12 @@ export function buildDiagnosticsReportText(snapshot: DeviceDiagnosticsSnapshot):
         memory
             ? `JS heap: ${formatBytes(memory.usedJSHeapSize)} / ${formatBytes(memory.totalJSHeapSize)} (limit ${formatBytes(memory.jsHeapSizeLimit)})`
             : "JS heap: Not available in this browser",
+        "",
+        "-- Mobile & sensors --",
+        `Touch support: ${yn(mobile.touchSupported)} (${mobile.maxTouchPoints} points)`,
+        `Device memory: ${mobile.deviceMemoryGb !== null ? `${mobile.deviceMemoryGb} GB` : "Not available"}`,
+        `Network type: ${mobile.networkEffectiveType ?? "Not available"}`,
+        `Screen orientation: ${mobile.screenOrientation ?? "Unknown"}`,
         "",
         "-- Browser capabilities --",
         `Audio (Web Audio API): ${yn(capabilities.audio)}`,
