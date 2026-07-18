@@ -1,6 +1,7 @@
 import { About } from "@/components/menus/settings/about";
 import { DialoguesControls } from "@/components/menus/settings/dialogues-controls";
 import { ControlsListSettingsPage } from "@/components/menus/settings/menus/controls";
+import { DiagnosticsSettingsPage } from "@/components/menus/settings/menus/diagnostics";
 import { HistoryListSettingsPage } from "@/components/menus/settings/menus/history";
 import { SaveLoadSettingsPage } from "@/components/menus/settings/menus/save-load";
 import { QuickMenus } from "@/components/menus/settings/quick-menus";
@@ -23,7 +24,7 @@ import { ArrowLeftIcon } from "lucide-react";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 
-type SettingsTabPath = "menus/controls" | "menus/history" | "menus/save-load";
+type SettingsTabPath = "menus/controls" | "menus/history" | "menus/save-load" | "menus/diagnostics";
 
 type BreadcrumbEntry = {
     id: string;
@@ -38,7 +39,8 @@ export function Settings() {
     const normalizedTab: SettingsTabPath | undefined =
         currentTab === "menus/controls" ||
         currentTab === "menus/history" ||
-        currentTab === "menus/save-load"
+        currentTab === "menus/save-load" ||
+        currentTab === "menus/diagnostics"
             ? (currentTab as SettingsTabPath)
             : undefined;
 
@@ -55,7 +57,8 @@ export function Settings() {
         if (
             normalizedTab === "menus/controls" ||
             normalizedTab === "menus/history" ||
-            normalizedTab === "menus/save-load"
+            normalizedTab === "menus/save-load" ||
+            normalizedTab === "menus/diagnostics"
         ) {
             trail.push({ id: "menus", label: t("menus") });
             trail.push({
@@ -64,13 +67,17 @@ export function Settings() {
                         ? "menus-controls"
                         : normalizedTab === "menus/history"
                           ? "menus-history"
-                          : "menus-save-load",
+                          : normalizedTab === "menus/save-load"
+                            ? "menus-save-load"
+                            : "menus-diagnostics",
                 label:
                     normalizedTab === "menus/controls"
                         ? t("hotkeys_menu")
                         : normalizedTab === "menus/history"
                           ? t("history")
-                          : `${t("save")}/${t("load")}`,
+                          : normalizedTab === "menus/save-load"
+                            ? `${t("save")}/${t("load")}`
+                            : t("diagnostics"),
             });
         }
         return trail;
@@ -112,7 +119,8 @@ export function Settings() {
     if (
         normalizedTab === "menus/controls" ||
         normalizedTab === "menus/history" ||
-        normalizedTab === "menus/save-load"
+        normalizedTab === "menus/save-load" ||
+        normalizedTab === "menus/diagnostics"
     ) {
         return (
             <>
@@ -130,6 +138,7 @@ export function Settings() {
                 {normalizedTab === "menus/controls" ? <ControlsListSettingsPage /> : null}
                 {normalizedTab === "menus/history" ? <HistoryListSettingsPage /> : null}
                 {normalizedTab === "menus/save-load" ? <SaveLoadSettingsPage /> : null}
+                {normalizedTab === "menus/diagnostics" ? <DiagnosticsSettingsPage /> : null}
             </>
         );
     }
