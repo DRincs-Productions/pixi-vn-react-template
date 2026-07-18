@@ -5,6 +5,7 @@ use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 // Steam is only compiled on desktop targets when the "steam" feature is on.
 #[cfg(all(feature = "steam", not(target_os = "ios"), not(target_os = "android")))]
 mod steam;
+mod system_info;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -24,27 +25,38 @@ pub fn run() {
     // is set in Cargo.toml). Steam is not supported on iOS / Android.
     #[cfg(all(feature = "steam", not(target_os = "ios"), not(target_os = "android")))]
     {
-        builder = builder
-            .manage(steam::SteamClient {
-                client: std::sync::Mutex::new(steam::try_init()),
-            })
-            .invoke_handler(tauri::generate_handler![
-                steam::steam_is_available,
-                steam::steam_get_player_name,
-                steam::steam_get_app_id,
-                steam::steam_unlock_achievement,
-                steam::steam_is_achievement_unlocked,
-                steam::steam_clear_achievement,
-                steam::steam_set_stat_int,
-                steam::steam_get_stat_int,
-                steam::steam_set_stat_float,
-                steam::steam_get_stat_float,
-                steam::steam_store_stats,
-                steam::steam_is_dlc_installed,
-                steam::steam_open_overlay,
-                steam::steam_open_store,
-            ]);
+        builder = builder.manage(steam::SteamClient {
+            client: std::sync::Mutex::new(steam::try_init()),
+        });
     }
+
+    // `generate_handler!` needs a static list, so the Steam commands can't be
+    // appended conditionally — the two variants below are kept in sync by hand.
+    #[cfg(all(feature = "steam", not(target_os = "ios"), not(target_os = "android")))]
+    let builder = builder.invoke_handler(tauri::generate_handler![
+        system_info::get_system_info,
+        system_info::get_webview_version,
+        steam::steam_is_available,
+        steam::steam_get_player_name,
+        steam::steam_get_app_id,
+        steam::steam_unlock_achievement,
+        steam::steam_is_achievement_unlocked,
+        steam::steam_clear_achievement,
+        steam::steam_set_stat_int,
+        steam::steam_get_stat_int,
+        steam::steam_set_stat_float,
+        steam::steam_get_stat_float,
+        steam::steam_store_stats,
+        steam::steam_is_dlc_installed,
+        steam::steam_open_overlay,
+        steam::steam_open_store,
+    ]);
+
+    #[cfg(not(all(feature = "steam", not(target_os = "ios"), not(target_os = "android"))))]
+    let builder = builder.invoke_handler(tauri::generate_handler![
+        system_info::get_system_info,
+        system_info::get_webview_version,
+    ]);
 
     builder
         .run(tauri::generate_context!())
