@@ -26,7 +26,7 @@
       "cwd": "${workspaceFolder}",
       "terminal": "console",
       "preLaunchTask": "Cargo Build (Desktop Dev)",
-      "postDebugTask": "Stop Vite Desktop Server"
+      "postDebugTask": "Stop Vite Dev Server"
     },
     {
       "name": "Debug Game Preview",
