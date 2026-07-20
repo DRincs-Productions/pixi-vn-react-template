@@ -100,26 +100,89 @@ jobs:
           with open(manifest, 'w') as f:
               f.write(content)
 
-          # Tauri may generate styles.xml or themes.xml depending on the version
+          # Tauri may generate styles.xml or themes.xml, and both a light (values/)
+          # and dark (values-night/) variant — patch every variant we find so the
+          # fullscreen flag doesn't silently no-op when the device is in dark mode.
           styles_candidates = (
-              glob.glob('src-tauri/gen/android/app/src/main/res/values/styles.xml') +
-              glob.glob('src-tauri/gen/android/app/src/main/res/values/themes.xml')
+              glob.glob('src-tauri/gen/android/app/src/main/res/values*/styles.xml') +
+              glob.glob('src-tauri/gen/android/app/src/main/res/values*/themes.xml')
           )
           if not styles_candidates:
               print('Warning: no styles.xml/themes.xml found, skipping fullscreen patch')
           else:
-              styles = styles_candidates[0]
-              with open(styles) as f:
+              for styles in styles_candidates:
+                  with open(styles) as f:
+                      content = f.read()
+                  # Hide status bar (fullscreen) — kept as a best-effort theme hint,
+                  # but on targetSdk 35+ (edge-to-edge is enforced by the OS) this
+                  # alone has no effect; the real fix is the MainActivity.kt patch below.
+                  content = content.replace(
+                      '</style>',
+                      '    <item name="android:windowFullscreen">true</item>\n    </style>',
+                      1
+                  )
+                  with open(styles, 'w') as f:
+                      f.write(content)
+                  print(f'Patched {styles}')
+
+          # Since this project's Android template targets SDK 35+, edge-to-edge display
+          # is enforced by the OS and the theme-based windowFullscreen flag above no
+          # longer hides the status bar (it's always drawn, transparent, over the
+          # content). The only reliable way to hide it is to hide the system bars at
+          # runtime via WindowInsetsControllerCompat in MainActivity.kt.
+          activity_candidates = glob.glob(
+              'src-tauri/gen/android/app/src/main/**/MainActivity.kt', recursive=True
+          )
+          if not activity_candidates:
+              print('WARNING: MainActivity.kt not found — status bar hiding NOT patched')
+          else:
+              activity = activity_candidates[0]
+              with open(activity) as f:
                   content = f.read()
-              # Hide status bar (fullscreen)
-              content = content.replace(
-                  '</style>',
-                  '    <item name="android:windowFullscreen">true</item>\n    </style>',
-                  1
-              )
-              with open(styles, 'w') as f:
+
+              new_imports = [
+                  'androidx.core.view.WindowCompat',
+                  'androidx.core.view.WindowInsetsCompat',
+                  'androidx.core.view.WindowInsetsControllerCompat',
+              ]
+              import_lines = list(re.finditer(r'^import .+$', content, re.MULTILINE))
+              if import_lines:
+                  insert_at = import_lines[-1].end()
+                  addition = ''.join(
+                      f'\nimport {imp}' for imp in new_imports if imp not in content
+                  )
+                  content = content[:insert_at] + addition + content[insert_at:]
+
+              if 'hideSystemBars' not in content:
+                  content = content.replace(
+                      'super.onCreate(savedInstanceState)',
+                      'super.onCreate(savedInstanceState)\n    hideSystemBars()',
+                      1
+                  )
+                  content = re.sub(
+                      r'\n}\s*$',
+                      '\n\n'
+                      '  override fun onWindowFocusChanged(hasFocus: Boolean) {\n'
+                      '    super.onWindowFocusChanged(hasFocus)\n'
+                      '    if (hasFocus) {\n'
+                      '      hideSystemBars()\n'
+                      '    }\n'
+                      '  }\n'
+                      '\n'
+                      '  private fun hideSystemBars() {\n'
+                      '    WindowCompat.setDecorFitsSystemWindows(window, false)\n'
+                      '    val controller = WindowInsetsControllerCompat(window, window.decorView)\n'
+                      '    controller.hide(WindowInsetsCompat.Type.systemBars())\n'
+                      '    controller.systemBarsBehavior =\n'
+                      '      WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE\n'
+                      '  }\n'
+                      '}\n',
+                      content,
+                      count=1
+                  )
+              with open(activity, 'w') as f:
                   f.write(content)
-              print(f'Patched {styles}')
+              print(f'Patched {activity} (hide system bars at runtime)')
           PYEOF
 
       - name: build Android app
