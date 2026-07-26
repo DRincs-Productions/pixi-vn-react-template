@@ -2,7 +2,7 @@ import { PendingComponent } from "@/components/loading";
 import { SettingsDialogue } from "@/components/menus/settings";
 import { OfflineAllert } from "@/components/modals/error-allerts";
 import { RootProvider } from "@/components/providers/root-provider";
-import { INTERFACE_DATA_USE_QUERY_KEY } from "@/constants";
+import { NARRATION_DATA_USE_QUERY_KEY } from "@/constants";
 import useInkInitialization from "@/lib/hooks/ink-hooks";
 import { useConfirmBackNavigation } from "@/lib/hooks/navigation-hooks";
 import { useAutoSaveOnPageClose } from "@/lib/hooks/save-hooks";
@@ -37,7 +37,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
             const isRefreshSaveExist = await loadRefreshSave();
             if (isRefreshSaveExist) {
                 await context.queryClient.invalidateQueries({
-                    queryKey: [INTERFACE_DATA_USE_QUERY_KEY],
+                    queryKey: [NARRATION_DATA_USE_QUERY_KEY],
                 });
             }
         }
