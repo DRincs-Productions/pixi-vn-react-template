@@ -1,4 +1,4 @@
-import { INTERFACE_DATA_USE_QUERY_KEY } from "@/constants";
+import { NARRATION_DATA_USE_QUERY_KEY } from "@/constants";
 import type { StepLabelProps } from "@drincs/pixi-vn";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
@@ -19,7 +19,7 @@ export function useGameProps(): StepLabelProps {
         invalidateInterfaceData: async (delay: number = 0) => {
             if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay));
             return await queryClient.invalidateQueries({
-                queryKey: [INTERFACE_DATA_USE_QUERY_KEY],
+                queryKey: [NARRATION_DATA_USE_QUERY_KEY],
             });
         },
     };
