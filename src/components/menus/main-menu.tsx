@@ -3,11 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import {
-    CANVAS_UI_LAYER_NAME,
-    NARRATION_DATA_USE_QUERY_KEY,
-    overlayTextShadowClass,
-} from "@/constants";
+import { CANVAS_UI_LAYER_NAME, overlayTextShadowClass } from "@/constants";
 import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
 import { useGameProps } from "@/lib/hooks/props-hooks";
 import { useQueryLastSave } from "@/lib/query/save-query";
@@ -226,11 +222,7 @@ export function ContinueMenuButton({
         setLoading(true);
         onLoadingChange?.(true);
         (hasRefreshSave ? loadRefreshSave() : loadSave(lastSave))
-            .then(() =>
-                queryClient.invalidateQueries({
-                    queryKey: [NARRATION_DATA_USE_QUERY_KEY],
-                }),
-            )
+            .then(() => queryClient.invalidateQueries())
             .catch((e) => {
                 toast.error(t("fail_load"));
                 console.error(e);
