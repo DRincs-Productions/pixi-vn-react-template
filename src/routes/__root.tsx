@@ -2,7 +2,6 @@ import { PendingComponent } from "@/components/loading";
 import { SettingsDialogue } from "@/components/menus/settings";
 import { OfflineAllert } from "@/components/modals/error-allerts";
 import { RootProvider } from "@/components/providers/root-provider";
-import { NARRATION_DATA_USE_QUERY_KEY } from "@/constants";
 import { useConfirmBackNavigation } from "@/lib/hooks/navigation-hooks";
 import { useAutoSaveOnPageClose } from "@/lib/hooks/save-hooks";
 import { useI18n } from "@/lib/i18n";
@@ -29,9 +28,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         if (location.pathname !== "/" && narration.stepCounter === 0) {
             const isRefreshSaveExist = await loadRefreshSave();
             if (isRefreshSaveExist) {
-                await context.queryClient.invalidateQueries({
-                    queryKey: [NARRATION_DATA_USE_QUERY_KEY],
-                });
+                await context.queryClient.invalidateQueries();
             }
         }
     },
