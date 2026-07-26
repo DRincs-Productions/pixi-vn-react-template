@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { CHOICE_INPUT_REVEAL_DELAY_MS } from "@/constants";
 import { useGameProps } from "@/lib/hooks/props-hooks";
 import { useQueryDialogue, useQueryInputValue } from "@/lib/query/narration-query";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
@@ -19,7 +20,11 @@ export function InputRequestDialog() {
         data: { isRequired, type, currentValue } = { currentValue: undefined, isRequired: false },
     } = useQueryInputValue<string | number>();
     const isTyping = useSelector(TextDisplaySettings.store, (state) => state.inProgress);
-    const [open] = useDebouncedValue(!isTyping && isRequired, { wait: 50 });
+    const readyToShow = !isTyping && isRequired;
+    const [sustainedReady] = useDebouncedValue(readyToShow, {
+        wait: CHOICE_INPUT_REVEAL_DELAY_MS,
+    });
+    const open = readyToShow && sustainedReady;
     const [tempValue, setTempValue] = useState<string | number>();
     const gameProps = useGameProps();
     const { t } = useTranslation(["ui"]);
