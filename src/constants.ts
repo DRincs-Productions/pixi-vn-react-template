@@ -9,7 +9,8 @@ export const SFX_CHANNEL_NAME = "sfx";
 
 export const SKIP_DELAY = 100;
 
-export const INTERFACE_DATA_USE_QUERY_KEY = "interface_data_use_query_key";
+export const INTERFACE_DATA_USE_QUERY_KEY = "INTERFACE_DATA_USE_QUERY_KEY";
+export const NARRATION_DATA_USE_QUERY_KEY = "NARRATION_DATA_USE_QUERY_KEY";
 
 /** Text-shadow that outlines text with black so it remains legible over any image or canvas background. */
 export const overlayTextShadowClass = "[text-shadow:0_0_3px_black,0_0_6px_black]";
