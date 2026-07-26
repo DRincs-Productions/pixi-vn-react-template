@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useChoiceMenuHotkeys } from "@/lib/hooks/hotkeys-hooks";
 import { useNarrationFunctions } from "@/lib/hooks/narration-hooks";
-import { useQueryChoiceMenuOptions } from "@/lib/query/narration-query";
+import { useQueryChoiceMenuOptions, useQueryDialogue } from "@/lib/query/narration-query";
 import { GameStatus } from "@/lib/stores/game-status-store";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { useDebouncedValue } from "@tanstack/react-pacer";
@@ -11,9 +11,10 @@ import { CornerDownLeft } from "lucide-react";
 export function ChoiceMenu() {
     const loading = useSelector(GameStatus.store, (state) => state.loading);
     const { data: menu = [] } = useQueryChoiceMenuOptions();
+    const { isLoading: isDialogueLoading } = useQueryDialogue();
     const isTyping = useSelector(TextDisplaySettings.store, (state) => state.inProgress);
     const { selectChoice } = useNarrationFunctions();
-    const [debouncedMenu] = useDebouncedValue(isTyping ? [] : menu, { wait: 50 });
+    const [debouncedMenu] = useDebouncedValue(isTyping || isDialogueLoading ? [] : menu, { wait: 50 });
     const { menuRef } = useChoiceMenuHotkeys(debouncedMenu.length);
 
     return (

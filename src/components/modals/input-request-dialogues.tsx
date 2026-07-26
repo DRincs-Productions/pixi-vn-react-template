@@ -14,12 +14,12 @@ import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 
 export function InputRequestDialog() {
-    const { data: { lastText: text } = {} } = useQueryDialogue();
+    const { data: { lastText: text } = {}, isLoading: isDialogueLoading } = useQueryDialogue();
     const {
         data: { isRequired, type, currentValue } = { currentValue: undefined, isRequired: false },
     } = useQueryInputValue<string | number>();
     const isTyping = useSelector(TextDisplaySettings.store, (state) => state.inProgress);
-    const [open] = useDebouncedValue(!isTyping && isRequired, { wait: 50 });
+    const [open] = useDebouncedValue(!isTyping && !isDialogueLoading && isRequired, { wait: 50 });
     const [tempValue, setTempValue] = useState<string | number>();
     const gameProps = useGameProps();
     const { t } = useTranslation(["ui"]);
