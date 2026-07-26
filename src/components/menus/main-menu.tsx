@@ -5,7 +5,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
     CANVAS_UI_LAYER_NAME,
-    INTERFACE_DATA_USE_QUERY_KEY,
+    NARRATION_DATA_USE_QUERY_KEY,
     overlayTextShadowClass,
 } from "@/constants";
 import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
@@ -228,7 +228,7 @@ export function ContinueMenuButton({
         (hasRefreshSave ? loadRefreshSave() : loadSave(lastSave))
             .then(() =>
                 queryClient.invalidateQueries({
-                    queryKey: [INTERFACE_DATA_USE_QUERY_KEY],
+                    queryKey: [NARRATION_DATA_USE_QUERY_KEY],
                 }),
             )
             .catch((e) => {

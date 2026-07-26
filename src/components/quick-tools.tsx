@@ -1,3 +1,4 @@
+import { DelayedAnimatedDots } from "@/components/loading";
 import { useAlertDialog } from "@/components/providers/alert-dialog-provider";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
@@ -14,6 +15,7 @@ import {
 import { AutoSettings } from "@/lib/stores/auto-settings-store";
 import { GameStatus } from "@/lib/stores/game-status-store";
 import { SkipSettings } from "@/lib/stores/skip-settings-store";
+import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { cn } from "@/lib/utils";
 import { getSaveSlotLabel, loadSave, quickSaveGameToIndexDB } from "@/lib/utils/save-utility";
 import { useQueryClient } from "@tanstack/react-query";
@@ -29,6 +31,11 @@ export function QuickTools() {
     const { data: lastSave = null } = useQueryLastSave();
     const { data: canGoBack = false } = useQueryCanGoBack();
     const nextStepLoading = useSelector(GameStatus.store, (state) => state.loading);
+    // The typewriter shows its own dots while animating, so only show these when it isn't.
+    const typewriterInProgress = useSelector(
+        TextDisplaySettings.store,
+        (state) => state.inProgress,
+    );
     const { goBack } = useNarrationFunctions();
     const { openAlertDialog } = useAlertDialog();
     const gameProps = useGameProps();
@@ -40,6 +47,11 @@ export function QuickTools() {
 
     return (
         <div className={cn("flex flex-wrap items-center justify-end gap-0.5 sm:gap-1")}>
+            {nextStepLoading && !typewriterInProgress && (
+                <div className="mr-auto flex items-center pl-1">
+                    <DelayedAnimatedDots />
+                </div>
+            )}
             <Button
                 variant="ghost"
                 size="xs"
