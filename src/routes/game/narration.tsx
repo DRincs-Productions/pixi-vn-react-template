@@ -1,6 +1,6 @@
 import { NarrationScreen } from "@/components/screens/narration";
 import { NarrationClickOverlay } from "@/components/screens/narration/click-overlay";
-import { NARRATION_DATA_USE_QUERY_KEY } from "@/constants";
+import { INTERFACE_DATA_USE_QUERY_KEY } from "@/constants";
 import { useNarrationHotkeys } from "@/lib/hooks/hotkeys-hooks";
 import { useSkipAutoDetector } from "@/lib/hooks/narration-hooks";
 import { useQueryClient } from "@tanstack/react-query";
@@ -18,7 +18,7 @@ function NarrationElement() {
 
     useEffect(() => {
         return () => {
-            queryClient.removeQueries({ queryKey: [NARRATION_DATA_USE_QUERY_KEY] });
+            queryClient.removeQueries({ queryKey: [INTERFACE_DATA_USE_QUERY_KEY] });
         };
     }, [queryClient]);
 
