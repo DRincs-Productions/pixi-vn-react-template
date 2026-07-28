@@ -7,7 +7,6 @@ import { CANVAS_UI_LAYER_NAME, overlayTextShadowClass } from "@/constants";
 import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
 import { useGameProps } from "@/lib/hooks/props-hooks";
 import { useQueryLastSave } from "@/lib/query/save-query";
-import { InterfaceSettings } from "@/lib/stores/interface-settings-store";
 import { cn } from "@/lib/utils";
 import { loadRefreshSave, loadSave } from "@/lib/utils/save-utility";
 import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
@@ -110,7 +109,6 @@ export function MainMenu() {
     ]);
 
     useEffect(() => {
-        InterfaceSettings.setHidden(false);
         const bg = new ImageSprite({}, "background_main_menu");
         bg.load();
         const layer = canvas.getLayer(CANVAS_UI_LAYER_NAME);
