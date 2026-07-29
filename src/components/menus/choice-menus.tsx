@@ -17,7 +17,7 @@ export function ChoiceMenu() {
     const [sustainedNotTyping] = useDebouncedValue(!isTyping, {
         wait: CHOICE_INPUT_REVEAL_DELAY_MS,
     });
-    const debouncedMenu = !isTyping && sustainedNotTyping ? menu : [];
+    const debouncedMenu = !isTyping && sustainedNotTyping && !loading ? menu : [];
     const { menuRef } = useChoiceMenuHotkeys(debouncedMenu.length);
 
     return (

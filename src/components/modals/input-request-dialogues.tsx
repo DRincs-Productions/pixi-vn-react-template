@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { CHOICE_INPUT_REVEAL_DELAY_MS } from "@/constants";
 import { useGameProps } from "@/lib/hooks/props-hooks";
 import { useQueryDialogue, useQueryInputValue } from "@/lib/query/narration-query";
+import { GameStatus } from "@/lib/stores/game-status-store";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { narration } from "@drincs/pixi-vn";
 import { useDebouncedValue } from "@tanstack/react-pacer";
@@ -20,7 +21,8 @@ export function InputRequestDialog() {
         data: { isRequired, type, currentValue } = { currentValue: undefined, isRequired: false },
     } = useQueryInputValue<string | number>();
     const isTyping = useSelector(TextDisplaySettings.store, (state) => state.inProgress);
-    const readyToShow = !isTyping && isRequired;
+    const loading = useSelector(GameStatus.store, (state) => state.loading);
+    const readyToShow = !isTyping && isRequired && !loading;
     const [sustainedReady] = useDebouncedValue(readyToShow, {
         wait: CHOICE_INPUT_REVEAL_DELAY_MS,
     });

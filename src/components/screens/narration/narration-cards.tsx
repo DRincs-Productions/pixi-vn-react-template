@@ -6,6 +6,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNarrationPointerHandlers } from "@/lib/hooks/narration-hooks";
 import { useQueryDialogue } from "@/lib/query/narration-query";
+import { GameStatus } from "@/lib/stores/game-status-store";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { useSelector } from "@tanstack/react-store";
 import { type RefObject, memo, useCallback, useMemo, useRef } from "react";
@@ -69,6 +70,11 @@ export const Text = memo(function Text({
     paragraphRef: RefObject<HTMLDivElement | null>;
 }) {
     const typewriterDelay = useSelector(TextDisplaySettings.store, (state) => state.delay);
+    const typewriterInProgress = useSelector(
+        TextDisplaySettings.store,
+        (state) => state.inProgress,
+    );
+    const nextStepLoading = useSelector(GameStatus.store, (state) => state.loading);
     const { data: { animatedText, text } = {}, finalizeDialogue } = useQueryDialogue();
 
     const handleCharacterAnimationComplete = useCallback(
@@ -143,6 +149,11 @@ export const Text = memo(function Text({
                     {animatedText}
                 </MarkdownTypewriterHooks>
             </span>
+            {nextStepLoading && !typewriterInProgress && (
+                <span className="ml-1 inline-flex">
+                    <DelayedAnimatedDots />
+                </span>
+            )}
         </p>
     );
 });

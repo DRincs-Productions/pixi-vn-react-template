@@ -4,14 +4,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { CANVAS_UI_LAYER_NAME, overlayTextShadowClass } from "@/constants";
+import { useNarrationFunctions } from "@/lib/hooks/narration-hooks";
 import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
 import { useGameProps } from "@/lib/hooks/props-hooks";
 import { useQueryLastSave } from "@/lib/query/save-query";
+import { GameStatus } from "@/lib/stores/game-status-store";
 import { cn } from "@/lib/utils";
 import { loadRefreshSave, loadSave } from "@/lib/utils/save-utility";
-import { canvas, Game, ImageSprite } from "@drincs/pixi-vn";
+import { canvas, ImageSprite } from "@drincs/pixi-vn";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
+import { useSelector } from "@tanstack/react-store";
 import { AlertCircle, CirclePlay, Play, Save, Settings } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,7 +28,8 @@ export function MainMenu() {
     const { uiTransition: t, navigate } = gameProps;
     const setSettings = useSetSearchParamState<boolean>("settings");
     const setSettingsTab = useSetSearchParamState<string>("settings_tab");
-    const [loading, setLoading] = useState(false);
+    const { startNewGame } = useNarrationFunctions();
+    const loading = useSelector(GameStatus.store, (state) => state.loading);
     const menuRef = useRef<HTMLDivElement>(null);
 
     /** Returns all enabled menuitem buttons inside the menu container. */
@@ -132,16 +136,17 @@ export function MainMenu() {
             {/* Buttons card – semi-transparent, fade-in from left on mount */}
             <Card className="relative z-10 w-full max-w-xs sm:max-w-sm bg-background/70 backdrop-blur-sm animate-in fade-in slide-in-from-left-10 duration-500 ease-out fill-mode-both">
                 <CardContent ref={menuRef} role="menu" className="flex flex-col gap-2 pt-4">
-                    <ContinueMenuButton disabled={loading} onLoadingChange={setLoading} />
+                    <ContinueMenuButton
+                        disabled={loading}
+                        onLoadingChange={GameStatus.setLoading}
+                    />
 
                     <Button
                         role="menuitem"
                         onClick={async () => {
-                            setLoading(true);
+                            GameStatus.setLoading(true);
                             await navigate({ to: "/game/narration" });
-                            Game.start("start", gameProps)
-                                .then(() => gameProps.invalidateInterfaceData())
-                                .finally(() => setLoading(false));
+                            startNewGame("start");
                         }}
                         disabled={loading}
                         className={menuButtonClass}
