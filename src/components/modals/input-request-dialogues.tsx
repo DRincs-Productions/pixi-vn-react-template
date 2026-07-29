@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { CHOICE_INPUT_REVEAL_DELAY_MS } from "@/constants";
 import { useGameProps } from "@/lib/hooks/props-hooks";
 import { useQueryDialogue, useQueryInputValue } from "@/lib/query/narration-query";
+import { GameStatus } from "@/lib/stores/game-status-store";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
 import { narration } from "@drincs/pixi-vn";
 import { useDebouncedValue } from "@tanstack/react-pacer";
@@ -14,12 +16,17 @@ import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 
 export function InputRequestDialog() {
-    const { data: { lastText: text } = {}, isLoading: isDialogueLoading } = useQueryDialogue();
+    const { data: { lastText: text } = {} } = useQueryDialogue();
     const {
         data: { isRequired, type, currentValue } = { currentValue: undefined, isRequired: false },
     } = useQueryInputValue<string | number>();
     const isTyping = useSelector(TextDisplaySettings.store, (state) => state.inProgress);
-    const [open] = useDebouncedValue(!isTyping && !isDialogueLoading && isRequired, { wait: 50 });
+    const loading = useSelector(GameStatus.store, (state) => state.loading);
+    const readyToShow = !isTyping && isRequired && !loading;
+    const [sustainedReady] = useDebouncedValue(readyToShow, {
+        wait: CHOICE_INPUT_REVEAL_DELAY_MS,
+    });
+    const open = readyToShow && sustainedReady;
     const [tempValue, setTempValue] = useState<string | number>();
     const gameProps = useGameProps();
     const { t } = useTranslation(["ui"]);

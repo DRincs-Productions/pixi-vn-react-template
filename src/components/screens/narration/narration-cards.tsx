@@ -1,4 +1,4 @@
-import { DelayedAnimatedDots } from "@/components/loading";
+import { DelayedAnimatedDots, NextStepLoadingDots } from "@/components/loading";
 import { QuickTools } from "@/components/quick-tools";
 import { Card, CardContent } from "@/components/ui/card";
 import { Image } from "@/components/ui/image";
@@ -143,6 +143,7 @@ export const Text = memo(function Text({
                     {animatedText}
                 </MarkdownTypewriterHooks>
             </span>
+            <NextStepLoadingDots />
         </p>
     );
 });
