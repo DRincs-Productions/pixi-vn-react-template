@@ -8,7 +8,7 @@ import { useI18n } from "@/lib/i18n";
 import { SearchParams } from "@/lib/stores/search-param-store";
 import { defineAssets } from "@/lib/utils/assets-utility";
 import { initializeIndexedDB } from "@/lib/utils/db-utility";
-import { loadRefreshSave } from "@/lib/utils/save-utility";
+import { loadAutoExitSave } from "@/lib/utils/save-utility";
 import type { RouterContext } from "@/router";
 import { narration } from "@drincs/pixi-vn";
 import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
@@ -26,8 +26,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         await Promise.all([import("@/content"), initializeIndexedDB(), defineAssets(), useI18n()]);
         await setupPixivnViteData();
         if (location.pathname !== "/" && narration.stepCounter === 0) {
-            const isRefreshSaveExist = await loadRefreshSave();
-            if (isRefreshSaveExist) {
+            const isAutoExitSaveExist = await loadAutoExitSave();
+            if (isAutoExitSaveExist) {
                 await context.queryClient.invalidateQueries();
             }
         }
