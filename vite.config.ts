@@ -104,6 +104,7 @@ export default defineConfig(({ mode }) => ({
     define: {
         __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
         __APP_NAME__: JSON.stringify(process.env.npm_package_name),
+        __EMBEDDED_TARGET__: JSON.stringify(process.env.EMBEDDED_TARGET ?? ""),
     },
     build: {
         rollupOptions: {
