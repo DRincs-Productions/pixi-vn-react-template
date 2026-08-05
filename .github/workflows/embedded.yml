@@ -227,6 +227,24 @@ jobs:
           Compress-Archive -Path release/* -DestinationPath $zip
           echo "ZIP=$zip" >> $env:GITHUB_ENV
 
+      # Re-checks/creates the release right before uploading, instead of trusting
+      # create-release's job output alone — if this job is ever re-run on its own
+      # (e.g. "Re-run failed jobs" after fixing something) and the release/tag was
+      # deleted in between attempts, create-release itself won't re-run, so this
+      # guards against uploading to a release that no longer exists.
+      - name: ensure release exists
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ needs.create-release.outputs.release_tag }}
+        run: |
+          gh release view "$TAG" 2>/dev/null || \
+          gh release create "$TAG" \
+            --title "App v$(jq -r '.version' src-tauri/tauri.conf.json)" \
+            --notes "See the assets to download this version and install." \
+            2>/dev/null || \
+          gh release view "$TAG" > /dev/null
+
       - name: upload artifact to release
         shell: bash
         env:
