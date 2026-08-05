@@ -88,14 +88,17 @@ jobs:
       # ── Linux: download the servoshell tarball, unpack next to dist/ ────────
       #
       # Unlike the Windows zip (which bundles every gst*.dll it needs), the Linux
-      # tarball assumes the host system already has GStreamer installed — but as
-      # of servo 0.4.0 it links against libgstplay-1.0.so.0 / libgstwebrtc(nice),
-      # which are NOT packaged by Ubuntu 22.04/24.04 (confirmed by hand: apt only
-      # ships the older libgstplayer, never libgstplay). So this step bundles
-      # whatever gstreamer-bad libs apt *can* provide into release/libs/, wires
-      # LD_LIBRARY_PATH in play.sh to use them, then hard-fails the job with an
-      # explicit ldd report if anything is still unresolved — rather than silently
-      # shipping a zip that fails to start on the end user's machine.
+      # tarball assumes the host system already has GStreamer installed — and the
+      # ubuntu-22.04 runner image has essentially none of it preinstalled (not just
+      # the obscure libgstplay-1.0.so.0, but core gst-plugins-base libs like
+      # libgstvideo/libgstaudio/libgstapp too). `apt-get download` (first attempt)
+      # only fetches the named package, not its dependency tree, which is why that
+      # attempt still failed. This uses a real `apt-get install` (resolves the full
+      # dependency graph) so the *runner* has a complete, working GStreamer, then
+      # harvests every resolved gst/nice/orc/srtp shared object via `ldd` into
+      # release/libs/ so the *shipped zip* is self-contained too. The verification
+      # step below still hard-fails the job with an explicit ldd report if anything
+      # is still unresolved, rather than silently shipping a broken zip.
       - name: assemble release (Linux)
         if: matrix.os_name == 'linux'
         run: |
@@ -109,12 +112,16 @@ jobs:
 
           mkdir release/libs
           sudo apt-get update
-          sudo apt-get download libgstreamer-plugins-bad1.0-0 libnice10 2>&1 || true
-          for deb in *.deb; do
-            [ -f "$deb" ] || continue
-            dpkg-deb -x "$deb" "$PWD/deb-extract"
+          sudo apt-get install -y --no-install-recommends \
+            gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
+            gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly \
+            gstreamer1.0-libav libnice10
+
+          ldd release/servoshell | awk '{print $3}' | grep '^/' | sort -u | while read -r lib; do
+            case "$(basename "$lib")" in
+              libgst*|libnice*|liborc*|libsrtp*) cp -Ln "$lib" release/libs/ 2>/dev/null || true ;;
+            esac
           done
-          find "$PWD/deb-extract" -name "*.so*" -exec cp -Pn {} release/libs/ \; 2>/dev/null || true
 
           cat > release/play.sh << 'EOF'
           #!/usr/bin/env bash
@@ -208,7 +215,7 @@ jobs:
       - name: zip release (Linux/macOS)
         if: matrix.os_name != 'windows'
         run: |
-          ZIP="${{ steps.meta.outputs.bin_name }}_${{ steps.meta.outputs.version }}_${{ matrix.os_name }}_${{ matrix.arch }}-servoshell.zip"
+          ZIP="${{ steps.meta.outputs.bin_name }}_${{ steps.meta.outputs.version }}_${{ matrix.os_name }}_${{ matrix.arch }}-embedded.zip"
           (cd release && zip -r "../$ZIP" .)
           echo "ZIP=$ZIP" >> "$GITHUB_ENV"
 
@@ -216,11 +223,12 @@ jobs:
         if: matrix.os_name == 'windows'
         shell: pwsh
         run: |
-          $zip = "${{ steps.meta.outputs.bin_name }}_${{ steps.meta.outputs.version }}_windows_x64-servoshell.zip"
+          $zip = "${{ steps.meta.outputs.bin_name }}_${{ steps.meta.outputs.version }}_windows_x64-embedded.zip"
           Compress-Archive -Path release/* -DestinationPath $zip
           echo "ZIP=$zip" >> $env:GITHUB_ENV
 
       - name: upload artifact to release
+        shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ needs.create-release.outputs.release_tag }}
