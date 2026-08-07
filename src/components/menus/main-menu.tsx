@@ -10,7 +10,7 @@ import { useGameProps } from "@/lib/hooks/props-hooks";
 import { useQueryLastSave } from "@/lib/query/save-query";
 import { GameStatus } from "@/lib/stores/game-status-store";
 import { cn } from "@/lib/utils";
-import { loadRefreshSave, loadSave } from "@/lib/utils/save-utility";
+import { loadAutoExitSave, loadSave } from "@/lib/utils/save-utility";
 import { canvas, ImageSprite } from "@drincs/pixi-vn";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
@@ -218,13 +218,13 @@ export function ContinueMenuButton({
     const { t } = useTranslation(["ui"]);
     const queryClient = useQueryClient();
     const [loading, setLoading] = useState(false);
-    const hasRefreshSave = lastSave?.id === -1;
+    const hasAutoExitSave = lastSave?.id === -1;
 
     const handleClick = useCallback(() => {
         if (!lastSave) return;
         setLoading(true);
         onLoadingChange?.(true);
-        (hasRefreshSave ? loadRefreshSave() : loadSave(lastSave))
+        (hasAutoExitSave ? loadAutoExitSave() : loadSave(lastSave))
             .then(() => queryClient.invalidateQueries())
             .catch((e) => {
                 toast.error(t("fail_load"));
@@ -234,7 +234,7 @@ export function ContinueMenuButton({
                 setLoading(false);
                 onLoadingChange?.(false);
             });
-    }, [lastSave, hasRefreshSave, queryClient, t, onLoadingChange]);
+    }, [lastSave, hasAutoExitSave, queryClient, t, onLoadingChange]);
 
     const isDisabled = (!isLoading && !lastSave) || loading || disabled;
 
@@ -246,13 +246,13 @@ export function ContinueMenuButton({
                 <CirclePlay className="size-4" />
             )}
             {t("continue")}
-            {hasRefreshSave ? (
+            {hasAutoExitSave ? (
                 <AlertCircle aria-hidden="true" className="ml-1 size-4 text-orange-500" />
             ) : null}
         </>
     );
 
-    if (hasRefreshSave) {
+    if (hasAutoExitSave) {
         return (
             <Tooltip>
                 <TooltipTrigger
@@ -267,7 +267,7 @@ export function ContinueMenuButton({
                         </Button>
                     }
                 />
-                <TooltipContent>{t("continue_refresh_save_tooltip")}</TooltipContent>
+                <TooltipContent>{t("continue_auto_exit_save_tooltip")}</TooltipContent>
             </Tooltip>
         );
     }

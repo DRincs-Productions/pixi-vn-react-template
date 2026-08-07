@@ -10,12 +10,12 @@ import type GameSaveData from "@/models/GameSaveData";
 import { canvas, Game } from "@drincs/pixi-vn";
 
 const SAVE_FILE_EXTENSION = "json";
-const REFRESH_SAVE_LOCAL_STORAGE_KEY = "refresh_save";
+const AUTO_EXIT_SAVE_LOCAL_STORAGE_KEY = "auto_exit_save";
 
 /**
  * Quick saves live in a fixed, reserved range of negative ids (`-2`, `-3`, ...) so they
  * never collide with the auto-incrementing ids used by manual saves (`0`, `1`, ...) or
- * with the `-1` id reserved for the "refresh save" (see {@link getLastSaveFromIndexDB}).
+ * with the `-1` id reserved for the "auto exit save" (see {@link getLastSaveFromIndexDB}).
  */
 const QUICK_SAVE_ID_START = -2;
 /** Number of quick-save slots. */
@@ -124,14 +124,14 @@ export async function getLastSaveFromIndexDB(): Promise<(GameSaveData & { id: nu
     });
     const indexedDbSave = list.length > 0 ? list[0] : null;
 
-    const refreshJsonString = localStorage.getItem(REFRESH_SAVE_LOCAL_STORAGE_KEY);
-    if (refreshJsonString) {
-        const refreshSave: GameSaveData & { id: number } = {
-            ...(JSON.parse(refreshJsonString) as GameSaveData),
+    const autoExitJsonString = localStorage.getItem(AUTO_EXIT_SAVE_LOCAL_STORAGE_KEY);
+    if (autoExitJsonString) {
+        const autoExitSave: GameSaveData & { id: number } = {
+            ...(JSON.parse(autoExitJsonString) as GameSaveData),
             id: -1,
         };
-        if (!indexedDbSave || new Date(refreshSave.date) > new Date(indexedDbSave.date)) {
-            return refreshSave;
+        if (!indexedDbSave || new Date(autoExitSave.date) > new Date(indexedDbSave.date)) {
+            return autoExitSave;
         }
     }
 
@@ -181,22 +181,22 @@ export function loadGameSaveFromFile(afterLoad?: (error?: Error) => void) {
     input.click();
 }
 
-export async function addRefreshSave() {
+export async function addAutoExitSave() {
     const data = createGameSave();
     const jsonString = JSON.stringify(data);
     if (jsonString) {
-        localStorage.setItem(REFRESH_SAVE_LOCAL_STORAGE_KEY, jsonString);
+        localStorage.setItem(AUTO_EXIT_SAVE_LOCAL_STORAGE_KEY, jsonString);
     }
 }
 
-export async function loadRefreshSave(): Promise<boolean> {
-    const jsonString = localStorage.getItem(REFRESH_SAVE_LOCAL_STORAGE_KEY);
+export async function loadAutoExitSave(): Promise<boolean> {
+    const jsonString = localStorage.getItem(AUTO_EXIT_SAVE_LOCAL_STORAGE_KEY);
     if (jsonString) {
         const data: GameSaveData = JSON.parse(jsonString);
 
         return loadSave(data)
             .then(() => {
-                localStorage.removeItem(REFRESH_SAVE_LOCAL_STORAGE_KEY);
+                localStorage.removeItem(AUTO_EXIT_SAVE_LOCAL_STORAGE_KEY);
                 return true;
             })
             .catch(() => {

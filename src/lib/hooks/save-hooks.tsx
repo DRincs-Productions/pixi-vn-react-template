@@ -4,7 +4,7 @@ import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
 import { useGameProps } from "@/lib/hooks/props-hooks";
 import { LAST_SAVE_USE_QUERY_KEY, SAVES_USE_QUERY_KEY } from "@/lib/query/save-query";
 import {
-    addRefreshSave,
+    addAutoExitSave,
     deleteSaveFromIndexDB,
     getSaveSlotLabel,
     loadSave,
@@ -182,7 +182,7 @@ export function useAutoSaveOnPageClose(): void {
         if ((location.pathname as FileRouteTypes["fullPaths"]) === "/") {
             return;
         }
-        addRefreshSave();
+        addAutoExitSave();
     }, [location.pathname]);
 
     useEffect(() => {
