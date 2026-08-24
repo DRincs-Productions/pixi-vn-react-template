@@ -80,8 +80,8 @@ export function useNarrationFunctions() {
         async (item: StoredIndexedChoiceInterface) => {
             if (hasOpenMenu) return;
             GameStatus.setLoading(true);
-            return narration
-                .selectChoice(item, gameProps)
+            return narration.choices
+                .select(item, gameProps)
                 .then(() => {
                     gameProps.invalidateInterfaceData();
                     GameStatus.setLoading(false);

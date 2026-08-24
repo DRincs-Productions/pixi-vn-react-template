@@ -41,7 +41,7 @@ export function InputRequestDialog() {
         if (!canConfirm) {
             return;
         }
-        narration.inputValue = tempValue || currentValue;
+        narration.input.value = tempValue || currentValue;
         setTempValue(undefined);
         gameProps.invalidateInterfaceData();
     }, [canConfirm, currentValue, gameProps, tempValue]);
