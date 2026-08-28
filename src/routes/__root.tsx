@@ -8,7 +8,7 @@ import { useI18n } from "@/lib/i18n";
 import { SearchParams } from "@/lib/stores/search-param-store";
 import { defineAssets } from "@/lib/utils/assets-utility";
 import { gameDB } from "@/lib/utils/db-utility";
-import { loadAutoExitSave } from "@/lib/utils/save-utility";
+import { autoExit } from "@/lib/utils/save-utility";
 import type { RouterContext } from "@/router";
 import { narration } from "@drincs/pixi-vn";
 import { setupPixivnViteData } from "@drincs/pixi-vn/vite-listener";
@@ -26,7 +26,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         await Promise.all([import("@/content"), gameDB.init(), defineAssets(), useI18n()]);
         await setupPixivnViteData();
         if (location.pathname !== "/" && narration.stepCounter === 0) {
-            const isAutoExitSaveExist = await loadAutoExitSave();
+            const isAutoExitSaveExist = await autoExit.load();
             if (isAutoExitSaveExist) {
                 await context.queryClient.invalidateQueries();
             }
