@@ -1,13 +1,9 @@
-import {
-    deleteRowFromIndexDB,
-    getLastRowFromIndexDB,
-    getListFromIndexDB,
-    getRowFromIndexDB,
-    INDEXED_DB_SAVE_TABLE,
-    putRowIntoIndexDB,
-} from "@/lib/utils/db-utility";
+import { gameDB, INDEXED_DB_SAVE_TABLE } from "@/lib/utils/db-utility";
+import { roves } from "@/lib/utils/roves-utility";
 import type GameSaveData from "@/models/GameSaveData";
 import { canvas, Game } from "@drincs/pixi-vn";
+import { isAvailable as isRoves } from "@drincs/roves-api/core";
+import { saves as rovesSaves } from "@drincs/roves-api/saves";
 
 const SAVE_FILE_EXTENSION = "json";
 const AUTO_EXIT_SAVE_LOCAL_STORAGE_KEY = "auto_exit_save";
@@ -71,17 +67,25 @@ export async function saveGameToIndexDB(
         image: image,
         ...rest,
     };
+    const usingRoves = isRoves();
     if (item.id === undefined) {
-        const lastSave = await getLastRowFromIndexDB<GameSaveData & { id: number }>(
-            INDEXED_DB_SAVE_TABLE,
-        );
-        if (lastSave) {
-            item.id = lastSave.id + 1;
+        if (usingRoves) {
+            const maxId = await roves.getMaxSaveId();
+            item.id = maxId === null ? 0 : maxId + 1;
         } else {
-            item.id = 0;
+            const lastSave = await gameDB.getLastRow<GameSaveData & { id: number }>(
+                INDEXED_DB_SAVE_TABLE,
+            );
+            item.id = lastSave ? lastSave.id + 1 : 0;
         }
     }
-    await putRowIntoIndexDB(INDEXED_DB_SAVE_TABLE, item);
+
+    if (usingRoves) {
+        await rovesSaves.writeText(item.id, item);
+        return item as GameSaveData & { id: number };
+    }
+
+    await gameDB.putRow(INDEXED_DB_SAVE_TABLE, item);
     if (item.id) {
         return item as GameSaveData & { id: number };
     }
@@ -114,15 +118,21 @@ export async function quickSaveGameToIndexDB(): Promise<GameSaveData & { id: num
 export async function getSaveFromIndexDB(
     id: number,
 ): Promise<(GameSaveData & { id: number }) | null> {
-    return await getRowFromIndexDB(INDEXED_DB_SAVE_TABLE, id);
+    if (isRoves()) {
+        return roves.getSave(id);
+    }
+    return await gameDB.getRow(INDEXED_DB_SAVE_TABLE, id);
 }
 
 export async function getLastSaveFromIndexDB(): Promise<(GameSaveData & { id: number }) | null> {
-    const list = await getListFromIndexDB<GameSaveData & { id: number }>(INDEXED_DB_SAVE_TABLE, {
-        pagination: { limit: 1, offset: 0 },
-        order: { field: "date", direction: "prev" },
-    });
-    const indexedDbSave = list.length > 0 ? list[0] : null;
+    const backendSave = isRoves()
+        ? await roves.getMostRecentSave()
+        : ((
+              await gameDB.getList<GameSaveData & { id: number }>(INDEXED_DB_SAVE_TABLE, {
+                  pagination: { limit: 1, offset: 0 },
+                  order: { field: "date", direction: "prev" },
+              })
+          )[0] ?? null);
 
     const autoExitJsonString = localStorage.getItem(AUTO_EXIT_SAVE_LOCAL_STORAGE_KEY);
     if (autoExitJsonString) {
@@ -130,16 +140,19 @@ export async function getLastSaveFromIndexDB(): Promise<(GameSaveData & { id: nu
             ...(JSON.parse(autoExitJsonString) as GameSaveData),
             id: -1,
         };
-        if (!indexedDbSave || new Date(autoExitSave.date) > new Date(indexedDbSave.date)) {
+        if (!backendSave || new Date(autoExitSave.date) > new Date(backendSave.date)) {
             return autoExitSave;
         }
     }
 
-    return indexedDbSave;
+    return backendSave;
 }
 
-export async function deleteSaveFromIndexDB(id: number): Promise<void> {
-    return await deleteRowFromIndexDB(INDEXED_DB_SAVE_TABLE, id);
+export async function deleteSaveFromIndexDB(id: number): Promise<unknown> {
+    if (isRoves()) {
+        return await rovesSaves.delete(id);
+    }
+    return await gameDB.deleteRow(INDEXED_DB_SAVE_TABLE, id);
 }
 
 export function downloadGameSave(data: GameSaveData = createGameSave()) {
@@ -181,6 +194,8 @@ export function loadGameSaveFromFile(afterLoad?: (error?: Error) => void) {
     input.click();
 }
 
+// Note: the auto-exit save intentionally always stays in localStorage, regardless of the
+// save storage backend above, since it's a same-page fast path read on every route load.
 export async function addAutoExitSave() {
     const data = createGameSave();
     const jsonString = JSON.stringify(data);
