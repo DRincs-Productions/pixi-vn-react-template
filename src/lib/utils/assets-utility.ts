@@ -12,7 +12,16 @@ let assetsInitialized = false;
  */
 export async function defineAssets() {
     if (!assetsInitialized) {
-        await Assets.init({ manifest });
+        // PixiJS's own `path.toAbsolute()` only recognizes `http:`/`https:` as a "real" URL
+        // with a host (see its `path.isUrl()` regex, `/^https?:/`) when resolving a
+        // root-absolute asset src (e.g. `/main-menu.png`) against the current document.
+        // Under Roves' `game://content/` custom scheme this makes it drop the host,
+        // producing `game://main-menu.png` instead of `game://content/main-menu.png` and
+        // failing to load. `location.protocol`/`location.host` (unlike `location.origin`,
+        // which reports the literal string "null" for this custom scheme) still reflect the
+        // real URL, so passing them explicitly as `basePath` sidesteps the bug — and this
+        // works identically on a normal http(s) deployment too.
+        await Assets.init({ manifest, basePath: `${location.protocol}//${location.host}/` });
         assetsInitialized = true;
     }
 
