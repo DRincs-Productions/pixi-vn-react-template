@@ -19,9 +19,15 @@ export async function defineAssets() {
         // producing `game://main-menu.png` instead of `game://content/main-menu.png` and
         // failing to load. `location.protocol`/`location.host` (unlike `location.origin`,
         // which reports the literal string "null" for this custom scheme) still reflect the
-        // real URL, so passing them explicitly as `basePath` sidesteps the bug — and this
-        // works identically on a normal http(s) deployment too.
-        await Assets.init({ manifest, basePath: `${location.protocol}//${location.host}/` });
+        // real URL. `resolver.rootPath` must be set explicitly, not just `basePath` — left
+        // unset, `toAbsolute()` derives it from `basePath` via that same buggy http(s)-only
+        // check, so `basePath` alone doesn't actually fix root-absolute references. `rootPath`
+        // isn't an `Assets.init()` option (only `Resolver` exposes it), so it's set directly
+        // on `Assets.resolver` — and it must happen *before* `init()`, since `init()` already
+        // resolves every manifest asset's URL (via `addManifest`) as part of its own call.
+        const origin = `${location.protocol}//${location.host}/`;
+        Assets.resolver.rootPath = origin;
+        await Assets.init({ manifest, basePath: origin });
         assetsInitialized = true;
     }
 
