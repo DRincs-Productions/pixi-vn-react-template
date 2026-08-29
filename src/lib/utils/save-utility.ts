@@ -176,8 +176,6 @@ export namespace quickSave {
     }
 }
 
-// Note: the auto-exit save intentionally always stays in localStorage, regardless of the
-// save storage backend above, since it's a same-page fast path read on every route load.
 export namespace autoExit {
     const AUTO_EXIT_SAVE_LOCAL_STORAGE_KEY = "auto_exit_save";
 
