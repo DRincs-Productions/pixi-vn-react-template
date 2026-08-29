@@ -113,7 +113,7 @@ export function MainMenu() {
     ]);
 
     useEffect(() => {
-        const bg = new ImageSprite({}, "background_main_menu");
+        const bg = new ImageSprite({}, "images_main-menu");
         bg.load();
         const layer = canvas.getLayer(CANVAS_UI_LAYER_NAME);
         if (layer) {

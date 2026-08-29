@@ -1,6 +1,5 @@
 import { manifest } from "@/assets";
 import { AUDIO_BUNDLE_NAME } from "@/constants";
-import type { FileRouteTypes } from "@/routeTree.gen";
 import { Assets, sound } from "@drincs/pixi-vn";
 
 let assetsInitialized = false;
@@ -25,21 +24,26 @@ export async function defineAssets() {
         // isn't an `Assets.init()` option (only `Resolver` exposes it), so it's set directly
         // on `Assets.resolver` — and it must happen *before* `init()`, since `init()` already
         // resolves every manifest asset's URL (via `addManifest`) as part of its own call.
+        // Separately: AssetPack (`.assetpack.ts`) writes every generated manifest src
+        // relative to its own output folder (`public/assets/`, served at `/assets/`), e.g.
+        // "images/main-menu-<hash>.webp" — so `basePath` (used for these bare, non-rooted
+        // refs) must point *at* `/assets/`, not at the site root; `rootPath` (used only for
+        // an actual root-absolute `/foo` ref) stays the site root. Mixing the two up 404s
+        // identically in a plain browser too — this half isn't Roves-specific.
         const origin = `${location.protocol}//${location.host}/`;
         Assets.resolver.rootPath = origin;
-        await Assets.init({ manifest, basePath: origin });
+        await Assets.init({ manifest, basePath: `${origin}assets/` });
         assetsInitialized = true;
     }
 
     // The game will not start until these asserts are loaded.
-    await Assets.loadBundle("/" as FileRouteTypes["fullPaths"]);
+    await Assets.loadBundle("images");
 
     // The audio bundle will be loaded in the background, so it will be available when needed, but it won't block the game start.
     sound.backgroundLoadBundle(AUDIO_BUNDLE_NAME);
 
     // The game will start immediately, but these asserts will be loaded in the background.
     // Assets.backgroundLoadBundle("main_menu");
-    // Assets.backgroundLoad("background_main_menu");
 }
 
 /**
