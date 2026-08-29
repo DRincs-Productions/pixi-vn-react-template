@@ -16,11 +16,6 @@ export namespace roves {
         return keys.map(Number);
     }
 
-    export async function getMaxSaveId(): Promise<number | null> {
-        const ids = await listSaveIds();
-        return ids.length > 0 ? Math.max(...ids) : null;
-    }
-
     /** The roves-backed save with the most recent `date`, across every save key. */
     export async function getMostRecentSave(): Promise<(GameSaveData & { id: number }) | null> {
         const ids = await listSaveIds();

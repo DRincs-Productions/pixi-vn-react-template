@@ -3,7 +3,7 @@ import { useAlertDialog } from "@/components/providers/alert-dialog-provider";
 import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
 import { useGameProps } from "@/lib/hooks/props-hooks";
 import { LAST_SAVE_USE_QUERY_KEY, SAVES_USE_QUERY_KEY } from "@/lib/query/save-query";
-import { autoExit, getSlotLabel, remove, restore, save } from "@/lib/utils/save-utility";
+import { autoExit, save } from "@/lib/utils/save-utility";
 import type GameSaveData from "@/models/GameSaveData";
 import type { FileRouteTypes } from "@/routeTree.gen";
 import { useQueryClient } from "@tanstack/react-query";
@@ -26,10 +26,11 @@ export function useSaveActions() {
             openAlertDialog({
                 head: t("load"),
                 content: t("you_sure_to_load_save", {
-                    name: data.name || getSlotLabel(data.id, t),
+                    name: data.name || save.getSlotLabel(data.id, t),
                 }),
                 onConfirm: () =>
-                    restore(data)
+                    save
+                        .restore(data)
                         .then(() => {
                             gameProps.invalidateInterfaceData();
                             toast.success(t("success_load"));
@@ -52,10 +53,11 @@ export function useSaveActions() {
             openAlertDialog({
                 head: t("delete"),
                 content: t("you_sure_to_delete_save", {
-                    name: getSlotLabel(id, t),
+                    name: save.getSlotLabel(id, t),
                 }),
                 onConfirm: () =>
-                    remove(id)
+                    save
+                        .remove(id)
                         .then(() => {
                             queryClient.setQueryData([SAVES_USE_QUERY_KEY, id], null);
                             queryClient.invalidateQueries({ queryKey: [LAST_SAVE_USE_QUERY_KEY] });

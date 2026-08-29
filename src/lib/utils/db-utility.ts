@@ -91,39 +91,6 @@ export namespace gameDB {
         });
     }
 
-    export async function getLastRow<T extends {}>(tableName: string): Promise<T | null> {
-        return new Promise((resolve, reject) => {
-            const request = indexedDB.open(INDEXED_DB_NAME);
-            request.onsuccess = (_event) => {
-                const db = request.result;
-                // check if the object store exists
-                if (!db.objectStoreNames.contains(tableName)) {
-                    resolve(null);
-                    return;
-                }
-                const transaction = db.transaction([tableName], "readwrite");
-                const objectStore = transaction.objectStore(tableName);
-                const getRequest = objectStore.openCursor(null, "prev");
-                getRequest.onsuccess = (_event) => {
-                    const cursor = getRequest.result;
-                    if (cursor) {
-                        resolve(cursor.value);
-                    } else {
-                        resolve(null);
-                    }
-                };
-                getRequest.onerror = (event) => {
-                    console.error("Error getting save data from indexDB", event);
-                    reject();
-                };
-            };
-            request.onerror = (event) => {
-                console.error("Error opening indexDB", event);
-                reject();
-            };
-        });
-    }
-
     export async function deleteRow(tableName: string, id: number | string): Promise<void> {
         return new Promise((resolve, reject) => {
             const request = indexedDB.open(INDEXED_DB_NAME);

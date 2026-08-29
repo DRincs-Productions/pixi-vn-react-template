@@ -13,7 +13,7 @@ import { QuickActionsWheelState } from "@/lib/stores/quick-actions-wheel-store";
 import { SearchParams } from "@/lib/stores/search-param-store";
 import { SkipSettings } from "@/lib/stores/skip-settings-store";
 import { TextDisplaySettings } from "@/lib/stores/text-display-settings-store";
-import { getSlotLabel, quickSave as performQuickSave, restore } from "@/lib/utils/save-utility";
+import { quickSave as performQuickSave, save } from "@/lib/utils/save-utility";
 import { narration } from "@drincs/pixi-vn";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
@@ -91,10 +91,11 @@ export function useSaveHotkeys(): null {
         openAlertDialog({
             head: t("load"),
             content: t("you_sure_to_load_save", {
-                name: lastSave.name || getSlotLabel(lastSave.id, t),
+                name: lastSave.name || save.getSlotLabel(lastSave.id, t),
             }),
             onConfirm: () =>
-                restore(lastSave)
+                save
+                    .restore(lastSave)
                     .then(() => {
                         gameProps.invalidateInterfaceData();
                         toast.success(t("success_load"));
