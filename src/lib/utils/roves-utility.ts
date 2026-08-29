@@ -11,23 +11,14 @@ export namespace roves {
         }
     }
 
-    async function listSaveIds(): Promise<number[]> {
-        const keys = await rovesSaves.list();
-        return keys.map(Number);
-    }
-
-    /** The roves-backed save with the most recent `date`, across every save key. */
+    /**
+     * The roves-backed save with the most recent date, across every save key — including,
+     * when Steam Cloud sync is active, a save made on another machine and never pulled down
+     * locally (see `@drincs/roves-api/saves`'s `getMostRecent()`). Only the winning save's
+     * content is actually read, instead of every save just to compare dates.
+     */
     export async function getMostRecentSave(): Promise<(GameSaveData & { id: number }) | null> {
-        const ids = await listSaveIds();
-        const entries = await Promise.all(ids.map((id) => getSave(id)));
-        return entries.reduce<(GameSaveData & { id: number }) | null>((latest, entry) => {
-            if (!entry) {
-                return latest;
-            }
-            if (!latest || new Date(entry.date) > new Date(latest.date)) {
-                return entry;
-            }
-            return latest;
-        }, null);
+        const mostRecent = await rovesSaves.getMostRecent();
+        return mostRecent ? getSave(Number(mostRecent.key)) : null;
     }
 }

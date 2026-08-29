@@ -7,6 +7,7 @@ import { saves as rovesSaves } from "@drincs/roves-api/saves";
 
 const SAVE_FILE_EXTENSION = "json";
 
+/** Snapshots the current game state into a {@link GameSaveData}, ready to pass to {@link save}. */
 function create(options?: { image?: string; name?: string }): GameSaveData {
     const { image, name = "" } = options || {};
     return {
@@ -18,6 +19,7 @@ function create(options?: { image?: string; name?: string }): GameSaveData {
     };
 }
 
+/** Persists a save under `info.id`, to whichever backend (Roves or IndexedDB) is active. */
 export async function save(
     info: Partial<GameSaveData> & { id: number },
     data = create(),
@@ -42,6 +44,7 @@ export async function save(
 }
 
 export namespace save {
+    /** Reads the save at `id`, or `null` if there isn't one. */
     export async function get(id: number): Promise<(GameSaveData & { id: number }) | null> {
         if (isRoves()) {
             return roves.getSave(id);
@@ -49,6 +52,7 @@ export namespace save {
         return await gameDB.getRow(INDEXED_DB_SAVE_TABLE, id);
     }
 
+    /** The most recent save overall, including the auto-exit save if it's newer (see {@link autoExit}). */
     export async function getLast(): Promise<(GameSaveData & { id: number }) | null> {
         const backendSave = isRoves()
             ? await roves.getMostRecentSave()
@@ -70,6 +74,7 @@ export namespace save {
         return backendSave;
     }
 
+    /** Deletes the save at `id`. */
     export async function remove(id: number): Promise<unknown> {
         if (isRoves()) {
             return await rovesSaves.delete(id);
@@ -77,6 +82,7 @@ export namespace save {
         return await gameDB.deleteRow(INDEXED_DB_SAVE_TABLE, id);
     }
 
+    /** Downloads `data` (or a fresh snapshot of the current game) as a `.json` file. */
     export function download(data: GameSaveData = create()) {
         const jsonString = JSON.stringify(data);
         // download the save data as a JSON file
@@ -89,6 +95,7 @@ export namespace save {
         a.click();
     }
 
+    /** Prompts the player for a `.json` save file and restores game state from it. */
     export function loadFromFile(afterLoad?: (error?: Error) => void) {
         // load the save data from a JSON file
         const input = document.createElement("input");
@@ -116,6 +123,7 @@ export namespace save {
         input.click();
     }
 
+    /** Restores game state from previously-created {@link GameSaveData}. */
     export async function restore(saveData: GameSaveData) {
         await Game.restoreGameState(saveData.saveData);
     }
@@ -162,10 +170,12 @@ export namespace quickSave {
         return QUICK_SAVE_ID_START - slotIndex;
     }
 
+    /** Every quick-save slot id, in slot order. */
     export function getIds(): number[] {
         return Array.from({ length: QUICK_SAVE_SLOTS }, (_, index) => idForSlot(index));
     }
 
+    /** Whether `id` falls in the quick-save id range. */
     export function isId(id: number): boolean {
         return id <= QUICK_SAVE_ID_START;
     }
@@ -176,9 +186,15 @@ export namespace quickSave {
     }
 }
 
+/**
+ * The auto-exit save intentionally always stays in localStorage, regardless of the save
+ * storage backend used by {@link save}, since it's a same-page fast path read on every
+ * route load.
+ */
 export namespace autoExit {
     const AUTO_EXIT_SAVE_LOCAL_STORAGE_KEY = "auto_exit_save";
 
+    /** Snapshots the current game state into localStorage, e.g. before the tab closes/hides. */
     export async function add() {
         const data = create();
         const jsonString = JSON.stringify(data);
@@ -187,6 +203,7 @@ export namespace autoExit {
         }
     }
 
+    /** Restores the auto-exit save, if any, and clears it on success. */
     export async function load(): Promise<boolean> {
         const jsonString = localStorage.getItem(AUTO_EXIT_SAVE_LOCAL_STORAGE_KEY);
         if (jsonString) {
