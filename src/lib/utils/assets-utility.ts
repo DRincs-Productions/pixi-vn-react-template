@@ -11,25 +11,6 @@ let assetsInitialized = false;
  */
 export async function defineAssets() {
     if (!assetsInitialized) {
-        // PixiJS's own `path.toAbsolute()` only recognizes `http:`/`https:` as a "real" URL
-        // with a host (see its `path.isUrl()` regex, `/^https?:/`) when resolving a
-        // root-absolute asset src (e.g. `/main-menu.png`) against the current document.
-        // Under Roves' `game://content/` custom scheme this makes it drop the host,
-        // producing `game://main-menu.png` instead of `game://content/main-menu.png` and
-        // failing to load. `location.protocol`/`location.host` (unlike `location.origin`,
-        // which reports the literal string "null" for this custom scheme) still reflect the
-        // real URL. `resolver.rootPath` must be set explicitly, not just `basePath` — left
-        // unset, `toAbsolute()` derives it from `basePath` via that same buggy http(s)-only
-        // check, so `basePath` alone doesn't actually fix root-absolute references. `rootPath`
-        // isn't an `Assets.init()` option (only `Resolver` exposes it), so it's set directly
-        // on `Assets.resolver` — and it must happen *before* `init()`, since `init()` already
-        // resolves every manifest asset's URL (via `addManifest`) as part of its own call.
-        // Separately: AssetPack (`.assetpack.ts`) writes every generated manifest src
-        // relative to its own output folder (`public/assets/`, served at `/assets/`), e.g.
-        // "images/main-menu-<hash>.webp" — so `basePath` (used for these bare, non-rooted
-        // refs) must point *at* `/assets/`, not at the site root; `rootPath` (used only for
-        // an actual root-absolute `/foo` ref) stays the site root. Mixing the two up 404s
-        // identically in a plain browser too — this half isn't Roves-specific.
         const origin = `${location.protocol}//${location.host}/`;
         Assets.resolver.rootPath = origin;
         await Assets.init({ manifest, basePath: `${origin}assets/` });
