@@ -18,7 +18,7 @@
       "preLaunchTask": "Restart Vite Dev Server"
     },
     {
-      "name": "Debug Game Preview",
+      "name": "Game Preview",
       "request": "launch",
       "type": "editor-browser",
       "url": "http://localhost:4173",
