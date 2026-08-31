@@ -7,6 +7,7 @@ import { CANVAS_UI_LAYER_NAME, overlayTextShadowClass } from "@/constants";
 import { useNarrationFunctions } from "@/lib/hooks/narration-hooks";
 import { useSetSearchParamState } from "@/lib/hooks/navigation-hooks";
 import { useGameProps } from "@/lib/hooks/props-hooks";
+import { useQuit } from "@/lib/hooks/quit-hooks";
 import { useQueryLastSave } from "@/lib/query/save-query";
 import { GameStatus } from "@/lib/stores/game-status-store";
 import { cn } from "@/lib/utils";
@@ -15,7 +16,7 @@ import { canvas, ImageSprite } from "@drincs/pixi-vn";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "@tanstack/react-store";
-import { AlertCircle, CirclePlay, Play, Save, Settings } from "lucide-react";
+import { AlertCircle, CirclePlay, LogOut, Play, Save, Settings } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -31,6 +32,7 @@ export function MainMenu() {
     const { startNewGame } = useNarrationFunctions();
     const loading = useSelector(GameStatus.store, (state) => state.loading);
     const menuRef = useRef<HTMLDivElement>(null);
+    const { quit, canQuit } = useQuit();
 
     /** Returns all enabled menuitem buttons inside the menu container. */
     function getMenuItems(): HTMLButtonElement[] {
@@ -179,6 +181,19 @@ export function MainMenu() {
                         <Settings className="size-4" />
                         {t("settings")}
                     </Button>
+
+                    {canQuit && (
+                        <Button
+                            role="menuitem"
+                            onClick={quit}
+                            disabled={loading}
+                            variant="outline"
+                            className={menuButtonClass}
+                        >
+                            <LogOut className="size-4" />
+                            {t("quit")}
+                        </Button>
+                    )}
 
                     {loading ? (
                         <div
