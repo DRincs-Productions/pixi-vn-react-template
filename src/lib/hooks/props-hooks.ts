@@ -1,4 +1,4 @@
-import type { StepLabelProps } from "@drincs/pixi-vn";
+import { Game, type StepLabelProps } from "@drincs/pixi-vn";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
@@ -10,7 +10,7 @@ export function useGameProps(): StepLabelProps {
     const { t: uiTransition } = useTranslation(["ui"]);
     const queryClient = useQueryClient();
 
-    return {
+    const props: StepLabelProps = {
         navigate,
         t,
         uiTransition,
@@ -20,4 +20,8 @@ export function useGameProps(): StepLabelProps {
             return await queryClient.invalidateQueries();
         },
     };
+    // Keeps window.pixiVN (see the pixi-vn-testing skill) driving the real UI (navigate/toast/...)
+    // during an AI-driven test session. A no-op when Game.testing isn't enabled.
+    Game.testing.setProps(props);
+    return props;
 }
