@@ -90,6 +90,20 @@
       }
     },
     {
+      "label": "Build",
+      "type": "shell",
+      "command": "npm run build",
+      "dependsOn": ["Install Dependencies"],
+      "dependsOrder": "sequence",
+      "problemMatcher": ["$tsc"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true,
+        "close": true
+      }
+    },
+    {
       "label": "Stop Vite Preview Server",
       "type": "shell",
       "command": "kill $(lsof -ti:4173 -sTCP:LISTEN 2>/dev/null) 2>/dev/null; true",
